@@ -1,0 +1,76 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TeleportService = game:GetService("TeleportService")
+local localPlayer = Players.LocalPlayer
+local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+local targetRemoteSpam = 3000
+local placeId = game.PlaceId
+
+local function teleportToNearestPlayer()
+    local nearestPlayer = nil
+    local nearestDistance = math.huge
+
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= localPlayer and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (humanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
+            if distance < nearestDistance then
+                nearestDistance = distance
+                nearestPlayer = otherPlayer
+            end
+        end
+    end
+
+    if nearestPlayer and nearestPlayer.Character and nearestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        humanoidRootPart.CFrame = nearestPlayer.Character.HumanoidRootPart.CFrame
+    end
+end
+
+local function spamRemote()
+    for i = 1, targetRemoteSpam do
+        for _, player in pairs(Players:GetPlayers()) do
+    local players = game:GetService("Players")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Iterate over all players
+for _, player in ipairs(players:GetPlayers()) do
+    -- Make sure the player has a character and a "Right Arm"
+    local character = player.Character
+    if character and character:FindFirstChild("Right Arm") then
+        -- Prepare the arguments for the FireServer call
+        local args = {
+            character:FindFirstChild("Right Arm")
+        }
+
+        -- Fire the GeneralHit event for the player's Right Arm
+        replicatedStorage.GeneralHit:FireServer(unpack(args))
+    end
+end
+        end
+    end
+end
+
+local function serverHop()
+    local servers = game.HttpService:JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100")).data
+    for _, server in ipairs(servers) do
+        if server.playing < server.maxPlayers and server.id ~= game.JobId then
+            TeleportService:TeleportToPlaceInstance(placeId, server.id)
+            break
+        end
+    end
+end
+
+local function delayedServerHop()
+    task.wait(5.8)
+    serverHop()
+end
+
+game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
+    if child.Name == "ErrorPrompt" then
+        delayedServerHop()
+    end
+end)
+
+if humanoidRootPart then
+    teleportToNearestPlayer()
+    spamRemote()
+end
