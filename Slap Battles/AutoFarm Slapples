@@ -1,0 +1,100 @@
+--hello, buddy are you here to skid?
+--ok idc its easy as fuck 😭
+local button = script.Parent
+local teleportPosition = Vector3.new(-420, 92, -30)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-372, 51, -29)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-385, 51, 18)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-412, 51, -44)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-432, 51, -25)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-366, 51, -28)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-370, 58, 15)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-407, 51, 13)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-398, 57, 20)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(-415, 51, 15)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+wait(0.1)
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game:GetService('Players').LocalPlayer)
