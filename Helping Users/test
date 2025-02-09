@@ -1,0 +1,199 @@
+--are you here to skid it? ok idc
+
+--START
+if game.Players.LocalPlayer.PlayerGui.TowerDefenceUI.Gold.Text >= "$ 200" then
+--DEFENCE1
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(27, 11, -9) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence1"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(28, 11, -2) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence1"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(28, 11, 3) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence1"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(29, 11, 9) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence1"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(30, 11, 15) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence1"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+--START2
+if game.Players.LocalPlayer.PlayerGui.TowerDefenceUI.Gold.Text >= "$ 120" then
+--DEFENCE2
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(41, 11, -15) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(42, 11, -12) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(42, 11, -9) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(43, 11, -4) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(45, 11, 1) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(46, 11, 6) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(46, 11, 10) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(47, 11, 15) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence2"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+--START3
+if game.Players.LocalPlayer.PlayerGui.TowerDefenceUI.Gold.Text >= "$ 450" then
+--DEFENCE3
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(26, 11, -21) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(30, 11, -22) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(34, 11, -22) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(40, 11, -24) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(45, 11, -24) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+
+local args = {
+    [1] = "PlaceDefence",
+    [2] = {
+        ["cf"] = CFrame.new(51, 11, -26) * CFrame.Angles(-0, 0, -0),
+        ["defencename"] = "Defence3"
+    }
+}
+
+game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+end
