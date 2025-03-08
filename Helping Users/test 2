@@ -1,0 +1,28 @@
+if game.PlaceId == 6403373529 then
+game:GetService("Workspace").Lobby.brazil.portal.CFrame = game.Players.LocalPlayer.Character.Torso.CFrame
+elseif game.PlaceId ~= 102908326578005 then
+spawn(function()
+while wait() do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").ClockBadgeTeleport.CFrame * CFrame.new(0,-7, 0)
+end
+end)
+game:GetService("Workspace").ClockBadgeTeleport.Transparency = .9
+game:GetService("Workspace").ClockBadgeTeleport.CastShadow = false
+end
+
+if game.PlaceId == 102908326578005 then 
+repeat wait() until workspace:FindFirstChild("Note") end
+
+for i,v in pairs(workspace.Furniture.jorgisBasketballs:GetChildren()) do 
+if v:FindFirstChild("ClickDetector") then
+fireclickdetector(v.ClickDetector)
+end
+end 
+wait(5)
+for i,v in pairs(game:GetService("Workspace").Furniture.jorgisDresser:GetDescendants()) do 
+if v:IsA("ClickDetector") then
+fireclickdetector(v)
+end
+
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Furniture.finalDoor.Base.Base.CFrame
+end
