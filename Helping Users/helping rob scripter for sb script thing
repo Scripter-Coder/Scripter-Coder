@@ -13,7 +13,7 @@ OrionLib:MakeNotification({Name = "From Rob",Content = "Bypassed Anti Cheat!",Im
 OrionLib:MakeNotification({Name = "From Rob",Content = "Starting Script",Image = "rbxassetid://7734059095",Time = 2})
 
 --If Has Those Place Ids Then
-if game.PlaceId == 12459609433 or game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 then
+if game.PlaceId == 124596094333302 or game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 then
 --Runs Script
 
 -- Create UI window
