@@ -6,4 +6,8 @@ local allowedUserIds = {
     9760920854, --Incognito
     9202857020, --Incognito
     9774921629, --Incognito
+    9774933823, --Scripter
+    9775034039, --Scripter
+    9775009570, --Scripter
+    9775029672, --Scripter
 }
