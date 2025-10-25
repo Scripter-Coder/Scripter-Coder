@@ -1,0 +1,18 @@
+local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+
+--Startup Script Notification
+OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
+
+local Window = OrionLib:MakeWindow({Name = "skibidi",HidePremium = true,IntroEnabled = true,IntroText = "Welcome",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+local Tab = Window:MakeTab({
+    Name = "Welcome",
+    Icon = "rbxassetid://7734059095",
+    PremiumOnly = false
+})
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
