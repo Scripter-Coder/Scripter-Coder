@@ -1,5 +1,5 @@
 -- List of allowed user IDs
-local allowedUserIds = {
+return {
     7292254678, --Scripter
     9419164889, --Bobo
     9753595100, --Scripter
@@ -10,5 +10,6 @@ local allowedUserIds = {
     9775034039, --Scripter
     9775009570, --Scripter
     9775029672, --Scripter
-    9468985932 --Bobo
+    9468985932, --Bobo
+    9795706496
 }
