@@ -1,9 +1,7 @@
 -- List of allowed user IDs
 return {
     7292254678, --Scripter
-    9419164889, --Bobo
     9760920854, --Incognito
     9202857020, --Incognito
-    9774921629, --Incognito
-    9468985932 --Bobo
+    9774921629 --Incognito
 }
