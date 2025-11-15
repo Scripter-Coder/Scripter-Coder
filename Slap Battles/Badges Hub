@@ -5,7 +5,8 @@ local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scr
 OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
 
 --If Slap Battles Then
-if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 124596094333302 then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 then
+
 local Window = OrionLib:MakeWindow({Name = "Badges Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Badges Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
 
 OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
@@ -2074,7 +2075,7 @@ Tab = Window:MakeTab({
 Tab:AddButton({
     Name = "Auto Teleport To SR Place + Get Chain",
     Callback = function()
-        local targetPlaceId = 9431156611
+local targetPlaceId = 9431156611
         local currentPlaceId = game.PlaceId
         
         -- Function to execute the Chain script
@@ -4769,77 +4770,94 @@ Tab = Window:MakeTab({
 Tab:AddButton({
     Name = "Auto Teleport To Null Zone Place + Get Null",
     Callback = function()
-        local targetPlaceId = 14422118326
         local currentPlaceId = game.PlaceId
         
-        -- Function to get Null glove
-        local function getNull()
+        if currentPlaceId == 6403373529 then
+            -- Check if player has Pan glove equipped
+            local player = game.Players.LocalPlayer
+            if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Pan" then
+                -- Player has Pan equipped, teleport to position
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
+                    OrionLib:MakeNotification({
+                        Name = "Teleported!",
+                        Content = "Pan user teleported to Null position",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
+                end
+            else
+                -- Player doesn't have Pan equipped
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Pan glove first!",
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
+            end
+            
+        elseif currentPlaceId == 14422118326 then
+            -- Already in Null Zone, get Null glove
             local player = game.Players.LocalPlayer
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(5458, -189, 1854)
                 wait(2)
                 if workspace:FindFirstChild("Model") and workspace.Model:FindFirstChild("Handle") and workspace.Model.Handle:FindFirstChild("ClickDetector") then
                     fireclickdetector(workspace.Model.Handle.ClickDetector)
-                    print("Got Null glove!")
+                    OrionLib:MakeNotification({
+                        Name = "Success!",
+                        Content = "Got Null glove!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
                 end
             end
-        end
-
-        -- Check if player has Pan glove
-        local player = game.Players.LocalPlayer
-        if player:FindFirstChild("leaderstats") and player.leaderstats:FindFirstChild("Glove") then
-            if player.leaderstats.Glove.Value == "Pan" then
-                -- Player has Pan glove, teleport to position
-                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
-                    print("Teleported Pan user to position (18662, 2993, -298)")
-                end
-            else
-                -- Player doesn't have Pan glove, proceed with normal Null logic
-                if currentPlaceId == targetPlaceId then
-                    -- We're already in the target place, get Null glove
-                    print("Already in target place - getting Null glove")
-                    getNull()
-                else
-                    -- We're not in the target place, teleport to the game
-                    print("Teleporting to target game...")
-                    local TeleportService = game:GetService("TeleportService")
-                    local success, errorMsg = pcall(function()
-                        TeleportService:Teleport(targetPlaceId)
-                    end)
-                    
-                    if success then
-                        -- Wait for teleport and then get Null
-                        game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
-                            if state == Enum.TeleportState.InProgress then
-                                -- Queue script to get Null after teleport
-                                local nullScript = [[
-                                    wait(3)
-                                    local player = game.Players.LocalPlayer
-                                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                                        player.Character.HumanoidRootPart.CFrame = CFrame.new(5458, -189, 1854)
-                                        wait(2)
-                                        if workspace:FindFirstChild("Model") and workspace.Model:FindFirstChild("Handle") and workspace.Model.Handle:FindFirstChild("ClickDetector") then
-                                            fireclickdetector(workspace.Model.Handle.ClickDetector)
-                                            print("Auto-executed: Got Null glove!")
-                                        end
-                                    end
-                                ]]
-                                
-                                if syn and syn.queue_on_teleport then
-                                    syn.queue_on_teleport(nullScript)
-                                else
-                                    queue_on_teleport(nullScript)
+            
+        else
+            -- Not in either required place, teleport to Null Zone
+            OrionLib:MakeNotification({
+                Name = "Teleporting...",
+                Content = "Going to Null Zone",
+                Image = "rbxassetid://7733919105",
+                Time = 3
+            })
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function()
+                TeleportService:Teleport(14422118326)
+            end)
+            
+            if success then
+                -- Queue script to get Null after teleport
+                game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                    if state == Enum.TeleportState.InProgress then
+                        local nullScript = [[
+                            wait(3)
+                            local player = game.Players.LocalPlayer
+                            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                                player.Character.HumanoidRootPart.CFrame = CFrame.new(5458, -189, 1854)
+                                wait(2)
+                                if workspace:FindFirstChild("Model") and workspace.Model:FindFirstChild("Handle") and workspace.Model.Handle:FindFirstChild("ClickDetector") then
+                                    fireclickdetector(workspace.Model.Handle.ClickDetector)
                                 end
                             end
-                        end)
-                    else
-                        print("Teleport failed:", errorMsg)
+                        ]]
+                        
+                        if syn and syn.queue_on_teleport then
+                            syn.queue_on_teleport(nullScript)
+                        else
+                            queue_on_teleport(nullScript)
+                        end
                     end
-                end
+                end)
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport Failed",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             end
-        else
-            print("Leaderstats not found!")
         end
     end
 })
@@ -4854,11 +4872,34 @@ Tab = Window:MakeTab({
 Tab:AddButton({
     Name = "Auto Teleport To Null Zone + Get Tinkerer",
     Callback = function()
-        local targetPlaceId = 14422118326
         local currentPlaceId = game.PlaceId
         
-        -- Function to get Tinkerer glove
-        local function getTinkerer()
+        if currentPlaceId == 6403373529 then
+            -- Check if player has Pan glove equipped
+            local player = game.Players.LocalPlayer
+            if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Pan" then
+                -- Player has Pan equipped, teleport to position
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
+                    OrionLib:MakeNotification({
+                        Name = "Teleported!",
+                        Content = "Pan user teleported to Tinkerer position",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
+                end
+            else
+                -- Player doesn't have Pan equipped
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Pan glove first!",
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
+            end
+            
+        elseif currentPlaceId == 14422118326 then
+            -- Already in Null Zone, get Tinkerer glove
             local player = game.Players.LocalPlayer
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(4833.31, -214, 800.529)
@@ -4866,71 +4907,65 @@ Tab:AddButton({
                 for _, child in pairs(workspace:GetChildren()) do
                     if child:FindFirstChild("Handle") and child.Handle:FindFirstChild("ClickDetector") then
                         fireclickdetector(child.Handle.ClickDetector)
-                        print("Got Tinkerer glove!")
+                        OrionLib:MakeNotification({
+                            Name = "Success!",
+                            Content = "Got Tinkerer glove!",
+                            Image = "rbxassetid://7733919105",
+                            Time = 5
+                        })
                         break
                     end
                 end
             end
-        end
-
-        -- Check if player has Pan glove
-        local player = game.Players.LocalPlayer
-        if player:FindFirstChild("leaderstats") and player.leaderstats:FindFirstChild("Glove") then
-            if player.leaderstats.Glove.Value == "Pan" then
-                -- Player has Pan glove, teleport to position
-                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
-                    print("Teleported Pan user to position (18662, 2993, -298)")
-                end
-            else
-                -- Player doesn't have Pan glove, proceed with normal Tinkerer logic
-                if currentPlaceId == targetPlaceId then
-                    -- We're already in the target place, get Tinkerer glove
-                    print("Already in target place - getting Tinkerer glove")
-                    getTinkerer()
-                else
-                    -- We're not in the target place, teleport to the game
-                    print("Teleporting to target game...")
-                    local TeleportService = game:GetService("TeleportService")
-                    local success, errorMsg = pcall(function()
-                        TeleportService:Teleport(targetPlaceId)
-                    end)
-                    
-                    if success then
-                        -- Wait for teleport and then get Tinkerer
-                        game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
-                            if state == Enum.TeleportState.InProgress then
-                                -- Queue script to get Tinkerer after teleport
-                                local tinkererScript = [[
-                                    wait(3)
-                                    local player = game.Players.LocalPlayer
-                                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                                        player.Character.HumanoidRootPart.CFrame = CFrame.new(4833.31, -214, 800.529)
-                                        wait(2)
-                                        for _, child in pairs(workspace:GetChildren()) do
-                                            if child:FindFirstChild("Handle") and child.Handle:FindFirstChild("ClickDetector") then
-                                                fireclickdetector(child.Handle.ClickDetector)
-                                                print("Auto-executed: Got Tinkerer glove!")
-                                                break
-                                            end
-                                        end
+            
+        else
+            -- Not in either required place, teleport to Null Zone
+            OrionLib:MakeNotification({
+                Name = "Teleporting...",
+                Content = "Going to Null Zone",
+                Image = "rbxassetid://7733919105",
+                Time = 3
+            })
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function()
+                TeleportService:Teleport(14422118326)
+            end)
+            
+            if success then
+                -- Queue script to get Tinkerer after teleport
+                game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                    if state == Enum.TeleportState.InProgress then
+                        local tinkererScript = [[
+                            wait(3)
+                            local player = game.Players.LocalPlayer
+                            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                                player.Character.HumanoidRootPart.CFrame = CFrame.new(4833.31, -214, 800.529)
+                                wait(2)
+                                for _, child in pairs(workspace:GetChildren()) do
+                                    if child:FindFirstChild("Handle") and child.Handle:FindFirstChild("ClickDetector") then
+                                        fireclickdetector(child.Handle.ClickDetector)
+                                        break
                                     end
-                                ]]
-                                
-                                if syn and syn.queue_on_teleport then
-                                    syn.queue_on_teleport(tinkererScript)
-                                else
-                                    queue_on_teleport(tinkererScript)
                                 end
                             end
-                        end)
-                    else
-                        print("Teleport failed:", errorMsg)
+                        ]]
+                        
+                        if syn and syn.queue_on_teleport then
+                            syn.queue_on_teleport(tinkererScript)
+                        else
+                            queue_on_teleport(tinkererScript)
+                        end
                     end
-                end
+                end)
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport Failed",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             end
-        else
-            print("Leaderstats not found!")
         end
     end
 })
@@ -5245,10 +5280,15 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddButton({
-	Name = "Collect Bob Plushie",
+	Name = "Enable Limbo Map For Bob Plushie",
 	Callback = function()
 game.ReplicatedStorage.RepressedMemoriesMap.Parent = game.Workspace
-wait(0.1)
+end
+})
+
+Tab:AddButton({
+	Name = "Collect Bob Plushie",
+	Callback = function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.RepressedMemories._ugcQuestObjectBobPlushie.Handle.CFrame
 wait(0.1)
 fireclickdetector(workspace.RepressedMemories._ugcQuestObjectBobPlushie.ClickDetector)
@@ -5257,36 +5297,102 @@ end
 
 -- First Button: Teleport to position and get Rob Plushie
 Tab:AddButton({
-    Name = "Teleport To Position + Collect Rob Plushie",
+    Name = "Teleport To Null Zone Place + Collect Rob Plushie",
     Callback = function()
         local currentPlaceId = game.PlaceId
         
-        -- Function to get Rob Plushie
-        local function getRobPlushie()
+        if currentPlaceId == 6403373529 then
+            -- Check if player has Pan glove equipped
+            local player = game.Players.LocalPlayer
+            if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Pan" then
+                -- Player has Pan equipped, teleport to position
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
+                    OrionLib:MakeNotification({
+                        Name = "Teleported!",
+                        Content = "Pan user teleported to Rob Plushie position",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
+                end
+            else
+                -- Player doesn't have Pan equipped
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Pan glove first!",
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
+            end
+            
+        elseif currentPlaceId == 14422118326 then
+            -- Already in Null Zone, get Rob Plushie
             local player = game.Players.LocalPlayer
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(5259, -139, 861)
                 wait(2)
                 if workspace:FindFirstChild("_ugcQuestObjectBobPlushie") and workspace._ugcQuestObjectBobPlushie:FindFirstChild("ClickDetector") then
                     fireclickdetector(workspace._ugcQuestObjectBobPlushie.ClickDetector)
-                    print("Got Rob Plushie!")
+                    OrionLib:MakeNotification({
+                        Name = "Success!",
+                        Content = "Got Rob Plushie!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
                 else
-                    print("Rob Plushie not found!")
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Rob Plushie not found!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
                 end
             end
-        end
-
-        -- Check current place and execute accordingly
-        if currentPlaceId == 14422118326 then
-            -- We're in the second place, get Rob Plushie
-            print("In second place - getting Rob Plushie")
-            getRobPlushie()
+            
         else
-            -- We're in first place, teleport to position
-            local player = game.Players.LocalPlayer
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
-                print("Teleported to position (18662, 2993, -298)")
+            -- Not in either required place, teleport to Null Zone
+            OrionLib:MakeNotification({
+                Name = "Teleporting...",
+                Content = "Going to Null Zone for Rob Plushie",
+                Image = "rbxassetid://7733919105",
+                Time = 3
+            })
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function()
+                TeleportService:Teleport(14422118326)
+            end)
+            
+            if success then
+                -- Queue script to get Rob Plushie after teleport
+                game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                    if state == Enum.TeleportState.InProgress then
+                        local robScript = [[
+                            wait(3)
+                            local player = game.Players.LocalPlayer
+                            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                                player.Character.HumanoidRootPart.CFrame = CFrame.new(5259, -139, 861)
+                                wait(2)
+                                if workspace:FindFirstChild("_ugcQuestObjectBobPlushie") and workspace._ugcQuestObjectBobPlushie:FindFirstChild("ClickDetector") then
+                                    fireclickdetector(workspace._ugcQuestObjectBobPlushie.ClickDetector)
+                                end
+                            end
+                        ]]
+                        
+                        if syn and syn.queue_on_teleport then
+                            syn.queue_on_teleport(robScript)
+                        else
+                            queue_on_teleport(robScript)
+                        end
+                    end
+                end)
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport Failed",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             end
         end
     end
@@ -5294,12 +5400,60 @@ Tab:AddButton({
 
 -- Second Button: Teleport to position and get Alchemist Hood
 Tab:AddButton({
-    Name = "Teleport To Position + Collect Alchemist Hood",
+    Name = "Teleport To ? Place + Collect Alchemist Hood",
     Callback = function()
         local currentPlaceId = game.PlaceId
         
-        -- Function to get Alchemist Hood
-        local function getAlchemistHood()
+        if currentPlaceId == 6403373529 then
+            -- Teleport to ? place
+            OrionLib:MakeNotification({
+                Name = "Teleporting...",
+                Content = "Going to ? place for Alchemist Hood",
+                Image = "rbxassetid://7733919105",
+                Time = 3
+            })
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function()
+                TeleportService:Teleport(11828384869)
+            end)
+            
+            if success then
+                -- Queue script to get Alchemist Hood after teleport
+                game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                    if state == Enum.TeleportState.InProgress then
+                        local hoodScript = [[
+                            wait(3)
+                            local lp = game.Players.LocalPlayer
+                            local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+                            local target = workspace:FindFirstChild("_ugcQuestObjectEludeHat")
+                            if target and target:FindFirstChild("Handle") and hrp then
+                                if hrp.Anchored then 
+                                    hrp.Anchored = false
+                                    task.wait(0.5) 
+                                end
+                                hrp.CFrame = target.Handle.CFrame
+                            end
+                        ]]
+                        
+                        if syn and syn.queue_on_teleport then
+                            syn.queue_on_teleport(hoodScript)
+                        else
+                            queue_on_teleport(hoodScript)
+                        end
+                    end
+                end)
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport Failed",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
+            end
+            
+        elseif currentPlaceId == 11828384869 then
+            -- Already in ? place, get Alchemist Hood
             local lp = game.Players.LocalPlayer
             local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
             local target = workspace:FindFirstChild("_ugcQuestObjectEludeHat")
@@ -5309,23 +5463,67 @@ Tab:AddButton({
                     task.wait(0.5) 
                 end
                 hrp.CFrame = target.Handle.CFrame
-                print("Got Alchemist Hood!")
+                OrionLib:MakeNotification({
+                    Name = "Success!",
+                    Content = "Got Alchemist Hood!",
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             else
-                print("Alchemist Hood not found!")
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Alchemist Hood not found!",
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             end
-        end
-
-        -- Check current place and execute accordingly
-        if currentPlaceId == 11828384869 then
-            -- We're in the second place, get Alchemist Hood
-            print("In second place - getting Alchemist Hood")
-            getAlchemistHood()
+            
         else
-            -- We're in first place, teleport to position
-            local player = game.Players.LocalPlayer
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(18662, 2993, -298)
-                print("Teleported to position (18662, 2993, -298)")
+            -- Not in either required place, teleport to ? place
+            OrionLib:MakeNotification({
+                Name = "Teleporting...",
+                Content = "Going to ? place for Alchemist Hood",
+                Image = "rbxassetid://7733919105",
+                Time = 3
+            })
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function()
+                TeleportService:Teleport(11828384869)
+            end)
+            
+            if success then
+                -- Queue script to get Alchemist Hood after teleport
+                game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                    if state == Enum.TeleportState.InProgress then
+                        local hoodScript = [[
+                            wait(3)
+                            local lp = game.Players.LocalPlayer
+                            local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+                            local target = workspace:FindFirstChild("_ugcQuestObjectEludeHat")
+                            if target and target:FindFirstChild("Handle") and hrp then
+                                if hrp.Anchored then 
+                                    hrp.Anchored = false
+                                    task.wait(0.5) 
+                                end
+                                hrp.CFrame = target.Handle.CFrame
+                            end
+                        ]]
+                        
+                        if syn and syn.queue_on_teleport then
+                            syn.queue_on_teleport(hoodScript)
+                        else
+                            queue_on_teleport(hoodScript)
+                        end
+                    end
+                end)
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport Failed",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7733919105",
+                    Time = 5
+                })
             end
         end
     end
@@ -5337,8 +5535,8 @@ Tab = Window:MakeTab({
 	PremiumOnly = false
 	})
 
-    Tab:AddButton({
-    Name = "Auto Teleport To The Staff Application Place + Get Admin",
+Tab:AddButton({
+    Name = "Teleport To The Staff Application Place (NOT AUTO GET GLOVE)",
     Callback = function()
         local firstPlaceId = 6403373529
         local secondPlaceId = 16034567693
@@ -5350,63 +5548,52 @@ Tab = Window:MakeTab({
                 game.Loaded:Wait()
             end
 
-            -- Credits, message is not squished up cuz it looks bad
-            game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Credits to Nexer1234_AnotherAlt",
-                Text = "Made by @nexer1234 ( youtube & discord )",
-                Icon = "rbxassetid://125704683916878",
-                Duration = 36000
-            })
-
             if getgenv().AutoGetAdminExecuted == true then return end
-
-            if getgenv or getgenv() then
-                getgenv().AutoGetAdminExecuted = true
-            end
-
-            game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Message from Nexer1234_AnotherAlt",
-                Text = "Please re-execute script after teleporting",
-                Icon = "rbxassetid://125704683916878",
-                Duration = 36000,
-                Button1 = "Oh..."
-            })
+            getgenv().AutoGetAdminExecuted = true
 
             if game.PlaceId == secondPlaceId then
-                task.wait(20)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(502, 76, 59)
+                -- Second place: Staff Application
                 task.wait(10)
+                
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(502, 76, 59)
+                end
+                
+                task.wait(10)
+                
+                -- Anti-afk
                 if getconnections then
                     for i,v in next, getconnections(game.Players.LocalPlayer.Idled) do
                         v:Disable() 
                     end
                 else
                     while task.wait(10) do
-                        game:GetService('Players').LocalPlayer.Character.Humanoid.Jump = true
+                        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                            game.Players.LocalPlayer.Character.Humanoid.Jump = true
+                        end
                     end
                 end
                 
             elseif game.PlaceId == firstPlaceId then
+                -- First place: Slap Battles
                 if game.ReplicatedStorage.Assets:FindFirstChild("Retro") then
                     game.ReplicatedStorage.Assets.Retro.Parent = workspace
                 end
-                repeat task.wait() until workspace:FindFirstChild("Retro")
-                wait(3)
+                
+                repeat task.wait(10) until workspace:FindFirstChild("Retro")
+                
+                task.wait(10)
+                
                 for i,v in pairs(workspace.Retro.Map.RetroObbyMap:GetChildren()) do
                     if v.Name == "Model" and v:FindFirstChild("StaffApp") and v.StaffApp:FindFirstChild("Button") and v.StaffApp.Button:FindFirstChild("ClickDetector") then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.StaffApp.Button.CFrame * CFrame.new(0,50,0)
-                        wait(1)
-                        fireclickdetector(v.StaffApp.Button.ClickDetector)
+                        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.StaffApp.Button.CFrame * CFrame.new(0,50,0)
+                            task.wait(10)
+                            fireclickdetector(v.StaffApp.Button.ClickDetector)
+                        end
+                        break
                     end
                 end
-            else
-                game:GetService("StarterGui"):SetCore("SendNotification",{
-                    Title = "Message from Nexer1234_AnotherAlt",
-                    Text = "Wrong game buddy",
-                    Icon = "rbxassetid://125704683916878",
-                    Duration = 36000,
-                    Button1 = "Oh..."
-                })
             end
         end
 
@@ -5420,14 +5607,16 @@ Tab = Window:MakeTab({
                         if not game:IsLoaded() then
                             game.Loaded:Wait()
                         end
-                        task.wait(3)
+                        task.wait(10)
                         
-                        local firstPlaceId = 6403373529
                         local secondPlaceId = 16034567693
                         
                         if game.PlaceId == secondPlaceId then
-                            task.wait(20)
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(502, 76, 59)
+                            -- Auto-execute in second place
+                            task.wait(10)
+                            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(502, 76, 59)
+                            end
                             task.wait(10)
                             if getconnections then
                                 for i,v in next, getconnections(game.Players.LocalPlayer.Idled) do
@@ -5435,27 +5624,14 @@ Tab = Window:MakeTab({
                                 end
                             else
                                 while task.wait(10) do
-                                    game:GetService('Players').LocalPlayer.Character.Humanoid.Jump = true
-                                end
-                            end
-                            
-                        elseif game.PlaceId == firstPlaceId then
-                            if game.ReplicatedStorage.Assets:FindFirstChild("Retro") then
-                                game.ReplicatedStorage.Assets.Retro.Parent = workspace
-                            end
-                            repeat task.wait() until workspace:FindFirstChild("Retro")
-                            wait(3)
-                            for i,v in pairs(workspace.Retro.Map.RetroObbyMap:GetChildren()) do
-                                if v.Name == "Model" and v:FindFirstChild("StaffApp") and v.StaffApp:FindFirstChild("Button") and v.StaffApp.Button:FindFirstChild("ClickDetector") then
-                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.StaffApp.Button.CFrame * CFrame.new(0,50,0)
-                                    wait(1)
-                                    fireclickdetector(v.StaffApp.Button.ClickDetector)
+                                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                                        game.Players.LocalPlayer.Character.Humanoid.Jump = true
+                                    end
                                 end
                             end
                         end
                     ]]
                     
-                    -- Use syn.queue_on_teleport or queue_on_teleport depending on executor
                     if syn and syn.queue_on_teleport then
                         syn.queue_on_teleport(adminScript)
                     else
@@ -5469,12 +5645,8 @@ Tab = Window:MakeTab({
 
         -- Main execution logic
         if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
-            -- We're already in one of the target places, execute Admin script
-            print("Already in target place - executing Admin script")
             executeAdminScript()
         else
-            -- We're not in the target place, teleport to the first place
-            print("Teleporting to first place...")
             local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
@@ -5483,7 +5655,6 @@ Tab = Window:MakeTab({
             end)
             
             if not success then
-                print("Teleport failed:", errorMsg)
                 if connection then
                     connection:Disconnect()
                 end
@@ -8204,13 +8375,13 @@ Tab:AddButton({
 
 -- Poltergeist Button with Auto-Execute
 Tab:AddButton({
-    Name = "Auto Teleport + Get Poltergeist",
+    Name = "Auto Teleport To Zombies Place + Get Poltergeist",
     Callback = function()
-        local targetPlaceId = 7234087065
+        local targetPlaceId = 103505724406848
         local currentPlaceId = game.PlaceId
         
         local function executePoltergeistScript()
-            loadstring(game:HttpGet("https://pastefy.app/poybNIBq/raw"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/MaaZiusz/sb/refs/heads/main/Poltergeist"))()
         end
 
         if currentPlaceId == targetPlaceId then
@@ -8221,7 +8392,7 @@ Tab:AddButton({
                     local poltergeistScript = [[
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        loadstring(game:HttpGet("https://pastefy.app/poybNIBq/raw"))()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/MaaZiusz/sb/refs/heads/main/Poltergeist"))()
                     ]]
                     if syn and syn.queue_on_teleport then 
                         syn.queue_on_teleport(poltergeistScript)
@@ -8254,76 +8425,140 @@ Tab:AddButton({
 
 -- Clock Button
 Tab:AddButton({
-    Name = "Auto Teleport To FNAO Place + Get Clock",
+    Name = "Auto Teleport To FNAO Place (NOT AUTO GETS GLOVE)",
     Callback = function()
-        local targetPlaceId = 7234087065
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 7234087065
+        local thirdPlaceId = 102908326578005
         local currentPlaceId = game.PlaceId
         
         local function executeClockScript()
             if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetClockExecuted then return end
+            getgenv().AutoGetClockExecuted = true
 
-            if game.PlaceId == 102908326578005 then
+            if game.PlaceId == thirdPlaceId then
+                -- Third place: FNAO - Get Clock
+                print("In third place - getting Clock")
                 for i,v in ipairs(workspace:GetDescendants()) do
                     if v.ClassName == "ClickDetector" then fireclickdetector(v) end
                 end
-                wait(2)
+                task.wait(2)
                 for i,v in ipairs(workspace:GetDescendants()) do
                     if v.ClassName == "ClickDetector" then fireclickdetector(v) end
                 end
-                wait(2)
-                while task.wait() do game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(26.34327507019043, 4.055271148681641, -1.8455318212509155) end
-            elseif game.PlaceId == 7234087065 then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249.473419, 157.87326, -458.792145, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247)
+                task.wait(2)
+                while task.wait() do 
+                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(26.34327507019043, 4.055271148681641, -1.8455318212509155) 
+                    end
+                end
+                
+            elseif game.PlaceId == secondPlaceId then
+                -- Second place: Barzil - Teleport to wizard tower
+                print("In second place - going to wizard tower")
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249.473419, 157.87326, -458.792145, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247)
+                end
                 task.wait(3)
                 while task.wait() do
-                    for i,v in pairs(workspace.Buildings:GetChildren()) do
-                        if v.Name == "wizard twoer" and v:FindFirstChild("Cone") then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Cone.CFrame * CFrame.new(0,15,0)
+                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        for i,v in pairs(workspace.Buildings:GetChildren()) do
+                            if v.Name == "wizard twoer" and v:FindFirstChild("Cone") then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Cone.CFrame * CFrame.new(0,15,0)
+                                break
+                            end
                         end
                     end
                 end
-            elseif game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 6403373529 or game.PlaceId == 124596094333302 then
-                while task.wait() do game:GetService("TeleportService"):Teleport(7234087065) end
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place or other Slap Battles places - Teleport to second place
+                print("In first place - teleporting to second place")
+                while task.wait() do 
+                    game:GetService("TeleportService"):Teleport(secondPlaceId) 
+                end
             end
         end
 
-        if currentPlaceId == targetPlaceId or currentPlaceId == 102908326578005 then
-            executeClockScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring for ALL places
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local clockScript = [[
+                        getgenv().AutoGetClockExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        if game.PlaceId == 102908326578005 then
+                        
+                        local secondPlaceId = 7234087065
+                        local thirdPlaceId = 102908326578005
+                        
+                        if game.PlaceId == thirdPlaceId then
+                            -- Auto-execute in third place
+                            print("Auto-executing in third place")
                             for i,v in ipairs(workspace:GetDescendants()) do
                                 if v.ClassName == "ClickDetector" then fireclickdetector(v) end
                             end
-                            wait(2)
+                            task.wait(2)
                             for i,v in ipairs(workspace:GetDescendants()) do
                                 if v.ClassName == "ClickDetector" then fireclickdetector(v) end
                             end
-                            wait(2)
-                            while task.wait() do game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(26.34327507019043, 4.055271148681641, -1.8455318212509155) end
-                        elseif game.PlaceId == 7234087065 then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249.473419, 157.87326, -458.792145, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247)
+                            task.wait(2)
+                            while task.wait() do 
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(26.34327507019043, 4.055271148681641, -1.8455318212509155) 
+                                end
+                            end
+                            
+                        elseif game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            print("Auto-executing in second place")
+                            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249.473419, 157.87326, -458.792145, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247)
+                            end
                             task.wait(3)
                             while task.wait() do
-                                for i,v in pairs(workspace.Buildings:GetChildren()) do
-                                    if v.Name == "wizard twoer" and v:FindFirstChild("Cone") then
-                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Cone.CFrame * CFrame.new(0,15,0)
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    for i,v in pairs(workspace.Buildings:GetChildren()) do
+                                        if v.Name == "wizard twoer" and v:FindFirstChild("Cone") then
+                                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Cone.CFrame * CFrame.new(0,15,0)
+                                            break
+                                        end
                                     end
                                 end
                             end
                         end
                     ]]
-                    if syn and syn.queue_on_teleport then syn.queue_on_teleport(clockScript) else queue_on_teleport(clockScript) end
+                    
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(clockScript) 
+                    else 
+                        queue_on_teleport(clockScript) 
+                    end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId or currentPlaceId == thirdPlaceId then
+            print("Already in target place - executing script")
+            executeClockScript()
+        else
+            print("Not in target place - setting up teleport monitor")
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
-            local success = pcall(function() TeleportService:Teleport(targetPlaceId) end)
-            if not success and connection then connection:Disconnect() end
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                print("Teleport failed:", errorMsg)
+                if connection then connection:Disconnect() end
+            end
         end
     end
 })
@@ -8336,7 +8571,7 @@ Tab:AddButton({
 
 -- Untitled Tag Button
 Tab:AddButton({
-    Name = "Auto Teleport To TOH + Get Untitled Tag Glove",
+    Name = "Auto Teleport To TOH (NOT AUTO GETS GLOVE)",
     Callback = function()
         local targetPlaceId = 7234087065
         local currentPlaceId = game.PlaceId
@@ -8433,7 +8668,7 @@ end
 
 -- Snowroller Button
 Tab:AddButton({
-    Name = "Auto Teleport To A Bad Dream Place + Get Snowroller",
+    Name = "Auto Teleport To A Bad Dream Place (NOT AUTO GETS GLOVE)",
     Callback = function()
         local targetPlaceId = 92516899071319
         local currentPlaceId = game.PlaceId
@@ -8511,13 +8746,17 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To Cheese Place + Get Mouse",
     Callback = function()
-        local targetPlaceId = 97220865182663
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 97220865182663
         local currentPlaceId = game.PlaceId
         
         local function executeMouseScript()
             if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetMouseExecuted then return end
+            getgenv().AutoGetMouseExecuted = true
 
-            if game.PlaceId == 97220865182663 then
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Cheese Place - Kill rats and get Mouse
                 if workspace.Game.Buildings.City:FindFirstChild("City") == nil then
                     game:GetService("ReplicatedStorage").Remotes.PlaceBuilding:FireServer("City", Vector3.new(3.125, 43.4450798034668, -57.1875), 0)
                 end
@@ -8532,7 +8771,9 @@ Tab:AddButton({
                     end
                     game:GetService("ReplicatedStorage").Remotes.UnlockGloveWithOrbs:FireServer()
                 end
-            elseif game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 6403373529 or game.PlaceId == 124596094333302 then
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Get el gato and click Cheese
                 if game.Players.LocalPlayer.Character:FindFirstChild("entered") == nil then
                     if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 11500 then
                         fireclickdetector(workspace.Lobby["el gato"].ClickDetector)
@@ -8546,15 +8787,21 @@ Tab:AddButton({
             end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeMouseScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local mouseScript = [[
+                        getgenv().AutoGetMouseExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        if game.PlaceId == 97220865182663 then
+                        
+                        local secondPlaceId = 97220865182663
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
                             if workspace.Game.Buildings.City:FindFirstChild("City") == nil then
                                 game:GetService("ReplicatedStorage").Remotes.PlaceBuilding:FireServer("City", Vector3.new(3.125, 43.4450798034668, -57.1875), 0)
                             end
@@ -8570,13 +8817,30 @@ Tab:AddButton({
                             end
                         end
                     ]]
-                    if syn and syn.queue_on_teleport then syn.queue_on_teleport(mouseScript) else queue_on_teleport(mouseScript) end
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(mouseScript) 
+                    else 
+                        queue_on_teleport(mouseScript) 
+                    end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeMouseScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
-            local success = pcall(function() TeleportService:Teleport(targetPlaceId) end)
-            if not success and connection then connection:Disconnect() end
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                if connection then connection:Disconnect() end
+            end
         end
     end
 })
@@ -8591,13 +8855,17 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To White Place + Get Hexa",
     Callback = function()
-        local targetPlaceId = 98726100529621
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 98726100529621
         local currentPlaceId = game.PlaceId
         
         local function executeHexaScript()
             if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetHexaExecuted then return end
+            getgenv().AutoGetHexaExecuted = true
 
-            if game.PlaceId == 98726100529621 then
+            if game.PlaceId == secondPlaceId then
+                -- Second place: White Place - Complete obby and get Hexa
                 repeat task.wait(.2) until workspace:FindFirstChild("Part I") and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                 task.wait(5)
                 workspace["Part I"].Obby["end"].CanCollide = false
@@ -8626,18 +8894,39 @@ Tab:AddButton({
                 repeat task.wait(.2) until workspace:FindFirstChild("Finale") and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                 task.wait(5)
                 fireclickdetector(workspace.Finale.Reward.Hitbox:FindFirstChildWhichIsA("ClickDetector"))
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Check for Obby glove and teleport
+                if game.Players.LocalPlayer.leaderstats and game.Players.LocalPlayer.leaderstats.Glove and game.Players.LocalPlayer.leaderstats.Glove.Value == "Obby" then
+                    -- Player has Obby glove equipped, teleport to White Place
+                    game:GetService("TeleportService"):Teleport(secondPlaceId)
+                else
+                    -- Player doesn't have Obby glove equipped
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Obby glove first!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 5
+                    })
+                end
             end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeHexaScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local hexaScript = [[
+                        getgenv().AutoGetHexaExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        if game.PlaceId == 98726100529621 then
+                        
+                        local secondPlaceId = 98726100529621
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
                             repeat task.wait(.2) until workspace:FindFirstChild("Part I") and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                             task.wait(5)
                             workspace["Part I"].Obby["end"].CanCollide = false
@@ -8668,13 +8957,31 @@ Tab:AddButton({
                             fireclickdetector(workspace.Finale.Reward.Hitbox:FindFirstChildWhichIsA("ClickDetector"))
                         end
                     ]]
-                    if syn and syn.queue_on_teleport then syn.queue_on_teleport(hexaScript) else queue_on_teleport(hexaScript) end
+                    
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(hexaScript) 
+                    else 
+                        queue_on_teleport(hexaScript) 
+                    end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeHexaScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
-            local success = pcall(function() TeleportService:Teleport(targetPlaceId) end)
-            if not success and connection then connection:Disconnect() end
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                if connection then connection:Disconnect() end
+            end
         end
     end
 })
@@ -8687,7 +8994,7 @@ Tab:AddButton({
 
 -- Metaverse Button
 Tab:AddButton({
-    Name = "Auto Teleport To CEO Place + Get Metaverse",
+    Name = "Auto Teleport To CEO Place (NOT AUTO GETS GLOVE)",
     Callback = function()
         local targetPlaceId = 7234087065
         local currentPlaceId = game.PlaceId
@@ -8901,7 +9208,8 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To Sword Fight Place + Get Swordfighter",
     Callback = function()
-        local targetPlaceId = 117232463555132
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 117232463555132
         local currentPlaceId = game.PlaceId
         
         local function executeSwordfighterScript()
@@ -8910,62 +9218,110 @@ Tab:AddButton({
             if getgenv().AutoGetSwordfighterExecuted == true then return end
             getgenv().AutoGetSwordfighterExecuted = true
 
-            if game.PlaceId == 117232463555132 then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.NPCs.FinalBoss.FinalBoss.Head.CFrame * CFrame.new(0,10,0)
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Sword Fight Place - Kill boss and get Swordfighter
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.NPCs.FinalBoss.FinalBoss.Head.CFrame * CFrame.new(0,10,0)
+                end
                 task.wait(3)
-                workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").RigType = "R15"
-                workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").Health = 0
+                if workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid") then
+                    workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").RigType = "R15"
+                    workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").Health = 0
+                end
                 repeat task.wait() until game.Players.LocalPlayer.PlayerGui.SkipButton.SkipDialogueButton.Visible == true
                 task.wait()
                 repeat task.wait() until game.Players.LocalPlayer.PlayerGui.SkipButton.SkipDialogueButton.Visible == false
                 while task.wait() do
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.GloveIsland.ClaimGlove.CFrame
-                    fireproximityprompt(workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt"))
+                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.GloveIsland.ClaimGlove.CFrame
+                        if workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt") then
+                            fireproximityprompt(workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt"))
+                        end
+                    end
                 end
-            elseif game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 6403373529 or game.PlaceId == 124596094333302 then
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Prepare and teleport
                 for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
                     if v:IsA("BasePart") and v.CanCollide == true then
                         v.CanCollide = false
                     end
                 end
                 task.wait(.5)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(316,40,196)
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(316,40,196)
+                end
                 task.wait(1)
                 game.ReplicatedStorage.RetroAbility:FireServer("Ban Hammer")
                 task.wait(2)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(310,34,191)
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(310,34,191)
+                end
+                task.wait(2)
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
             end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeSwordfighterScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local swordfighterScript = [[
+                        getgenv().AutoGetSwordfighterExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        if game.PlaceId == 117232463555132 then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.NPCs.FinalBoss.FinalBoss.Head.CFrame * CFrame.new(0,10,0)
+                        
+                        local secondPlaceId = 117232463555132
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.NPCs.FinalBoss.FinalBoss.Head.CFrame * CFrame.new(0,10,0)
+                            end
                             task.wait(3)
-                            workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").RigType = "R15"
-                            workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").Health = 0
+                            if workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid") then
+                                workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").RigType = "R15"
+                                workspace.Map.Components.NPCs.FinalBoss.FinalBoss:FindFirstChildWhichIsA("Humanoid").Health = 0
+                            end
                             repeat task.wait() until game.Players.LocalPlayer.PlayerGui.SkipButton.SkipDialogueButton.Visible == true
                             task.wait()
                             repeat task.wait() until game.Players.LocalPlayer.PlayerGui.SkipButton.SkipDialogueButton.Visible == false
                             while task.wait() do
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.GloveIsland.ClaimGlove.CFrame
-                                fireproximityprompt(workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt"))
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Map.Components.GloveIsland.ClaimGlove.CFrame
+                                    if workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt") then
+                                        fireproximityprompt(workspace.Map.Components.GloveIsland.ClaimGlove:FindFirstChildWhichIsA("ProximityPrompt"))
+                                    end
+                                end
                             end
                         end
                     ]]
-                    if syn and syn.queue_on_teleport then syn.queue_on_teleport(swordfighterScript) else queue_on_teleport(swordfighterScript) end
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(swordfighterScript) 
+                    else 
+                        queue_on_teleport(swordfighterScript) 
+                    end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeSwordfighterScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
-            local success = pcall(function() TeleportService:Teleport(targetPlaceId) end)
-            if not success and connection then connection:Disconnect() end
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                if connection then connection:Disconnect() end
+            end
         end
     end
 })
@@ -9069,22 +9425,17 @@ end
 Tab:AddButton({
     Name = "Auto Teleport To Egg Place + Get Eggler",
     Callback = function()
-        local targetPlaceId = 129665246576996
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 129665246576996
         local currentPlaceId = game.PlaceId
         
         local function executeEgglerScript()
             if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetEgglerExecuted then return end
+            getgenv().AutoGetEgglerExecuted = true
 
-            if game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 6403373529 or game.PlaceId == 124596094333302 then
-                for i,v in pairs(workspace.EasterHuntEggs:GetChildren()) do
-                    if v and v:FindFirstChildWhichIsA("ClickDetector") then
-                        fireclickdetector(v:FindFirstChildWhichIsA("ClickDetector"))
-                    end
-                end
-                repeat task.wait() until workspace:FindFirstChild("EggTeleport")
-                task.wait()
-                fireclickdetector(workspace.EggTeleport.ClickDetector)  
-            elseif game.PlaceId == 129665246576996 then
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Egg Place - Get Eggler
                 while task.wait() do
                     if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
@@ -9101,18 +9452,39 @@ Tab:AddButton({
                         fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
                     end
                 end
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Click eggs and teleport
+                for i,v in pairs(workspace.EasterHuntEggs:GetChildren()) do
+                    if v and v:FindFirstChildWhichIsA("ClickDetector") then
+                        fireclickdetector(v:FindFirstChildWhichIsA("ClickDetector"))
+                    end
+                end
+                repeat task.wait() until workspace:FindFirstChild("EggTeleport")
+                task.wait()
+                if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
+                    fireclickdetector(workspace.EggTeleport.ClickDetector)
+                end
+                task.wait(2)
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
             end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeEgglerScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local egglerScript = [[
+                        getgenv().AutoGetEgglerExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        if game.PlaceId == 129665246576996 then
+                        
+                        local secondPlaceId = 129665246576996
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
                             while task.wait() do
                                 if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
                                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
@@ -9131,13 +9503,30 @@ Tab:AddButton({
                             end
                         end
                     ]]
-                    if syn and syn.queue_on_teleport then syn.queue_on_teleport(egglerScript) else queue_on_teleport(egglerScript) end
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(egglerScript) 
+                    else 
+                        queue_on_teleport(egglerScript) 
+                    end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeEgglerScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
-            local success = pcall(function() TeleportService:Teleport(targetPlaceId) end)
-            if not success and connection then connection:Disconnect() end
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                if connection then connection:Disconnect() end
+            end
         end
     end
 })
@@ -9303,23 +9692,53 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To Obby Place + Get Suction",
     Callback = function()
-        local targetPlaceId = 89837553336708
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 89837553336708
         local currentPlaceId = game.PlaceId
         
         local function executeSuctionScript()
-            loadstring(game:HttpGet('https://pastefy.app/faY5eqRD/raw'))()
+            if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetSuctionExecuted then return end
+            getgenv().AutoGetSuctionExecuted = true
+
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Obby Place - Load the suction script
+                loadstring(game:HttpGet('https://pastefy.app/faY5eqRD/raw'))()
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlayId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Click plungers and teleport
+                if workspace:FindFirstChild("BountyHunterRoom") and workspace.BountyHunterRoom:FindFirstChild("PlungerMain") and workspace.BountyHunterRoom.PlungerMain:FindFirstChild("ClickDetector") then
+                    fireclickdetector(workspace.BountyHunterRoom.PlungerMain.ClickDetector)
+                end
+                
+                if workspace:FindFirstChild("plungers") and workspace.plungers:FindFirstChild("ToiletPlunger") and workspace.plungers.ToiletPlunger:FindFirstChild("ClickDetector") then
+                    fireclickdetector(workspace.plungers.ToiletPlunger.ClickDetector)
+                end
+                
+                task.wait(2)
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
+            end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeSuctionScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local suctionScript = [[
+                        getgenv().AutoGetSuctionExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        loadstring(game:HttpGet('https://pastefy.app/faY5eqRD/raw'))()
+                        
+                        local secondPlaceId = 89837553336708
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            loadstring(game:HttpGet('https://pastefy.app/faY5eqRD/raw'))()
+                        end
                     ]]
+                    
                     if syn and syn.queue_on_teleport then 
                         syn.queue_on_teleport(suctionScript)
                     else
@@ -9327,14 +9746,21 @@ Tab:AddButton({
                     end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeSuctionScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
             local success, errorMsg = pcall(function()
-                TeleportService:Teleport(targetPlaceId)
+                TeleportService:Teleport(firstPlaceId)
             end)
             
             if not success then
-                print("Teleport failed:", errorMsg)
                 if connection then
                     connection:Disconnect()
                 end
@@ -9432,32 +9858,92 @@ Tab:AddButton({
 		end)
 		code = code .. (success3 and tostring(mazeNum) or "?")
 
-		-- Path 4: DialogChoice ResponseDialog
+		-- Path 4: DialogChoice ResponseDialog - FIXED VERSION
 		local success4, responseNum = pcall(function()
-			local dialogChoices = workspace.Rig.Head.Dialog:GetChildren()
-			for _, choice in ipairs(dialogChoices) do
-				if choice:IsA("DialogChoice") then
-					local response = choice.ResponseDialog
-					local found = string.match(response, "%d+")
-					if found then
-						return tonumber(found)
+			-- Try multiple possible locations for the Dialog
+			local possiblePaths = {
+				workspace:FindFirstChild("Rig"),
+				workspace:FindFirstChild("Debug Room"),
+				workspace:FindFirstChild("Map")
+			}
+			
+			for _, location in ipairs(possiblePaths) do
+				if location then
+					-- Search for Dialog in this location
+					local dialog = location:FindFirstChild("Dialog")
+					if not dialog then
+						-- Search for Dialog in descendants
+						dialog = location:FindFirstChildWhichIsA("Dialog")
+					end
+					
+					if dialog then
+						-- Get DialogChoices
+						local dialogChoices = dialog:GetChildren()
+						for _, choice in ipairs(dialogChoices) do
+							if choice:IsA("DialogChoice") then
+								local response = choice.ResponseDialog
+								if response then
+									-- Look for any number in the response
+									local found = string.match(response, "%d+")
+									if found then
+										return tonumber(found)
+									end
+								end
+							end
+						end
 					end
 				end
 			end
 			return 0
 		end)
+
+		-- If Path 4 failed, try alternative method
+		if not success4 or responseNum == 0 then
+			local success5, altResponseNum = pcall(function()
+				-- Alternative: Look for any Dialog in the entire workspace
+				for _, dialog in ipairs(workspace:GetDescendants()) do
+					if dialog:IsA("Dialog") then
+						for _, choice in ipairs(dialog:GetChildren()) do
+							if choice:IsA("DialogChoice") then
+								local response = choice.ResponseDialog
+								if response then
+									local found = string.match(response, "%d+")
+									if found then
+										return tonumber(found)
+									end
+								end
+							end
+						end
+					end
+				end
+				return 0
+			end)
+			
+			if success5 and altResponseNum ~= 0 then
+				responseNum = altResponseNum
+				success4 = true
+			end
+		end
+
 		code = code .. (success4 and tostring(responseNum) or "?")
 
 		-- Store code globally
 		debugCode = code
 
-		-- Show notification
+		-- Show notification with debug info
 		OrionLib:MakeNotification({
 			Name = "Code Checker",
 			Content = "The Debug Glove Code is: " .. code,
 			Image = "rbxassetid://7743878857",
 			Time = 5
 		})
+		
+		-- Print debug info to console
+		print("Debug Code Found: " .. code)
+		print("Path 1 (Ducks): " .. (success1 and tostring(duckCount) or "FAILED"))
+		print("Path 2 (Admin): " .. (success2 and tostring(adminNum) or "FAILED"))
+		print("Path 3 (Maze): " .. (success3 and tostring(mazeNum) or "FAILED"))
+		print("Path 4 (Dialog): " .. (success4 and tostring(responseNum) or "FAILED"))
 	end
 })
 
@@ -9497,6 +9983,13 @@ Tab:AddButton({
 				fireclickdetector(enterClick)
 			end
 		end
+		
+		OrionLib:MakeNotification({
+			Name = "Success",
+			Content = "Code entered: " .. debugCode,
+			Image = "rbxassetid://7743878857",
+			Time = 4
+		})
 	end
 })
 
@@ -9510,23 +10003,44 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To Plate Place + Get Plate",
     Callback = function()
-        local targetPlaceId = 106620300132058
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 106620300132058
         local currentPlaceId = game.PlaceId
         
         local function executePlateScript()
-            loadstring(game:HttpGet('https://pastefy.app/IIqtc11c/raw'))()
+            if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetPlateExecuted then return end
+            getgenv().AutoGetPlateExecuted = true
+
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Plate Place - Load the plate script
+                loadstring(game:HttpGet("https://pastefy.app/XOIY0KJN/raw"))()
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Teleport to Plate place
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
+            end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executePlateScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local plateScript = [[
+                        getgenv().AutoGetPlateExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        loadstring(game:HttpGet('https://pastefy.app/IIqtc11c/raw'))()
+                        
+                        local secondPlaceId = 106620300132058
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            loadstring(game:HttpGet("https://pastefy.app/XOIY0KJN/raw"))()
+                        end
                     ]]
+                    
                     if syn and syn.queue_on_teleport then 
                         syn.queue_on_teleport(plateScript)
                     else
@@ -9534,14 +10048,21 @@ Tab:AddButton({
                     end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executePlateScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
             local success, errorMsg = pcall(function()
-                TeleportService:Teleport(targetPlaceId)
+                TeleportService:Teleport(firstPlaceId)
             end)
             
             if not success then
-                print("Teleport failed:", errorMsg)
                 if connection then
                     connection:Disconnect()
                 end
@@ -9583,23 +10104,44 @@ end
 Tab:AddButton({
     Name = "Auto Teleport To Pim Corn Place + Get Harvester",
     Callback = function()
-        local targetPlaceId = 92483185275059
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 92483185275059
         local currentPlaceId = game.PlaceId
         
         local function executeHarvesterScript()
-            loadstring(game:HttpGet("https://pastefy.app/XOIY0KJN/raw"))()
+            if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetHarvesterExecuted then return end
+            getgenv().AutoGetHarvesterExecuted = true
+
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Pim Corn Place - Load the harvester script
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/main/AutoHarvester", true))()
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Teleport to Pim Corn place
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
+            end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeHarvesterScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local harvesterScript = [[
+                        getgenv().AutoGetHarvesterExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        loadstring(game:HttpGet("https://pastefy.app/XOIY0KJN/raw"))()
+                        
+                        local secondPlaceId = 92483185275059
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/main/AutoHarvester", true))()
+                        end
                     ]]
+                    
                     if syn and syn.queue_on_teleport then 
                         syn.queue_on_teleport(harvesterScript)
                     else
@@ -9607,14 +10149,21 @@ Tab:AddButton({
                     end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeHarvesterScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
             local success, errorMsg = pcall(function()
-                TeleportService:Teleport(targetPlaceId)
+                TeleportService:Teleport(firstPlaceId)
             end)
             
             if not success then
-                print("Teleport failed:", errorMsg)
                 if connection then
                     connection:Disconnect()
                 end
@@ -9633,23 +10182,44 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Auto Teleport To barzil Place + Get Riftshot",
     Callback = function()
-        local targetPlaceId = 7234087065
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 7234087065
         local currentPlaceId = game.PlaceId
         
         local function executeRiftshotScript()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/main/AutoPoltergeist", true))()
+            if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetRiftshotExecuted then return end
+            getgenv().AutoGetRiftshotExecuted = true
+
+            if game.PlaceId == secondPlaceId then
+                -- Second place: barzil Place - Load the riftshot script
+                loadstring(game:HttpGet("https://pastefy.app/poybNIBq/raw"))()
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Teleport to barzil place
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
+            end
         end
 
-        if currentPlaceId == targetPlaceId then
-            executeRiftshotScript()
-        else
-            local connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                 if state == Enum.TeleportState.InProgress then
                     local riftshotScript = [[
+                        getgenv().AutoGetRiftshotExecuted = false
+                        
                         if not game:IsLoaded() then game.Loaded:Wait() end
                         task.wait(3)
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/main/AutoPoltergeist", true))()
+                        
+                        local secondPlaceId = 7234087065
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            loadstring(game:HttpGet("https://pastefy.app/poybNIBq/raw"))()
+                        end
                     ]]
+                    
                     if syn and syn.queue_on_teleport then 
                         syn.queue_on_teleport(riftshotScript)
                     else
@@ -9657,14 +10227,21 @@ Tab:AddButton({
                     end
                 end
             end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeRiftshotScript()
+        else
+            local connection = setupTeleportMonitor()
             
             local TeleportService = game:GetService("TeleportService")
             local success, errorMsg = pcall(function()
-                TeleportService:Teleport(targetPlaceId)
+                TeleportService:Teleport(firstPlaceId)
             end)
             
             if not success then
-                print("Teleport failed:", errorMsg)
                 if connection then
                     connection:Disconnect()
                 end
@@ -9846,460 +10423,6 @@ player.CharacterAdded:Connect(function(character)
         end
     end
 end)
-
-Tab:AddTextbox({
-    Name = "Equip Slap Glove",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(Value)
-        local gloves = {
-            Default = workspace.Lobby["Default"],
-            Dual = workspace.Lobby["Dual"],
-            Diamond = workspace.Lobby["Diamond"],
-            ZZZZZZZ = workspace.Lobby["ZZZZZZZ"],
-            Extended = workspace.Lobby["Extended"],
-            Brick = workspace.Lobby["Brick"],
-            Snow = workspace.Lobby["Snow"],
-            Pull = workspace.Lobby["Pull"],
-            Flash = workspace.Lobby["Flash"],
-            Spring = workspace.Lobby["Spring"],
-            Swapper = workspace.Lobby["Swapper"],
-            Screwdriver = workspace.Lobby["Screwdriver"],
-            Bull = workspace.Lobby["Bull"],
-            Dice = workspace.Lobby["Dice"],
-            Ghost = workspace.Lobby["Ghost"],
-            Thanos = workspace.Lobby["Thanos"],
-            Stun = workspace.Lobby["Stun"],
-            ["L.O.L.B.O.M.B"] = workspace.Lobby["L.O.L.B.O.M.B"],
-            ["Za Hando"] = workspace.Lobby["Za Hando"],
-            Fort = workspace.Lobby["Fort"],
-            Magnet = workspace.Lobby["Magnet"],
-            Pusher = workspace.Lobby["Pusher"],
-            Anchor = workspace.Lobby["Anchor"],
-            Space = workspace.Lobby["Space"],
-            Boomerang = workspace.Lobby["Boomerang"],
-            Speedrun = workspace.Lobby["Speedrun"],
-            Mail = workspace.Lobby["Mail"],
-            ["T H I C K"] = workspace.Lobby["T H I C K"],
-            Golden = workspace.Lobby["Golden"],
-            Squid = workspace.Lobby["Squid"],
-            MR = workspace.Lobby["MR"],
-            Hive = workspace.Lobby["Hive"],
-            Reaper = workspace.Lobby["Reaper"],
-            Baby = workspace.Lobby["Baby"],
-            Replica = workspace.Lobby["Replica"],
-            Mace = workspace.Lobby["Mace"],
-            Defense = workspace.Lobby["Defense"],
-            Killstreak = workspace.Lobby["Killstreak"],
-            Reverse = workspace.Lobby["Reverse"],
-            Shukuchi = workspace.Lobby["Shukuchi"],
-            Duelist = workspace.Lobby["Duelist"],
-            woah = workspace.Lobby["woah"],
-            Ice = workspace.Lobby["Ice"],
-            Gummy = workspace.Lobby["Gummy"],
-            Adios = workspace.Lobby["Adios"],
-            Blocked = workspace.Lobby["Blocked"],
-            Divert = workspace.Lobby["Divert"],
-            Engineer = workspace.Lobby["Engineer"],
-            Rocky = workspace.Lobby["Rocky"],
-            Coil = workspace.Lobby["Coil"],
-            Conveyor = workspace.Lobby["Conveyor"],
-            Balloony = workspace.Lobby["Balloony"],
-            Phantom = workspace.Lobby["Phantom"],
-            ["el gato"] = workspace.Lobby["el gato"],
-            Wormhole = workspace.Lobby["Wormhole"],
-            Shackle = workspace.Lobby["Shackle"],
-            Flick = workspace.Lobby["Flick"],
-            STOP = workspace.Lobby["STOP"],
-            Equalizer = workspace.Lobby["Equalizer"],
-            Track = workspace.Lobby["Track"],
-            Stalker = workspace.Lobby["Stalker"],
-            Retribution = workspace.Lobby["Retribution"],
-            Prop = workspace.Lobby["Prop"],
-            Shield = workspace.Lobby["Shield"],
-            Clover = workspace.Lobby["Clover"],
-            Booster = workspace.Lobby["Booster"],
-            Chainsaw = workspace.Lobby["Chainsaw"],
-            ["Ping Pong"] = workspace.Lobby["Ping Pong"],
-            Trifecta = workspace.Lobby["Trifecta"],
-            Baller = workspace.Lobby["Baller"],
-            Architect = workspace.Lobby["Architect"],
-            ["Home Run"] = workspace.Lobby["Home Run"],
-            Friction = workspace.Lobby["Friction"],
-            Whirlwind = workspace.Lobby["Whirlwind"],
-            Disc = workspace.Lobby["Disc"],
-            Slicer = workspace.Lobby["Slicer"],
-            Excavator = workspace.Lobby["Excavator"],
-            Nightmare = workspace.Lobby["Nightmare"],
-            Pylon = workspace.Lobby["Pylon"],
-            Thor = workspace.Lobby["Thor"],
-            Pocket = workspace.Lobby["Pocket"],
-            Grapple = workspace.Lobby["Grapple"],
-            Cloud = workspace.Lobby["Cloud"],
-            Gravity = workspace.Lobby["Gravity"],
-            Parry = workspace.Lobby["Parry"],
-            Jebaited = workspace.Lobby["Jebaited"],
-            Meteor = workspace.Lobby["Meteor"],
-            Oven = workspace.Lobby["Oven"],
-            ["Guardian Angel"] = workspace.Lobby["Guardian Angel"],
-            Sun = workspace.Lobby["Sun"],
-            Ferryman = workspace.Lobby["Ferryman"],
-            Blackhole = workspace.Lobby["Blackhole"],
-            Walrus = workspace.Lobby["Walrus"],
-            Blink = workspace.Lobby["Blink"],
-            Tableflip = workspace.Lobby["Tableflip"],
-            Slapstick = workspace.Lobby["Slapstick"],
-            Beatdown = workspace.Lobby["Beatdown"],
-            Chicken = workspace.Lobby["Chicken"],
-            BONK = workspace.Lobby["BONK"],
-            Grenadier = workspace.Lobby["Grenadier"],
-            Sbeve = workspace.Lobby["Sbeve"],
-            Golem = workspace.Lobby["Golem"],
-            Doomsday = workspace.Lobby["Doomsday"],
-            Grab = workspace.Lobby["Grab"],
-            UFO = workspace.Lobby["UFO"],
-            Demolition = workspace.Lobby["Demolition"],
-            Beachball = workspace.Lobby["Beachball"],
-            Shotgun = workspace.Lobby["Shotgun"],
-            ["64"] = workspace.Lobby["64"],
-            Roguelike = workspace.Lobby["Roguelike"],
-            Barrel = workspace.Lobby["Barrel"],
-            Lawnmower = workspace.Lobby["Lawnmower"],
-            Virus = workspace.Lobby["Virus"],
-            Smiler = workspace.Lobby["Smiler"],
-            Infinity = workspace.Lobby["Infinity"],
-            Aggro = workspace.Lobby["Aggro"],
-            Soul = workspace.Lobby["Soul"],
-            ["R/C"] = workspace.Lobby["R/C"],
-            Mushroom = workspace.Lobby["Mushroom"],
-            Scuba = workspace.Lobby["Scuba"],
-            Pyromania = workspace.Lobby["Pyromania"],
-            ["God's Hand"] = workspace.Lobby["God's Hand"],
-            ["The Flex"] = workspace.Lobby["The Flex"]
-        }
-
-        local glove = gloves[Value]
-
-        if glove and glove.ClickDetector then
-            fireclickdetector(glove.ClickDetector)
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Type Name Correct/Incorrect Name",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Equip Badge Glove",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(Value)
-        if Value == "MEGAROCK" then
-            fireclickdetector(workspace.Lobby["MEGAROCK"].ClickDetector)
-        elseif Value == "Plague" then
-            fireclickdetector(workspace.Lobby["Plague"].ClickDetector)
-        elseif Value == "Hallow Jack" then
-            fireclickdetector(workspace.Lobby["Hallow Jack"].ClickDetector)
-        elseif Value == "[REDACTED]" then
-            fireclickdetector(workspace.Lobby["[REDACTED]"].ClickDetector)
-        elseif Value == "bus" then
-            fireclickdetector(workspace.Lobby["bus"].ClickDetector)
-        elseif Value == "Mitten" then
-            fireclickdetector(workspace.Lobby["Mitten"].ClickDetector)
-        elseif Value == "Phase" then
-            fireclickdetector(workspace.Lobby["Phase"].ClickDetector)
-        elseif Value == "Warp" then
-            fireclickdetector(workspace.Lobby["Warp"].ClickDetector)
-        elseif Value == "Bomb" then
-            fireclickdetector(workspace.Lobby["Bomb"].ClickDetector)
-        elseif Value == "Bubble" then
-            fireclickdetector(workspace.Lobby["Bubble"].ClickDetector)
-        elseif Value == "Jet" then
-            fireclickdetector(workspace.Lobby["Jet"].ClickDetector)
-        elseif Value == "Shard" then
-            fireclickdetector(workspace.Lobby["Shard"].ClickDetector)
-        elseif Value == "CULT" then
-            fireclickdetector(workspace.Lobby["CULT"].ClickDetector)
-        elseif Value == "bob" then
-            fireclickdetector(workspace.Lobby["bob"].ClickDetector)
-        elseif Value == "buddies" then
-            fireclickdetector(workspace.Lobby["buddies"].ClickDetector)
-        elseif Value == "Moon" then
-            fireclickdetector(workspace.Lobby["Moon"].ClickDetector)
-        elseif Value == "Jupiter" then
-            fireclickdetector(workspace.Lobby["Jupiter"].ClickDetector)
-        elseif Value == "Spy" then
-            fireclickdetector(workspace.Lobby["Spy"].ClickDetector)
-        elseif Value == "Detonator" then
-            fireclickdetector(workspace.Lobby["Detonator"].ClickDetector)
-        elseif Value == "Rage" then
-            fireclickdetector(workspace.Lobby["Rage"].ClickDetector)
-        elseif Value == "Trap" then
-            fireclickdetector(workspace.Lobby["Trap"].ClickDetector)
-        elseif Value == "Orbit" then
-            fireclickdetector(workspace.Lobby["Orbit"].ClickDetector)
-        elseif Value == "Hybrid" then
-            fireclickdetector(workspace.Lobby["Hybrid"].ClickDetector)
-        elseif Value == "Slapple" then
-            fireclickdetector(workspace.Lobby["Slapple"].ClickDetector)
-        elseif Value == "Disarm" then
-            fireclickdetector(workspace.Lobby["Disarm"].ClickDetector)
-        elseif Value == "Dominance" then
-            fireclickdetector(workspace.Lobby["Dominance"].ClickDetector)
-        elseif Value == "Link" then
-            fireclickdetector(workspace.Lobby["Link"].ClickDetector)
-        elseif Value == "Chain" then
-            fireclickdetector(workspace.Lobby["Chain"].ClickDetector)
-        elseif Value == "Rattlebones" then
-            fireclickdetector(workspace.Lobby["Rattlebones"].ClickDetector)
-        elseif Value == "Charge" then
-            fireclickdetector(workspace.Lobby["Charge"].ClickDetector)
-        elseif Value == "Tycoon" then
-            fireclickdetector(workspace.Lobby["Tycoon"].ClickDetector)
-        elseif Value == "Confusion" then
-            fireclickdetector(workspace.Lobby["Confusion"].ClickDetector)
-        elseif Value == "Glitch" then
-            fireclickdetector(workspace.Lobby["Glitch"].ClickDetector)
-        elseif Value == "Snowball" then
-            fireclickdetector(workspace.Lobby["Snowball"].ClickDetector)
-        elseif Value == "Elude" then
-            fireclickdetector(workspace.Lobby["Elude"].ClickDetector)
-        elseif Value == "RNG" then
-            fireclickdetector(workspace.Lobby["RNG"].ClickDetector)
-        elseif Value == "fish" then
-            fireclickdetector(workspace.Lobby["fish"].ClickDetector)
-        elseif Value == "🗿" then
-            fireclickdetector(workspace.Lobby["🗿"].ClickDetector)
-        elseif Value == "Obby" then
-            fireclickdetector(workspace.Lobby["Obby"].ClickDetector)
-        elseif Value == "Voodoo" then
-            fireclickdetector(workspace.Lobby["Voodoo"].ClickDetector)
-        elseif Value == "Goofy" then
-            fireclickdetector(workspace.Lobby["Goofy"].ClickDetector)
-        elseif Value == "Leash" then
-            fireclickdetector(workspace.Lobby["Leash"].ClickDetector)
-        elseif Value == "Flamarang" then
-            fireclickdetector(workspace.Lobby["Flamarang"].ClickDetector)
-        elseif Value == "Kinetic" then
-            fireclickdetector(workspace.Lobby["Kinetic"].ClickDetector)
-        elseif Value == "Berserk" then
-            fireclickdetector(workspace.Lobby["Berserk"].ClickDetector)
-        elseif Value == "Sparky" then
-            fireclickdetector(workspace.Lobby["Sparky"].ClickDetector)
-        elseif Value == "Boogie" then
-            fireclickdetector(workspace.Lobby["Boogie"].ClickDetector)
-        elseif Value == "Recall" then
-            fireclickdetector(workspace.Lobby["Recall"].ClickDetector)
-        elseif Value == "Quake" then
-            fireclickdetector(workspace.Lobby["Quake"].ClickDetector)
-        elseif Value == "Psycho" then
-            fireclickdetector(workspace.Lobby["Psycho"].ClickDetector)
-        elseif Value == "Kraken" then
-            fireclickdetector(workspace.Lobby["Kraken"].ClickDetector)
-        elseif Value == "Counter" then
-            fireclickdetector(workspace.Lobby["Counter"].ClickDetector)
-        elseif Value == "Hammer" then
-            fireclickdetector(workspace.Lobby["Hammer"].ClickDetector)
-        elseif Value == "rob" then
-            fireclickdetector(workspace.Lobby["rob"].ClickDetector)
-        elseif Value == "Rhythm" then
-            fireclickdetector(workspace.Lobby["Rhythm"].ClickDetector)
-        elseif Value == "Rojo" then
-            fireclickdetector(workspace.Lobby["Rojo"].ClickDetector)
-        elseif Value == "Hitman" then
-            fireclickdetector(workspace.Lobby["Hitman"].ClickDetector)
-        elseif Value == "Retro" then
-            fireclickdetector(workspace.Lobby["Retro"].ClickDetector)
-        elseif Value == "Null" then
-            fireclickdetector(workspace.Lobby["Null"].ClickDetector)
-        elseif Value == "Lure" then
-            fireclickdetector(workspace.Lobby["Lure"].ClickDetector)
-        elseif Value == "Tinkerer" then
-            fireclickdetector(workspace.Lobby["Tinkerer"].ClickDetector)
-        elseif Value == "Necromancer" then
-            fireclickdetector(workspace.Lobby["Necromancer"].ClickDetector)
-        elseif Value == "Alchemist" then
-            fireclickdetector(workspace.Lobby["Alchemist"].ClickDetector)
-        elseif Value == "Druid" then
-            fireclickdetector(workspace.Lobby["Druid"].ClickDetector)
-        elseif Value == "Jester" then
-            fireclickdetector(workspace.Lobby["Jester"].ClickDetector)
-        elseif Value == "Scythe" then
-            fireclickdetector(workspace.Lobby["Scythe"].ClickDetector)
-        elseif Value == "Santa" then
-            fireclickdetector(workspace.Lobby["Santa"].ClickDetector)
-        elseif Value == "Iceskate" then
-            fireclickdetector(workspace.Lobby["Iceskate"].ClickDetector)
-        elseif Value == "Blasphemy" then
-            fireclickdetector(workspace.Lobby["Blasphemy"].ClickDetector)
-        elseif Value == "Pan" then
-            fireclickdetector(workspace.Lobby["Pan"].ClickDetector)
-        elseif Value == "Admin" then
-            fireclickdetector(workspace.Lobby["Admin"].ClickDetector)
-        elseif Value == "Joust" then
-            fireclickdetector(workspace.Lobby["Joust"].ClickDetector)
-        elseif Value == "Firework" then
-            fireclickdetector(workspace.Lobby["Firework"].ClickDetector)
-        elseif Value == "Run" then
-            fireclickdetector(workspace.Lobby["Run"].ClickDetector)
-        elseif Value == "Glovel" then
-            fireclickdetector(workspace.Lobby["Glovel"].ClickDetector)
-        elseif Value == "Divebomb" then
-            fireclickdetector(workspace.Lobby["Divebomb"].ClickDetector)
-        elseif Value == "Lamp" then
-            fireclickdetector(workspace.Lobby["Lamp"].ClickDetector)
-        elseif Value == "Knockoff" then
-            fireclickdetector(workspace.Lobby["Knockoff"].ClickDetector)
-        elseif Value == "Frostbite" then
-            fireclickdetector(workspace.Lobby["Frostbite"].ClickDetector)
-        elseif Value == "Plank" then
-            fireclickdetector(workspace.Lobby["Plank"].ClickDetector)
-        elseif Value == "Spoonful" then
-            fireclickdetector(workspace.Lobby["Spoonful"].ClickDetector)
-        elseif Value == "the schlob" then
-            fireclickdetector(workspace.Lobby["the schlob"].ClickDetector)
-        elseif Value == "Siphon" then
-            fireclickdetector(workspace.Lobby["Siphon"].ClickDetector)
-        elseif Value == "Wrench" then
-            fireclickdetector(workspace.Lobby["Wrench"].ClickDetector)
-        elseif Value == "Hunter" then
-            fireclickdetector(workspace.Lobby["Hunter"].ClickDetector)
-        elseif Value == "Relude" then
-            fireclickdetector(workspace.Lobby["Relude"].ClickDetector)
-        elseif Value == "Avatar" then
-            fireclickdetector(workspace.Lobby["Avatar"].ClickDetector)
-        elseif Value == "Water" then
-            fireclickdetector(workspace.Lobby["Water"].ClickDetector)
-        elseif Value == "Fan" then
-            fireclickdetector(workspace.Lobby["Fan"].ClickDetector)
-        elseif Value == "Boxer" then
-            fireclickdetector(workspace.Lobby["Boxer"].ClickDetector)
-        elseif Value == "MATERIALIZE" then
-            fireclickdetector(workspace.Lobby["MATERIALIZE"].ClickDetector)
-        elseif Value == "Bind" then
-            fireclickdetector(workspace.Lobby["Bind"].ClickDetector)
-        elseif Value == "Poltergeist" then
-            fireclickdetector(workspace.Lobby["Poltergeist"].ClickDetector)
-        elseif Value == "Clock" then
-            fireclickdetector(workspace.Lobby["Clock"].ClickDetector)
-        elseif Value == "Untitled Tag Glove" then
-            fireclickdetector(workspace.Lobby["Untitled Tag Glove"].ClickDetector)
-        elseif Value == "Pillow" then
-            fireclickdetector(workspace.Lobby["Pillow"].ClickDetector)
-        elseif Value == "Angler" then
-            fireclickdetector(workspace.Lobby["Angler"].ClickDetector)
-        elseif Value == "Jerry" then
-            fireclickdetector(workspace.Lobby["Jerry"].ClickDetector)
-        elseif Value == "Snowroller" then
-            fireclickdetector(workspace.Lobby["Snowroller"].ClickDetector)
-        elseif Value == "Draw4" then
-            fireclickdetector(workspace.Lobby["Draw4"].ClickDetector)
-        elseif Value == "Mouse" then
-            fireclickdetector(workspace.Lobby["Mouse"].ClickDetector)
-        elseif Value == "Swordfighter" then
-            fireclickdetector(workspace.Lobby["Swordfighter"].ClickDetector)
-        elseif Value == "Tank" then
-            fireclickdetector(workspace.Lobby["Tank"].ClickDetector)
-        elseif Value == "Eggler" then
-            fireclickdetector(workspace.Lobby["Eggler"].ClickDetector)
-        elseif Value == "Slender" then
-            fireclickdetector(workspace.Lobby["Slender"].ClickDetector)
-        elseif Value == "Swashbuckler" then
-            fireclickdetector(workspace.Lobby["Swashbuckler"].ClickDetector)
-        elseif Value == "Silly" then
-            fireclickdetector(workspace.Lobby["Silly"].ClickDetector)
-        elseif Value == "Slasher" then
-            fireclickdetector(workspace.Lobby["Slasher"].ClickDetector)
-        elseif Value == "Car Keys" then
-            fireclickdetector(workspace.Lobby["Car Keys"].ClickDetector)
-        elseif Value == "Suction" then
-            fireclickdetector(workspace.Lobby["Suction"].ClickDetector)
-        elseif Value == "Reflect" then
-            fireclickdetector(workspace.Lobby["Reflect"].ClickDetector)
-        elseif Value == "Dave" then
-            fireclickdetector(workspace.Lobby["Dave"].ClickDetector)
-        elseif Value == "mortis" then
-            fireclickdetector(workspace.Lobby["mortis"].ClickDetector)
-        elseif Value == "Bounty" then
-            fireclickdetector(workspace.Lobby["Bounty"].ClickDetector)
-        elseif Value == "Debug" then
-            fireclickdetector(workspace.Lobby["Debug"].ClickDetector)
-        elseif Value == "Paint" then
-            fireclickdetector(workspace.Lobby["Paint"].ClickDetector)
-        elseif Value == "Plate" then
-            fireclickdetector(workspace.Lobby["Plate"].ClickDetector)
-        elseif Value == "Lag" then
-            fireclickdetector(workspace.Lobby["Lag"].ClickDetector)
-        elseif Value == "Harvester" then
-            fireclickdetector(workspace.Lobby["Harvester"].ClickDetector)
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Type Name Correct/Incorrect Name",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Equip P2W Glove",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(Value)
-        if Value == "OVERKILL" then
-            fireclickdetector(workspace.Lobby["OVERKILL"].ClickDetector)
-        elseif Value == "Spectator" then
-            fireclickdetector(workspace.Lobby["Spectator"].ClickDetector)
-        elseif Value == "CUSTOM" then
-            fireclickdetector(workspace.Lobby["CUSTOM"].ClickDetector)
-        elseif Value == "Ultra Instinct" then
-            fireclickdetector(workspace.Lobby["Ultra Instinct"].ClickDetector)
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Type Name Correct/Incorrect Name",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddTextbox({
-    Name = "Equip Other Glove",
-    Default = "",
-    TextDisappear = true,
-    Callback = function(Value)
-        if Value == "spin" then
-            fireclickdetector(workspace.Lobby["spin"].ClickDetector)
-        elseif Value == "Stick" then
-            fireclickdetector(workspace.Lobby["Stick"].ClickDetector)
-        elseif Value == "potato" then
-            fireclickdetector(workspace.Lobby["potato"].ClickDetector)
-        elseif Value == "Error" then
-            fireclickdetector(workspace.Lobby["Error"].ClickDetector)
-        elseif Value == "killerfish" then
-            fireclickdetector(workspace.FishArea.fish.ClickDetector)
-        elseif Value == "Titan" then
-            fireclickdetector(workspace.Lobby["Titan"].ClickDetector)
-        elseif Value == "Acrobat" then
-            fireclickdetector(workspace.Lobby["Acrobat"].ClickDetector)
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Type Name Correct/Incorrect Name",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
 
 Section = Tab:AddSection({
     Name = "Slap Aura (Supports Only GeneralHits For Now)"
