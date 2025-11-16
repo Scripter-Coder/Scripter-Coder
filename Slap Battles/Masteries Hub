@@ -1,0 +1,2792 @@
+--Library
+local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+
+--Startup Script Notification
+OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 then
+
+local Window = OrionLib:MakeWindow({Name = "Badges Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Badges Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+Tab = Window:MakeTab({
+    Name = "Welcome",
+    Icon = "rbxassetid://7734059095",
+    PremiumOnly = false
+})
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
+Section = Tab:AddSection({
+    Name = "Before u will start using mine script would u like to bypass anticheat?"
+})
+
+Section = Tab:AddSection({
+    Name = "NOTE: It supports only high/good executors like Solara/Xeno doesnt support"
+})
+
+Tab:AddButton({
+	Name = "Bypass All Anticheat",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+task.wait(1.5)
+OrionLib:MakeNotification({Name = "Success",Content = "Bypassed All Anticheat",Image = "rbxassetid://7733715400",Time = 3})
+end
+})
+
+Section = Tab:AddSection({
+    Name = "Give FE/Visual Free Mastery"
+})
+
+local function addMasteryButton(name)
+    Tab:AddButton({
+        Name = name,
+        Callback = function()
+            local mod = require(game.ReplicatedFirst.Dependencies.GloveMasteryClient)
+            hookfunction(mod.IsMasteredVersionEnabled, function(self, g)
+                return g == name or old(self, g)
+            end)
+        end
+    })
+end
+
+local masteryNames = {
+    "Spin", "Stick", "Brick", "Flash", "Fort", "Space", "Hive", "Killstreak", "Engineer",
+    "Wormhole", "Cherry", "Booster", "Cloud", "[REDACTED]", "bus", "Phase", "Bomb", "Shard", "Moon", "Chain", "Tycoon",
+    "🗿", "Obby", "Voodoo", "rob", "Glovel", "Run", "Car Keys", "Ultra Instinct", "Stalker"
+}
+
+for _, name in ipairs(masteryNames) do
+    addMasteryButton(name)
+end
+
+local Tab = Window:MakeTab({
+    Name = "spin",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "AFK (10 Hours)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "spin" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17893, -24, -3542)
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Spin Glove/Enter Arena",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Stick",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddParagraph("About Stick 1 Mastery Quest", "Please check inside Settings tab on and then u can use Slap Aura feature for it")
+
+local Tab = Window:MakeTab({
+    Name = "Brick",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Brick Master Badge",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
+            wait(0.5)
+            local player = game.Players.LocalPlayer
+
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(-910, 328, 2)
+                wait(0.5)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(10019, -42, 9960)
+            end
+
+            wait(0.5)
+            while true do
+                game:GetService("ReplicatedStorage").lbrick:FireServer()
+                local gui = game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel
+                gui.Text = tonumber(gui.Text) + 1
+                wait(1.5)
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Brick Glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2/4 Quest"
+})
+
+Tab:AddButton({
+    Name = "Trip 100 People/Snipe 300 People (Loop Work)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
+            while true do
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/RagdollAll/main/main.lua'))()
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Spawn Brick For Work",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Fling Brick 200KM (Use IY)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Spawn Brick And Touch It To Work",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Flash",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Teleport 1500 Times And 100 Times Not Getting Slapped",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Flash" then
+            for i = 1, 1500 do
+                game:GetService("ReplicatedStorage"):WaitForChild("FlashTeleport"):FireServer()
+                task.wait()
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Flash Glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2 Quest"
+})
+
+local running = false
+
+Tab:AddToggle({
+    Name = "Ambush Enemies 750 Times",
+    Default = false,
+    Callback = function(AutoSlapFlash)
+        running = AutoSlapFlash
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireFlashHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("FlashHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Flash" then
+                    ReplicatedStorage:WaitForChild("FlashTeleport"):FireServer()
+                    teleportToRandomPlayer()
+                    fireFlashHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Flash Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Fort",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1 Quest" })
+
+Tab:AddButton({
+    Name = "Get Badge + Plank Glove",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            local hrp = player.Character.HumanoidRootPart
+            local originalPos = hrp.CFrame
+
+            hrp.CFrame = CFrame.new(8, 97, 4)
+            wait(0.2)
+            hrp.Anchored = true
+            wait(0.3)
+            game:GetService("ReplicatedStorage").Fortlol:FireServer()
+            wait(3.5)
+            hrp.Anchored = false
+            wait(0.1)
+            hrp.CFrame = CFrame.new(8, 106, -6)
+            wait(0.5)
+            hrp.CFrame = originalPos
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "2 Quest" })
+
+Tab:AddButton({
+    Name = "Destroy Wall (Stay Very Close To Wall)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            game.ReplicatedStorage.SelfKnockback:FireServer({ Force = 0, Direction = Vector3.new(0, 0.01, 0) })
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "3 Quest" })
+
+Tab:AddButton({
+    Name = "Build Wall",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            game:GetService("ReplicatedStorage").Fortlol:FireServer()
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Build Wall (Loop)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            while true do
+                game:GetService("ReplicatedStorage").Fortlol:FireServer()
+                wait(3.5)
+            end
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "2-3 Quest" })
+
+local AutoWall = false
+Tab:AddToggle({
+    Name = "Auto Build And Destroy Wall",
+    Default = false,
+    Callback = function(Value)
+        AutoWall = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoWall then
+            if player.leaderstats.Glove.Value == "Fort" then
+                task.spawn(function()
+                    while AutoWall do
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(10019, -42, 9960)
+                        wait(1)
+                        game:GetService("ReplicatedStorage").Fortlol:FireServer()
+                        wait(1)
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(10018, -42, 9951)
+                        wait(1)
+                        game.ReplicatedStorage.SelfKnockback:FireServer({ Force = 0, Direction = Vector3.new(0, 0.01, 0) })
+                        wait(4)
+
+                        if player.leaderstats.Glove.Value ~= "Fort" then
+                            AutoWall = false
+                            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+                        end
+                    end
+                end)
+            else
+                OrionLib:MakeNotification({ Name = "Error", Content = "Equip Fort Glove", Image = "rbxassetid://7743878857", Time = 3 })
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Space",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1 Quest" })
+
+Tab:AddButton({
+    Name = "Use Ability 750 Times",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" then
+            while true do
+                game:GetService("ReplicatedStorage").ZeroGSound:FireServer()
+                task.wait()
+            end
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Space Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "3 Quest" })
+
+Tab:AddButton({
+    Name = "Teleport To Cannon Island",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(229, 47, 170)
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Space Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Slapple Island",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-389, 51, -23)
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Space Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "4 Quest" })
+
+local running = false
+Tab:AddToggle({
+    Name = "Ambush Enemies 500 Times",
+    Default = false,
+    Callback = function(AutoSlapSpace)
+        running = AutoSlapSpace
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireSpaceHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("HtSpace"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            while true do
+                if LocalPlayer.leaderstats.Glove.Value == "Space" then
+                    ReplicatedStorage:WaitForChild("ZeroGSound"):FireServer()
+                    teleportToRandomPlayer()
+                    fireSpaceHitForAllPlayers()
+                    task.wait()
+                else
+                    OrionLib:MakeNotification({ Name = "Error", Content = "Equip Space Glove", Image = "rbxassetid://7743878857", Time = 3 })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Hive",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1-4 Quest" })
+
+local AutoAbiltySlapHiveRunning = false
+Tab:AddToggle({
+    Name = "Auto Ability + Slap People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapHiveRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapHiveRunning then
+            if player.leaderstats.Glove.Value == "Hive" then
+                task.spawn(function()
+                    while AutoAbiltySlapHiveRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = targetPlayer.Character.HumanoidRootPart
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+
+                        task.wait(1)
+                    end
+
+                    while true do
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(1)
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(14)
+                    end
+                end)
+            else
+                AutoAbiltySlapHiveRunning = false
+                OrionLib:MakeNotification({ Name = "Error", Content = "Equip Hive Glove", Image = "rbxassetid://7743878857", Time = 3 })
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Defense",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1/2/3/4 Quest" })
+
+local AutoAbiltySlapDefenseRunning = false
+Tab:AddToggle({
+    Name = "Auto Ability + Slap People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapDefenseRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapDefenseRunning then
+            if player.leaderstats.Glove.Value == "Defense" then
+                task.spawn(function()
+                    while AutoAbiltySlapDefenseRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = targetPlayer.Character.HumanoidRootPart
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+
+                        task.wait(1)
+                    end
+
+                    while true do
+                        game:GetService("ReplicatedStorage").Barrier:FireServer()
+                        task.wait(25)
+                    end
+                end)
+            else
+                AutoAbiltySlapDefenseRunning = false
+                OrionLib:MakeNotification({ Name = "Error", Content = "Equip Defense Glove", Image = "rbxassetid://7743878857", Time = 3 })
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Killstreak",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1/2/3 Quest" })
+
+Tab:AddToggle({
+    Name = "Autofarm Kills",
+    Default = false,
+    Callback = function(AutoSlapKillstreak)
+        local running = AutoSlapKillstreak
+
+        local function teleportToRandomPlayer()
+            local Players = game:GetService("Players")
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= Players.LocalPlayer
+
+                local randomPlayerCharacter = randomPlayer.Character
+                if randomPlayerCharacter and randomPlayerCharacter:FindFirstChild("HumanoidRootPart") then
+                    local teleportPosition = randomPlayerCharacter.HumanoidRootPart.Position
+                    Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+                end
+            end
+        end
+
+        local function fireKSHitForAllPlayers()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    ReplicatedStorage:WaitForChild("KSHit"):FireServer(player.Character.HumanoidRootPart)
+                end
+            end
+        end
+
+        local function runAutoSlapKillstreakLoop()
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+                while running do
+                    wait(0.2)
+                    teleportToRandomPlayer()
+                    fireKSHitForAllPlayers()
+                    wait(1)
+                end
+            else
+                OrionLib:MakeNotification({ Name = "Error", Content = "Equip Killstreak Glove", Image = "rbxassetid://7743878857", Time = 3 })
+            end
+        end
+
+        if AutoSlapKillstreak then
+            running = true
+            runAutoSlapKillstreakLoop()
+        else
+            running = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Engineer",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1 Quest" })
+
+Tab:AddButton({
+    Name = "Spawn Sentry",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Engineer" then
+            game:GetService("ReplicatedStorage").Sentry:FireServer()
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Engineer Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Auto Spawn Sentry",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Engineer" then
+            while true do
+                game:GetService("ReplicatedStorage").Sentry:FireServer()
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Engineer Glove", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Wormhole",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1 Quest" })
+
+Tab:AddButton({
+    Name = "Ambush 500 People (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        local args = { leftArm }
+                        replicatedStorage.WormHit:FireServer(unpack(args))
+                    end
+                end
+            end
+            wait(1)
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "2 Quest" })
+
+Tab:AddButton({
+    Name = "Teleport 1250 Times",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Wormhole" then
+            while true do
+                local args = {
+                    [1] = CFrame.new(-15.540994644165039, -4.673734664916992, -7.913032531738281) * CFrame.Angles(0.02266099490225315, -0.13298073410987854, 0.0024420826230198145)
+                }
+                game:GetService("ReplicatedStorage").WormholeTP:FireServer(unpack(args))
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Wormhole/Use In Lobby", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+Section = Tab:AddSection({ Name = "3 Quest" })
+
+Tab:AddButton({
+    Name = "Place 750 Wormholes",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Wormhole" then
+            while true do
+                game:GetService("ReplicatedStorage").WormholePlace:FireServer()
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({ Name = "Error", Content = "Equip Wormhole/Use In Lobby", Image = "rbxassetid://7743878857", Time = 3 })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Stalker",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1/2 Quest" })
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapStalker)
+        local running = AutoSlapStalker
+
+        local function teleportToRandomPlayer()
+            local Players = game:GetService("Players")
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= Players.LocalPlayer
+
+                local randomPlayerCharacter = randomPlayer.Character
+                if randomPlayerCharacter and randomPlayerCharacter:FindFirstChild("HumanoidRootPart") then
+                    local teleportPosition = randomPlayerCharacter.HumanoidRootPart.Position
+                    Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+                end
+            end
+        end
+
+        local function fireGeneralHitForAllPlayers()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                end
+            end
+        end
+
+        local function runAutoSlapStalkerLoop()
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Stalker" then
+                while running do
+                    wait(0.2)
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    wait(1)
+                end
+            else
+                OrionLib:MakeNotification({ Name = "Error", Content = "Equip Stalker Glove", Image = "rbxassetid://7743878857", Time = 3 })
+            end
+        end
+
+        if AutoSlapStalker then
+            running = true
+            runAutoSlapStalkerLoop()
+        else
+            running = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Cherry",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Auto Spawn Cherry Clones",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start the loop with exact 0.1 second interval
+            cherryCloneLoop = true
+            
+            spawn(function()
+                while cherryCloneLoop do
+                    local player = game.Players.LocalPlayer
+                    
+                    -- Check if player has Cherry glove
+                    if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Cherry" then
+                        -- Check if player has entered
+                        if player.Character and player.Character:FindFirstChild("entered") then
+                            -- Fire the Cherry remote
+                            game:GetService("ReplicatedStorage").Events.Cherry:FireServer()
+                        else
+                            OrionLib:MakeNotification({
+                                Name = "Not Entered",
+                                Content = "You need to enter the arena first!",
+                                Image = "rbxassetid://4483345998",
+                                Time = 3
+                            })
+                            wait(1) -- Wait longer when not entered
+                        end
+                    else
+                        OrionLib:MakeNotification({
+                            Name = "Wrong Glove",
+                            Content = "You need Cherry glove equipped!",
+                            Image = "rbxassetid://4483345998",
+                            Time = 3
+                        })
+                        wait(1) -- Wait longer when wrong glove
+                    end
+                    
+                    wait(0.1) -- Normal 0.1 second delay
+                end
+            end)
+        else
+            -- Stop the loop
+            cherryCloneLoop = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Booster",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Ambush Players 750 Times",
+    Default = false,
+    Callback = function(AutoSlapBooster)
+        running = AutoSlapBooster
+
+        if not running then
+            return -- stop immediately if toggled off
+        end
+
+        -- Run everything in a separate thread
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            -- Function to teleport to a random player
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            -- Function to fire GeneralHit for all players
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            -- Loop 750 times or until stopped
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Booster" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Booster Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "BONK",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapBonk)
+        running = AutoSlapBonk
+
+        if not running then
+            return -- stop immediately if toggled off
+        end
+
+        -- Run everything in a separate thread
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            -- Function to teleport to a random player
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            -- Function to fire GeneralHit for all players
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            -- Loop 750 times or until stopped
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "BONK" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip BONK Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Inf Spam BONK's Hammer",
+    Callback = function()
+        while true do
+            fireclickdetector(game:GetService("Workspace").Lobby.BONK.ClickDetector)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").BONK:FireServer()
+            task.wait(0.1)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Cloud",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Death 50 People Above (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        replicatedStorage.CloudHit:FireServer(leftArm)
+                    end
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2 Quest"
+})
+
+Tab:AddButton({
+    Name = "AFK 200 Minutes",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" then
+            local teleportPosition = Vector3.new(-980, -151, 2)
+            local player = game.Players.LocalPlayer
+
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Cloud/Use In Arena/Stay In Cloud",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+Tab:AddSlider({
+    Name = "Speed Cloud (200k. Studs)",
+    Min = 0.1,
+    Max = 1.2,
+    Default = 0.5,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 0.1,
+    ValueName = "Speed",
+    Callback = function(Value)
+        _G.SetSpeedCloud = Value
+    end
+})
+
+CloudSpeed = Tab:AddToggle({
+    Name = "Auto Set Cloud Speed",
+    Default = false,
+    Callback = function(Value)
+        _G.CloudSpeed = Value
+
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" then
+            while _G.CloudSpeed and game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" do
+                for i, v in pairs(game.Workspace:GetChildren()) do
+                    if v.Name:match(game.Players.LocalPlayer.Name) and v:FindFirstChild("BodyVelocity") then
+                        v.BodyVelocity.Velocity = v.BodyVelocity.Velocity * _G.SetSpeedCloud
+                    end
+                end
+                task.wait(0.10)
+            end
+        elseif _G.CloudSpeed == true then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Cloud",
+                Image = "rbxassetid://7743878857",
+                Time = 5
+            })
+            wait(0.05)
+            CloudSpeed:Set(false)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "4 Quest"
+})
+
+local AutoPickUpCloudRunning = false
+
+Tab:AddToggle({
+    Name = "Auto Pick Up 100 People",
+    Default = false,
+    Callback = function(Value)
+        AutoPickUpCloudRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoPickUpCloudRunning then
+            if player.leaderstats.Glove.Value == "Cloud" then
+                task.spawn(function()
+                    while AutoPickUpCloudRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer = nil
+
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        if targetPlayer and targetPlayer.Character then
+                            local targetHRP = targetPlayer.Character.HumanoidRootPart
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+                        end
+
+                        task.wait(1)
+                    end
+                end)
+            else
+                AutoPickUpCloudRunning = false
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Cloud Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "[REDACTED]",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1/2/3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Spawn Portal",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "[REDACTED]" then
+            game:GetService("ReplicatedStorage").Well:FireServer()
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Redacted",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Loop Secure Portal",
+    Callback = function()
+        if game.workspace:FindFirstChild("WellModel") and workspace.WellModel:FindFirstChild("Portal") then
+            while true do
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.WellModel.Portal.CFrame
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Portal Not Spawned/Founded",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "bus",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Slap 1k. People (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Humanoid") then
+                    replicatedStorage.hitbus:FireServer(player.Character.Humanoid)
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2/3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Spawn Bus (Normal)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bus" then
+            game:GetService("ReplicatedStorage").busmoment:FireServer()
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Bus",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Spawn Bus (Fast + Kicks)",
+    Callback = function()
+        while true do
+            game:GetService("ReplicatedStorage").busmoment:FireServer()
+            wait()
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Phase",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-3 Quest"
+})
+
+local AutoAbiltySlapPhaseRunning = false
+
+Tab:AddToggle({
+    Name = "Auto Ability + Slap People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapPhaseRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapPhaseRunning then
+            if player.leaderstats.Glove.Value == "Phase" then
+                task.spawn(function()
+                    while AutoAbiltySlapPhaseRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        if targetPlayer and targetPlayer.Character then
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPlayer.Character.HumanoidRootPart.Position)
+                        end
+
+                        task.wait(1)
+                    end
+                end)
+
+                task.spawn(function()
+                    while true do
+                        game:GetService("ReplicatedStorage").PhaseA:FireServer()
+                        task.wait(14)
+                    end
+                end)
+            else
+                AutoAbiltySlapPhaseRunning = false
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Phase Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2 Quest"
+})
+
+Tab:AddButton({
+    Name = "Auto Ability + Teleport To All Islands (Takes 112 Seconds)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+        if player.leaderstats.Glove.Value == "Phase" and player.Character:FindFirstChild("entered") then
+            local function phaseTo(position)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(122, 255, 3)
+                task.wait(0.1)
+                game:GetService("ReplicatedStorage").PhaseA:FireServer()
+                task.wait(0.1)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+                task.wait(14)
+            end
+
+            phaseTo(Vector3.new(236, -16, -6))
+            phaseTo(Vector3.new()) -- likely needs correction
+            phaseTo(Vector3.new(4, -5, -223))
+            phaseTo(Vector3.new(-216, -5, -6))
+            phaseTo(Vector3.new(-401, 51, -16))
+            phaseTo(Vector3.new(256, 34, 194))
+            phaseTo(Vector3.new(4, -5, 215))
+            phaseTo(Vector3.new(-125, -5, 122))
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Phase Glove/Use In Arena",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Bomb",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1/2/3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Throw Bomb/Explode Bomb",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bomb" then
+            game:GetService("ReplicatedStorage").BombThrow:FireServer("Ebutton")
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Bomb",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Auto Do 1/2/3 Tasks",
+    Callback = function(AutoBomb)
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bomb" then
+            while AutoBomb do
+                local player = game.Players.LocalPlayer
+
+                -- Move to safe area
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(-908, 328, 5)
+                wait(1)
+
+                -- Move to platform
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(10019, -42, 9960)
+                wait(1)
+
+                -- Throw Bomb
+                game:GetService("ReplicatedStorage").BombThrow:FireServer("Ebutton")
+                wait(1)
+
+                -- Wait to teleport to bomb
+                while true do
+                    local foundBomb = false
+
+                    for _, v in pairs(game.Workspace:GetChildren()) do
+                        if string.find(v.Name, "_bømb") then
+                            player.Character.HumanoidRootPart.CFrame = v.CFrame
+                            foundBomb = true
+                            break
+                        end
+                    end
+
+                    if not foundBomb then
+                        wait(1)
+                    else
+                        wait()
+                    end
+                end
+
+                wait(9)
+                player.Character.Humanoid.Health = 0
+                wait(23)
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Bomb Glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Shard",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3-4-5 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Auto Use Shard's Glove Ability",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start the loop with exact 0.1 second interval
+            shardCloneLoop = true
+            
+            spawn(function()
+                while cherryCloneLoop do
+                    local player = game.Players.LocalPlayer
+                    
+                    -- Check if player has Cherry glove
+                    if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Shard" then
+                        -- Check if player has entered
+                        if player.Character and player.Character:FindFirstChild("entered") then
+                            -- Fire the Cherry remote
+                            game:GetService("ReplicatedStorage").Events.Shards:FireServer()
+                        else
+                            OrionLib:MakeNotification({
+                                Name = "Not Entered",
+                                Content = "You need to enter the arena first!",
+                                Image = "rbxassetid://4483345998",
+                                Time = 3
+                            })
+                            wait(1) -- Wait longer when not entered
+                        end
+                    else
+                        OrionLib:MakeNotification({
+                            Name = "Wrong Glove",
+                            Content = "You need Shard glove equipped!",
+                            Image = "rbxassetid://4483345998",
+                            Time = 3
+                        })
+                        wait(1) -- Wait longer when wrong glove
+                    end
+                    
+                    wait(0.1) -- Normal 0.1 second delay
+                end
+            end)
+        else
+            -- Stop the loop
+            shardCloneLoop = false
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Shard's Glove (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        replicatedStorage.ShardHIT:FireServer(leftArm)
+                    end
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Moon",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2 Quest"
+})
+
+Tab:AddToggle({
+    Name = "Auto Ragdoll + Touch Ground",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start the loop
+            autoRagdollLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                -- Check if player has entered
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                    -- Fire knockback remote
+                    game.ReplicatedStorage.SelfKnockback:FireServer({
+                        ["Force"] = 0,
+                        ["Direction"] = Vector3.new(0, 0.01, 0)
+                    })
+                    
+                    -- Teleport to position
+                    if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1, -5, 8)
+                    end
+                end
+            end)
+        else
+            -- Stop the loop
+            if autoRagdollLoop then
+                autoRagdollLoop:Disconnect()
+                autoRagdollLoop = nil
+            end
+        end
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Spam Equip/Unequip Moon Glove",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start the loop
+            moonGloveLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                local player = game.Players.LocalPlayer
+                local backpack = player:FindFirstChild("Backpack")
+                
+                if backpack then
+                    local moonTool = backpack:FindFirstChild("Moon")
+                    
+                    if moonTool then
+                        -- Check if tool is currently equipped
+                        local character = player.Character
+                        local currentlyEquipped = character and character:FindFirstChild("Moon")
+                        
+                        if currentlyEquipped then
+                            -- Unequip: move tool back to backpack
+                            moonTool.Parent = backpack
+                        else
+                            -- Equip: move tool to character
+                            moonTool.Parent = character
+                        end
+                    end
+                end
+            end)
+        else
+            -- Stop the loop
+            if moonGloveLoop then
+                moonGloveLoop:Disconnect()
+                moonGloveLoop = nil
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Chain",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3 Quest"
+})
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapChain)
+        running = AutoSlapChain
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Chain" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Chain Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Tycoon",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Place Tycoon To Safe Spot",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Tycoon" then
+            local player = game.Players.LocalPlayer
+
+            -- Step 1: Move to spawn
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
+            task.wait(1)
+
+            -- Step 2: Move to safe tycoon location
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(17884, -24, -3539)
+            task.wait(1)
+
+            -- Step 3: Activate ability
+            local args = {
+                [1] = CFrame.new(17893.552734375, -26.257728576660156, -3535.35888671875, 
+                0.00862560048699379, 3.3499091500743816e-08, -0.9999628067016602, 
+                8.43312697451637e-10, 1, 3.350761090814558e-08, 
+                0.9999628067016602, -1.1323045834288337e-09, 0.00862560048699379)
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+            task.wait(1)
+
+            -- Step 4: Teleport back to spawn
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Tycoon Glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+local running = false
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapTycoon)
+        running = AutoSlapTycoon
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Tycoon" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Tycoon Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "🗿",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Spawn Moai",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "🗿" then
+            local args = {
+                [1] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+            }
+            game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args))
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Moai",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2/3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Auto Slap (Slap Aura)",
+    Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
+
+        local function fireForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Torso") then
+                    ReplicatedStorage.GeneralHit:FireServer(player.Character.Torso)
+                end
+            end
+        end
+
+        while true do
+            fireForAllPlayers()
+            wait(1)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Obby",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Slap 1000 Enemies (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        replicatedStorage.GeneralHit:FireServer(leftArm)
+                    end
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Voodoo",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapVoodoo)
+        running = AutoSlapVoodoo
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Voodoo" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Voodoo Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+local voodooToggle = false
+local loopThread = nil
+
+Tab:AddToggle({
+    Name = "Voodoo Spam Ability Without CD",
+    Default = false,
+    Callback = function(state)
+        voodooToggle = state
+        local player = game.Players.LocalPlayer
+
+        if voodooToggle then
+            if player.leaderstats and player.leaderstats.Glove.Value == "Voodoo" then
+                loopThread = task.spawn(function()
+                    while voodooToggle and player.leaderstats.Glove.Value == "Voodoo" do
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(3.5)
+                    end
+                end)
+            else
+                voodooToggle = false
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Voodoo Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        else
+            if loopThread then
+                print("Voodoo spam stopped")
+                loopThread = nil
+            end
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "rob",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Create Null Portal (Need Bob And Rob Gloves)",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+        wait(0.5)
+
+        fireclickdetector(game:GetService("Workspace").Lobby.rob.ClickDetector)
+        wait(0.5)
+        game:GetService("ReplicatedStorage").rob:FireServer()
+        wait(0.5)
+
+        fireclickdetector(game:GetService("Workspace").Lobby.bob.ClickDetector)
+        wait(0.5)
+        game:GetService("ReplicatedStorage").bob:FireServer()
+
+        OrionLib:MakeNotification({
+            Name = "Error",
+            Content = "Need Bob/Rob Badges To Own",
+            Image = "rbxassetid://7743878857",
+            Time = 3
+        })
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2 Quest"
+})
+
+Tab:AddSlider({
+    Name = "WalkSpeed",
+    Min = 20,
+    Max = 1000,
+    Default = 20,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 1,
+    ValueName = "WalkSpeed",
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        Walkspeed = Value
+    end
+})
+
+Tab:AddTextbox({
+    Name = "WalkSpeed",
+    Default = "UserSpeed",
+    TextDisappear = false,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        Walkspeed = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Walkspeed Set Auto",
+    Default = false,
+    Callback = function(Value)
+        KeepWalkspeed = Value
+
+        while KeepWalkspeed do
+            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+               game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= Walkspeed then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Walkspeed
+            end
+            task.wait()
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+local AutoAbsorb = false
+
+Tab:AddToggle({
+    Name = "Auto Absorb 1000 People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbsorb = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbsorb then
+            if player.leaderstats.Glove.Value:lower() == "rob" then
+                task.spawn(function()
+                    while AutoAbsorb do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local target
+
+                        repeat
+                            target = players[math.random(1, #players)]
+                        until target ~= player and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                        if targetHRP and player.Character:FindFirstChild("HumanoidRootPart") then
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position + Vector3.new(0, 0, 2))
+                        end
+
+                        game:GetService("ReplicatedStorage"):FindFirstChild("Ability"):FireServer()
+                        task.wait(1)
+                    end
+                end)
+            else
+                AutoAbsorb = false
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Rob Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Inf Rob Transformation",
+    Callback = function()
+        while true do
+            fireclickdetector(game:GetService("Workspace").Lobby.rob.ClickDetector)
+            wait(0.5)
+            game:GetService("ReplicatedStorage").rob:FireServer()
+            wait(17)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Glovel",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Dig 350 Times",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Glovel" then
+            while true do
+                game:GetService("ReplicatedStorage").GlovelFunc:InvokeServer()
+                wait()
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip Glovel Glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2/3 Quest"
+})
+
+Tab:AddButton({
+    Name = "Crits (Slap Aura)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    local args = {
+                        player.Character.Head,
+                        true
+                    }
+
+                    replicatedStorage.GeneralHit:FireServer(unpack(args))
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Run",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+Tab:AddButton({
+    Name = "Auto Kill Everyone (Use In Run Basement/Loop)",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/I19Imv7S/raw"))()
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Car Keys",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+local toggleOn = false
+local upgradeLoop = nil
+
+local attributeFrames = {
+    "UtilityAttributeFrame",
+    "ArmorAttributeFrame",
+    "ReverseAttributeFrame",
+    "SteerAngleAttributeFrame",
+    "AccelerationAttributeFrame",
+    "MaxSpeedAttributeFrame",
+    "KnockbackAttributeFrame"
+}
+
+Tab:AddToggle({
+    Name = "Auto Upgrade All Stats",
+    Default = false,
+    Callback = function(Value)
+        toggleOn = Value
+        if toggleOn then
+            -- Start upgrade loop
+            upgradeLoop = task.spawn(function()
+                while toggleOn do
+                    for _, attr in ipairs(attributeFrames) do
+                        local args = { attr }
+                        game:GetService("ReplicatedStorage"):WaitForChild("CarKeysUpgrade"):FireServer(unpack(args))
+                        task.wait(0.1) -- small delay to prevent spamming too fast
+                    end
+                    task.wait(0.5) -- wait between full upgrade cycles
+                end
+            end)
+        else
+            -- Stop loop by breaking the while condition
+            toggleOn = false
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "2-3 Quest"
+})
+
+Tab:AddParagraph("About Car Keys 2-3 Mastery Quests", "Please check inside Badges hub")
+
+local Tab = Window:MakeTab({
+    Name = "Ultra Instinct",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+local running = false -- declare global toggle state
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapVoodoo)
+        running = AutoSlapVoodoo
+
+        if not running then
+            return -- stop immediately if toggled off
+        end
+
+        -- Run everything in a separate thread
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            -- Function to teleport to a random player
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            -- Function to fire GeneralHit for all players
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            -- Loop 750 times or until stopped
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Ultra Instinct" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Ultra Instinct Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+-- SETTINGS
+local Tab = Window:MakeTab({
+    Name = "Settings",
+    Icon = "rbxassetid://7734053495",
+    PremiumOnly = false
+})
+
+-- Section: Value Changer
+Section = Tab:AddSection({
+    Name = "Value Changer"
+})
+
+Tab:AddTextbox({
+    Name = "How Many Slaps? (Visual)",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Section: Badge Giver
+Section = Tab:AddSection({
+    Name = "Badge Giver"
+})
+
+Tab:AddButton({
+    Name = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+-- Variables
+local nametagText = ""
+local autoNametag = false
+local player = game.Players.LocalPlayer
+
+-- Textbox for nametag
+Tab:AddTextbox({
+    Name = "Type Ur Own Any Nametag",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+-- Button to apply nametag once
+Tab:AddButton({
+    Name = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter text in the textbox first!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Find and update nametag
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    OrionLib:MakeNotification({
+                        Name = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "TopLabel not found!",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Nametag not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Character not found!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Toggle for auto nametag
+Tab:AddToggle({
+    Name = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            -- Start auto nametag loop
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+-- Auto reapply nametag when character respawns
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        -- Wait for character to fully load
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Section = Tab:AddSection({
+    Name = "Slap Aura (Supports Only GeneralHits For Now)"
+})
+
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local slapAuraConnection
+local lastHitTime = 0
+local cooldown = 1 -- 1 second
+
+Tab:AddToggle({
+    Name = "Slap Aura V1",
+    Default = false,
+    Callback = function(enabled)
+        if enabled then
+            slapAuraConnection = RunService.Heartbeat:Connect(function()
+                local currentTime = tick()
+                if currentTime - lastHitTime >= cooldown then
+                    for _, player in pairs(Players:GetPlayers()) do
+                        if player ~= Players.LocalPlayer and player.Character then
+                            local torso = player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("UpperTorso")
+                            if torso then
+                                ReplicatedStorage.GeneralHit:FireServer(torso)
+                            end
+                        end
+                    end
+                    lastHitTime = currentTime
+                end
+            end)
+        else
+            if slapAuraConnection then
+                slapAuraConnection:Disconnect()
+                slapAuraConnection = nil
+            end
+        end
+    end
+})
+
+-- Add section for Ghost On/Off
+Section = Tab:AddSection({
+    Name = "Ghost On/Off"
+})
+
+Tab:AddToggle({
+    Name = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Ghost Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+-- Add section for Server Settings
+Section = Tab:AddSection({
+    Name = "Server Settings"
+})
+
+-- Rejoin button
+Tab:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+-- ServerHop (Regular Server)
+Tab:AddButton({
+    Name = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+        local Deleted = false
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        -- Start teleporting to new servers
+        Teleport()
+    end
+})
+
+-- ServerHop (Small Server)
+Tab:AddButton({
+    Name = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Kick/Reset If Stuck"
+})
+
+Tab:AddButton({
+    Name = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tab:AddButton({
+    Name = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Arena Settings"
+})
+
+Tab:AddDropdown({
+    Name = "Enter",
+    Default = "Arena",
+    Options = {"Arena", "Arena Default"},
+    Callback = function(Value)
+        AutoEnter = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoEnter = Value
+
+        -- Coroutine for auto entering the Arena
+        while _G.AutoEnter and AutoEnter == "Arena" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport1.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+
+        -- Coroutine for auto entering the Arena Default
+        while _G.AutoEnter and AutoEnter == "Arena Default" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport2.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+end -- FINISH ENITRE SCRIPT
+OrionLib:Init() -- FINISH ENITRE SCRIPT
