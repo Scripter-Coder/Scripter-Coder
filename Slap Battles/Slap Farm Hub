@@ -1,0 +1,1375 @@
+--skid if u want idc just dont forget about credits or smt
+--Library
+local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+
+--Startup Script Notification
+OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 then
+
+local Window = OrionLib:MakeWindow({Name = "Slap Farm Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Slap Farm Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+Tab = Window:MakeTab({
+    Name = "Welcome",
+    Icon = "rbxassetid://7734059095",
+    PremiumOnly = false
+})
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
+Section = Tab:AddSection({
+    Name = "UPGRADE ON BOT SLAP FARM SOON"
+})
+
+Section = Tab:AddSection({
+    Name = "Before u will start using mine script would u like to bypass anticheat?"
+})
+
+Section = Tab:AddSection({
+    Name = "NOTE: It supports only high/good executors like Solara/Xeno doesnt support"
+})
+
+Tab:AddButton({
+	Name = "Bypass All Anticheat",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+task.wait(1.5)
+OrionLib:MakeNotification({Name = "Success",Content = "Bypassed All Anticheat",Image = "rbxassetid://7733715400",Time = 3})
+end
+})
+
+-- Slapples Section
+Section = Tab:AddSection({ Name = "Slapples" })
+
+Tab:AddToggle({
+    Name = "Auto Collect Slapples",
+    Default = false,
+    Callback = function(Value)
+        SlappleFarm = Value
+        while SlappleFarm do
+            if game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                for _, v in pairs(workspace.Arena.island5.Slapples:GetChildren()) do
+                    local plrChar = game.Players.LocalPlayer.Character
+                    if plrChar and plrChar:FindFirstChild("HumanoidRootPart") and plrChar:FindFirstChild("entered") then
+                        if (v.Name == "Slapple" or v.Name == "GoldenSlapple") and v:FindFirstChild("Glove") and v.Glove:FindFirstChildWhichIsA("TouchTransmitter") then
+                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 0)
+                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 1)
+                        end
+                    end
+                end
+            end
+            task.wait()
+        end
+    end
+})
+
+-- Auto Slapples ServerHop Section
+Section = Tab:AddSection({ Name = "Auto Slapples ServerHop" })
+
+Tab:AddButton({
+    Name = "Auto Serverho Collect Slapples",
+    Callback = function()
+getgenv().SlapFarmAutoExecute = true
+ActivatedScript = true
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Umbrella-Scripter/Slap-Battles/refs/heads/main/Slapple-Farm.lua"))()
+        OrionLib:MakeNotification({
+            Name = "Success",
+            Content = "Copied To Clipboard/Put In AutoExecute",
+            Image = "rbxassetid://7743878857",
+            Time = 3
+        })
+    end
+})
+
+-- Bot Settings Section
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local PathfindingService = game:GetService("PathfindingService")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+
+local BotSettingsSection = Tab:AddSection({ Name = "Bot Settings" })
+
+-- Walkspeed and Jumppower sliders (active during follow mode)
+local WalkSpeed = 16
+local JumpPower = 50
+
+BotSettingsSection:AddSlider({
+    Name = "WalkSpeed",
+    Min = 16,
+    Max = 100,
+    Default = 16,
+    Increment = 1,
+    ValueName = "Speed",
+    Callback = function(value)
+        WalkSpeed = value
+    end,
+})
+
+BotSettingsSection:AddSlider({
+    Name = "JumpPower",
+    Min = 50,
+    Max = 200,
+    Default = 50,
+    Increment = 1,
+    ValueName = "Power",
+    Callback = function(value)
+        JumpPower = value
+    end,
+})
+
+-- Auto collect slapples toggle (unchanged from before)
+local SlappleFarm = false
+Tab:AddToggle({
+    Name = "Auto Collect Slapples?",
+    Default = false,
+    Callback = function(Value)
+        SlappleFarm = Value
+        task.spawn(function()
+            while SlappleFarm do
+                if player.Character and player.Character:FindFirstChild("entered") then
+                    for _, v in pairs(workspace.Arena.island5.Slapples:GetChildren()) do
+                        if player.Character:FindFirstChild("HumanoidRootPart") and (v.Name == "Slapple" or v.Name == "GoldenSlapple") then
+                            local glove = v:FindFirstChild("Glove")
+                            if glove and glove:FindFirstChildWhichIsA("TouchTransmitter") then
+                                firetouchinterest(player.Character.HumanoidRootPart, glove, 0)
+                                firetouchinterest(player.Character.HumanoidRootPart, glove, 1)
+                            end
+                        end
+                    end
+                end
+                task.wait()
+            end
+        end)
+    end,
+})
+
+-- Bot Settings Section
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local PathfindingService = game:GetService("PathfindingService")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+
+local BotSettingsSection = Tab:AddSection({ Name = "Bot Settings" })
+
+-- Walkspeed and Jumppower sliders (active during follow mode)
+local WalkSpeed = 16
+local JumpPower = 50
+
+BotSettingsSection:AddSlider({
+    Name = "WalkSpeed",
+    Min = 16,
+    Max = 100,
+    Default = 16,
+    Increment = 1,
+    ValueName = "Speed",
+    Callback = function(value)
+        WalkSpeed = value
+    end,
+})
+
+BotSettingsSection:AddSlider({
+    Name = "JumpPower",
+    Min = 50,
+    Max = 200,
+    Default = 50,
+    Increment = 1,
+    ValueName = "Power",
+    Callback = function(value)
+        JumpPower = value
+    end,
+})
+
+-- Intelligence Level Dropdown
+local intelligenceLevel = "Normal" -- Default level
+
+BotSettingsSection:AddDropdown({
+    Name = "Bot Intelligence",
+    Default = "Normal",
+    Options = {"Low", "Normal", "High"},
+    Callback = function(value)
+        intelligenceLevel = value
+        OrionLib:MakeNotification({
+            Name = "Intelligence Level",
+            Content = "Set to: " .. value,
+            Image = "rbxassetid://4483345998",
+            Time = 3
+        })
+    end,
+})
+
+-- Auto collect slapples toggle (unchanged from before)
+local SlappleFarm = false
+Tab:AddToggle({
+    Name = "Auto Collect Slapples?",
+    Default = false,
+    Callback = function(Value)
+        SlappleFarm = Value
+        task.spawn(function()
+            while SlappleFarm do
+                if player.Character and player.Character:FindFirstChild("entered") then
+                    for _, v in pairs(workspace.Arena.island5.Slapples:GetChildren()) do
+                        if player.Character:FindFirstChild("HumanoidRootPart") and (v.Name == "Slapple" or v.Name == "GoldenSlapple") then
+                            local glove = v:FindFirstChild("Glove")
+                            if glove and glove:FindFirstChildWhichIsA("TouchTransmitter") then
+                                firetouchinterest(player.Character.HumanoidRootPart, glove, 0)
+                                firetouchinterest(player.Character.HumanoidRootPart, glove, 1)
+                            end
+                        end
+                    end
+                end
+                task.wait()
+            end
+        end)
+    end,
+})
+
+-- Bot Control Variables
+local botActive = false
+local spamClickTool = false
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Update references when character respawns
+local function onCharacterAdded(char)
+    character = char
+    humanoid = char:WaitForChild("Humanoid")
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Walk function using Pathfinding
+local function walkToPosition(position)
+    if not character or not humanoid or humanoid.Health <= 0 then return end
+    local path = PathfindingService:CreatePath()
+    path:ComputeAsync(character.HumanoidRootPart.Position, position)
+    if path.Status == Enum.PathStatus.Success then
+        for _, waypoint in ipairs(path:GetWaypoints()) do
+            if not botActive or not character or humanoid.Health <= 0 then return end
+            humanoid:MoveTo(waypoint.Position)
+            local reached = humanoid.MoveToFinished:Wait()
+            if not reached then break end
+        end
+    else
+        humanoid:MoveTo(position)
+        humanoid.MoveToFinished:Wait()
+    end
+end
+
+-- Get random player to follow
+local function getRandomPlayer()
+    local players = {}
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+            table.insert(players, plr)
+        end
+    end
+    if #players == 0 then return nil end
+    return players[math.random(#players)]
+end
+
+-- Oneshot gloves list and filter
+local oneshotGloves = {
+    ["Error"] = true,
+    ["OVERKILL"] = true,
+    ["God's Hand"] = true,
+    ["The Flex"] = true
+}
+
+local ignoreOneshots = false
+local ignoreMegarock = false
+
+local function getRandomPlayerFiltered()
+    local players = {}
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+            if ignoreOneshots then
+                local gloveVal = plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("Glove")
+                if gloveVal and oneshotGloves[gloveVal.Value] then
+                    continue
+                end
+            end
+            table.insert(players, plr)
+        end
+    end
+    if #players == 0 then return nil end
+    return players[math.random(#players)]
+end
+
+-- Main bot loop (runs forever) - UPDATED WITH INTELLIGENCE LEVELS
+task.spawn(function()
+    while true do
+        if botActive then
+            if character and humanoid and humanoid.Health > 0 then
+                if not player.Character:FindFirstChild("entered") then
+                    walkToPosition(Vector3.new(-1009, 328, 4))
+                else
+                    local target = getRandomPlayerFiltered()
+                    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+                        local targetPos = target.Character.HumanoidRootPart.Position
+                        local distance = (character.HumanoidRootPart.Position - targetPos).Magnitude
+                        
+                        -- Apply intelligence level behaviors
+                        if intelligenceLevel == "Low" then
+                            -- Simple direct movement
+                            humanoid:MoveTo(targetPos)
+                            
+                        elseif intelligenceLevel == "Normal" then
+                            -- Use pathfinding with basic logic
+                            walkToPosition(targetPos)
+                            
+                        elseif intelligenceLevel == "High" then
+                            -- Advanced behavior with strategy
+                            if distance > 20 then
+                                -- Far away: use pathfinding
+                                walkToPosition(targetPos)
+                            elseif distance > 5 then
+                                -- Medium range: predict movement
+                                local targetVelocity = target.Character.HumanoidRootPart.Velocity
+                                local predictedPos = targetPos + (targetVelocity * 0.3) -- Predict 0.3 seconds ahead
+                                humanoid:MoveTo(predictedPos)
+                            else
+                                -- Close range: circle strafe
+                                local rightVector = (targetPos - character.HumanoidRootPart.Position):Cross(Vector3.new(0, 1, 0)).Unit
+                                local strafePos = targetPos + (rightVector * 3)
+                                humanoid:MoveTo(strafePos)
+                            end
+                        end
+                        
+                        -- Apply WalkSpeed and JumpPower based on intelligence
+                        if intelligenceLevel == "High" then
+                            humanoid.WalkSpeed = WalkSpeed + 5 -- Slight boost for high intelligence
+                        else
+                            humanoid.WalkSpeed = WalkSpeed
+                        end
+                        
+                        humanoid.JumpPower = JumpPower
+                        
+                        -- Attack logic based on intelligence
+                        if distance <= 8 then
+                            local tool = nil
+                            for _, item in pairs(character:GetChildren()) do
+                                if item:IsA("Tool") then
+                                    tool = item
+                                    break
+                                end
+                            end
+                            
+                            if tool and tool.Activate then
+                                if intelligenceLevel == "High" then
+                                    -- High intelligence: spam click rapidly
+                                    for i = 1, 3 do
+                                        tool:Activate()
+                                        task.wait(0.05)
+                                    end
+                                elseif intelligenceLevel == "Normal" then
+                                    -- Normal: click occasionally
+                                    tool:Activate()
+                                    task.wait(0.1)
+                                else
+                                    -- Low: single click
+                                    tool:Activate()
+                                end
+                            end
+                        end
+                        
+                        -- High intelligence: occasional jumps to avoid attacks
+                        if intelligenceLevel == "High" and math.random(1, 100) <= 10 then
+                            humanoid.Jump = true
+                        end
+                        
+                    else
+                        task.wait(0.1)
+                    end
+                end
+            else
+                task.wait(0.5)
+            end
+        else
+            task.wait(0.1)
+        end
+    end
+end)
+
+-- Spam click tool loop
+task.spawn(function()
+    while true do
+        if spamClickTool and character and humanoid and humanoid.Health > 0 then
+            local tool = nil
+            for _, item in pairs(character:GetChildren()) do
+                if item:IsA("Tool") then
+                    tool = item
+                    break
+                end
+            end
+            if tool and tool.Activate then
+                tool:Activate()
+            end
+        end
+        task.wait(0.1)
+    end
+end)
+
+Tab:AddToggle({
+    Name = "Spam Click Tool",
+    Default = false,
+    Callback = function(value)
+        spamClickTool = value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Ignore Megarock/Custom?",
+    Default = false,
+    Callback = function(value)
+        ignoreMegarock = value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Ignore Oneshots?",
+    Default = false,
+    Callback = function(value)
+        ignoreOneshots = value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Bot: Follow/Attack Mode (buggy)",
+    Default = false,
+    Callback = function(val)
+        botActive = val
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Dual",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+Tab:AddToggle({
+    Name = "Dual Slap Farm",
+    Default = false,
+    Callback = function(state)
+        _G.DualSlapRunning = state
+
+        -- Teleport to random player (not self)
+        local function teleportToRandomPlayer()
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= LocalPlayer
+
+                local char = randomPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if localHRP then
+                        localHRP.CFrame = char.HumanoidRootPart.CFrame
+                    end
+                end
+            else
+                warn("Not enough players to teleport.")
+            end
+        end
+
+        -- Fire GeneralHit on all players
+        local function fireGeneralHitForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character then
+                    local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
+                    if rightArm then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(rightArm)
+                    end
+                end
+            end
+        end
+
+        -- Main loop
+        local function runAutoDualSlapLoop()
+            local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
+            local glove = leaderstats and leaderstats:FindFirstChild("Glove")
+
+            if not (glove and glove.Value == "Dual") then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Dual glove.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                _G.DualSlapRunning = false
+                return
+            end
+
+            while _G.DualSlapRunning do
+                task.wait(0.5) -- cooldown between hits
+                teleportToRandomPlayer()
+                fireGeneralHitForAllPlayers()
+            end
+        end
+
+        if state then
+            coroutine.wrap(runAutoDualSlapLoop)()
+        else
+            _G.DualSlapRunning = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Engineer",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+local EngineerFarm = false
+Tab:AddToggle({
+    Name = "Engineer Slap Farm (Someone Script/U Engineer)",
+    Default = false,
+    Callback = function(Value)
+        EngineerFarm = Value
+
+        if EngineerFarm then
+            task.spawn(function()
+                while EngineerFarm do
+                    local turret = game.workspace:FindFirstChild("Turret")
+                    if turret and turret:FindFirstChild("HingePart") and turret.HingePart:FindFirstChild("Glove") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = turret.HingePart.Glove.CFrame
+                    end
+                    task.wait()
+                end
+            end)
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Angler",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+Tab:AddToggle({
+    Name = "Angler Slap Farm (Auto Fishing)",
+    Default = false,
+    Callback = function(Value)
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local FishermanEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Fisherman")
+        local running = true
+
+        -- Loop function
+        local function autoFish()
+            while running do
+                task.wait(8)
+                local args = { "cast" }
+                FishermanEvent:FireServer(unpack(args))
+            end
+        end
+
+        -- Toggle ON
+        if Value then
+            running = true
+            coroutine.wrap(autoFish)()
+        else
+            running = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Bounty",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+-- Global flag to control loop
+_G.BountySlapRunning = false
+
+Tab:AddToggle({
+    Name = "Bounty Slap Farm",
+    Default = false,
+    Callback = function(state)
+        _G.BountySlapRunning = state
+
+        -- Teleport to random player (not self)
+        local function teleportToRandomPlayer()
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= LocalPlayer
+
+                local char = randomPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame
+                end
+            else
+                warn("Not enough players to teleport.")
+            end
+        end
+
+        -- Fire GeneralHit on all players
+        local function fireGeneralHitForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character then
+                    local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
+                    if rightArm then
+                        ReplicatedStorage.GeneralHit:FireServer(rightArm)
+                    end
+                end
+            end
+        end
+
+        -- Main loop
+        local function runAutoSlapBountyLoop()
+            if LocalPlayer.leaderstats.Glove.Value ~= "Bounty" then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Bounty glove.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                _G.BountySlapRunning = false
+                return
+            end
+
+            while _G.BountySlapRunning do
+                wait(0.5)
+                teleportToRandomPlayer()
+                fireGeneralHitForAllPlayers()
+            end
+        end
+
+        if state then
+            coroutine.wrap(runAutoSlapBountyLoop)()
+        else
+            _G.BountySlapRunning = false
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Bounty Slap Farm 2 (Slap Aura)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Right Arm"
+        if player.Character and player.Character:FindFirstChild("Right Arm") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Right Arm"]
+            }
+
+            -- Fire the server with the "Right Arm" part as an argument
+            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Killstreak",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+Tab:AddToggle({
+    Name = "Auto Give Yourself Cards",
+    Default = false,
+    Callback = function(Value)
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local running = true
+
+        local function giveCardsLoop()
+            while running do
+                ReplicatedStorage:WaitForChild("GeneralAbility"):FireServer()
+                task.wait(0.1)
+            end
+        end
+
+        if Value then
+            running = true
+            coroutine.wrap(giveCardsLoop)()
+        else
+            running = false
+        end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Debug",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+local ActiveToggles = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerHitbox(playerName)
+    local hitboxName = playerName .. "_hitbox"
+    local hitbox = Workspace:FindFirstChild(hitboxName)
+    if hitbox and hitbox:IsA("Part") then
+        return hitbox
+    end
+    return nil
+end
+
+local function GetLocalPlayerHitbox()
+    local hitboxName = LocalPlayer.Name .. "_hitbox"
+    local hitbox = Workspace:FindFirstChild(hitboxName)
+    if hitbox and hitbox:IsA("Part") then
+        return hitbox
+    end
+    return nil
+end
+
+local function GetAnyHitbox()
+    for _, obj in pairs(Workspace:GetChildren()) do
+        if obj:IsA("Part") and string.match(obj.Name, "_hitbox$") then
+            return obj
+        end
+    end
+    return nil
+end
+
+-- Ultra fast flying function
+local function FlyToTarget(targetHitbox)
+    local character = LocalPlayer.Character
+    if not character then return end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+    
+    -- Remove any existing velocity
+    for _, obj in pairs(humanoidRootPart:GetChildren()) do
+        if obj:IsA("BodyVelocity") then
+            obj:Destroy()
+        end
+    end
+    
+    -- Create super fast BodyVelocity
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.MaxForce = Vector3.new(50000, 50000, 50000) -- Massive force
+    bodyVelocity.Parent = humanoidRootPart
+    
+    -- Calculate direction and distance
+    local direction = (targetHitbox.Position - humanoidRootPart.Position).Unit
+    local distance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
+    
+    -- Extreme speed - fly really fast!
+    local speed = 50 + (distance * 2) -- Base speed + distance multiplier
+    bodyVelocity.Velocity = direction * speed
+    
+    -- Stop when close to target
+    local connection
+    connection = RunService.Heartbeat:Connect(function()
+        local currentDistance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
+        if currentDistance < 10 then
+            bodyVelocity:Destroy()
+            connection:Disconnect()
+            -- Final position adjustment
+            humanoidRootPart.CFrame = targetHitbox.CFrame + Vector3.new(0, 0, 0)
+        end
+    end)
+    
+    -- Safety cleanup after 3 seconds
+    delay(3, function()
+        if bodyVelocity and bodyVelocity.Parent then
+            bodyVelocity:Destroy()
+        end
+        if connection then
+            connection:Disconnect()
+        end
+    end)
+end
+
+-- Main Tab
+local Section = Tab:AddSection({
+    Name = "Player Selection"
+})
+
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+    end
+})
+
+Tab:AddButton({
+    Name = "Refresh Players List",
+    Callback = function()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Spawn Cube",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["AutoSpawn"] = Value
+        if Value then
+            coroutine.wrap(function()
+                local DebugEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Debug")
+                
+                while ActiveToggles["AutoSpawn"] do
+                    local localHitbox = GetLocalPlayerHitbox()
+                    if not localHitbox then
+                        DebugEvent:FireServer()
+                    end
+                    task.wait(0.1)
+                end
+            end)()
+        end
+    end
+})
+
+-- Teleport Tab
+local Section = Tab:AddSection({
+    Name = "Auto Teleport"
+})
+
+Tab:AddToggle({
+    Name = "Auto Touch Cube's Selected Player",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["TeleportToSelected"] = Value
+        if Value then
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToSelected"] and SelectedPlayer do
+                    local targetHitbox = GetPlayerHitbox(SelectedPlayer)
+                    if targetHitbox then
+                        FlyToTarget(targetHitbox)
+                    end
+                    task.wait(0.1) -- Very short delay for rapid flying
+                end
+            end)()
+        end
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Touch To Any Cube",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["TeleportToAny"] = Value
+        if Value then
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToAny"] do
+                    local anyHitbox = GetAnyHitbox()
+                    if anyHitbox then
+                        FlyToTarget(anyHitbox)
+                    end
+                    task.wait(0.1) -- Very short delay for rapid flying
+                end
+            end)()
+        end
+    end
+})
+
+-- SETTINGS
+local Tab = Window:MakeTab({
+    Name = "Settings",
+    Icon = "rbxassetid://7734053495",
+    PremiumOnly = false
+})
+
+-- Section: Value Changer
+Section = Tab:AddSection({
+    Name = "Value Changer"
+})
+
+Tab:AddTextbox({
+    Name = "How Many Slaps? (Visual)",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Section: Badge Giver
+Section = Tab:AddSection({
+    Name = "Badge Giver"
+})
+
+Tab:AddButton({
+    Name = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+-- Variables
+local nametagText = ""
+local autoNametag = false
+local player = game.Players.LocalPlayer
+
+-- Textbox for nametag
+Tab:AddTextbox({
+    Name = "Type Ur Own Any Nametag",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+-- Button to apply nametag once
+Tab:AddButton({
+    Name = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter text in the textbox first!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Find and update nametag
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    OrionLib:MakeNotification({
+                        Name = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "TopLabel not found!",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Nametag not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Character not found!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Toggle for auto nametag
+Tab:AddToggle({
+    Name = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            -- Start auto nametag loop
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+-- Auto reapply nametag when character respawns
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        -- Wait for character to fully load
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Section = Tab:AddSection({
+    Name = "Slap Aura (Supports Only GeneralHits For Now)"
+})
+
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local slapAuraConnection
+local lastHitTime = 0
+local cooldown = 1 -- 1 second
+
+Tab:AddToggle({
+    Name = "Slap Aura V1",
+    Default = false,
+    Callback = function(enabled)
+        if enabled then
+            slapAuraConnection = RunService.Heartbeat:Connect(function()
+                local currentTime = tick()
+                if currentTime - lastHitTime >= cooldown then
+                    for _, player in pairs(Players:GetPlayers()) do
+                        if player ~= Players.LocalPlayer and player.Character then
+                            local torso = player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("UpperTorso")
+                            if torso then
+                                ReplicatedStorage.GeneralHit:FireServer(torso)
+                            end
+                        end
+                    end
+                    lastHitTime = currentTime
+                end
+            end)
+        else
+            if slapAuraConnection then
+                slapAuraConnection:Disconnect()
+                slapAuraConnection = nil
+            end
+        end
+    end
+})
+
+-- Add section for Ghost On/Off
+Section = Tab:AddSection({
+    Name = "Ghost On/Off"
+})
+
+Tab:AddToggle({
+    Name = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Ghost Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+-- Add section for Server Settings
+Section = Tab:AddSection({
+    Name = "Server Settings"
+})
+
+-- Rejoin button
+Tab:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+-- ServerHop (Regular Server)
+Tab:AddButton({
+    Name = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+        local Deleted = false
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        -- Start teleporting to new servers
+        Teleport()
+    end
+})
+
+-- ServerHop (Small Server)
+Tab:AddButton({
+    Name = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Kick/Reset If Stuck"
+})
+
+Tab:AddButton({
+    Name = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tab:AddButton({
+    Name = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Arena Settings"
+})
+
+Tab:AddDropdown({
+    Name = "Enter",
+    Default = "Arena",
+    Options = {"Arena", "Arena Default"},
+    Callback = function(Value)
+        AutoEnter = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoEnter = Value
+
+        -- Coroutine for auto entering the Arena
+        while _G.AutoEnter and AutoEnter == "Arena" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport1.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+
+        -- Coroutine for auto entering the Arena Default
+        while _G.AutoEnter and AutoEnter == "Arena Default" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport2.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+end -- FINISH ENITRE SCRIPT
+OrionLib:Init() -- FINISH ENITRE SCRIPT
