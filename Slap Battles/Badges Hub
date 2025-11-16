@@ -1,3 +1,4 @@
+--skid if u want idc just dont forget about credits or smt
 --Library
 local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
 
