@@ -10251,8 +10251,76 @@ Tab:AddButton({
     end
 })
 
--- SETTINGS
+    Tab = Window:MakeTab({
+	Name = "Conker",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
 
+Tab:AddButton({
+    Name = "Auto Teleport To Conker Place + Get Conker (credits to kizzy)",
+    Callback = function()
+local gay = game
+
+
+--// Starting the script \\ --
+gay:service'TeleportService':Teleport(101113181694564, game['Players']['LocalPlayer'])
+
+queueonteleport([[
+
+--// shortcuts \\ --
+local gay = game
+local self = gay['Players']['LocalPlayer']
+local humanoidr = self['Character']['HumanoidRootPart']
+local CF = CFrame.new
+
+gay:service'ReplicatedStorage'.Remotes.Dialogue.FinishedNPCDialogue:FireServer()
+
+task.wait(2.5)
+fireclickdetector(workspace.Map.Props.BasketCollection.Basket.ClickDetector)
+
+local bv = Instance.new'BodyVelocity'
+bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
+bv.Velocity = (Vector3.new(37, 4, 1) - humanoidr.Position).Unit * 40
+bv.Parent = humanoidr
+
+repeat
+task.wait()
+until (humanoidr.Position - Vector3.new(37, 4, 1)).Magnitude < 2
+
+bv:Destroy()
+
+gay:service'RunService'.PostSimulation:Connect(function()
+self['Character']:PivotTo(CF(37, 4, 1)) 
+
+
+gay:service'ReplicatedStorage'.Remotes.tool.use:FireServer(
+'slap') end)
+
+
+--// auto slap squirrels
+gay:service'Workspace'.NPCs.DescendantAdded:Connect(function(squir)
+if squir.Name == 'squirrel'
+then local squirhr = squir:WaitForChild'HumanoidRootPart'
+while task.wait() and squirhr.Parent do
+gay:service'ReplicatedStorage'.Remotes.tool.hit:FireServer('slap', { Instance = squirhr })
+end end end)
+
+
+--// conker shit
+gay:service'Workspace'.DescendantAdded:Connect(function(conk)
+if conk.Name == 'Conker'
+then local trans = conk:FindFirstChildOfClass'TouchTransmitter'
+if trans
+then firetouchinterest(conk, humanoidr, 0)
+firetouchinterest(conk, humanoidr, 1)
+task.delay(.1, function()
+fireproximityprompt(workspace.Map.CoreAssets.Bowl.ProximityPrompt)
+end) end end end)]])
+    end
+})
+
+-- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
     Icon = "rbxassetid://7734053495",
