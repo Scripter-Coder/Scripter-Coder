@@ -10262,14 +10262,23 @@ Tab:AddButton({
     Callback = function()
 local gay = game
 
+--// Set up auto-execution after teleport
+if not getgenv().autoSlapExecuted then
+    getgenv().autoSlapExecuted = true
+    
+    -- Queue this script to run again after teleport
+    queue_on_teleport([[
+        getgenv().autoSlapExecuted = nil
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/your-repo/your-script.lua"))()
+    ]])
+    
+    -- Teleport to the target game
+    local TeleportService = game:GetService("TeleportService")
+    TeleportService:Teleport(13864667823) -- Replace with your target place ID
+    return
+end
 
---// Starting the script \\ --
-gay:service'TeleportService':Teleport(101113181694564, game['Players']['LocalPlayer'])
-
-queueonteleport([[
-
---// shortcuts \\ --
-local gay = game
+--// Main code execution (runs after teleport)
 local self = gay['Players']['LocalPlayer']
 local humanoidr = self['Character']['HumanoidRootPart']
 local CF = CFrame.new
@@ -10285,38 +10294,42 @@ bv.Velocity = (Vector3.new(37, 4, 1) - humanoidr.Position).Unit * 40
 bv.Parent = humanoidr
 
 repeat
-task.wait()
+    task.wait()
 until (humanoidr.Position - Vector3.new(37, 4, 1)).Magnitude < 2
 
 bv:Destroy()
 
 gay:service'RunService'.PostSimulation:Connect(function()
-self['Character']:PivotTo(CF(37, 4, 1)) 
-
-
-gay:service'ReplicatedStorage'.Remotes.tool.use:FireServer(
-'slap') end)
-
+    self['Character']:PivotTo(CF(37, 4, 1)) 
+    
+    gay:service'ReplicatedStorage'.Remotes.tool.use:FireServer('slap') 
+end)
 
 --// auto slap squirrels
 gay:service'Workspace'.NPCs.DescendantAdded:Connect(function(squir)
-if squir.Name == 'squirrel'
-then local squirhr = squir:WaitForChild'HumanoidRootPart'
-while task.wait() and squirhr.Parent do
-gay:service'ReplicatedStorage'.Remotes.tool.hit:FireServer('slap', { Instance = squirhr })
-end end end)
-
+    if squir.Name == 'squirrel' then 
+        local squirhr = squir:WaitForChild'HumanoidRootPart'
+        while task.wait() and squirhr.Parent do
+            gay:service'ReplicatedStorage'.Remotes.tool.hit:FireServer('slap', { Instance = squirhr })
+        end 
+    end 
+end)
 
 --// conker shit
 gay:service'Workspace'.DescendantAdded:Connect(function(conk)
-if conk.Name == 'Conker'
-then local trans = conk:FindFirstChildOfClass'TouchTransmitter'
-if trans
-then firetouchinterest(conk, humanoidr, 0)
-firetouchinterest(conk, humanoidr, 1)
-task.delay(.1, function()
-fireproximityprompt(workspace.Map.CoreAssets.Bowl.ProximityPrompt)
-end) end end end)]])
+    if conk.Name == 'Conker' then 
+        local trans = conk:FindFirstChildOfClass'TouchTransmitter'
+        if trans then 
+            firetouchinterest(conk, humanoidr, 0)
+            firetouchinterest(conk, humanoidr, 1)
+            task.delay(.1, function()
+                fireproximityprompt(workspace.Map.CoreAssets.Bowl.ProximityPrompt)
+            end) 
+        end 
+    end 
+end)
+
+print("Auto slap script loaded successfully!")
     end
 })
 
