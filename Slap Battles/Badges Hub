@@ -10333,6 +10333,471 @@ print("Auto slap script loaded successfully!")
     end
 })
 
+    Tab = Window:MakeTab({
+	Name = "Wheelchair",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Someone Using Tableflip?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Tableflip" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Tableflip glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Tableflip glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Blasphemy?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Blasphemy" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Blasphemy glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Blasphemy glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Bull?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Bull" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Bull glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Bull glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Bomb?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Bomb" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Bomb glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Bomb glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using L.O.L.B.O.M.B?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "L.O.L.B.O.M.B" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the L.O.L.B.O.M.B glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the L.O.L.B.O.M.B glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Slicer?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Slicer" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Slicer glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Slicer glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Tableflip Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Tableflip" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Tableflip Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Blasphemy Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Blasphemy" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Blasphemy Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Bull Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Bull" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Bull Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Bomb Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Bomb" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Bomb Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To L.O.L.B.O.M.B Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "L.O.L.B.O.M.B" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "L.O.L.B.O.M.B Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Slicer Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Slicer" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Slicer Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddToggle({
+    Name = "Anti Ragdoll",
+    Default = false,
+    Callback = function(Value)
+        _G.AntiRagdoll = Value
+
+        while _G.AntiRagdoll do
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChild("HumanoidRootPart") then
+                if char:FindFirstChild("Ragdolled") and char.Ragdolled.Value == true then
+                    local torso = char:FindFirstChild("Torso")
+                    if torso then
+                        torso.Anchored = true
+                        repeat task.wait() until char.Ragdolled.Value == false
+                        torso.Anchored = false
+                    end
+                end
+            end
+            task.wait()
+        end
+    end
+})
+
+Tab:AddButton({
+	Name = "Anti Void",
+	Callback = function()
+--ANTI VOID--
+if workspace:FindFirstChild("AntiVoid") == nil then
+--ANTI VOID--
+local Safespot = Instance.new("Part",workspace)
+Safespot.Name = "AntiVoid"
+Safespot.Position = Vector3.new(-51, -12, 108)
+Safespot.Size = Vector3.new(1000000, 1, 1000000)
+Safespot.Anchored = true
+Safespot.CanCollide = true
+Safespot.Transparency = .5
+--ANTI VOID--
+OrionLib:MakeNotification({Name = "Success",Content = "Created Successfully!",Image = "rbxassetid://7733715400",Time = 3})
+else
+game.workspace.AntiVoid:Destroy()
+OrionLib:MakeNotification({Name = "Success",Content = "Removed Successfully!",Image = "rbxassetid://7733715400",Time = 3})
+end
+end
+})
+
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
