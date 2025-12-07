@@ -1,4 +1,3 @@
---skid if u want idc just dont forget about credits or smt
 --Library
 local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
 
@@ -8,7 +7,7 @@ OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can T
 --If Slap Battles Then
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 then
 
-local Window = OrionLib:MakeWindow({Name = "Masteries Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Masteries Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+local Window = OrionLib:MakeWindow({Name = "Masteries Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Badges Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
 
 OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
 
@@ -56,8 +55,8 @@ end
 
 local masteryNames = {
     "Spin", "Stick", "Brick", "Flash", "Fort", "Space", "Hive", "Killstreak", "Engineer",
-    "Wormhole", "Cherry", "Booster", "Cloud", "[REDACTED]", "bus", "Phase", "Bomb", "Shard", "Moon", "Chain", "Tycoon",
-    "🗿", "Obby", "Voodoo", "rob", "Glovel", "Run", "Car Keys", "Ultra Instinct", "Stalker"
+    "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "[REDACTED]", "bus", "Phase", "Bomb", "Shard", "Moon", "Rage", "Chain", "Tycoon",
+    "🗿", "Obby", "Voodoo", "rob", "Glovel", "Run", "Car Keys", "Ultra Instinct"
 }
 
 for _, name in ipairs(masteryNames) do
@@ -1615,6 +1614,44 @@ Tab:AddToggle({
                 moonGloveLoop = nil
             end
         end
+    end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Rage",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-4 Quest"
+})
+
+Tab:AddButton({
+    Name = "Auto Slap (Slap Aura)",
+    Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
+
+        local function fireForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Torso") then
+                    ReplicatedStorage.GRRRR:FireServer(player.Character.Torso)
+                end
+            end
+        end
+
+        while true do
+            fireForAllPlayers()
+            wait(1)
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Rage Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage").GRRRRR:FireServer()
     end
 })
 
