@@ -1,0 +1,5234 @@
+--Start Of Script
+local MarketplaceService = game:GetService("MarketplaceService")
+local placeInfo = MarketplaceService:GetProductInfo(game.PlaceId)
+local gameName = placeInfo.Name
+
+local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+
+--If SAEN Then
+--Creating Window
+if game.PlaceId == 14410213941 or 14667049509 then
+local Window = OrionLib:MakeWindow({Name = gameName .. " Hub (Scripter Hub) OP V. 2.3.3", HidePremium = true, IntroEnabled = true, IntroText = gameName, IntroIcon = "rbxassetid://7743866529", ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+Tab = Window:MakeTab({
+ Name = "Welcome",
+ Icon = "rbxassetid://7734059095",
+ PremiumOnly = false
+ })
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
+Tab:AddButton({
+    Name = "Bypass Anti Cheat (Prevent Crashing Roblox I Guess...)",
+    Callback = function()
+workspace["#GAME"].Map._Other.MountainWedge:destroy()
+workspace["#GAME"].Map._Other["Touch/TargetParts"].MountainPart:destroy()
+workspace["#GAME"].Map._Other.Mountain:destroy()
+game:GetService("CorePackages").Workspace.Packages._Index.AvatarExperienceFlags.AvatarExperienceFlags.FFlagAXSlotsDesktopCrashFix:destroy()
+game:GetService("ReplicatedStorage").Events.AntiSpeed:destroy()
+    end
+})
+
+Tab:AddParagraph("Note:", [[
+Use in private server if u dont wanna get caught and getting banned!
+]])
+
+Tab:AddButton({
+    Name = "Check Type Server",
+    Callback = function()
+        local function detectServerType()
+            -- Method 1: Direct property check
+            if game.PrivateServerId ~= "" then
+                if game.PrivateServerOwnerId ~= 0 then
+                    return "Private Server"
+                else
+                    return "VIP Server"
+                end
+            end
+            
+            -- Method 2: Check via Players service
+            local players = game:GetService("Players")
+            if players:GetAttribute("PrivateServer") then
+                return "Private Server"
+            end
+            
+            -- Method 3: Check job ID pattern (private servers often have longer job IDs)
+            local jobId = game.JobId
+            if jobId and #jobId > 20 then  -- Private server job IDs are typically longer
+                return "Private Server"
+            end
+            
+            -- Method 4: Try to get server details via HTTP if possible
+            local success, result = pcall(function()
+                local httpService = game:GetService("HttpService")
+                -- This might not work due to CORS but worth trying
+                return "Public" -- Fallback
+            end)
+            
+            return "Public Server"
+        end
+        
+        local serverType = detectServerType()
+        
+        OrionLib:MakeNotification({
+            Name = "Server Type",
+            Content = "You are on a " .. serverType,
+            Time = 5
+        })
+        
+        -- Additional debug output
+        warn("Server Detection Debug:")
+        warn("PrivateServerId: " .. tostring(game.PrivateServerId))
+        warn("PrivateServerOwnerId: " .. tostring(game.PrivateServerOwnerId))
+        warn("JobId: " .. tostring(game.JobId))
+        warn("Final Detection: " .. serverType)
+    end
+})
+
+Tab = Window:MakeTab({
+ Name = "Info",
+ Icon = "rbxassetid://7734053426",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Currency/Leaderstats"
+})
+
+CheckCoins = Tab:AddLabel("Check Coins: [ "..game:GetService("Players").LocalPlayer.leaderstats.Coins.Value.." ]")
+CheckBites = Tab:AddLabel("Check Bites: [ "..game:GetService("Players").LocalPlayer.leaderstats.Bites.Value.." ]")
+
+Section = Tab:AddSection({
+ Name = "Others"
+})
+
+InsaenityTracker = Tab:AddLabel("Insaenity Lvl: [ "..workspace["#GAME"].Map._Other.InsaenityTracker.LVL.SurfaceGui.TextLabel.Text.." ]")
+BossTimer = Tab:AddLabel("BOSS Noob in: [ "..workspace["#GAME"].Map._Other.BOSS_Timer.SurfaceGui.TextLabel.Text.." ]")
+
+KillsCountHouse1 = Tab:AddLabel("House 1 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["1"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse2 = Tab:AddLabel("House 2 Kills: [ "..workspace["#GAME"].Map._Other.HouseTrackers["2"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse3 = Tab:AddLabel("House 3 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["3"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse4 = Tab:AddLabel("House 4 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["4"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse5 = Tab:AddLabel("House 5 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["5"].Count.SurfaceGui.TextLabel.Text.." ]")
+
+Section = Tab:AddSection({
+ Name = "Universal"
+})
+
+InfoPlaceName = Tab:AddLabel("Place Name: [ "..gameName.." ]")
+InfoPlaceId = Tab:AddLabel("Place Id: [ "..game.PlaceId.." ]")
+
+ClientVersion = Tab:AddLabel("Client Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ClientVersionLabel.Text.." ]")
+
+ServerVersion = Tab:AddLabel("Server Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ServerVersionLabel.Text.." ]")
+
+ServerChannel = Tab:AddLabel("Server Channel [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ServerChannelLabel.Text.." ]")
+
+PlaceVersion = Tab:AddLabel("Place Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.PlaceVersionLabel.Text.." ]")
+
+ClientCoreScriptVersion = Tab:AddLabel("Client CoreScript Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.CoreScriptVersionLabel.Text.." ]")
+
+local AutoSetInfoServer
+AutoSetInfo = Tab:AddToggle({
+ Name = "Auto Set Info",
+ Default = false,
+ Callback = function(Value)
+_G.AutoSetInfo = Value
+AutoSetInfoServer = game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoSetInfo == true then
+
+CheckCoins:Set("Check Coins: [ "..game:GetService("Players").LocalPlayer.leaderstats.Coins.Value.." ]")
+
+CheckBites:Set("Check Bites: [ "..game:GetService("Players").LocalPlayer.leaderstats.Bites.Value.." ]")
+
+InsaenityTracker:Set("Insaenity Lvl: [ "..workspace["#GAME"].Map._Other.InsaenityTracker.LVL.SurfaceGui.TextLabel.Text.." ]")
+BossTimer:Set("BOSS Noob in: [ "..workspace["#GAME"].Map._Other.BOSS_Timer.SurfaceGui.TextLabel.Text.." ]")
+
+KillsCountHouse1:Set("House 1 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["1"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse2:Set("House 2 Kills: [ "..workspace["#GAME"].Map._Other.HouseTrackers["2"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse3:Set("House 3 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["3"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse4:Set("House 4 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["4"].Count.SurfaceGui.TextLabel.Text.." ]")
+KillsCountHouse5:Set("House 5 Kllls: [ "..workspace["#GAME"].Map._Other.HouseTrackers["5"].Count.SurfaceGui.TextLabel.Text.." ]")
+
+InfoPlaceName:Set("Place Name: [ "..gameName.." ]")
+
+InfoPlaceId:Set("Place Id: [ "..game.PlaceId.." ]")
+
+ClientVersion:Set("Client Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ClientVersionLabel.Text.." ]")
+
+ServerVersion:Set("Server Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ServerVersionLabel.Text.." ]")
+
+ServerChannel:Set("Server Channel [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.ServerChannelLabel.Text.." ]")
+
+PlaceVersion:Set("Place Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.PlaceVersionLabel.Text.." ]")
+
+ClientCoreScriptVersion:Set("Client CoreScript Version [ "..game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.CoreScriptVersionLabel.Text.." ]")
+
+elseif _G.AutoSetInfo == false then
+  if AutoSetInfoServer then
+   AutoSetInfoServer:Disconnect()
+   AutoSetInfoServer = nil
+  end
+end
+end)
+ end
+})
+
+Tab = Window:MakeTab({
+ Name = "Main",
+ Icon = "rbxassetid://7733799901",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Auto Eat Feature"
+})
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+if not LocalPlayer then
+    Players.PlayerAdded:Wait()
+    LocalPlayer = Players.LocalPlayer
+end
+
+local Camera = Workspace.CurrentCamera
+
+-- Performance optimization variables
+local PERFORMANCE_THRESHOLD = 0.033
+local lastPerformanceCheck = 0
+local frameCount = 0
+local currentFPS = 60
+local lastActionTime = 0
+local ACTION_COOLDOWN = 0.01 -- Minimum time between attacks
+
+-- Wait for game folders with timeout
+local gameFolder = Workspace:WaitForChild("#GAME", 10)
+local foldersFolder = gameFolder and gameFolder:WaitForChild("Folders", 5)
+local humanoidFolder = foldersFolder and foldersFolder:WaitForChild("HumanoidFolder", 5)
+local mainFolder = humanoidFolder and humanoidFolder:WaitForChild("NPCFolder", 5)
+
+local eventsFolder = ReplicatedStorage:WaitForChild("Events", 10)
+local remote = eventsFolder and eventsFolder:WaitForChild("MainAttack", 5)
+local clickRemote = eventsFolder and eventsFolder:WaitForChild("Click", 5)
+
+if not mainFolder then
+    warn("Auto Attack: Could not find NPCFolder at expected path.")
+    return
+end
+if not remote then
+    warn("Auto Attack: Could not find MainAttack RemoteEvent.")
+    return
+end
+if not clickRemote then
+    warn("Auto Attack: Could not find Click RemoteEvent.")
+    return
+end
+
+-- Toggle states
+local isActiveAll = false
+local isActiveSmart = false
+local isActiveChoosed = false
+local isActiveDeadNoobs = false
+local selectedCoinType = "Positive Coins"
+-- Auto-click variables
+local isAutoClicking = false
+local autoClickConnection = nil
+
+-- Priority lists
+local priorityNames1 = { "Amethyst", "Ruby", "Emerald", "Diamond", "Golden", "Silver", "Rock" }
+local priorityNames2 = { "Werewolf", "Berend", "Dead" }
+
+-- Coin type filters
+local stinkCoinNames = { "Turd", "Nasty", "Raffie", "Sigmabloxian" }
+local cookieNames = { "Party", "Buoyant", "Delicious", "Primo" }
+
+-- Priority lists in order from highest to lowest priority
+local priorityNames = {
+    "Amethyst",  -- 1 (Highest)
+    "Ruby",      -- 2
+    "Emerald",   -- 3
+    "Diamond",   -- 4
+    "Golden",    -- 5
+    "Silver",    -- 6
+    "Rock",      -- 7
+    "Werewolf"   -- 8 (Lowest)
+}
+
+local function getSmartPriorityTarget(npcList)
+    if not npcList or #npcList == 0 then return nil end
+    
+    -- First pass: Find NPCs in exact priority order (highest to lowest)
+    for _, priorityName in ipairs(priorityNames) do
+        for _, npc in ipairs(npcList) do
+            -- Check if NPC name contains the priority name (like "Amethyst Noob" contains "Amethyst")
+            if string.find(npc.Name, priorityName, 1, true) then
+                return npc
+            end
+        end
+    end
+    
+    -- Second pass: If no priority targets found, return any available target
+    if #npcList > 0 then
+        return npcList[math.random(1, #npcList)]
+    end
+
+    return nil
+end
+
+-- Performance monitoring function
+local function checkPerformance()
+    frameCount = frameCount + 1
+    local currentTime = tick()
+    
+    if currentTime - lastPerformanceCheck >= 1 then
+        currentFPS = frameCount
+        frameCount = 0
+        lastPerformanceCheck = currentTime
+        
+        if currentFPS < 25 then
+            return false
+        end
+    end
+    return true
+end
+
+-- Optimized function to start auto-clicking
+local function startAutoClick()
+    if autoClickConnection then
+        autoClickConnection:Disconnect()
+        autoClickConnection = nil
+    end
+    
+    isAutoClicking = true
+    autoClickConnection = RunService.Heartbeat:Connect(function()
+        if not checkPerformance() then
+            task.wait(0.01)
+            return
+        end
+        clickRemote:FireServer()
+        task.wait(0.01) -- Reduced frequency
+    end)
+end
+
+-- Function to stop auto-clicking
+local function stopAutoClick()
+    isAutoClicking = false
+    if autoClickConnection then
+        autoClickConnection:Disconnect()
+        autoClickConnection = nil
+    end
+end
+
+-- Add Toggle for Auto Eat (For All Type Coins)
+Tab:AddToggle({
+    Name = "Auto Eat (For All Type Coins)",
+    Default = false,
+    Callback = function(Value)
+        isActiveAll = Value
+        if Value then
+            startAutoClick()
+        elseif not isActiveSmart and not isActiveChoosed and not isActiveDeadNoobs then
+            stopAutoClick()
+        end
+    end
+})
+
+-- Add Toggle for Auto Eat (Smart From Value High To Low)
+Tab:AddToggle({
+    Name = "Auto Eat (Smart From Value High To Low)",
+    Default = false,
+    Callback = function(Value)
+        isActiveSmart = Value
+        if Value then
+            startAutoClick()
+        elseif not isActiveAll and not isActiveChoosed and not isActiveDeadNoobs then
+            stopAutoClick()
+        end
+    end
+})
+
+-- Add Dropdown for Coin Type Selection
+Tab:AddDropdown({
+    Name = "Choose Coin Type To Auto Eat",
+    Default = "Positive Coins",
+    Options = {"Positive Coins", "Stink Coins", "Cookies", "King Coins"},
+    Callback = function(Value)
+        selectedCoinType = Value
+    end
+})
+
+-- Add Toggle for Auto Eat (Choosed Type)
+Tab:AddToggle({
+    Name = "Auto Eat (Choosed Type)",
+    Default = false,
+    Callback = function(Value)
+        isActiveChoosed = Value
+        if Value then
+            startAutoClick()
+        elseif not isActiveAll and not isActiveSmart and not isActiveDeadNoobs then
+            stopAutoClick()
+        end
+    end
+})
+
+-- Add Toggle for Auto Eat (Dead Noobs Only)
+Tab:AddToggle({
+    Name = "Auto Eat (Dead Noobs Only)",
+    Default = false,
+    Callback = function(Value)
+        isActiveDeadNoobs = Value
+        if Value then
+            startAutoClick()
+        elseif not isActiveAll and not isActiveSmart and not isActiveChoosed then
+            stopAutoClick()
+        end
+    end
+})
+
+-- Cache for NPC lists to reduce scanning
+local cachedDeadNPCs = {}
+local cachedDeadNoobs = {}
+local lastNPCCacheTime = 0
+local NPC_CACHE_INTERVAL = 0.02 -- Update cache every 2 seconds
+
+-- Optimized function to get dead NPCs with caching
+local function getDeadNPCs()
+    local currentTime = tick()
+    
+    -- Return cached result if still valid
+    if #cachedDeadNPCs > 0 and (currentTime - lastNPCCacheTime) < NPC_CACHE_INTERVAL then
+        return cachedDeadNPCs
+    end
+    
+    local deadList = {}
+    if not mainFolder then 
+        cachedDeadNPCs = deadList
+        return deadList 
+    end
+
+    -- Use pcall to prevent errors from breaking the scan
+    local success = pcall(function()
+        local foldersToCheck = {mainFolder}
+        
+        -- Add the specific path you mentioned
+        local specificPath = Workspace:FindFirstChild("#GAME") and Workspace["#GAME"]:FindFirstChild("Folders") and Workspace["#GAME"].Folders:FindFirstChild("HumanoidFolder") and Workspace["#GAME"].Folders.HumanoidFolder:FindFirstChild("NPCFolder")
+        if specificPath and specificPath ~= mainFolder then
+            table.insert(foldersToCheck, specificPath)
+        end
+
+        for _, folder in ipairs(foldersToCheck) do
+            local npcs = folder:GetChildren()
+            for i = 1, #npcs do
+                local npc = npcs[i]
+                if npc:IsA("Model") then
+                    local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                    -- Check if Humanoid exists AND (Health is 0 or less OR its name contains "Dead")
+                    if humanoid and (humanoid.Health <= 0 or string.find(npc.Name, "Dead", 1, true) or string.find(humanoid.Name, "Dead", 1, true)) then
+                        table.insert(deadList, npc)
+                    end
+                end
+                
+                -- Yield every 20 NPCs to prevent freezing
+                if i % 20 == 0 then
+                    task.wait()
+                end
+            end
+        end
+    end)
+    
+    if not success then
+        warn("Error scanning for dead NPCs")
+    end
+    
+    cachedDeadNPCs = deadList
+    lastNPCCacheTime = currentTime
+    return deadList
+end
+
+-- Optimized function to get dead noob NPCs with caching
+local function getDeadNoobNPCs()
+    local currentTime = tick()
+    
+    -- Return cached result if still valid
+    if #cachedDeadNoobs > 0 and (currentTime - lastNPCCacheTime) < NPC_CACHE_INTERVAL then
+        return cachedDeadNoobs
+    end
+    
+    local deadNoobList = {}
+    if not mainFolder then 
+        cachedDeadNoobs = deadNoobList
+        return deadNoobList 
+    end
+
+    local success = pcall(function()
+        local foldersToCheck = {mainFolder}
+        
+        local specificPath = Workspace:FindFirstChild("#GAME") and Workspace["#GAME"]:FindFirstChild("Folders") and Workspace["#GAME"].Folders:FindFirstChild("HumanoidFolder") and Workspace["#GAME"].Folders.HumanoidFolder:FindFirstChild("NPCFolder")
+        if specificPath and specificPath ~= mainFolder then
+            table.insert(foldersToCheck, specificPath)
+        end
+
+        for _, folder in ipairs(foldersToCheck) do
+            local npcs = folder:GetChildren()
+            for i = 1, #npcs do
+                local npc = npcs[i]
+                if npc:IsA("Model") then
+                    local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                    -- Only target NPCs with "Dead" in their name (case insensitive)
+                    if humanoid and (string.find(npc.Name:lower(), "dead", 1, true)) then
+                        table.insert(deadNoobList, npc)
+                    end
+                end
+                
+                -- Yield every 20 NPCs to prevent freezing
+                if i % 20 == 0 then
+                    task.wait()
+                end
+            end
+        end
+    end)
+    
+    if not success then
+        warn("Error scanning for dead noob NPCs")
+    end
+    
+    cachedDeadNoobs = deadNoobList
+    lastNPCCacheTime = currentTime
+    return deadNoobList
+end
+
+local function getPriorityTarget(npcList)
+    if not npcList or #npcList == 0 then return nil end
+    
+    local function findByPriority(list, keywords)
+        for _, keyword in ipairs(keywords) do
+            for _, npc in ipairs(list) do
+                if npc.Name:find(keyword, 1, true) then
+                    return npc
+                end
+            end
+        end
+        return nil
+    end
+
+    local target = findByPriority(npcList, priorityNames1)
+    if target then return target end
+
+    target = findByPriority(npcList, priorityNames2)
+    if target then return target end
+
+    if #npcList > 0 then
+        return npcList[math.random(1, #npcList)]
+    end
+
+    return nil
+end
+
+local function getSmartPriorityTarget(npcList)
+    if not npcList or #npcList == 0 then return nil end
+    
+    local function findByPriority(list, keywords)
+        for _, keyword in ipairs(keywords) do
+            for _, npc in ipairs(list) do
+                if npc.Name:find(keyword, 1, true) then
+                    return npc
+                end
+            end
+        end
+        return nil
+    end
+
+    -- Check high priority names first
+    local target = findByPriority(npcList, priorityNames1)
+    if target then return target end
+
+    target = findByPriority(npcList, priorityNames2)
+    if target then return target end
+
+    -- If no priority targets found, return any available target
+    if #npcList > 0 then
+        return npcList[math.random(1, #npcList)]
+    end
+
+    return nil
+end
+
+local function getChoosedTypeTarget(npcList, coinType)
+    if not npcList or #npcList == 0 then return nil end
+    
+    if coinType == "Positive Coins" then
+        -- Eat everything except stink coins
+        for _, npc in ipairs(npcList) do
+            local isStinkCoin = false
+            for _, stinkName in ipairs(stinkCoinNames) do
+                if npc.Name:find(stinkName, 1, true) then
+                    isStinkCoin = true
+                    break
+                end
+            end
+            if not isStinkCoin then
+                return npc
+            end
+        end
+        
+    elseif coinType == "Stink Coins" then
+        -- Eat only stink coins
+        for _, npc in ipairs(npcList) do
+            for _, stinkName in ipairs(stinkCoinNames) do
+                if npc.Name:find(stinkName, 1, true) then
+                    return npc
+                end
+            end
+        end
+        
+    elseif coinType == "Cookies" then
+        -- Eat only cookies
+        for _, npc in ipairs(npcList) do
+            for _, cookieName in ipairs(cookieNames) do
+                if npc.Name:find(cookieName, 1, true) then
+                    return npc
+                end
+            end
+        end
+        
+    elseif coinType == "King Coins" then
+        -- Eat only BOSS types
+        for _, npc in ipairs(npcList) do
+            if npc.Name:find("BOSS", 1, true) then
+                return npc
+            end
+        end
+    end
+    
+    return nil
+end
+
+local function getDeadNoobTarget(npcList)
+    if not npcList or #npcList == 0 then return nil end
+    
+    if #npcList > 0 then
+        return npcList[math.random(1, #npcList)]
+    end
+    return nil
+end
+
+-- Optimized function to get valid body parts
+local function getValidBodyParts(model)
+    local validParts = {}
+    
+    local success = pcall(function()
+        for _, part in ipairs(model:GetDescendants()) do
+            if part:IsA("BasePart") then
+                local isGettingEaten = part:GetAttribute("IsGettingEaten")
+                if not isGettingEaten then
+                    table.insert(validParts, part)
+                end
+            end
+            
+            -- Limit scanning to prevent freezing
+            if #validParts >= 5 then
+                break
+            end
+        end
+    end)
+    
+    return validParts
+end
+
+local USE_DEVIATION = true
+local MAX_DEVIATION_STUDS = 0.5
+
+-- Optimized attack function with rate limiting
+local function attackTarget(targetNpc)
+    local currentTime = tick()
+    
+    -- Rate limiting
+    if currentTime - lastActionTime < ACTION_COOLDOWN then
+        return
+    end
+    
+    if not targetNpc or not targetNpc.Parent then return end
+
+    local validParts = getValidBodyParts(targetNpc)
+    if #validParts == 0 then
+        return
+    end
+
+    local bodyPart = validParts[math.random(1, #validParts)]
+
+    local origin = Camera.CFrame.Position
+    local targetPosition = bodyPart.Position
+
+    if USE_DEVIATION and MAX_DEVIATION_STUDS > 0 then
+        local offsetX = (math.random() - 0.5) * 2 * MAX_DEVIATION_STUDS
+        local offsetY = (math.random() - 0.5) * 2 * MAX_DEVIATION_STUDS
+        local offsetZ = (math.random() - 0.5) * 2 * MAX_DEVIATION_STUDS
+        targetPosition = targetPosition + Vector3.new(offsetX, offsetY, offsetZ)
+    end
+
+    local direction = (targetPosition - origin).Unit
+
+    if direction.X ~= direction.X or direction.Y ~= direction.Y or direction.Z ~= direction.Z then
+        direction = Camera.CFrame.LookVector
+    end
+
+    local args = {
+        [1] = {
+            ["AN"] = "Eat",
+            ["D"] = direction,
+            ["O"] = origin,
+            ["FBP"] = bodyPart
+        }
+    }
+    
+    local success = pcall(function()
+        remote:FireServer(unpack(args))
+    end)
+    
+    if success then
+        lastActionTime = currentTime
+    end
+end
+
+-- Main optimized heartbeat loop
+local lastScanTime = 0
+local SCAN_INTERVAL = 0.01 -- Scan every 0.5 seconds instead of every frame
+
+RunService.Heartbeat:Connect(function()
+    -- Performance check
+    if not checkPerformance() then
+        task.wait(0.01)
+        return
+    end
+    
+    local currentTime = tick()
+    
+    -- Only scan for NPCs at intervals to reduce CPU usage
+    if currentTime - lastScanTime < SCAN_INTERVAL then
+        return
+    end
+    
+    lastScanTime = currentTime
+
+    -- Auto Eat (Dead Noobs Only) - Separate check only for dead noobs
+    if isActiveDeadNoobs then
+        local deadNoobList = getDeadNoobNPCs()
+        if #deadNoobList > 0 then
+            local targetNpc = getDeadNoobTarget(deadNoobList)
+            if targetNpc then
+                attackTarget(targetNpc)
+                return
+            end
+        end
+    end
+
+    -- For other modes, use the regular dead NPC list
+    local deadNPCList = getDeadNPCs()
+    if #deadNPCList == 0 then return end
+
+    -- Auto Eat (For All Type Coins)
+    if isActiveAll then
+        local targetNpc = getPriorityTarget(deadNPCList)
+        if targetNpc then
+            attackTarget(targetNpc)
+            return
+        end
+    end
+
+    -- Auto Eat (Smart From Value High To Low)
+    if isActiveSmart then
+        local targetNpc = getSmartPriorityTarget(deadNPCList)
+        if targetNpc then
+            attackTarget(targetNpc)
+            return
+        end
+    end
+
+    -- Auto Eat (Choosed Type)
+    if isActiveChoosed then
+        local targetNpc = getChoosedTypeTarget(deadNPCList, selectedCoinType)
+        if targetNpc then
+            attackTarget(targetNpc)
+            return
+        end
+    end
+end)
+
+-- Memory cleanup function
+local function cleanupMemory()
+    cachedDeadNPCs = {}
+    cachedDeadNoobs = {}
+    collectgarbage()
+end
+
+-- Schedule periodic memory cleanup
+task.spawn(function()
+    while true do
+        task.wait(30)
+        cleanupMemory()
+    end
+end)
+
+Section = Tab:AddSection({
+ Name = "Auto Shoot Feature"
+})
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+-- Wait for game to fully load
+local success, npcFolder = pcall(function()
+    return workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+end)
+
+if not success then
+    warn("Failed to find NPCFolder, script may not work properly")
+    return
+end
+
+-- Global variables with safe defaults
+_G.GunName = "Minigun"
+_G.ShootingSpeed = 6
+_G.AutoShootEnabled = false
+_G.MaxDistance = 1000
+
+-- Safe connection handling
+local connection = nil
+local isRunning = false
+
+-- Tools that require holding instead of spamming
+local HOLD_TOOLS = {
+    "TMG V2",
+    "SMOGGTTLTSG"
+}
+
+-- NPCs to ignore (case insensitive partial matching)
+local IGNORE_NPCS = {
+    "dead",
+    "invincible"
+}
+
+-- Function to safely check if NPC should be ignored
+local function shouldIgnoreNPC(npc)
+    if not npc or not npc:IsA("Model") then
+        return true
+    end
+    
+    local success, result = pcall(function()
+        local npcName = npc.Name:lower()
+        
+        -- Check for Dead and Invincible NPCs (partial matching)
+        for _, ignoreName in ipairs(IGNORE_NPCS) do
+            if string.find(npcName, ignoreName:lower(), 1, true) then
+                return true
+            end
+        end
+        
+        -- Special check for CrackedBas - only ignore if MaxHealth is exactly 500000
+        if string.find(npcName, "crackedbas", 1, true) then
+            local humanoid = npc:FindFirstChildOfClass("Humanoid")
+            if humanoid and humanoid.MaxHealth == 500000 then
+                return true
+            end
+        end
+        
+        return false
+    end)
+    
+    return success and result or false
+end
+
+-- Function to check if tool requires holding
+local function isHoldTool(toolName)
+    for _, holdToolName in ipairs(HOLD_TOOLS) do
+        if toolName == holdToolName then
+            return true
+        end
+    end
+    return false
+end
+
+-- Function to check if using The Eggsterminator
+local function isEggsterminator(toolName)
+    return toolName == "The Eggsterminator"
+end
+
+-- Safe function to get character with error handling
+local function getCharacter()
+    local success, character = pcall(function()
+        local char = Player.Character
+        if not char then
+            return nil
+        end
+        return char
+    end)
+    return success and character or nil
+end
+
+-- Safe function to get The Eggsterminator tool from player's inventory
+local function getEggsterminatorTool()
+    local success, tool = pcall(function()
+        -- First check if player has it equipped
+        local character = getCharacter()
+        if character then
+            local equippedTool = character:FindFirstChild("The Eggsterminator")
+            if equippedTool then
+                return equippedTool
+            end
+        end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            return backpackTool
+        end
+        
+        return nil
+    end)
+    return success and tool or nil
+end
+
+-- Function to equip The Eggsterminator
+local function equipEggsterminator()
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return false end
+        
+        -- Check if already equipped
+        local equippedTool = character:FindFirstChild("The Eggsterminator")
+        if equippedTool then return true end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            backpackTool.Parent = character
+            task.wait(0.01)
+            return true
+        end
+        
+        return false
+    end)
+    
+    if not success then
+        return false
+    end
+    
+    return success
+end
+
+-- Eggsterminator Attack Function
+local function EggsterminatorAttack(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                A = character,
+                AN = "The Eggsterminator",
+                O = head.Position,
+                D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+                T = eggsterminatorTool,
+                SP = head.Position,
+                HP = head.Position,
+                RS = head.Position
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Eggsterminator Explode Function
+local function EggsterminatorExplode(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195),
+                EP = head.Position,
+                T = eggsterminatorTool,
+                AN = "The EggsterminatorExplode",
+                A = character
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe shooting function
+local function FireAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        -- Equip tool if in backpack
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.01)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe hold attack function
+local function HoldAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.01)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position,
+            IsHolding = true,
+            Duration = 0.1
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Variables for timing control
+local lastShootTime = 0
+local isHolding = false
+local holdStartTime = 0
+local currentTarget = nil
+local eggsterminatorPhase = 1
+
+-- Safe function to find nearest target
+local function findNearestTarget(character, maxDistance)
+    local nearestTarget = nil
+    local nearestDistance = maxDistance
+    
+    local success, err = pcall(function()
+        if not character or not character.PrimaryPart then return end
+        
+        for _, npc in ipairs(npcFolder:GetChildren()) do
+            if not isRunning then break end
+            
+            if shouldIgnoreNPC(npc) then
+                continue
+            end
+            
+            local humanoid = npc:FindFirstChildOfClass("Humanoid")
+            local head = npc:FindFirstChild("Head")
+            
+            if humanoid and head and humanoid.Health > 0 then
+                local dist = (character.PrimaryPart.Position - head.Position).Magnitude
+                if dist <= nearestDistance then
+                    nearestDistance = dist
+                    nearestTarget = npc
+                end
+            end
+        end
+    end)
+    
+    return nearestTarget
+end
+
+-- MAIN LOOP FUNCTION
+local function StartLoop()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+    
+    connection = RunService.Heartbeat:Connect(function()
+        if not isRunning then 
+            connection:Disconnect()
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getCharacter()
+        
+        -- CRITICAL FIX: Stop if no character (player is dead)
+        if not character or not character.PrimaryPart then 
+            return 
+        end
+        
+        local gunName = _G.GunName or "Minigun"
+        local maxDistance = _G.MaxDistance or 1000
+        local shootingSpeed = _G.ShootingSpeed or 6
+        local shootInterval = 1 / math.clamp(shootingSpeed, 1, 60)
+        
+        -- Find nearest target with error handling
+        local nearestTarget = findNearestTarget(character, maxDistance)
+        
+        if nearestTarget then
+            if isEggsterminator(gunName) then
+                -- Handle The Eggsterminator with alternating phases
+                if currentTime - lastShootTime >= 0.01 then
+                    if eggsterminatorPhase == 1 then
+                        EggsterminatorAttack(nearestTarget)
+                        eggsterminatorPhase = 2
+                    else
+                        EggsterminatorExplode(nearestTarget)
+                        eggsterminatorPhase = 1
+                    end
+                    lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isHoldTool(gunName)
+                
+                if isHoldWeapon then
+                    if currentTarget ~= nearestTarget then
+                        isHolding = false
+                        currentTarget = nearestTarget
+                    end
+                    
+                    if not isHolding then
+                        isHolding = true
+                        holdStartTime = currentTime
+                        HoldAttack(nearestTarget, gunName)
+                    else
+                        if currentTime - holdStartTime >= shootInterval then
+                            HoldAttack(nearestTarget, gunName)
+                            holdStartTime = currentTime
+                        end
+                    end
+                else
+                    if currentTime - lastShootTime >= shootInterval then
+                        FireAttack(nearestTarget, gunName)
+                        lastShootTime = currentTime
+                    end
+                end
+            end
+        else
+            isHolding = false
+            currentTarget = nil
+            eggsterminatorPhase = 1
+        end
+        
+        task.wait(0.01)
+    end)
+end
+
+-- Safe cleanup function
+local function cleanup()
+    isRunning = false
+    isHolding = false
+    currentTarget = nil
+    eggsterminatorPhase = 1
+    
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
+-- FIXED: Safe character respawn handler
+local function onCharacterRespawn()
+    -- Wait for character to fully load
+    task.wait(1)
+    
+    if _G.AutoShootEnabled then
+        -- Restart auto shoot if it was enabled
+        isRunning = true
+        task.wait(1) -- Additional safety delay
+        StartLoop()
+    end
+end
+
+-- Connect to character added event
+Player.CharacterAdded:Connect(onCharacterRespawn)
+
+-- UI Elements
+Tab:AddTextbox({
+    Name = "Gun Name",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoShootEnabled = Value
+        
+        if Value then
+            isRunning = true
+            -- Reset all states
+            isHolding = false
+            currentTarget = nil
+            lastShootTime = 0
+            eggsterminatorPhase = 1
+            
+            -- Start with delay to ensure character is loaded
+            task.spawn(function()
+                task.wait(1)
+                if isRunning then
+                    StartLoop()
+                end
+            end)
+        else
+            cleanup()
+        end
+    end
+})
+
+Section = Tab:AddSection({
+ Name = "Rest/Others Feature"
+})
+
+-- Variables to manage teleportation
+local isTeleporting = false
+local teleportCoroutine
+
+-- Function to stop the teleport loop
+local function stopTeleporting()
+    isTeleporting = false  -- Stop teleporting
+end
+
+-- Function to teleport the player to a random NPC in the NPCFolder
+local function teleportToRandomNPC()
+    if isTeleporting then return end  -- Prevent starting multiple loops
+
+    isTeleporting = true
+
+    teleportCoroutine = coroutine.create(function()
+        while isTeleporting do
+            local npcFolder = workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+            local npcs = {}
+
+            for _, npc in pairs(npcFolder:GetChildren()) do
+                if npc:IsA("Model") and npc:FindFirstChild("HumanoidRootPart") then
+                    table.insert(npcs, npc)
+                end
+            end
+
+            if #npcs > 0 then
+                local randomNPC = npcs[math.random(1, #npcs)]
+                local npcPosition = randomNPC.HumanoidRootPart.Position
+                local character = game.Players.LocalPlayer.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character:SetPrimaryPartCFrame(CFrame.new(npcPosition + Vector3.new(0, 5, 0))) -- teleport 5 studs above to prevent collision
+                end
+            end
+
+            task.wait(0.2)
+        end
+    end)
+
+    coroutine.resume(teleportCoroutine)
+end
+
+-- Toggle setup
+Tab:AddToggle({
+    Name = "Auto Teleport To Noobs/Werewolfs",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            teleportToRandomNPC()
+        else
+            stopTeleporting()
+        end
+    end
+})
+
+-- Variables to manage auto using the sword
+local isUsingSword = false
+local swordConnection
+
+-- List of all swords to auto use
+local swordList = {
+    "Balloon Sword",
+    "Classic Sword", 
+    "Lamppost",
+    "King Slayer",
+    "Pine Tree",
+    "Soulreaper",
+    "Billboard"
+}
+
+-- Function to start auto using the sword every 0.1 seconds
+local function autoUseSword()
+    if isUsingSword then return end  -- Prevent starting multiple loops
+
+    isUsingSword = true
+
+    swordConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if not character then return end
+
+        -- Check both character and backpack for all swords in the list
+        local foundSword = nil
+        
+        for _, swordName in ipairs(swordList) do
+            local sword = character:FindFirstChild(swordName) or player.Backpack:FindFirstChild(swordName)
+            if sword then
+                foundSword = sword
+                break  -- Use the first sword found
+            end
+        end
+
+        -- If a sword was found, activate it
+        if foundSword then
+            -- Make sure sword is equipped before activating
+            if foundSword.Parent == player.Backpack then
+                foundSword.Parent = character
+            end
+            
+            -- Use mouse event simulation for activation
+            local tool = foundSword
+            if tool:IsA("Tool") then
+                -- Simulate mouse click for tool activation
+                tool:Activate()
+                -- Alternative activation methods
+                pcall(function()
+                    tool:InvokeServer("Activate")
+                end)
+                pcall(function()
+                    -- Try different activation methods
+                    tool:InvokeServer("MouseClick")
+                end)
+                pcall(function()
+                    tool:InvokeServer("Click")
+                end)
+            end
+        end
+    end)
+end
+
+-- Function to stop auto using the sword
+local function stopAutoUsingSword()
+    isUsingSword = false
+    if swordConnection then
+        swordConnection:Disconnect()
+        swordConnection = nil
+    end
+end
+
+Tab:AddToggle({
+    Name = "Auto Use Sword (Auto Equips)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start using the sword if toggle is enabled
+            autoUseSword()
+        else
+            -- Stop the loop if the toggle is disabled
+            stopAutoUsingSword()
+        end
+    end
+})
+
+-- Variables to manage the teleporting state
+local isBringing = false
+local bringCoroutine
+local player = game.Players.LocalPlayer
+
+-- Function to teleport the NPCs to the player in front of them
+local function bringNoobsAndWerewolves()
+    -- Prevent starting multiple loops
+    if isBringing then return end
+    isBringing = true
+
+    bringCoroutine = coroutine.create(function()
+        while isBringing do
+            local character = player.Character
+            if character then
+                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                
+                if humanoidRootPart then
+                    -- Get all models inside NPCFolder
+                    local npcFolder = workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+                    for _, npc in pairs(npcFolder:GetChildren()) do
+                        if npc:IsA("Model") and npc:FindFirstChild("HumanoidRootPart") then
+                            -- Teleport the NPC to a point in front of the player
+                            local direction = humanoidRootPart.CFrame.LookVector  -- Use LookVector to get the forward direction of the player
+                            local newPosition = humanoidRootPart.Position + direction * 10  -- Move NPC 10 studs in front of the player
+
+                            -- Set the new position for the NPC
+                            npc:SetPrimaryPartCFrame(CFrame.new(newPosition))
+                        end
+                    end
+                end
+            end
+
+            -- Wait for 0.01 seconds before repeating the process
+            task.wait(0.01)
+        end
+    end)
+
+    -- Start the loop in a coroutine
+    coroutine.resume(bringCoroutine)
+end
+
+-- Function to stop the teleporting loop
+local function stopBringing()
+    isBringing = false  -- Stop bringing NPCs
+end
+
+-- Function to handle character respawns
+local function onCharacterAdded(character)
+    if isBringing then
+        -- Wait a bit for character to fully load
+        task.wait(0.5)
+        -- Restart the bringing process
+        stopBringing()
+        task.wait(0.1)
+        bringNoobsAndWerewolves()
+    end
+end
+
+-- Connect to character added event
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Assuming Tab is already a part of your UI and has been initialized.
+Tab:AddToggle({
+    Name = "Auto Bring Noobs/Werewolves",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Start teleporting NPCs if the toggle is enabled
+            bringNoobsAndWerewolves()
+        else
+            -- Stop teleporting NPCs if the toggle is disabled
+            stopBringing()
+        end
+    end
+})
+
+Section = Tab:AddSection({
+ Name = "Auto Teleport/Collect/Click Stuff"
+})
+
+-- Egg Collection System (Optimized for Auto Teleport)
+local EggSystem = {
+    Workspace = game:GetService("Workspace"),
+    Players = game:GetService("Players"),
+    RunService = game:GetService("RunService"),
+    VirtualInputManager = game:GetService("VirtualInputManager"),
+    
+    Player = nil,
+    
+    -- Feature toggles
+    isAutoSetHoldDuration = false,
+    isTeleportToEggs = false,
+    isAutoSpamKey = false,
+    
+    -- Threads
+    autoSetHoldDurationThread = nil,
+    teleportToEggsThread = nil,
+    spamKeyThread = nil,
+    
+    -- Performance optimization
+    cachedEggPrompts = {},
+    cachedEggs = {},
+    lastScanTime = 0,
+    SCAN_INTERVAL = 0.1, -- Faster scanning
+    lastTeleportTime = 0,
+    TELEPORT_COOLDOWN = 0.01, -- Very fast cooldown
+    lastPromptTime = 0,
+    PROMPT_COOLDOWN = 0.01,
+    
+    -- Performance monitoring
+    frameCount = 0,
+    lastFPSUpdate = tick(),
+    currentFPS = 60
+}
+
+-- Initialize
+EggSystem.Player = EggSystem.Players.LocalPlayer
+
+-- Function to monitor FPS and adjust performance
+function EggSystem:monitorPerformance()
+    self.frameCount = self.frameCount + 1
+    local currentTime = tick()
+    
+    if currentTime - self.lastFPSUpdate >= 1 then
+        self.currentFPS = self.frameCount
+        self.frameCount = 0
+        self.lastFPSUpdate = currentTime
+        
+        if self.currentFPS < 30 then
+            self.SCAN_INTERVAL = 0.5
+            self.TELEPORT_COOLDOWN = 0.02
+        else
+            self.SCAN_INTERVAL = 0.1
+            self.TELEPORT_COOLDOWN = 0.01
+        end
+    end
+end
+
+-- Function to safely stop threads
+function EggSystem:stopThread(thread)
+    if thread then
+        task.cancel(thread)
+        return nil
+    end
+    return nil
+end
+
+-- Function to check if object is an Egg and still exists
+function EggSystem:isEgg(obj)
+    if not obj or not obj.Parent then
+        return false
+    end
+    
+    local isValidType = obj:IsA("BasePart") or obj:IsA("Model") or obj:IsA("MeshPart")
+    if not isValidType then
+        return false
+    end
+    
+    -- Check if name contains "Egg" (case insensitive)
+    return string.find(obj.Name:lower(), "egg")
+end
+
+-- Function to get valid egg position (checks if egg still exists)
+function EggSystem:getValidEggPosition(egg)
+    if not egg or not egg.Parent then
+        return nil
+    end
+    
+    local success, position = pcall(function()
+        if egg:IsA("Model") then
+            if egg.PrimaryPart and egg.PrimaryPart.Parent then
+                return egg.PrimaryPart.Position
+            else
+                local firstPart = egg:FindFirstChildWhichIsA("BasePart")
+                if firstPart and firstPart.Parent then
+                    return firstPart.Position
+                end
+            end
+        else
+            -- MeshPart or BasePart
+            if egg.Parent then
+                return egg.Position
+            end
+        end
+        return nil
+    end)
+    
+    return success and position or nil
+end
+
+-- FAST function to get fresh eggs from DumpFolder
+function EggSystem:getFreshEggs()
+    self.cachedEggs = {}
+    
+    local dumpFolder = self.Workspace:FindFirstChild("#GAME") and 
+                      self.Workspace["#GAME"]:FindFirstChild("Folders") and 
+                      self.Workspace["#GAME"].Folders:FindFirstChild("DumpFolder")
+    
+    if dumpFolder then
+        -- Fast scan through all children
+        for _, egg in pairs(dumpFolder:GetChildren()) do
+            if self:isEgg(egg) then
+                local position = self:getValidEggPosition(egg)
+                if position then
+                    table.insert(self.cachedEggs, {
+                        object = egg,
+                        position = position
+                    })
+                end
+            end
+        end
+    end
+    
+    self.lastScanTime = tick()
+    return self.cachedEggs
+end
+
+-- OPTIMIZED: Function to get ProximityPrompts without lag
+function EggSystem:getEggProximityPrompts()
+    local currentTime = tick()
+    
+    -- Only rescan if cache is empty or enough time has passed
+    if #self.cachedEggPrompts == 0 or (currentTime - self.lastScanTime) > 5.0 then -- Increased to 5 seconds
+        self.cachedEggPrompts = {}
+        
+        -- Only scan DumpFolder (removed workspace scan to reduce lag)
+        local dumpFolder = self.Workspace:FindFirstChild("#GAME") and 
+                          self.Workspace["#GAME"]:FindFirstChild("Folders") and 
+                          self.Workspace["#GAME"].Folders:FindFirstChild("DumpFolder")
+        
+        if dumpFolder then
+            -- Limit scanning to prevent lag
+            local scanCount = 0
+            for _, egg in pairs(dumpFolder:GetChildren()) do
+                if scanCount > 50 then break end -- Safety limit
+                
+                if self:isEgg(egg) then
+                    -- Only check first few descendants to prevent lag
+                    local prompt = egg:FindFirstChildWhichIsA("ProximityPrompt")
+                    if prompt and prompt.Parent then
+                        table.insert(self.cachedEggPrompts, prompt)
+                    else
+                        -- Quick check for prompts in descendants (limited)
+                        local descendants = egg:GetDescendants()
+                        for i = 1, math.min(10, #descendants) do -- Limit to 10 descendants
+                            local descendant = descendants[i]
+                            if descendant:IsA("ProximityPrompt") then
+                                table.insert(self.cachedEggPrompts, descendant)
+                                break -- Only need one prompt per egg
+                            end
+                        end
+                    end
+                    scanCount = scanCount + 1
+                end
+            end
+        end
+        
+        self.lastScanTime = currentTime
+    end
+    
+    return self.cachedEggPrompts
+end
+
+-- OPTIMIZED: Function to auto set ProximityPrompts without lag
+function EggSystem:autoSetHoldDuration()
+    while self.isAutoSetHoldDuration do
+        -- Only process if we have prompts
+        local eggPrompts = self:getEggProximityPrompts()
+        
+        if #eggPrompts > 0 then
+            -- Process prompts in batches to prevent lag
+            local processed = 0
+            for _, prompt in ipairs(eggPrompts) do
+                if not self.isAutoSetHoldDuration then break end
+                
+                if prompt and prompt.Parent then
+                    -- Only update if needed (reduces unnecessary operations)
+                    if prompt.HoldDuration ~= 0 then
+                        prompt.HoldDuration = 0
+                    end
+                    if not prompt.Enabled then
+                        prompt.Enabled = true
+                    end
+                    if prompt.RequiresLineOfSight then
+                        prompt.RequiresLineOfSight = false
+                    end
+                    
+                    processed = processed + 1
+                    -- Small yield every 10 prompts to prevent freezing
+                    if processed % 10 == 0 then
+                        task.wait()
+                    end
+                end
+            end
+        end
+        
+        -- Much longer wait between scans to reduce CPU usage
+        task.wait(3.0) -- Increased from 0.1 to 3.0 seconds
+    end
+end
+
+-- ULTRA FAST: Function to teleport to eggs - optimized for AFK farming
+function EggSystem:teleportToEggs()
+    while self.isTeleportToEggs do
+        local currentTime = tick()
+        
+        -- No cooldown check - teleport as fast as possible
+        local character = self.Player.Character
+        if not character then
+            task.wait(0.1)
+            continue
+        end
+        
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            task.wait(0.1)
+            continue
+        end
+        
+        -- Get fresh eggs every time
+        local eggs = self:getFreshEggs()
+        
+        if #eggs > 0 then
+            -- Find the closest valid egg
+            local closestEgg = nil
+            local closestDistance = math.huge
+            
+            for _, eggData in ipairs(eggs) do
+                if not self.isTeleportToEggs then break end
+                
+                -- Quick check if egg still exists
+                if eggData.object and eggData.object.Parent then
+                    local freshPosition = self:getValidEggPosition(eggData.object)
+                    if freshPosition then
+                        local distance = (humanoidRootPart.Position - freshPosition).Magnitude
+                        if distance < closestDistance then
+                            closestDistance = distance
+                            closestEgg = eggData
+                        end
+                    end
+                end
+            end
+            
+            if closestEgg then
+                -- Instant teleport to the closest egg
+                local success = pcall(function()
+                    humanoidRootPart.CFrame = CFrame.new(closestEgg.position + Vector3.new(0, 3, 0))
+                end)
+                
+                if not success then
+                    -- If teleport failed, tiny wait
+                    task.wait(0.01)
+                end
+            end
+        end
+        
+        -- Minimal wait between scans
+        task.wait(0.01)
+    end
+end
+
+-- Function to auto spam E key
+function EggSystem:autoSpamKey()
+    while self.isAutoSpamKey do
+        if self.isAutoSpamKey then
+            self.VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+            task.wait(0.01)
+            self.VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+            task.wait(0.01)
+        end
+    end
+end
+
+-- Function to restart all active features after respawn
+function EggSystem:restartFeatures()
+    -- Minimal wait for character to load
+    task.wait(1.0)
+    
+    -- Clear cache on respawn
+    self.cachedEggPrompts = {}
+    self.cachedEggs = {}
+    self.lastScanTime = 0
+    
+    -- Restart features if they were active
+    if self.isAutoSetHoldDuration then
+        self.autoSetHoldDurationThread = self:stopThread(self.autoSetHoldDurationThread)
+        task.wait(0.5) -- Small delay before restarting
+        self.autoSetHoldDurationThread = task.spawn(function()
+            self:autoSetHoldDuration()
+        end)
+    end
+    
+    if self.isTeleportToEggs then
+        self.teleportToEggsThread = self:stopThread(self.teleportToEggsThread)
+        task.wait(0.5) -- Small delay before restarting
+        self.teleportToEggsThread = task.spawn(function()
+            self:teleportToEggs()
+        end)
+    end
+    
+    if self.isAutoSpamKey then
+        self.spamKeyThread = self:stopThread(self.spamKeyThread)
+        task.wait(0.5) -- Small delay before restarting
+        self.spamKeyThread = task.spawn(function()
+            self:autoSpamKey()
+        end)
+    end
+end
+
+-- Connect to character added event for respawn handling
+EggSystem.Player.CharacterAdded:Connect(function(character)
+    EggSystem:restartFeatures()
+end)
+
+-- OPTIMIZED: Function to auto set ProximityPrompts without lag
+function EggSystem:autoSetHoldDuration()
+    while self.isAutoSetHoldDuration do
+        -- Get fresh prompts every time to ensure we catch new eggs
+        local eggPrompts = self:getEggProximityPrompts()
+        
+        if #eggPrompts > 0 then
+            -- Process prompts in batches to prevent lag
+            local processed = 0
+            for _, prompt in ipairs(eggPrompts) do
+                if not self.isAutoSetHoldDuration then break end
+                
+                -- Check if prompt and its parent still exist
+                if prompt and prompt.Parent then
+                    -- Always update to ensure it's set to 0 (no condition checks)
+                    prompt.HoldDuration = 0
+                    prompt.Enabled = true
+                    prompt.RequiresLineOfSight = false
+                    
+                    processed = processed + 1
+                    -- Small yield every 5 prompts to prevent freezing but still be fast
+                    if processed % 5 == 0 then
+                        task.wait()
+                    end
+                end
+            end
+        end
+        
+        -- Shorter wait between scans to catch new eggs faster
+        task.wait(0.5) -- Reduced from 3.0 to 0.5 seconds
+    end
+end
+
+-- ULTRA FAST: Function to get ProximityPrompts with better caching
+function EggSystem:getEggProximityPrompts()
+    self.cachedEggPrompts = {}
+    
+    -- Only scan DumpFolder
+    local dumpFolder = self.Workspace:FindFirstChild("#GAME") and 
+                      self.Workspace["#GAME"]:FindFirstChild("Folders") and 
+                      self.Workspace["#GAME"].Folders:FindFirstChild("DumpFolder")
+    
+    if dumpFolder then
+        -- Scan all eggs in dump folder
+        for _, egg in pairs(dumpFolder:GetChildren()) do
+            if self:isEgg(egg) then
+                -- Check for prompts on the egg itself
+                local prompt = egg:FindFirstChildWhichIsA("ProximityPrompt")
+                if prompt and prompt.Parent then
+                    table.insert(self.cachedEggPrompts, prompt)
+                else
+                    -- Check descendants for prompts (limited to prevent lag)
+                    for _, descendant in ipairs(egg:GetDescendants()) do
+                        if descendant:IsA("ProximityPrompt") then
+                            table.insert(self.cachedEggPrompts, descendant)
+                            break -- Only need one prompt per egg
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    self.lastScanTime = tick()
+    return self.cachedEggPrompts
+end
+
+-- Improved toggle with better error handling
+Tab:AddToggle({
+    Name = "Auto Set Instant CD To Eggs (No Lag)",
+    Default = false,
+    Callback = function(Value)
+        EggSystem.isAutoSetHoldDuration = Value
+        if Value then
+            -- Clear cache and start immediately
+            EggSystem.cachedEggPrompts = {}
+            EggSystem.lastScanTime = 0
+            
+            -- Force one immediate scan
+            EggSystem:getEggProximityPrompts()
+            
+            EggSystem.autoSetHoldDurationThread = task.spawn(function()
+                EggSystem:autoSetHoldDuration()
+            end)
+            OrionLib:MakeNotification({
+                Name = "Instant CD",
+                Content = "Instant Cooldown Enabled - Scanning every 0.5s",
+                Time = 3
+            })
+        else
+            if EggSystem.autoSetHoldDurationThread then
+                EggSystem:stopThread(EggSystem.autoSetHoldDurationThread)
+                EggSystem.autoSetHoldDurationThread = nil
+            end
+            OrionLib:MakeNotification({
+                Name = "Instant CD",
+                Content = "Instant Cooldown Disabled",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Eggs (AFK Farm)",
+    Default = false,
+    Callback = function(Value)
+        EggSystem.isTeleportToEggs = Value
+        if Value then
+            EggSystem.teleportToEggsThread = task.spawn(function()
+                EggSystem:teleportToEggs()
+            end)
+            OrionLib:MakeNotification({
+                Name = "Egg Teleport",
+                Content = "Auto Teleport to Eggs Enabled - AFK Farming Active",
+                Time = 3
+            })
+        else
+            EggSystem.teleportToEggsThread = EggSystem:stopThread(EggSystem.teleportToEggsThread)
+            OrionLib:MakeNotification({
+                Name = "Egg Teleport",
+                Content = "Auto Teleport to Eggs Disabled",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Spam E Key",
+    Default = false,
+    Callback = function(Value)
+        EggSystem.isAutoSpamKey = Value
+        if Value then
+            EggSystem.spamKeyThread = task.spawn(function()
+                EggSystem:autoSpamKey()
+            end)
+        else
+            EggSystem.spamKeyThread = EggSystem:stopThread(EggSystem.spamKeyThread)
+        end
+    end
+})
+
+-- Egg Spawn Notifier
+local EggNotifier = {
+    enabled = false,
+    connection = nil,
+    detectedEggs = {}
+}
+
+-- Function to check if object is an Egg
+EggNotifier.isEgg = function(obj)
+    if not obj or not obj.Parent then
+        return false
+    end
+    
+    local isValidType = obj:IsA("BasePart") or obj:IsA("Model") or obj:IsA("MeshPart")
+    if not isValidType then
+        return false
+    end
+    
+    -- Check if name contains "Egg" (case insensitive)
+    return string.find(obj.Name:lower(), "egg")
+end
+
+-- Function to handle new descendants
+EggNotifier.onDescendantAdded = function(descendant)
+    if not EggNotifier.enabled then return end
+    
+    if EggNotifier.isEgg(descendant) then
+        local eggName = descendant.Name
+        local eggId = tostring(descendant:GetFullName())
+        
+        -- Check if we've already detected this egg
+        if not EggNotifier.detectedEggs[eggId] then
+            EggNotifier.detectedEggs[eggId] = true
+            
+            -- Send notification
+            OrionLib:MakeNotification({
+                Name = "Egg Spawned!",
+                Content = eggName .. " has spawned!",
+                Image = "rbxassetid://7734059095", -- You can change this icon
+                Time = 5
+            })
+            
+            -- Optional: Print to console for debugging
+            warn("EGG SPAWNED: " .. eggName .. " at " .. tostring(descendant:GetFullName()))
+        end
+    end
+end
+
+-- Function to start egg spawn detection
+EggNotifier.startDetection = function()
+    if EggNotifier.connection then
+        EggNotifier.connection:Disconnect()
+    end
+    
+    -- Clear previous detections
+    EggNotifier.detectedEggs = {}
+    
+    -- Connect to descendant added event
+    EggNotifier.connection = workspace.DescendantAdded:Connect(EggNotifier.onDescendantAdded)
+    
+    -- Also check for existing eggs when starting
+    task.spawn(function()
+        task.wait(1) -- Wait a bit for game to load
+        
+        local dumpFolder = workspace:FindFirstChild("#GAME") and 
+                          workspace["#GAME"]:FindFirstChild("Folders") and 
+                          workspace["#GAME"].Folders:FindFirstChild("DumpFolder")
+        
+        if dumpFolder then
+            for _, egg in pairs(dumpFolder:GetChildren()) do
+                if EggNotifier.isEgg(egg) then
+                    local eggId = tostring(egg:GetFullName())
+                    if not EggNotifier.detectedEggs[eggId] then
+                        EggNotifier.detectedEggs[eggId] = true
+                        OrionLib:MakeNotification({
+                            Name = "Egg Detected",
+                            Content = egg.Name .. " already exists!",
+                            Image = "rbxassetid://7734059095",
+                            Time = 3
+                        })
+                    end
+                end
+            end
+        end
+    end)
+end
+
+-- Function to stop egg spawn detection
+EggNotifier.stopDetection = function()
+    if EggNotifier.connection then
+        EggNotifier.connection:Disconnect()
+        EggNotifier.connection = nil
+    end
+    EggNotifier.detectedEggs = {}
+end
+
+-- Add the toggle to your tab
+Tab:AddToggle({
+    Name = "Auto Notify Spawned Egg",
+    Default = false,
+    Callback = function(Value)
+        EggNotifier.enabled = Value
+        
+        if Value then
+            EggNotifier.startDetection()
+            OrionLib:MakeNotification({
+                Name = "Egg Notifier",
+                Content = "Egg spawn notifications enabled!",
+                Time = 3
+            })
+        else
+            EggNotifier.stopDetection()
+            OrionLib:MakeNotification({
+                Name = "Egg Notifier",
+                Content = "Egg spawn notifications disabled!",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Optional: Add a button to manually check for eggs
+Tab:AddButton({
+    Name = "Check For Existing Eggs",
+    Callback = function()
+        local eggCount = 0
+        local dumpFolder = workspace:FindFirstChild("#GAME") and 
+                          workspace["#GAME"]:FindFirstChild("Folders") and 
+                          workspace["#GAME"].Folders:FindFirstChild("DumpFolder")
+        
+        if dumpFolder then
+            for _, egg in pairs(dumpFolder:GetChildren()) do
+                if EggNotifier.isEgg(egg) then
+                    eggCount = eggCount + 1
+                end
+            end
+        end
+        
+        OrionLib:MakeNotification({
+            Name = "Egg Check",
+            Content = "Found " .. eggCount .. " eggs in DumpFolder",
+            Time = 3
+        })
+    end
+})
+
+-- Optional: Add a button to clear egg detection history
+Tab:AddButton({
+    Name = "Clear Egg Detection History",
+    Callback = function()
+        EggNotifier.detectedEggs = {}
+        OrionLib:MakeNotification({
+            Name = "Egg Notifier",
+            Content = "Egg detection history cleared!",
+            Time = 3
+        })
+    end
+})
+
+Tab = Window:MakeTab({
+ Name = "Badges",
+ Icon = "rbxassetid://7733673987",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Secret Badge 1"
+})
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+-- Wait for game to fully load
+local success, npcFolder = pcall(function()
+    return workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+end)
+
+if not success then
+    warn("Failed to find NPCFolder, script may not work properly")
+    return
+end
+
+-- Global variables with safe defaults
+_G.GunName = "Minigun"
+_G.ShootingSpeed = 6
+_G.AutoShootEnabled = false
+_G.MaxDistance = 1000
+
+-- Safe connection handling
+local connection = nil
+local isRunning = false
+
+-- Tools that require holding instead of spamming
+local HOLD_TOOLS = {
+    "TMG V2",
+    "SMOGGTTLTSG"
+}
+
+-- Function to check if tool requires holding
+local function isHoldTool(toolName)
+    for _, holdToolName in ipairs(HOLD_TOOLS) do
+        if toolName == holdToolName then
+            return true
+        end
+    end
+    return false
+end
+
+-- Function to check if using The Eggsterminator
+local function isEggsterminator(toolName)
+    return toolName == "The Eggsterminator"
+end
+
+-- Safe function to get character with error handling
+local function getCharacter()
+    local success, character = pcall(function()
+        local char = Player.Character
+        if not char then
+            return nil
+        end
+        return char
+    end)
+    return success and character or nil
+end
+
+-- Safe function to get The Eggsterminator tool from player's inventory
+local function getEggsterminatorTool()
+    local success, tool = pcall(function()
+        -- First check if player has it equipped
+        local character = getCharacter()
+        if character then
+            local equippedTool = character:FindFirstChild("The Eggsterminator")
+            if equippedTool then
+                return equippedTool
+            end
+        end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            return backpackTool
+        end
+        
+        return nil
+    end)
+    return success and tool or nil
+end
+
+-- Function to equip The Eggsterminator
+local function equipEggsterminator()
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return false end
+        
+        -- Check if already equipped
+        local equippedTool = character:FindFirstChild("The Eggsterminator")
+        if equippedTool then return true end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            backpackTool.Parent = character
+            task.wait(0.2)
+            return true
+        end
+        
+        return false
+    end)
+    
+    if not success then
+        return false
+    end
+    
+    return success
+end
+
+-- Eggsterminator Attack Function
+local function EggsterminatorAttack(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                A = character,
+                AN = "The Eggsterminator",
+                O = head.Position,
+                D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+                T = eggsterminatorTool,
+                SP = head.Position,
+                HP = head.Position,
+                RS = head.Position
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Eggsterminator Explode Function
+local function EggsterminatorExplode(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195),
+                EP = head.Position,
+                T = eggsterminatorTool,
+                AN = "The EggsterminatorExplode",
+                A = character
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe shooting function
+local function FireAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        -- Equip tool if in backpack
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.1)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe hold attack function
+local function HoldAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.1)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position,
+            IsHolding = true,
+            Duration = 0.1
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Variables for timing control
+local lastShootTime = 0
+local isHolding = false
+local holdStartTime = 0
+local currentTarget = nil
+local eggsterminatorPhase = 1
+
+-- MODIFIED: Safe function to find ONLY CrackedBas target
+local function findCrackedBasTarget(character, maxDistance)
+    local crackedBasTarget = nil
+    local closestDistance = maxDistance
+    
+    local success, err = pcall(function()
+        if not character or not character.PrimaryPart then return end
+        
+        for _, npc in ipairs(npcFolder:GetChildren()) do
+            if not isRunning then break end
+            
+            -- ONLY target models named "CrackedBas" (case sensitive)
+            if npc:IsA("Model") and npc.Name == "CrackedBas" then
+                local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                local head = npc:FindFirstChild("Head")
+                
+                if humanoid and head and humanoid.Health > 0 then
+                    local dist = (character.PrimaryPart.Position - head.Position).Magnitude
+                    if dist <= closestDistance then
+                        closestDistance = dist
+                        crackedBasTarget = npc
+                    end
+                end
+            end
+        end
+    end)
+    
+    return crackedBasTarget
+end
+
+-- MAIN LOOP FUNCTION
+local function StartLoop()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+    
+    connection = RunService.Heartbeat:Connect(function()
+        if not isRunning then 
+            connection:Disconnect()
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getCharacter()
+        
+        -- CRITICAL FIX: Stop if no character (player is dead)
+        if not character or not character.PrimaryPart then 
+            return 
+        end
+        
+        local gunName = _G.GunName or "Minigun"
+        local maxDistance = _G.MaxDistance or 1000
+        local shootingSpeed = _G.ShootingSpeed or 6
+        local shootInterval = 1 / math.clamp(shootingSpeed, 1, 60)
+        
+        -- Find ONLY CrackedBas target
+        local crackedBasTarget = findCrackedBasTarget(character, maxDistance)
+        
+        if crackedBasTarget then
+            if isEggsterminator(gunName) then
+                -- Handle The Eggsterminator with alternating phases
+                if currentTime - lastShootTime >= 0.01 then
+                    if eggsterminatorPhase == 1 then
+                        EggsterminatorAttack(crackedBasTarget)
+                        eggsterminatorPhase = 2
+                    else
+                        EggsterminatorExplode(crackedBasTarget)
+                        eggsterminatorPhase = 1
+                    end
+                    lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isHoldTool(gunName)
+                
+                if isHoldWeapon then
+                    if currentTarget ~= crackedBasTarget then
+                        isHolding = false
+                        currentTarget = crackedBasTarget
+                    end
+                    
+                    if not isHolding then
+                        isHolding = true
+                        holdStartTime = currentTime
+                        HoldAttack(crackedBasTarget, gunName)
+                    else
+                        if currentTime - holdStartTime >= shootInterval then
+                            HoldAttack(crackedBasTarget, gunName)
+                            holdStartTime = currentTime
+                        end
+                    end
+                else
+                    if currentTime - lastShootTime >= shootInterval then
+                        FireAttack(crackedBasTarget, gunName)
+                        lastShootTime = currentTime
+                    end
+                end
+            end
+        else
+            isHolding = false
+            currentTarget = nil
+            eggsterminatorPhase = 1
+        end
+        
+        task.wait(0.01)
+    end)
+end
+
+-- Safe cleanup function
+local function cleanup()
+    isRunning = false
+    isHolding = false
+    currentTarget = nil
+    eggsterminatorPhase = 1
+    
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
+-- FIXED: Safe character respawn handler
+local function onCharacterRespawn()
+    -- Wait for character to fully load
+    task.wait(2)
+    
+    if _G.AutoShootEnabled then
+        -- Restart auto shoot if it was enabled
+        isRunning = true
+        task.wait(1) -- Additional safety delay
+        StartLoop()
+    end
+end
+
+-- Connect to character added event
+Player.CharacterAdded:Connect(onCharacterRespawn)
+
+-- UI Elements
+Tab:AddTextbox({
+    Name = "Gun Name",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot (CrackedBas Only)",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoShootEnabled = Value
+        
+        if Value then
+            isRunning = true
+            -- Reset all states
+            isHolding = false
+            currentTarget = nil
+            lastShootTime = 0
+            eggsterminatorPhase = 1
+            
+            -- Start with delay to ensure character is loaded
+            task.spawn(function()
+                task.wait(1)
+                if isRunning then
+                    StartLoop()
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Shoot",
+                Content = "Auto Shooting CrackedBas Only - Enabled",
+                Time = 3
+            })
+        else
+            cleanup()
+            OrionLib:MakeNotification({
+                Name = "Auto Shoot",
+                Content = "Auto Shooting CrackedBas Only - Disabled",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Room (Make Sure Bas From Chair Is Killed)",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map._Other.Shop.ShopPictureFrame.Back.ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To WhiteBas",
+    Callback = function()
+        local function findWhiteBas()
+            -- Search in NPCFolder first
+            local npcFolder = workspace:FindFirstChild("#GAME") and 
+                             workspace["#GAME"]:FindFirstChild("Folders") and 
+                             workspace["#GAME"].Folders:FindFirstChild("HumanoidFolder") and 
+                             workspace["#GAME"].Folders.HumanoidFolder:FindFirstChild("NPCFolder")
+            
+            if npcFolder then
+                local whiteBas = npcFolder:FindFirstChild("WhiteBas")
+                if whiteBas then
+                    return whiteBas
+                end
+            end
+            
+            -- Search in entire workspace as backup
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "WhiteBas" then
+                    return obj
+                end
+            end
+            
+            return nil
+        end
+        
+        local whiteBas = findWhiteBas()
+        local character = game.Players.LocalPlayer.Character
+        
+        if whiteBas and character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            local whiteBasPosition = whiteBas:GetPrimaryPartCFrame().Position
+            
+            if humanoidRootPart and whiteBasPosition then
+                humanoidRootPart.CFrame = CFrame.new(whiteBasPosition + Vector3.new(0, 5, 0))
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Successfully teleported to WhiteBas!",
+                    Time = 3
+                })
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Failed to find position for teleport",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Teleport",
+                Content = "WhiteBas not found in the game!",
+                Time = 3
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+ Name = "Super Secret Badge 1"
+})
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+-- Wait for game to fully load
+local success, npcFolder = pcall(function()
+    return workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+end)
+
+if not success then
+    warn("Failed to find NPCFolder, script may not work properly")
+    return
+end
+
+-- Global variables with safe defaults
+_G.GunName = "Minigun"
+_G.ShootingSpeed = 6
+_G.AutoShootEnabled = false
+_G.MaxDistance = 1000
+
+-- Safe connection handling
+local connection = nil
+local isRunning = false
+
+-- Tools that require holding instead of spamming
+local HOLD_TOOLS = {
+    "TMG V2",
+    "SMOGGTTLTSG"
+}
+
+-- Function to check if tool requires holding
+local function isHoldTool(toolName)
+    for _, holdToolName in ipairs(HOLD_TOOLS) do
+        if toolName == holdToolName then
+            return true
+        end
+    end
+    return false
+end
+
+-- Function to check if using The Eggsterminator
+local function isEggsterminator(toolName)
+    return toolName == "The Eggsterminator"
+end
+
+-- Safe function to get character with error handling
+local function getCharacter()
+    local success, character = pcall(function()
+        local char = Player.Character
+        if not char then
+            return nil
+        end
+        return char
+    end)
+    return success and character or nil
+end
+
+-- Safe function to get The Eggsterminator tool from player's inventory
+local function getEggsterminatorTool()
+    local success, tool = pcall(function()
+        -- First check if player has it equipped
+        local character = getCharacter()
+        if character then
+            local equippedTool = character:FindFirstChild("The Eggsterminator")
+            if equippedTool then
+                return equippedTool
+            end
+        end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            return backpackTool
+        end
+        
+        return nil
+    end)
+    return success and tool or nil
+end
+
+-- Function to equip The Eggsterminator
+local function equipEggsterminator()
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return false end
+        
+        -- Check if already equipped
+        local equippedTool = character:FindFirstChild("The Eggsterminator")
+        if equippedTool then return true end
+        
+        -- Check backpack
+        local backpackTool = Player.Backpack:FindFirstChild("The Eggsterminator")
+        if backpackTool then
+            backpackTool.Parent = character
+            task.wait(0.2)
+            return true
+        end
+        
+        return false
+    end)
+    
+    if not success then
+        return false
+    end
+    
+    return success
+end
+
+-- Eggsterminator Attack Function
+local function EggsterminatorAttack(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                A = character,
+                AN = "The Eggsterminator",
+                O = head.Position,
+                D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+                T = eggsterminatorTool,
+                SP = head.Position,
+                HP = head.Position,
+                RS = head.Position
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Eggsterminator Explode Function
+local function EggsterminatorExplode(target)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        -- Ensure Eggsterminator is equipped
+        if not equipEggsterminator() then
+            return
+        end
+        
+        local eggsterminatorTool = character:FindFirstChild("The Eggsterminator")
+        if not eggsterminatorTool then return end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {
+            {
+                ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195),
+                EP = head.Position,
+                T = eggsterminatorTool,
+                AN = "The EggsterminatorExplode",
+                A = character
+            }
+        }
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe shooting function
+local function FireAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        -- Equip tool if in backpack
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.1)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Safe hold attack function
+local function HoldAttack(target, gunName)
+    local success, err = pcall(function()
+        local character = getCharacter()
+        if not character then return end
+        
+        local gunTool = character:FindFirstChild(gunName) or Player.Backpack:FindFirstChild(gunName)
+        if not gunTool then return end
+        
+        if gunTool.Parent == Player.Backpack then
+            gunTool.Parent = character
+            task.wait(0.1)
+        end
+        
+        local head = target:FindFirstChild("Head")
+        if not head then return end
+        
+        local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+        if not primaryPart then return end
+        
+        local mainAttackEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MainAttack")
+        
+        local args = {{
+            FD = head.Position,
+            SD = Vector3.new(),
+            FO = primaryPart.Position + Vector3.new(0, 1.5, 0),
+            T = gunTool,
+            AN = gunName,
+            H = head,
+            BM = 22.15,
+            RP = primaryPart.Position,
+            HP = head.Position,
+            SP = head.Position,
+            IsHolding = true,
+            Duration = 0.1
+        }}
+        
+        mainAttackEvent:FireServer(unpack(args))
+    end)
+end
+
+-- Variables for timing control
+local lastShootTime = 0
+local isHolding = false
+local holdStartTime = 0
+local currentTarget = nil
+local eggsterminatorPhase = 1
+
+-- MODIFIED: Safe function to find ONLY CrackedBas and WhiteBas targets
+local function findTargetBas(character, maxDistance)
+    local targetBas = nil
+    local closestDistance = maxDistance
+    
+    local success, err = pcall(function()
+        if not character or not character.PrimaryPart then return end
+        
+        for _, npc in ipairs(npcFolder:GetChildren()) do
+            if not isRunning then break end
+            
+            -- ONLY target models named "CrackedBas" or "WhiteBas" (case sensitive)
+            if npc:IsA("Model") and (npc.Name == "CrackedBas" or npc.Name == "WhiteBas") then
+                local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                local head = npc:FindFirstChild("Head")
+                
+                if humanoid and head and humanoid.Health > 0 then
+                    local dist = (character.PrimaryPart.Position - head.Position).Magnitude
+                    if dist <= closestDistance then
+                        closestDistance = dist
+                        targetBas = npc
+                    end
+                end
+            end
+        end
+    end)
+    
+    return targetBas
+end
+
+-- MAIN LOOP FUNCTION
+local function StartLoop()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+    
+    connection = RunService.Heartbeat:Connect(function()
+        if not isRunning then 
+            connection:Disconnect()
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getCharacter()
+        
+        -- CRITICAL FIX: Stop if no character (player is dead)
+        if not character or not character.PrimaryPart then 
+            return 
+        end
+        
+        local gunName = _G.GunName or "Minigun"
+        local maxDistance = _G.MaxDistance or 1000
+        local shootingSpeed = _G.ShootingSpeed or 6
+        local shootInterval = 1 / math.clamp(shootingSpeed, 1, 60)
+        
+        -- Find CrackedBas or WhiteBas target
+        local targetBas = findTargetBas(character, maxDistance)
+        
+        if targetBas then
+            if isEggsterminator(gunName) then
+                -- Handle The Eggsterminator with alternating phases
+                if currentTime - lastShootTime >= 0.01 then
+                    if eggsterminatorPhase == 1 then
+                        EggsterminatorAttack(targetBas)
+                        eggsterminatorPhase = 2
+                    else
+                        EggsterminatorExplode(targetBas)
+                        eggsterminatorPhase = 1
+                    end
+                    lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isHoldTool(gunName)
+                
+                if isHoldWeapon then
+                    if currentTarget ~= targetBas then
+                        isHolding = false
+                        currentTarget = targetBas
+                    end
+                    
+                    if not isHolding then
+                        isHolding = true
+                        holdStartTime = currentTime
+                        HoldAttack(targetBas, gunName)
+                    else
+                        if currentTime - holdStartTime >= shootInterval then
+                            HoldAttack(targetBas, gunName)
+                            holdStartTime = currentTime
+                        end
+                    end
+                else
+                    if currentTime - lastShootTime >= shootInterval then
+                        FireAttack(targetBas, gunName)
+                        lastShootTime = currentTime
+                    end
+                end
+            end
+        else
+            isHolding = false
+            currentTarget = nil
+            eggsterminatorPhase = 1
+        end
+        
+        task.wait(0.01)
+    end)
+end
+
+-- Safe cleanup function
+local function cleanup()
+    isRunning = false
+    isHolding = false
+    currentTarget = nil
+    eggsterminatorPhase = 1
+    
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
+-- FIXED: Safe character respawn handler
+local function onCharacterRespawn()
+    -- Wait for character to fully load
+    task.wait(2)
+    
+    if _G.AutoShootEnabled then
+        -- Restart auto shoot if it was enabled
+        isRunning = true
+        task.wait(1) -- Additional safety delay
+        StartLoop()
+    end
+end
+
+-- Connect to character added event
+Player.CharacterAdded:Connect(onCharacterRespawn)
+
+-- UI Elements
+Tab:AddTextbox({
+    Name = "Gun Name",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        _G.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot (Only CrackedBas & WhiteBas)",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoShootEnabled = Value
+        
+        if Value then
+            isRunning = true
+            -- Reset all states
+            isHolding = false
+            currentTarget = nil
+            lastShootTime = 0
+            eggsterminatorPhase = 1
+            
+            -- Start with delay to ensure character is loaded
+            task.spawn(function()
+                task.wait(1)
+                if isRunning then
+                    StartLoop()
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Shoot",
+                Content = "Auto Shooting CrackedBas & WhiteBas - Enabled",
+                Time = 3
+            })
+        else
+            cleanup()
+            OrionLib:MakeNotification({
+                Name = "Auto Shoot",
+                Content = "Auto Shooting CrackedBas & WhiteBas - Disabled",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Room (Make Sure Bas From Chair Is Killed)",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map._Other.Shop.ShopPictureFrame.Back.ClickDetector)
+    end
+})
+
+-- Button 1: View WhiteBas
+Tab:AddButton({
+    Name = "View WhiteBas",
+    Callback = function()
+        local target = workspace["#GAME"].Folders.HumanoidFolder.NPCFolder.WhiteBas
+        if target then
+            workspace.CurrentCamera.CameraSubject = target
+            warn("Now viewing: WhiteBas")
+        else
+            warn("WhiteBas not found!")
+        end
+    end
+})
+
+-- Button 2: Unview (Return to Local Player)
+Tab:AddButton({
+    Name = "Unview WhiteBas",
+    Callback = function()
+        local character = Players.LocalPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                workspace.CurrentCamera.CameraSubject = humanoid
+            else
+                workspace.CurrentCamera.CameraSubject = character
+            end
+            warn("Returned to local player")
+        else
+            warn("Local player character not found!")
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Remove Touch Part (So Auto Click Can Work)",
+    Callback = function()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.TouchPart:destroy()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.TouchPart2:destroy()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.SoundRaycastPart:destroy()
+    end
+})
+
+local spamEnabled = false  -- Variable to track whether spam is enabled
+local spamLoop            -- Declare loop variable to control the loop
+
+Tab:AddToggle({
+    Name = "Auto Spam Click Head (0.1 Speed Click)",
+    Default = false,
+    Callback = function(Value)
+        spamEnabled = Value  -- Set the spamEnabled status based on toggle value
+
+        -- If the toggle is on, start the spam loop
+        if spamEnabled then
+            -- Start the spam loop
+            spamLoop = task.spawn(function()
+                while spamEnabled do
+                    -- Fire the click detector on the WhiteBasFakeHead
+                    local clickDetector = workspace["#GAME"].Map.WhiteBasFakeHead:FindFirstChild("ClickDetector")
+                    if clickDetector then
+                        fireclickdetector(clickDetector)
+                    else
+                        print("ClickDetector not found.")
+                    end
+                    task.wait(0.1)  -- Wait for 0.1 seconds before firing again
+                end
+            end)
+        else
+            -- If the toggle is off, stop the loop
+            if spamLoop then
+                task.cancel(spamLoop)  -- Properly cancel the loop
+                spamLoop = nil  -- Reset the loop variable
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Bring Head Cube",
+    Callback = function()
+local player = game.Players.LocalPlayer  -- Get the local player
+local character = player.Character or player.CharacterAdded:Wait()  -- Get the character
+local targetPart = workspace["#GAME"].Map.WhiteBasFakeHead  -- The part to move (WhiteBasFakeHead)
+
+-- Function to bring the part to the player's character position
+local function bringPartToPlayer()
+    if targetPart and character then
+        -- Get the character's HumanoidRootPart position
+        local characterPosition = character:WaitForChild("HumanoidRootPart").Position
+        
+        -- Set the part's position to the character's position
+        targetPart.CFrame = CFrame.new(characterPosition)  -- Teleport the part to the character's position
+        print("Part has been brought to the character.")
+    else
+        warn("Target part or character not found.")
+    end
+end
+
+-- Call the function to bring the part to the player once
+bringPartToPlayer()
+    end
+})
+
+local player = game.Players.LocalPlayer  -- Get the local player
+local character = player.Character or player.CharacterAdded:Wait()  -- Get the character
+local targetPart = workspace["#GAME"].Map:FindFirstChild("WhiteBasFakeHead")  -- Try to find the part (WhiteBasFakeHead)
+local bringLoop = nil  -- Variable to store the loop
+
+-- Function to bring the part to the player's character position
+local function bringPartToPlayer()
+    if targetPart and character then
+        -- Get the character's HumanoidRootPart position
+        local characterPosition = character:WaitForChild("HumanoidRootPart").Position
+        
+        -- Set the part's position to the character's position
+        targetPart.CFrame = CFrame.new(characterPosition)  -- Teleport the part to the character's position
+        print("Part has been brought to the character.")
+    else
+        warn("Target part or character not found.")
+    end
+end
+
+-- Toggle to control the spamming of bringPartToPlayer
+Tab:AddToggle({
+    Name = "Auto Bring Head Cube (Every 0.3 Sec)",
+    Default = false,
+    Enabled = targetPart ~= nil,  -- Only enable toggle if the part exists
+    Callback = function(Value)
+        if targetPart == nil then
+            warn("WhiteBasFakeHead not found, toggle will not function.")
+            return  -- If the part doesn't exist, return early and don't run the loop
+        end
+        
+        if Value then
+            -- Start the loop to bring the part every 0.3 seconds
+            bringLoop = task.spawn(function()
+                while Value do  -- Loop while the toggle is enabled
+                    bringPartToPlayer()  -- Call the function to bring the part
+                    task.wait(0.3)  -- Wait for 0.3 seconds before repeating
+                end
+            end)
+        else
+            -- Stop the loop if toggle is off
+            if bringLoop then
+                bringLoop = false  -- This stops the loop by breaking the condition
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Open/Close Door",
+    Callback = function()
+        fireclickdetector(workspace["#GAME"].Map.BlackRoom.WhiteRoom.Door.ClickDetector)
+    end
+})
+
+-- Define all toggles and their state
+local spamToggles = {
+    YellowBas = { Enabled = false, Loop = nil },
+    GreyBas   = { Enabled = false, Loop = nil },
+    BlueBas   = { Enabled = false, Loop = nil },
+    WhiteBas  = { Enabled = false, Loop = nil },
+    BlackBas  = { Enabled = false, Loop = nil },
+}
+
+-- Generic function to handle toggle behavior for all Bas
+local function createGlobalSpamToggle()
+    local toggleEnabled = false
+    Tab:AddToggle({
+        Name = "Auto Spam Click All Bas (0.1 Speed Click)",
+        Default = false,
+        Callback = function(Value)
+            toggleEnabled = Value
+
+            if toggleEnabled then
+                -- Start the spam loop for all Bas
+                for _, basename in ipairs({"YellowBas", "GreyBas", "BlueBas", "WhiteBas", "BlackBas"}) do
+                    spamToggles[basename].Enabled = true
+                    spamToggles[basename].Loop = task.spawn(function()
+                        while spamToggles[basename].Enabled do
+                            local clickDetectorPath = workspace:FindFirstChild("#GAME")
+                            if clickDetectorPath and clickDetectorPath:FindFirstChild("Map") and clickDetectorPath.Map:FindFirstChild(basename) then
+                                local cd = clickDetectorPath.Map[basename]:FindFirstChild("ClickDetector")
+                                if cd then
+                                    fireclickdetector(cd)
+                                else
+                                    print(basename .. " ClickDetector not found. Waiting...")
+                                end
+                            else
+                                print(basename .. " path not found. Waiting...")
+                            end
+                            task.wait(0.1) -- Minimal delay to prevent lag
+                        end
+                    end)
+                end
+            else
+                -- Stop all loops by setting enabled to false
+                for _, basename in ipairs({"YellowBas", "GreyBas", "BlueBas", "WhiteBas", "BlackBas"}) do
+                    spamToggles[basename].Enabled = false
+                end
+            end
+        end
+    })
+end
+
+-- Create the global toggle for all Bas
+createGlobalSpamToggle()
+
+local modelNotifications = {
+    ["YellowBas"] = {Title = "Alert!", Content = "Yellow Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["GreyBas"] = {Title = "Alert!", Content = "Grey Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["BlueBas"] = {Title = "Alert!", Content = "Blue Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["WhiteBas"] = {Title = "Alert!", Content = "White Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["BlackBas"] = {Title = "Alert!", Content = "Black Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+}
+
+local modelListenerEnabled = false
+local conn
+
+Tab:AddToggle({
+    Name = "Auto Notify Heads Spawn",
+    Default = false,
+    Callback = function(Value)
+        modelListenerEnabled = Value
+
+        if not Value then
+            if conn then conn:Disconnect() end
+            conn = nil
+            return
+        end
+
+        conn = workspace.DescendantAdded:Connect(function(obj)
+            if obj:IsA("BasePart") and modelNotifications[obj.Name] then
+                local notif = modelNotifications[obj.Name]
+                OrionLib:MakeNotification({
+                    Name = notif.Title,
+                    Content = notif.Content,
+                    Time = notif.Time or 3, -- default duration
+                    Image = notif.Image
+                })
+            end
+        end)
+    end
+})
+
+Section = Tab:AddSection({
+ Name = "Secret Badge 2"
+})
+
+Tab:AddButton({
+    Name = "Enable/Disable Fire",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map.Houses["Blue House"].Rooms.LivingRoom.Fireplace.Base.Dial.Interactive.ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Collect All Bacon Parts",
+    Callback = function()
+        -- Iterate through all parts inside workspace["#GAME"].Map
+        -- and fire ClickDetector for each part named "Part"
+        local map = workspace["#GAME"].Map
+ 
+        for _, part in pairs(map:GetChildren()) do
+            if part:IsA("BasePart") and part.Name == "Part" then
+                local clickDetector = part:FindFirstChild("ClickDetector")
+                if clickDetector then
+                    -- Fire the ClickDetector for each "Part"
+                    fireclickdetector(clickDetector)
+                end
+            end
+        end
+    end
+})
+
+local autoClickCorrectImageEnabled = false
+local autoClickCorrectImageLoop
+
+Tab:AddToggle({
+    Name = "Auto Click Correct Image",
+    Default = false,
+    Callback = function(Value)
+        autoClickCorrectImageEnabled = Value
+
+        if Value then
+            autoClickCorrectImageLoop = task.spawn(function()
+                while autoClickCorrectImageEnabled do
+                    local pictureFrame = workspace:FindFirstChild("#GAME")
+                        :FindFirstChild("Map")
+                        :FindFirstChild("Houses")
+                        :FindFirstChild("Blue House")
+                        :FindFirstChild("Rooms")
+                        :FindFirstChild("LivingRoom")
+                        :FindFirstChild("Fireplace")
+                        :FindFirstChild("PouwkPictureFrame")
+
+                    if pictureFrame then
+                        local crackedBasFace = pictureFrame:FindFirstChild("CrackedBasFace")
+                        local clickDetector = pictureFrame:FindFirstChild("ClickDetector")
+
+                        if crackedBasFace and clickDetector then
+                            local decal = crackedBasFace:FindFirstChildOfClass("Decal")
+                            if decal and decal.Texture then
+                                local textureId = decal.Texture
+                                if textureId == "http://www.roblox.com/asset/?id=15044103899" or textureId == "rbxassetid://15044103899" then
+                                    fireclickdetector(clickDetector)
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        else
+            autoClickCorrectImageEnabled = false
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip All Bacon Parts (Stand Close To Fire)",
+    Callback = function()
+        local requiredParts = {
+            "Right Leg",
+            "Left Leg",
+            "Right Arm",
+            "Left Arm",
+            "Torso",
+            "Head"
+        }
+
+        local missingParts = {}
+        local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+        local backpack = game.Players.LocalPlayer.Backpack
+
+        -- Iterate over all required parts and check if they exist in the Backpack
+        for _, partName in ipairs(requiredParts) do
+            local part = backpack:FindFirstChild(partName)
+            if part then
+                -- If the part exists in the Backpack, equip it
+                part.Parent = character
+            else
+                -- If the part is missing, add it to the missingParts list
+                table.insert(missingParts, partName)
+            end
+        end
+
+        -- If there are missing parts, show a notification
+        if #missingParts > 0 then
+            local missingPartsMessage = table.concat(missingParts, ", ")
+            OrionLib:MakeNotification({
+                Name = "Missing Parts",
+                Content = "Not Found: " .. missingPartsMessage,
+                Image = "rbxassetid://13181258092", -- You can use an error icon or any other
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "All Parts Equipped",
+                Content = "Successfully equipped all Bacon parts.",
+                Image = "rbxassetid://13181258092", -- Use a success icon
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Hatred",
+    Callback = function()
+        local function findHatred()
+            -- Search in NPCFolder first
+            local npcFolder = workspace:FindFirstChild("#GAME") and 
+                             workspace["#GAME"]:FindFirstChild("Folders") and 
+                             workspace["#GAME"].Folders:FindFirstChild("HumanoidFolder") and 
+                             workspace["#GAME"].Folders.HumanoidFolder:FindFirstChild("NPCFolder")
+            
+            if npcFolder then
+                local Hatred = npcFolder:FindFirstChild("Hatred")
+                if Hatred then
+                    return Hatred
+                end
+            end
+            
+            -- Search in entire workspace as backup
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "Hatred" then
+                    return obj
+                end
+            end
+            
+            return nil
+        end
+        
+        local Hatred = findHatred()
+        local character = game.Players.LocalPlayer.Character
+        
+        if Hatred and character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            local HatredPosition = Hatred:GetPrimaryPartCFrame().Position
+            
+            if humanoidRootPart and HatredPosition then
+                humanoidRootPart.CFrame = CFrame.new(HatredPosition + Vector3.new(0, 5, 0))
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Successfully teleported to Hatred!",
+                    Time = 3
+                })
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Failed to find position for teleport",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Teleport",
+                Content = "Hatred not found in the game!",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab = Window:MakeTab({
+    Name = "ESP",
+    Icon = "rbxassetid://7743872929",
+    PremiumOnly = false
+})
+
+-- ========== Helper: Create Billboard ESP ==========
+local function createESP(parent, name, text, color)
+    local esp = Instance.new("BillboardGui", parent)
+    esp.Name = name
+    esp.Adornee = parent
+    esp.Size = UDim2.new(0, 150, 0, 40)
+    esp.StudsOffset = Vector3.new(0, 2, 0)
+    esp.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", esp)
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.TextSize = 16
+    label.Font = Enum.Font.FredokaOne
+    label.TextColor3 = color
+    label.TextStrokeTransparency = 0.2
+    label.Text = text
+
+    return label
+end
+
+-- ========== Helper: Create Highlight ==========
+local function createHighlight(parent, color)
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = parent
+    highlight.FillColor = color
+    highlight.FillTransparency = 0.5
+    highlight.OutlineColor = color
+    highlight.OutlineTransparency = 0
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    return highlight
+end
+
+-- ========== Players ESP ==========
+Tab:AddToggle({
+    Name = "Players ESP",
+    Default = false,
+    Callback = function(Value)
+        PlayerESP = Value
+
+        if not Value then
+            for _, v in ipairs(game.Players:GetPlayers()) do
+                local head = v.Character and v.Character:FindFirstChild("Head")
+                if head then
+                    if head:FindFirstChild("PlayerEsp") then
+                        head.PlayerEsp:Destroy()
+                    end
+                    local highlight = head:FindFirstChildOfClass("Highlight")
+                    if highlight then
+                        highlight:Destroy()
+                    end
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while PlayerESP do
+                local localPlayer = game.Players.LocalPlayer
+                for _, v in ipairs(game.Players:GetPlayers()) do
+                    if v ~= localPlayer and v.Character and v.Character:FindFirstChild("Head") then
+                        local head = v.Character.Head
+                        local humanoid = v.Character:FindFirstChild("Humanoid")
+                        if head and humanoid then
+                            -- Create ESP label
+                            if not head:FindFirstChild("PlayerEsp") then
+                                createESP(head, "PlayerEsp", v.Name, Color3.new(1, 1, 1))
+                            end
+                            
+                            -- Create highlight
+                            if not head.Parent:FindFirstChildOfClass("Highlight") then
+                                createHighlight(head.Parent, Color3.new(1, 1, 1))
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+-- ========== Noobs/Werewolfs/ETC... ESP ==========
+Tab:AddToggle({
+    Name = "Noobs/Werewolfs/ETC... ESP",
+    Default = false,
+    Callback = function(Value)
+        NPCESP = Value
+        if not Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "NPCESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while NPCESP do
+                local npcFolder = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Folders"):FindFirstChild("HumanoidFolder"):FindFirstChild("NPCFolder")
+
+                if npcFolder then
+                    for _, npc in pairs(npcFolder:GetChildren()) do
+                        local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                        local head = npc:FindFirstChild("Head")
+
+                        if humanoid and head and humanoid.Health > 0 then
+                            -- Create ESP
+                            if not head:FindFirstChild("NPCESP") then
+                                createESP(head, "NPCESP", npc.Name, Color3.fromRGB(0, 255, 0))
+                            end
+                            
+                            -- Create highlight
+                            if not npc:FindFirstChildOfClass("Highlight") then
+                                createHighlight(npc, Color3.fromRGB(0, 255, 0))
+                            end
+                        else
+                            -- Remove ESP and highlight if dead
+                            local existingESP = head and head:FindFirstChild("NPCESP")
+                            if existingESP then
+                                existingESP:Destroy()
+                            end
+                            local highlight = npc and npc:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+-- ========== Bacon Parts ESP ==========
+Tab:AddToggle({
+    Name = "Bacon Parts ESP",
+    Default = false,
+    Callback = function(Value)
+        PartESP = Value
+        if not Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "PartESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while PartESP do
+                local map = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Map")
+
+                if map then
+                    for _, part in pairs(map:GetDescendants()) do
+                        if part:IsA("BasePart") and part.Name == "Part" then
+                            local clickDetector = part:FindFirstChild("ClickDetector")
+
+                            if clickDetector then
+                                -- Create ESP
+                                if not part:FindFirstChild("PartESP") then
+                                    createESP(part, "PartESP", "Bacon Part", Color3.fromRGB(255, 0, 0))
+                                end
+                                
+                                -- Create highlight
+                                if not part:FindFirstChildOfClass("Highlight") then
+                                    createHighlight(part, Color3.fromRGB(255, 0, 0))
+                                end
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+-- ========== Eggs ESP ==========
+Tab:AddToggle({
+    Name = "Eggs ESP",
+    Default = false,
+    Callback = function(Value)
+        EggESP = Value
+        if not Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "EggESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while EggESP do
+                local dumpFolder = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Folders"):FindFirstChild("DumpFolder")
+
+                if dumpFolder then
+                    for _, item in pairs(dumpFolder:GetChildren()) do
+                        if (item:IsA("MeshPart") or item:IsA("Model") or item:IsA("Part")) and string.find(item.Name, "Egg", 1, true) then
+                            -- Create ESP
+                            if not item:FindFirstChild("EggESP") then
+                                createESP(item, "EggESP", item.Name, Color3.fromRGB(255, 255, 0))
+                            end
+                            
+                            -- Create highlight
+                            if not item:FindFirstChildOfClass("Highlight") then
+                                createHighlight(item, Color3.fromRGB(255, 255, 0))
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+-- ========== Presents ESP ==========
+Tab:AddToggle({
+    Name = "Presents ESP",
+    Default = false,
+    Callback = function(Value)
+        PresentESP = Value
+        if not Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "PresentESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while PresentESP do
+                local dumpFolder = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Folders"):FindFirstChild("DumpFolder")
+
+                if dumpFolder then
+                    for _, item in pairs(dumpFolder:GetDescendants()) do
+                        if (item:IsA("BasePart") or item:IsA("MeshPart") or item:IsA("Model")) and (item.Name == "Present" or item.Name == "MysteryPresent") then
+                            -- Create ESP
+                            if not item:FindFirstChild("PresentESP") then
+                                createESP(item, "PresentESP", item.Name, Color3.fromRGB(0, 255, 0))
+                            end
+                            
+                            -- Create highlight
+                            if not item:FindFirstChildOfClass("Highlight") then
+                                createHighlight(item, Color3.fromRGB(0, 255, 0))
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+-- ========== Souls ESP ==========
+Tab:AddToggle({
+    Name = "Souls ESP",
+    Default = false,
+    Callback = function(Value)
+        SoulESP = Value
+        if not Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "SoulESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while SoulESP do
+                local dumpFolder = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Folders"):FindFirstChild("DumpFolder")
+
+                if dumpFolder then
+                    for _, item in pairs(dumpFolder:GetDescendants()) do
+                        if item:IsA("BasePart") and item.Name == "Handle" then
+                            -- Create ESP
+                            if not item:FindFirstChild("SoulESP") then
+                                createESP(item, "SoulESP", "Soul", Color3.fromRGB(0, 255, 255))
+                            end
+                            
+                            -- Create highlight
+                            if not item:FindFirstChildOfClass("Highlight") then
+                                createHighlight(item, Color3.fromRGB(0, 255, 255))
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
+
+Tab = Window:MakeTab({
+    Name = "Shop",
+    Icon = "rbxassetid://7734056747",
+    PremiumOnly = false
+})
+
+-- Define all shop categories
+local shopAnniversaryLimited = {"Great King Poop Noob", "Exclusive 10k Pet", "Bob", "20k Pet", "Party Pedro", "Bombarder Noob Pet", "Exclusive 1 MILLION Pet", "Balloon Tank", "Party Pet", "Buoyant Pet", "Delicious Pet", "Balloon Sword"}
+
+local shopAprilFoolsLimited = {"Revolvah", "Revwholever", "MegAK-47", "Poop Werewolf Pet", "Scammah Pet", "Poop Noob Pet", "Bigger Fat Poop Noob Pet", "Biggest Mega Fat Poop Noob Pet", "Banana Cato", "Sir Stinkington", "Lamppost", "Pine Tree", "Billboard"}
+
+local shopLimited = {"Shyserkampfwagen IV", "Turd Maus", "Sebastian", "Toilet Pouwk", "Toilet BULL", "Black Bas", "Turd Mouse", "BULLKERPOUWKER", "Exclusive Verdant Vanquisher"}
+
+local shopBoomDayLimited = {"Justice", "Revolutionary Rain", "Liberty Annihilator"}
+
+local shopEasterLimited = {"Chicken Gun", "The Eggsterminator", "Easter Egg", "Chicken", "Lil Scrambler", "Chicken Noob Pet", "Moai Pet", "Strongest Egg", "Bunny Noob Pet", "Supreme Chick", "Bulk Beak", "Stone Cold Cutie", "Suprahme Chick", "Easter Doggo", "Eggstinction Rush X"}
+
+local shopEventLimited = {"Firework Launcher", "Bunny Ears"}
+
+local shopValentinesLimited = {"Nubids Bow", "Teddy", "Heart Pet", "Pinky", "Nubid", "BULLkiePouwk"}
+
+local shopHalloweenLimited = {"Pumpkin Launcher", "Little Jack", "Biggest Cracked Bas", "Exclusive 10 MILLION Pet", "Corrupted Black Hole Pet", "Exclusive 100 MILLION Pet", "Exclusive Scarlet Slaughterer", "Soulreaper"}
+
+local shopKingNoobEventLimited = {"The Scepter", "King Biggest Mega Fat Poop Noob", "King Poop Noob", "Queen Poop Noob", "King Noob", "Great King Noob", "Queen Noob", "The Crown"}
+
+local shopChristmasLimited = {"Festive Noob Pet", "Turkey Pet", "Elf Pet", "Gingerbread Pet", "Santa Pet"}
+
+local shopRegular = {"Revolver", "Deagle", "UZI", "Tommy Gun", "AK-47", "Sawed-Off", "Trench Shotgun", "SPAS-12", "AWP", "Remington 700", "RPG-7", "Panzer IV", "Kriss Vector", "Hecate II", "Minigun", "S-G", "MG 1", "M4A3E8", "Microgun", "TMG V2", "M1 Abrams", "SMOGGTTLTSG", "Maus", "UZYeah", "Smiley Sucker", "Revolvahhh", "Baby Noob Pet", "Bacon Pet", "Short Bacon Pet", "Tall Bacon Pet", "Bigger Bacon Pet", "10k Pet", "Rock Noob Pet", "Monster Noob Pet", "Zombie Pet", "Biggest Bacon Pet", "Stick Bug", "Werewolf Pet", "100k Pet", "PedroMobile", "Biggest Bigger Bacon Pet", "Sticker Bug", "Cracked Stick Bug", "Stickest Bug", "Cracked Sticker Bug", "10 MILLION Pet", "Stickester Bug", "100 MILLION Pet", "1 BILLION Pet", "Clown Mouse", "SGobbler", "Pouwk", "Scammer Pet", "Cracked Bas", "BULL", "Sjebullepouwker", "Exclusive 100k Pet", "Cursor", "Silver Cursor", "Golden Cursor", "Diamond Cursor", "Emerald Cursor", "Ruby Cursor", "Amethyst Cursor", "Boots", "Silver Boots", "Golden Boots", "Diamond Boots", "Emerald Boots", "Ruby Boots", "Amethyst Boots", "Gloves", "Silver Gloves", "Golden Gloves", "Diamond Gloves", "Emerald Gloves", "Ruby Gloves", "Amethyst Gloves", "Body Armor", "Silver Body Armor", "Golden Body Armor", "Diamond Body Armor", "Emerald Body Armor", "Ruby Body Armor", "Amethyst Body Armor", "Cheese", "Lantern", "Classic Sword", "King Slayer", "CRACKED Mode", "Hatred", "Onion", "Noob burger", "OOOHnion", "Bigger Noob burger", "Biggest Noob burger", "Biggest Bigger Noob burger"}
+
+-- Combine all shop items into one dropdown
+local allShopItems = {}
+local function combineShopItems()
+    allShopItems = {}
+    
+    -- Add all items from each category
+    for _, item in ipairs(shopAnniversaryLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopAprilFoolsLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopBoomDayLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopEasterLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopEventLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopValentinesLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopHalloweenLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopKingNoobEventLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopChristmasLimited) do table.insert(allShopItems, item) end
+    for _, item in ipairs(shopRegular) do table.insert(allShopItems, item) end
+    
+    -- Remove duplicates and sort alphabetically
+    local seen = {}
+    local uniqueItems = {}
+    for _, item in ipairs(allShopItems) do
+        if not seen[item] then
+            seen[item] = true
+            table.insert(uniqueItems, item)
+        end
+    end
+    table.sort(uniqueItems)
+    return uniqueItems
+end
+
+-- Create dropdown with all shop items
+local selectedItem = "Deagle"
+local allItems = combineShopItems()
+
+Tab:AddDropdown({
+    Name = "Choose What To Buy From Shop",
+    Options = allItems,
+    Default = selectedItem,
+    Callback = function(value)
+        selectedItem = value
+    end
+})
+
+-- Create a button to buy the item
+Tab:AddButton({
+    Name = "Buy Item From Shop",
+    Callback = function()
+        local args = {selectedItem}
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("BuyItem"):FireServer(unpack(args))
+    end
+})
+
+-- Create a toggle for Auto Buying
+_G.autoBuyEnabled = false
+_G.autoBuyCoroutine = nil
+
+Tab:AddToggle({
+    Name = "Auto Buy Item From Shop",
+    Default = false,
+    Callback = function(Value)
+        autoBuyEnabled = Value
+        if Value then
+            autoBuyCoroutine = coroutine.create(function()
+                while autoBuyEnabled do
+                    local args = {selectedItem}
+                    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("BuyItem"):FireServer(unpack(args))
+                    task.wait(1) -- Delay between auto-buy attempts
+                end
+            end)
+            coroutine.resume(autoBuyCoroutine)
+        else
+            if autoBuyCoroutine then
+                coroutine.close(autoBuyCoroutine)
+                autoBuyCoroutine = nil
+            end
+        end
+    end
+})
+
+Tab = Window:MakeTab({
+    Name = "Scripts",
+    Icon = "rbxassetid://8997388036",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "ZScriptX"
+})
+
+Tab:AddButton({
+    Name = "SAEN Script",
+    Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/sederyttv-scripter/Wow/refs/heads/main/djdj'))()
+    end
+})
+
+Tab = Window:MakeTab({
+    Name = "Inventory",
+    Icon = "rbxassetid://7733917120",
+    PremiumOnly = false
+})
+
+-- Player Selection and Inventory Display
+local Players = game:GetService("Players")
+local InventorySystem = {
+    selectedPlayer = Players.LocalPlayer,
+    playerDropdown = nil,
+    inventoryParagraph = nil,
+    AutoSetInfoServer = nil,
+    lastUpdateTime = 0,
+    UPDATE_INTERVAL = 1.0 -- Update every 1 second instead of every frame
+}
+
+-- Function to update player list
+InventorySystem.updatePlayerList = function()
+    local playerNames = {}
+    for _, player in ipairs(Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    table.sort(playerNames)
+    InventorySystem.playerDropdown:Refresh(playerNames, true)
+end
+
+-- Function to get player's inventory tools
+InventorySystem.getPlayerInventory = function(player)
+    local tools = {}
+    
+    if player then
+        -- Check backpack
+        if player:FindFirstChild("Backpack") then
+            for _, tool in ipairs(player.Backpack:GetChildren()) do
+                if tool:IsA("Tool") then
+                    -- Check if tool has Amount attribute
+                    local amount = tool:GetAttribute("Amount")
+                    if amount then
+                        table.insert(tools, tool.Name .. " " .. tostring(amount))
+                    else
+                        table.insert(tools, tool.Name)
+                    end
+                end
+            end
+        end
+        
+        -- Check if player has character with equipped tools
+        if player.Character then
+            for _, tool in ipairs(player.Character:GetChildren()) do
+                if tool:IsA("Tool") then
+                    -- Check if tool has Amount attribute
+                    local amount = tool:GetAttribute("Amount")
+                    if amount then
+                        table.insert(tools, tool.Name .. " " .. tostring(amount))
+                    else
+                        table.insert(tools, tool.Name)
+                    end
+                end
+            end
+        end
+    end
+    
+    return tools
+end
+
+-- Function to update inventory display
+InventorySystem.updateInventoryDisplay = function()
+    local tools = InventorySystem.getPlayerInventory(InventorySystem.selectedPlayer)
+    local displayText = ""
+    
+    if #tools > 0 then
+        for i, tool in ipairs(tools) do
+            displayText = displayText .. tool
+            if i < #tools then
+                displayText = displayText .. "\n"
+            end
+        end
+    else
+        displayText = "No tools found in inventory"
+    end
+    
+    InventorySystem.inventoryParagraph:Set(displayText)
+end
+
+-- Create dropdown for player selection
+InventorySystem.playerDropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = Players.LocalPlayer.Name,
+    Options = {},
+    Callback = function(Value)
+        InventorySystem.selectedPlayer = Players:FindFirstChild(Value)
+        InventorySystem.updateInventoryDisplay()
+    end
+})
+
+-- Add reset button to update player list
+Tab:AddButton({
+    Name = "Update Player List",
+    Callback = function()
+        InventorySystem.updatePlayerList()
+    end
+})
+
+-- Create inventory paragraph
+InventorySystem.inventoryParagraph = Tab:AddParagraph("Inventory Items:", "Select a player to view their inventory")
+
+-- Auto update player list when players join/leave
+Players.PlayerAdded:Connect(function()
+    if InventorySystem.playerDropdown then
+        InventorySystem.updatePlayerList()
+    end
+end)
+
+Players.PlayerRemoving:Connect(function()
+    if InventorySystem.playerDropdown then
+        InventorySystem.updatePlayerList()
+    end
+end)
+
+-- Initialize player list
+InventorySystem.updatePlayerList()
+
+-- Optimized auto update inventory display
+Tab:AddToggle({
+    Name = "Auto Set Info",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoSetInfo = Value
+        
+        if Value then
+            -- Use Heartbeat instead of RenderStepped for better performance
+            InventorySystem.AutoSetInfoServer = game:GetService("RunService").Heartbeat:Connect(function()
+                if _G.AutoSetInfo then
+                    local currentTime = tick()
+                    -- Only update every UPDATE_INTERVAL seconds to prevent lag
+                    if currentTime - InventorySystem.lastUpdateTime >= InventorySystem.UPDATE_INTERVAL then
+                        InventorySystem.updateInventoryDisplay()
+                        InventorySystem.lastUpdateTime = currentTime
+                    end
+                end
+            end)
+        else
+            if InventorySystem.AutoSetInfoServer then
+                InventorySystem.AutoSetInfoServer:Disconnect()
+                InventorySystem.AutoSetInfoServer = nil
+            end
+        end
+    end
+})
+
+Tab = Window:MakeTab({
+    Name = "Health NPC's",
+    Icon = "rbxassetid://8997386648",
+    PremiumOnly = false
+})
+
+-- NPC Health Status Display
+_G.npcHealthParagraph = Tab:AddParagraph("NPC Health Status:", "NPC health information will appear here")
+
+-- Function to get NPC health status
+_G.getNPCHealthStatus = function()
+    local npcStatus = {}
+    
+    local npcFolder = workspace:FindFirstChild("#GAME") and workspace["#GAME"]:FindFirstChild("Folders") and workspace["#GAME"].Folders:FindFirstChild("HumanoidFolder") and workspace["#GAME"].Folders.HumanoidFolder:FindFirstChild("NPCFolder")
+    
+    if npcFolder then
+        for _, npc in ipairs(npcFolder:GetChildren()) do
+            if npc:IsA("Model") then
+                local humanoid = npc:FindFirstChildOfClass("Humanoid")
+                if humanoid and humanoid.Health > 0 then  -- Only include NPCs with health > 0
+                    local currentHealth = math.floor(humanoid.Health)
+                    local maxHealth = math.floor(humanoid.MaxHealth)
+                    table.insert(npcStatus, npc.Name .. " = (" .. currentHealth .. "/" .. maxHealth .. ")")
+                end
+            end
+        end
+    end
+    
+    return npcStatus
+end
+
+-- Function to update NPC health display
+_G.updateNPCHealthDisplay = function()
+    local npcStatus = _G.getNPCHealthStatus()
+    local displayText = ""
+    
+    if #npcStatus > 0 then
+        for i, status in ipairs(npcStatus) do
+            displayText = displayText .. status
+            if i < #npcStatus then
+                displayText = displayText .. "\n"
+            end
+        end
+    else
+        displayText = "No NPCs found or no humanoids detected"
+    end
+    
+    _G.npcHealthParagraph:Set(displayText)
+end
+
+-- Auto update NPC health display
+_G.AutoNPCHealthServer = nil
+_G.AutoNPCHealth = Tab:AddToggle({
+    Name = "Auto Update NPC Health",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoNPCHealth = Value
+        if Value then
+            _G.AutoNPCHealthServer = game:GetService("RunService").RenderStepped:Connect(function()
+                if _G.AutoNPCHealth then
+                    _G.updateNPCHealthDisplay()
+                end
+            end)
+        else
+            if _G.AutoNPCHealthServer then
+                _G.AutoNPCHealthServer:Disconnect()
+                _G.AutoNPCHealthServer = nil
+            end
+        end
+    end
+})
+
+-- Manual update button
+Tab:AddButton({
+    Name = "Update NPC Health Status",
+    Callback = function()
+        _G.updateNPCHealthDisplay()
+    end
+})
+
+Tab = Window:MakeTab({
+ Name = "Vulnerability",
+ Icon = "rbxassetid://7734068321",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Pet Clicker"
+})
+
+-- Pet Auto-Clicker
+_G.petNames = {
+    "Turkey Pet",
+    "Chicken Noob Pet", 
+    "Corrupted Black Hole Pet",
+    "Pouwk",
+    "BULLkiePouwK",
+    "Sjebullepouwker",
+    "BULL"
+}
+
+-- Variables
+_G.selectedPet = ""
+_G.isAutoClickingPet = false
+_G.autoClickPetThread = nil
+
+-- Function to safely stop threads
+_G.stopPetThread = function()
+    if _G.autoClickPetThread then
+        task.cancel(_G.autoClickPetThread)
+        _G.autoClickPetThread = nil
+    end
+end
+
+-- Function to auto click pet
+_G.autoClickPet = function()
+    while _G.isAutoClickingPet do
+        local success, err = pcall(function()
+            local player = game.Players.LocalPlayer
+            local displayName = player.DisplayName
+            
+            if not _G.selectedPet or _G.selectedPet == "" then
+                warn("No pet selected")
+                task.wait(0.5)
+                return
+            end
+            
+            local petFolder = workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder"):WaitForChild("PetFolder")
+            local petName = displayName .. "'s " .. _G.selectedPet
+            local petModel = petFolder:FindFirstChild(petName)
+            
+            if petModel then
+                -- Look for ClickDetector in the pet model
+                local clickDetector = petModel:FindFirstChildOfClass("ClickDetector")
+                
+                if clickDetector then
+                    -- Auto click the pet
+                    fireclickdetector(clickDetector)
+                    task.wait(0.1) -- Click every 0.1 seconds
+                else
+                    -- If no ClickDetector found, notify and wait before retry
+                    OrionLib:MakeNotification({
+                        Name = "Pet Auto-Clicker",
+                        Content = "ClickDetector not found for " .. petName .. ", retrying...",
+                        Time = 3
+                    })
+                    task.wait(0.5) -- Wait 0.5 seconds before retry
+                end
+            else
+                -- If pet model not found, notify and wait before retry
+                OrionLib:MakeNotification({
+                    Name = "Pet Auto-Clicker",
+                    Content = "Pet model not found: " .. petName .. ", retrying...",
+                    Time = 3
+                })
+                task.wait(0.5) -- Wait 0.5 seconds before retry
+            end
+        end)
+        
+        if not success then
+            warn("AutoClickPet error: " .. tostring(err))
+            task.wait(0.5)
+        end
+    end
+end
+
+-- Add dropdown for pet selection
+Tab:AddDropdown({
+    Name = "Select Pet",
+    Default = "",
+    Options = _G.petNames,
+    Callback = function(Value)
+        _G.selectedPet = Value
+    end
+})
+
+-- Add toggle for auto-clicking pet
+Tab:AddToggle({
+    Name = "Auto Click Pet",
+    Default = false,
+    Callback = function(Value)
+        _G.isAutoClickingPet = Value
+        
+        if Value then
+            if _G.selectedPet == "" then
+                OrionLib:MakeNotification({
+                    Name = "Pet Auto-Clicker",
+                    Content = "Please select a pet first!",
+                    Time = 3
+                })
+                _G.isAutoClickingPet = false -- Reset the toggle state
+                return
+            end
+            
+            _G.autoClickPetThread = task.spawn(_G.autoClickPet)
+            OrionLib:MakeNotification({
+                Name = "Pet Auto-Clicker",
+                Content = "Started auto-clicking " .. _G.selectedPet,
+                Time = 3
+            })
+        else
+            _G.stopPetThread() -- Fixed: Added _G. prefix
+            -- Only show notification if it was actually running
+            if _G.autoClickPetThread then
+                OrionLib:MakeNotification({
+                    Name = "Pet Auto-Clicker",
+                    Content = "Stopped auto-clicking pet",
+                    Time = 3
+                })
+            end
+        end
+    end
+})
+
+Section = Tab:AddSection({
+ Name = "Secret Prices Shower"
+})
+
+Tab:AddButton({
+    Name = "Check Bob Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Bob Cost Found",
+                Content = "Bob Cost is: 14703 Cookies",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check UZYeah Gun Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "UZYeah Cost Found",
+                Content = "UZYeah Cost is: 0 Coins (Only if u tester/dev)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Smiley Sucker Gun Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Smiley Sucker Cost Found",
+                Content = "Smiley Sucker Cost is: 0 Coins (Only if u tester/dev)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Revolvahhh Gun Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Revolvahhh Cost Found",
+                Content = "Revolvahhh Cost is: 0 Coins (Only if u tester/dev)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Easter Egg Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Easter Egg Cost Found",
+                Content = "Easter Egg Cost is: -1 Coins",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Black Bas Pet Costing Price",
+    Callback = function()
+        local cost = Workspace:GetAttribute("BlackBasCost")
+        if cost then
+            -- Show notification if cost is found
+            OrionLib:MakeNotification({
+                Name = "Black Bas Cost Found",
+                Content = "Black Bas Cost Coins is: " .. tostring(cost),
+                Image = "rbxassetid://6034812623",
+                Time = 5
+            })
+        else
+            -- Show notification if cost is not found
+            OrionLib:MakeNotification({
+                Name = "Black Bas Cost Not Found",
+                Content = "The 'BlackBasCost' attribute was not found in Workspace.",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Clown Mouse Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Clown Mouse Cost Found",
+                Content = "Clown Mouse Cost is: 0 Coins (Need Aniversary 2024 - Secret Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Pouwk Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Pouwk Cost Found",
+                Content = "Pouwk Cost is: 0 Coins (Need Meet the Co-Owner Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check SGobbler Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "SGobbler Cost Found",
+                Content = "SGobbler Cost is: 0 Coins (Need Like Game + Join Group)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Easter Doggo Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Easter Doggo Cost Found",
+                Content = "Easter Doggo Cost is: 0 Coins (Need Easter 2024 - Egg-Gathering Gladiator Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Scammer Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Scammer Cost Found",
+                Content = "Scammer Cost is: 0 Coins (Only if u tester/dev)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check BULLkiePouwk Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "BULLkiePouwk Cost Found",
+                Content = "BULLkiePouwk Cost is: 0 Coins (Need Secret Badge Valentines 2024)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Cracked Bas Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Cracked Bas Cost Found",
+                Content = "Cracked Bas Cost is: 0 Coins (Need Secret Badge 1)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })                  
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Sjebullepouwker Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Sjebullepouwker Cost Found",
+                Content = "Sjebullepouwker Cost is: 0 Coins (Need Secret Badge Valentines 2025)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check BULL Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "BULL Cost Found",
+                Content = "BULL Cost is: 0 Coins (Need Meet the Owner Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Exclusive 100k Pet Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Exclusive 100k Cost Found",
+                Content = "Exclusive 100k Cost is: 100k Coins/Bites (Need Be First Player To Obtain)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check CRACKED Mode Item Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "CRACKED Mode Cost Found",
+                Content = "CRACKED Mode Cost is: 0 Coins (Need Super Secret Badge 1)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Bunny Ears Item Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Bunny Ears Cost Found",
+                Content = "Bunny Ears Cost is: 0 Coins (Need Hatched Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Eggstinction Rush X Item Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Eggstinction Rush X Cost Found",
+                Content = "Eggstinction Rush X Cost is: 0 Coins (Need Easter 2025 - Path to Eggstinction Badge)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+Tab:AddButton({
+    Name = "Check Hatred Item Costing Price",
+    Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Hatred Cost Found",
+                Content = "Hatred Cost is: 0 Coins (Need Secret Badge 2)",
+                Image = "rbxassetid://6034812623",
+                Time = 5
+                })
+    end
+})
+
+--CHANGELOGS
+Tab = Window:MakeTab({
+ Name = "Changelogs",
+ Icon = "rbxassetid://8997387937",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Changelogs Info"
+})
+
+Tab:AddParagraph("V. 2.3.3", [[
+[x] Fixed Check Type Server Button (Now Tells U What Type Server U Are In)
+[x] Improved Auto Eat Toggles (Now Does Faster)
+[x] Fixed Auto Eat (Smart) Toggle (Now Goes From Amethyst-Rock And Rest If Not Find Any Type)
+[x] Improved Auto Shoot Toggle (Now Does Faster)
+[x] Improved Auto Teleport To Eggs Toggle (Now Does/Detects Faster And Doesnt Auto Stop When Toggle On)
+[-] Removed Auto Collect Eggs Toggle (it doesnt work at all + not need)
+[+] Added Auto Notify Spawned Egg Toggle (Sends U Auto Notification Which Egg Spawned)
+[+] Added Check For Existing Egg Button
+[+] Added Clear Egg Detection History
+[+] Added Secret Badge 1 Section
+[+] Added Auto Shoo Stuff To It (Only Shoots Normal Bas)
+[+] Added Teleport To Room Button
+[+] Added Teleport To WhiteBas Button (He Has To Kill U For SB1 Badge)
+[+] Added Auto Shoo Stuff To It (Only Shoots Normal Bas/Cracked Bas)
+[-] Removed Auto Close Door Toggle
+[+] Added Teleport To Hatred Button
+[x] Fixed Anti Void Button
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 2.2.0", [[
+[x] Fixed Auto Eat Toggle (Shouldnt Freeze/Crash Roblox)
+[x] Fixed Auto Shoot Toggle (Shouldnt Freeze/Crash Roblox)
+[x] Fixed Auto Eggs Toggle (Shouldnt Freeze/Crash Roblox + No More Lags)
+[+] Added Auto Spam ProximityPrompt (Spams Clicks Prompt [Its very useful to use on eggs auto click])
+[x] Fixed Anti Void Button
+[x] Fixed Anti Sit Toggle (Now Disables/Enables All Sits)
+[-] Removed Auto Join To Bull's Server
+[-] Removed Auto Join To Pouwk's Server
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 2.1.6", [[
+[x] Changed Webhook Image (Now Thumbnail Is Normal)
+[+] Added Paragraph Of Text "Attention U Can Get Banned If Doing On Public Reccomended On Private Server"
+[+] Added Check Type Server Button (Sends Notification If Public Or Private Server)
+[-] Removed Remove ProximityPrompt From Shop Button
+[+] Added Others Section To Info Tab
+[+] Added Insaenity Lvl Info
+[+] Added BOSS Noob in Info
+[+] Added House 1 Kllls Info
+[+] Added House 2 Kllls Info
+[+] Added House 3 Kllls Info
+[+] Added House 4 Kllls Info
+[+] Added House 5 Kllls Info
+[x] Fixed Auto Set Info Toggle
+[x] Changed All Auto Eat Toggles (Now They Auto Click [Screen] Too)
+[+] Added Auto Eat (Dead Noobs Only) Toggle
+[x] Fixed Auto Shoot Stuff
+- Now The Eggsterminator Auto Equips
+- Works Without Auto Breaking Randomly
+[-] Removed Auto Click (0.01 Speed Click) Toggle [Useless cuz alr exists on auto eat toggles]
+[x] Improved Auto Set Instant CD To Eggs (0.3 Sec CD) Toggle [Can still lag but not much]
+[x] Improved Auto Collect Eggs Toggle [Can maybe still lag but not much]
+[+] Added View WhiteBas Button
+[+] Added Unview WhiteBas Button
+[+] Added Auto Close Door Toggle
+[x] FULLY Improved All ESP Toggles (No More Lag + Shows Highlight)
+[+] Added Scripts Tab
+[+] Added SAEN Script Button (ZScriptX)
+[+] Added Copy Key For SAEN Script (ZScriptX)
+[+] Added Inventory Tab
+[+] Added Select Player Dropdown
+[+] Added Update Player List Button
+[+] Added "Inventory Items:", "Select a player to view their inventory" Paragraph
+[+] Added Auto Set Info Toggle
+[+] Added NPC Health Status Paragraph
+[+] Added Auto Update NPC Status Toggle
+[+] Added Update NPC Health Status Button
+[x] Fixed Auto Click Pet/s Toggle (No More Shows Stop Notification Randomly)
+[+] Added ZScriptX To Credits Tab
+[+] Added Anti Void Button
+[+] Added Anti Sit Toggle (no more get stuck)
+[+] Added Anti Contributor | Owner Toggle (kicks you if finds high player rank)
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 1.7.9", [[
+[+] Added Remove Shop Proximity Prompt (So Wont Auto Open Shop Everytime U AFK Farm Eggs)
+[+] Added The Eggsterminator Tool To Support On Auto Shoot Toggle
+[x] Fixed Auto Shoot Toggle (Now Doesn't Stops If Toggle Still Enabled)
+[x] Fixed Noobs/Werewolfs/ETC... ESP Toggle
+[+] Added Pet Clicker Section
+[+] Added Select Pet Dropdown
+[+] Added Auto Click Pet
+[+] Added Check Bob Pet Costing Price Button
+[+] Added Check UZYeah Gun Costing Price Button
+[+] Added Check Smiley Sucker Gun Costing Price Button
+[+] Added Check Revolvahhh Gun Costing Price Button
+[+] Added Check Easter Egg Pet Costing Price Button
+[+] Added Check Clown Mouse Pet Costing Price Button
+[+] Added Check Pouwk Pet Costing Price Button
+[+] Added Check SGobbler Pet Costing Price Button
+[+] Added Check Easter Doggo Pet Costing Price Button
+[+] Added Check Scammer Pet Costing Price Button
+[+] Added Check BULLkiePouwk Pet Costing Price Button
+[+] Added Check Cracked Bas Pet Costing Price Button
+[+] Added Check Sjebullepouwker Pet Costing Price Button
+[+] Added Check BULL Pet Costing Price Button
+[+] Added Check Exclusive 100k Pet Costing Price Button
+[+] Added Check CRACKED Mode Item Costing Price Button
+[+] Added Check Bunny Ears Item Costing Price Button
+[+] Added Check Eggstinction Rush X Item Costing Price Button
+[+] Added Check Hatred Item Costing Price Button
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 1.4.7", [[
+[x] Changed Webhook Image (Now Thumbnail Is Halloween)
+[x] Improved Anti Cheat Button (Bypasses 3 More Anti Cheats)
+[x] Fully Changed Sections In Main Tab
+[x] Changed From "Auto Eat (For Positive/Stink Coins)" to "Auto Eat (For All Type Coins) Toggle
+[+] Added Auto Eat (Smart From Value High To Low) Toggle
+[+] Added Choose Coin Type To Auto Eat Dropdown
+List Are: Positive Coins, Stink Coins, Cookies and King Coins
+[+] Added Auto Eat (Choosed Type) Toggle
+[x] Improved Auto Shoot Toggle (Supports More Guns Now)
+[x] Improved Again Auto Shoot Toggle (For TMG V2, SMOGGTTLTSG It Holds)
+[x] IMPROVED LAST TIME AGAIN AUTO SHOOT TOGGLE (Doesnt shoot Bas [From Chair], Dead and Invincible)
+[x] Improved Auto Use Sword Toggle (Now Supports All Swords)
+[-] Removed Auto Bring/Collect Eggs Toggle (It just doesnt collect at this point)
+[-] Removed Auto Bring/Collect Presents Toggle (It just doesnt collect at this point)
+[x] Changed From "SSB1/SB2 Badges" To "Badges" Tab
+[+] Added Auto Notify Heads Spawn Toggle
+[x] Fixed Noobs/Werewolfs/ETC... ESP Toggle (Showed 2 Names + Very Laggy Was)
+[+] Added Anti Settings Section In Settings Tab
+[+] Added Anti Kick Toggle
+[+] Added Auto Join To Bull's Server Toggle
+[+] Added Auto Join To Pouwk's Server Toggle
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 1.3.0", [[
+[+] Added Bypass Mountain Anti Cheat (Prevent Crashing Roblox I Guess...) Button
+[+] Added Dead Noob Type To Auto Eat (For Positive/Stink Coins) Toggle
+[x] Improved Auto Bring Noobs/Werewolves Toggle (Brings Even If U Respawn)
+[x] Improved Auto Bring/Collect Eggs Toggle (Brings Even If U Respawn)
+[+] Added Auto Teleport To Eggs Toggle (Other Way Collecting Eggs)
+[+] Added Auto Spam ProximityPrompts Toggle
+[x] Fixed Eggs ESP Toggle
+[x] FULLY Improved Shop Tab
+[+] Added Secret Prices Shower Section
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 1.2.1", [[
+[x] Changed Webhook Script Messager Sender Info (Now Shows Image)
+[x] Improved Auto Eat Toggle (Positive) (Now It Doesnt Eat Negative Type Noobs)
+[-] Removed Auto Eat Toggle (Negative) (They Changed Negative To Stink Coins)
+[-] Removed Auto Shoot Gui Button (Dont really need it)
+[+] Added Gun Name Textbox (Example Minigun)
+[+] Added Shooting Speed Textbox (Example 6)
+[+] Added Auto Shoot Toggle (Auto Shoots Can Be Stopped)
+[x] Improved Auto Bring Noobs/Werewolfs Toggle (Now a bit further and infront)
+[-] Removed Auto Set PP To 0 CD Button (Very Much Lags)
+[+] Added Auto Set PP To 0 CD Toggle (For Instant Collecting Eggs)
+[+] Added Auto Bring/Collect Eggs Toggle (Useful If Giant Egg Drops Then U Instant Collect It)
+[+] Added Auto Set PP To 0 CD Toggle (For Instant Collecting Eggs)
+[+] Added Auto Bring/Collect Eggs Toggle (Useful If Giant Egg Drops Then U Instant Collect It)
+[+] Added Auto Bring/Collect Presents Toggle (Useful If Present Drops Then U Can Auto Collect It)
+[-] Removed Auto Teleport To Eggs Toggle (Very Easy It Makes U To Teleport To Mountain Where U Get Crashed)
+[x] Changed Collect All Bacon Parts Button (Now Its In Badges SB2 Section)
+[+] Added Enable/Disable Fire Button (For SB2)
+[+] Added Equip All Bacon Parts [Stand Close To Fire] (Equips All 6 Parts Also Tells If Missing Or Success)
+[+] Added ESP Tab
+[+] Added Players ESP Toggle
+[+] Added Noobs/Werewolfs/ETC... ESP Toggle
+[+] Added Bacon Parts ESP Toggle
+[+] Added Eggs ESP Toggle
+[+] Added Presents ESP Toggle
+[+] Added Souls ESP Toggle
+[+] Added Vunerability Tab
+[+] Added Check Black Bas Costing Price Button
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+Tab:AddParagraph("V. 1.0.0", [[
+[+] SCRIPT RELEASED
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
+
+--CREDITS
+Tab = Window:MakeTab({
+ Name = "Credits",
+ Icon = "rbxassetid://7743875759",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Credits Users"
+})
+
+Tab:AddLabel("Scripter - (Youtube, Discord)")
+Tab:AddLabel("ZScriptX - Discord")
+
+Section = Tab:AddSection({
+ Name = "Helpers"
+})
+
+Tab:AddLabel("ZScriptX - Auto Shoot")
+
+Section = Tab:AddSection({
+ Name = "Links"
+})
+
+Tab:AddButton({
+ Name = "Scripter (Youtube)",
+ Callback = function()
+setclipboard("https://www.youtube.com/@Scripter-Coder")
+end
+})
+
+Tab:AddButton({
+ Name = "Scripter (Discord)",
+ Callback = function()
+setclipboard("https://discord.gg/k8vJHZM6")
+end
+})
+
+Tab:AddButton({
+ Name = "ZScriptX (Discord)",
+ Callback = function()
+setclipboard("https://discord.gg/HvevRJVWWm")
+end
+})
+
+--SETTINGS
+Tab = Window:MakeTab({
+ Name = "Settings",
+ Icon = "rbxassetid://7734053495",
+ PremiumOnly = false
+ })
+
+Section = Tab:AddSection({
+ Name = "Anti Settings"
+})
+
+Tab:AddButton({
+    Name = "Anti Void",
+    Callback = function()
+        -- ANTI VOID --
+        if workspace:FindFirstChild("AntiVoid1") == nil then
+            -- Create 10 longer layers of protection
+            local sizes = {
+                Vector3.new(500, 2, 500),    -- Layer 1
+                Vector3.new(600, 2, 600),    -- Layer 2  
+                Vector3.new(700, 2, 700),    -- Layer 3
+                Vector3.new(800, 2, 800),    -- Layer 4
+                Vector3.new(900, 2, 900),    -- Layer 5
+                Vector3.new(1000, 2, 1000),  -- Layer 6
+                Vector3.new(1100, 2, 1100),  -- Layer 7
+                Vector3.new(1200, 2, 1200),  -- Layer 8
+                Vector3.new(1300, 2, 1300),  -- Layer 9
+                Vector3.new(1400, 2, 1400)   -- Layer 10
+            }
+            
+            local positions = {
+                Vector3.new(0, -20, 0),   -- Layer 1
+                Vector3.new(0, -25, 0),   -- Layer 2
+                Vector3.new(0, -30, 0),   -- Layer 3
+                Vector3.new(0, -35, 0),   -- Layer 4
+                Vector3.new(0, -40, 0),   -- Layer 5
+                Vector3.new(0, -45, 0),   -- Layer 6
+                Vector3.new(0, -50, 0),   -- Layer 7
+                Vector3.new(0, -55, 0),   -- Layer 8
+                Vector3.new(0, -60, 0),   -- Layer 9
+                Vector3.new(0, -65, 0)    -- Layer 10
+            }
+            
+            local colors = {
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue"),
+                BrickColor.new("Bright blue")
+            }
+            
+            for i = 1, 10 do
+                local AntiVoid = Instance.new("Part", workspace)
+                AntiVoid.Name = "AntiVoid" .. i
+                AntiVoid.Position = positions[i]
+                AntiVoid.Size = sizes[i]
+                AntiVoid.Anchored = true
+                AntiVoid.CanCollide = true
+                AntiVoid.Transparency = 0.8 -- Slightly less transparent for better visibility
+                AntiVoid.Material = Enum.Material.Neon
+                AntiVoid.BrickColor = colors[i]
+                
+                -- Add a slight glow effect
+                local SurfaceLight = Instance.new("SurfaceLight", AntiVoid)
+                SurfaceLight.Brightness = 0.5
+                SurfaceLight.Face = Enum.NormalId.Top
+                SurfaceLight.Range = 10
+                SurfaceLight.Color = Color3.new(0, 0.5, 1)
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Anti Void", 
+                Content = "Extended anti-void created! (10 layers of protection)",
+                Image = "rbxassetid://7733715400",
+                Time = 5
+            })
+        else
+            -- Remove all anti-void parts
+            local removedCount = 0
+            for _, part in pairs(workspace:GetChildren()) do
+                if string.find(part.Name, "AntiVoid") then
+                    part:Destroy()
+                    removedCount = removedCount + 1
+                end
+            end
+            OrionLib:MakeNotification({
+                Name = "Anti Void",
+                Content = "Anti-void removed successfully! (" .. removedCount .. " layers)",
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Anti Sit Toggle
+_G.isAntiSit = false
+
+-- Function to set all seats CanTouch property
+_G.setAllSeatsCanTouch = function(canTouch)
+    for _, seat in pairs(workspace:GetDescendants()) do
+        if seat:IsA("VehicleSeat") or seat:IsA("Seat") then
+            seat.CanTouch = canTouch
+        end
+    end
+end
+
+-- Add toggle for Anti Sit
+Tab:AddToggle({
+    Name = "Anti Sit",
+    Default = false,
+    Callback = function(Value)
+        _G.isAntiSit = Value
+        
+        if Value then
+            -- Turn ON Anti Sit - disable all seats
+            _G.setAllSeatsCanTouch(false)
+            warn("Anti Sit: All seats disabled")
+        else
+            -- Turn OFF Anti Sit - enable all seats
+            _G.setAllSeatsCanTouch(true)
+            warn("Anti Sit: All seats enabled")
+        end
+    end
+})
+
+AntiAfk = Tab:AddToggle({
+ Name = "Anti Afk",
+ Default = false,
+ Callback = function(Value)
+  _G.AntiAfk = Value
+local VirtualUser = game:GetService('VirtualUser')
+
+game:GetService('Players').LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
+ end
+})
+
+AntiKick = Tab:AddToggle({
+	Name = "Anti Kick",
+	Default = false,
+	Callback = function(Value)
+	_G.AntiKick = Value
+while _G.AntiKick do
+for i,v in pairs(game.CoreGui.RobloxPromptGui.promptOverlay:GetDescendants()) do
+                    if v.Name == "ErrorPrompt" then
+game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+                    end
+                end
+task.wait()
+end
+	end    
+})
+
+Section = Tab:AddSection({
+ Name = "Server Settings"
+})
+
+Tab:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))();
+    end
+})
+
+Tab:AddButton({
+    Name = "ServerHop (Regular Server)",
+    Callback = function()
+local PlaceID = game.PlaceId
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+function TPReturner()
+    local Site;
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    local num = 0;
+    for i,v in pairs(Site.data) do
+        local Possible = true
+        ID = tostring(v.id)
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+            for _,Existing in pairs(AllIDs) do
+                if num ~= 0 then
+                    if ID == tostring(Existing) then
+                        Possible = false
+                    end
+                else
+                    if tonumber(actualHour) ~= tonumber(Existing) then
+                        local delFile = pcall(function()
+                            delfile("NotSameServers.json")
+                            AllIDs = {}
+                            table.insert(AllIDs, actualHour)
+                        end)
+                    end
+                end
+                num = num + 1
+            end
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while wait() do
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+-- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+Teleport()
+    end
+})
+
+Tab:AddButton({
+    Name = "ServerHop (Small Server)",
+    Callback = function()
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game:GetService('Players').LocalPlayer)
+    end
+})
+
+Tab:AddButton({
+ Name = "Reset Player",
+ Callback = function()
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+  end
+})
+
+Section = Tab:AddSection({
+ Name = "Destroy Script"
+})
+
+Tab:AddButton({
+ Name = "Destroy Gui",
+ Callback = function()
+OrionLib:Destroy()
+  end
+})
+
+end
+OrionLib:Init()
