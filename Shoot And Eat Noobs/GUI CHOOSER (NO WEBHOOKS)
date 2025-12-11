@@ -67,7 +67,7 @@ CloseButton.TextSize = 12
 -- Button functions
 local function loadOrionHub()
     -- Replace this with your actual Orion Hub loadstring
-    local orionLoadstring = "https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20And%20Eat%20Noobs%20(Orion%20Hub%20Script)%20(NO%20WEBHOOK)"
+    local orionLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20And%20Eat%20Noobs%20(Orion%20Hub%20Script)%20(NO%20WEBHOOK)'))()"
     
     -- Execute the loadstring
     local success, err = pcall(function()
