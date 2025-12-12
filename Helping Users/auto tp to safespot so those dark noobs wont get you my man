@@ -14,7 +14,7 @@ local platform = nil
 -- Auto-teleport variables
 local autoTeleportEnabled = false
 local teleportConnection = nil
-local teleportInterval = 0.1  -- Teleport every 0.1 seconds
+local teleportInterval = 10  -- Teleport every 0.1 seconds
 
 -- Create the platform
 local function createPlatform()
