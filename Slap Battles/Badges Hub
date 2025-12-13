@@ -10258,78 +10258,150 @@ Tab:AddButton({
 	})
 
 Tab:AddButton({
-    Name = "Auto Teleport To Conker Place + Get Conker (credits to kizzy)",
+    Name = "Equip Eggler (Egging Over It Badge Need)",
     Callback = function()
-local gay = game
+fireclickdetector(workspace.Lobby["Eggler"].ClickDetector)
+    end
+})
 
---// Set up auto-execution after teleport
-if not getgenv().autoSlapExecuted then
-    getgenv().autoSlapExecuted = true
-    
-    -- Queue this script to run again after teleport
-    queue_on_teleport([[
-        getgenv().autoSlapExecuted = nil
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/your-repo/your-script.lua"))()
-    ]])
-    
-    -- Teleport to the target game
-    local TeleportService = game:GetService("TeleportService")
-    TeleportService:Teleport(13864667823) -- Replace with your target place ID
-    return
-end
+Tab:AddButton({
+    Name = "Equip Fan (FREE OOG! Bade Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Fan"].ClickDetector)
+    end
+})
 
---// Main code execution (runs after teleport)
-local self = gay['Players']['LocalPlayer']
-local humanoidr = self['Character']['HumanoidRootPart']
-local CF = CFrame.new
+Tab:AddButton({
+    Name = "Equip Scythe (Farmland Fray Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Scythe"].ClickDetector)
+    end
+})
 
-gay:service'ReplicatedStorage'.Remotes.Dialogue.FinishedNPCDialogue:FireServer()
+Tab:AddButton({
+    Name = "Equip Snow (85+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Snow"].ClickDetector)
+    end
+})
 
-task.wait(2.5)
-fireclickdetector(workspace.Map.Props.BasketCollection.Basket.ClickDetector)
-
-local bv = Instance.new'BodyVelocity'
-bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
-bv.Velocity = (Vector3.new(37, 4, 1) - humanoidr.Position).Unit * 40
-bv.Parent = humanoidr
-
-repeat
-    task.wait()
-until (humanoidr.Position - Vector3.new(37, 4, 1)).Magnitude < 2
-
-bv:Destroy()
-
-gay:service'RunService'.PostSimulation:Connect(function()
-    self['Character']:PivotTo(CF(37, 4, 1)) 
-    
-    gay:service'ReplicatedStorage'.Remotes.tool.use:FireServer('slap') 
-end)
-
---// auto slap squirrels
-gay:service'Workspace'.NPCs.DescendantAdded:Connect(function(squir)
-    if squir.Name == 'squirrel' then 
-        local squirhr = squir:WaitForChild'HumanoidRootPart'
-        while task.wait() and squirhr.Parent do
-            gay:service'ReplicatedStorage'.Remotes.tool.hit:FireServer('slap', { Instance = squirhr })
-        end 
-    end 
-end)
-
---// conker shit
-gay:service'Workspace'.DescendantAdded:Connect(function(conk)
-    if conk.Name == 'Conker' then 
-        local trans = conk:FindFirstChildOfClass'TouchTransmitter'
-        if trans then 
-            firetouchinterest(conk, humanoidr, 0)
-            firetouchinterest(conk, humanoidr, 1)
-            task.delay(.1, function()
-                fireproximityprompt(workspace.Map.CoreAssets.Bowl.ProximityPrompt)
-            end) 
-        end 
-    end 
-end)
-
-print("Auto slap script loaded successfully!")
+Tab:AddButton({
+    Name = "Auto Slap Aura Players",
+    Callback = function()   
+        -- Define glove configurations
+        local gloveConfigs = {
+            ["Rage"] = {
+                remoteName = "GRRRR",
+                action = function(player)
+                    if player.Character and player.Character:FindFirstChild("Left Leg") then
+                        local args = {
+                            [1] = player.Character["Left Leg"],
+                            [2] = false
+                        }
+                        ReplicatedStorage.GRRRR:FireServer(unpack(args))
+                    end
+                end
+            },
+            ["Eggler"] = {
+                remoteName = "GeneralHit",
+                action = function(player)
+                    if player.Character then
+                        local targetPart = player.Character:FindFirstChild("HumanoidRootPart") or player.Character:FindFirstChild("Head")
+                        if targetPart then
+                            local args = {
+                                [1] = targetPart,
+                                [2] = {
+                                    -- Add Eggler-specific arguments here
+                                }
+                            }
+                            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                        end
+                    end
+                end
+            },
+            ["Fan"] = {
+                remoteName = "GeneralHit",
+                action = function(player)
+                    if player.Character then
+                        local targetPart = player.Character:FindFirstChild("HumanoidRootPart") or player.Character:FindFirstChild("Head")
+                        if targetPart then
+                            local args = {
+                                [1] = targetPart,
+                                [2] = {
+                                    -- Add Fan-specific arguments here
+                                }
+                            }
+                            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                        end
+                    end
+                end
+            },
+            ["Scythe"] = {
+                remoteName = "GeneralHit",
+                action = function(player)
+                    if player.Character then
+                        local targetPart = player.Character:FindFirstChild("HumanoidRootPart") or player.Character:FindFirstChild("Head")
+                        if targetPart then
+                            local args = {
+                                [1] = targetPart,
+                                [2] = {
+                                    -- Add Scythe-specific arguments here
+                                }
+                            }
+                            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                        end
+                    end
+                end
+            },
+            ["Snow"] = {
+                remoteName = "SnowHit",
+                action = function(player)
+                    if player.Character then
+                        local targetPart = player.Character:FindFirstChild("HumanoidRootPart") or player.Character:FindFirstChild("Head")
+                        if targetPart then
+                            local args = {
+                                [1] = targetPart,
+                                [2] = {
+                                    -- Add Snow-specific arguments here
+                                }
+                            }
+                            ReplicatedStorage.SnowHit:FireServer(unpack(args))
+                        end
+                    end
+                end
+            }
+        }
+        
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
+        local localPlayer = game.Players.LocalPlayer
+        
+        -- Get current equipped glove
+        local equippedGlove = localPlayer.leaderstats.Glove.Value
+        
+        -- Check if equipped glove is in our supported list
+        if not gloveConfigs[equippedGlove] then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Equip one of: Rage, Eggler, Fan, Scythe, or Snow",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Get the config for current glove
+        local gloveConfig = gloveConfigs[equippedGlove]
+        
+        -- Start the loop
+        while true do
+            for _, player in pairs(Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    gloveConfig.action(player)
+                end
+            end
+            wait(0.5)
+        end
     end
 })
 
@@ -10972,44 +11044,368 @@ player.CharacterAdded:Connect(function(character)
 end)
 
 Section = Tab:AddSection({
-    Name = "Slap Aura (Supports Only GeneralHits For Now)"
+    Name = "Slap Aura"
 })
 
-local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-
-local slapAuraConnection
-local lastHitTime = 0
-local cooldown = 1 -- 1 second
-
-Tab:AddToggle({
-    Name = "Slap Aura V1",
-    Default = false,
-    Callback = function(enabled)
-        if enabled then
-            slapAuraConnection = RunService.Heartbeat:Connect(function()
-                local currentTime = tick()
-                if currentTime - lastHitTime >= cooldown then
-                    for _, player in pairs(Players:GetPlayers()) do
-                        if player ~= Players.LocalPlayer and player.Character then
-                            local torso = player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("UpperTorso")
-                            if torso then
-                                ReplicatedStorage.GeneralHit:FireServer(torso)
-                            end
-                        end
-                    end
-                    lastHitTime = currentTime
-                end
-            end)
-        else
-            if slapAuraConnection then
-                slapAuraConnection:Disconnect()
-                slapAuraConnection = nil
+-- Optimized Slap Aura with anti-freeze protection
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    local scriptLoaded = false
+    
+    -- Optimized: Only include common gloves to reduce memory
+    local gloveHits = {
+        ["Default"] = ReplicatedStorage.b,
+        ["Diamond"] = ReplicatedStorage.DiamondHit,
+        ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
+        ["Brick"] = ReplicatedStorage.BrickHit,
+        ["Snow"] = ReplicatedStorage.SnowHit,
+        ["Pull"] = ReplicatedStorage.PullHit,
+        ["Flash"] = ReplicatedStorage.FlashHit,
+        ["Spring"] = ReplicatedStorage.springhit,
+        ["Swapper"] = ReplicatedStorage.HitSwapper,
+        ["Bull"] = ReplicatedStorage.BullHit,
+        ["Dice"] = ReplicatedStorage.DiceHit,
+        ["Ghost"] = ReplicatedStorage.GhostHit,
+        ["Stun"] = ReplicatedStorage.HtStun,
+        ["Za Hando"] = ReplicatedStorage.zhramt,
+        ["Fort"] = ReplicatedStorage.Fort,
+        ["Magnet"] = ReplicatedStorage.MagnetHIT,
+        ["Pusher"] = ReplicatedStorage.PusherHit,
+        ["Anchor"] = ReplicatedStorage.hitAnchor,
+        ["Space"] = ReplicatedStorage.HtSpace,
+        ["Boomerang"] = ReplicatedStorage.BoomerangH,
+        ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mail"] = ReplicatedStorage.MailHit,
+        ["Golden"] = ReplicatedStorage.GoldenHit,
+        ["MR"] = ReplicatedStorage.MisterHit,
+        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Replica"] = ReplicatedStorage.ReplicaHit,
+        ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Killstreak"] = ReplicatedStorage.KSHit,
+        ["Reverse"] = ReplicatedStorage.ReverseHit,
+        ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
+        ["Duelist"] = ReplicatedStorage.DuelistHit,
+        ["Ice"] = ReplicatedStorage.IceHit,
+        ["Adios"] = ReplicatedStorage.hitAdios,
+        ["Blocked"] = ReplicatedStorage.BlockedHit,
+        ["Engineer"] = ReplicatedStorage.engiehit,
+        ["Rocky"] = ReplicatedStorage.RockyHit,
+        ["Conveyor"] = ReplicatedStorage.ConvHit,
+        ["Phantom"] = ReplicatedStorage.PhantomHit,
+        ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
+        ["Wormhole"] = ReplicatedStorage.WormHit,
+        ["STOP"] = ReplicatedStorage.STOP,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
+        ["Nightmare"] = ReplicatedStorage.nightmarehit,
+        ["Pylon"] = ReplicatedStorage.PylonHit,
+        ["Thor"] = ReplicatedStorage.ThorHit,
+        ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Plague"] = ReplicatedStorage.PlagueHit,
+        ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
+        ["[REDACTED]"] = ReplicatedStorage.ReHit,
+        ["bus"] = ReplicatedStorage.hitbus,
+        ["Mitten"] = ReplicatedStorage.MittenHit,
+        ["Phase"] = ReplicatedStorage.PhaseH,
+        ["Warp"] = ReplicatedStorage.WarpHt,
+        ["Bomb"] = ReplicatedStorage.BombHit,
+        ["Bubble"] = ReplicatedStorage.BubbleHit,
+        ["Jet"] = ReplicatedStorage.JetHit,
+        ["Shard"] = ReplicatedStorage.ShardHIT,
+        ["CULT"] = ReplicatedStorage.CULTHit,
+        ["bob"] = ReplicatedStorage.bobhit,
+        ["buddies"] = ReplicatedStorage.buddiesHIT,
+        ["Moon"] = ReplicatedStorage.CelestialHit,
+        ["Spy"] = ReplicatedStorage.SpyHit,
+        ["Detonator"] = ReplicatedStorage.DetonatorHit,
+        ["Rage"] = ReplicatedStorage.GRRRR,
+        ["Trap"] = ReplicatedStorage.traphi,
+        ["Orbit"] = ReplicatedStorage.Orbihit,
+        ["Hybrid"] = ReplicatedStorage.HybridCLAP,
+        ["Slapple"] = ReplicatedStorage.SlappleHit,
+        ["Disarm"] = ReplicatedStorage.DisarmH,
+        ["Dominance"] = ReplicatedStorage.DominanceHit,
+        ["Link"] = ReplicatedStorage.LinkHit,
+        ["rob"] = ReplicatedStorage.robhit,
+        ["Rhythm"] = ReplicatedStorage.rhythmhit,
+        ["Rojo"] = ReplicatedStorage.RojoHit,
+        ["Hitman"] = ReplicatedStorage.HitmanHit,
+        ["Retro"] = ReplicatedStorage.RetroHit,
+        ["Null"] = ReplicatedStorage.NullHit,
+        ["Tinkerer"] = ReplicatedStorage.TinkererHit,
+        ["OVERKILL"] = ReplicatedStorage.Overkillhit,
+        ["CUSTOM"] = ReplicatedStorage.CustomHit,
+        ["spin"] = ReplicatedStorage.spinhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Error"] = ReplicatedStorage.Errorhit,
+        ["Acrobat"] = ReplicatedStorage.AcHit,
+        ["God's Hand"] = ReplicatedStorage.Godshand,
+        ["The Flex"] = ReplicatedStorage.FlexHit,
+    }
+    
+    -- Cache for performance
+    local cachedRemote = nil
+    local cachedGlove = nil
+    local lastGloveCheck = 0
+    local GLOVE_CHECK_INTERVAL = 5 -- Only check glove every 5 seconds
+    
+    -- Optimized function to get current glove
+    local function getCurrentGlove()
+        local currentTime = tick()
+        
+        -- Use cache to avoid checking every frame
+        if cachedGlove and (currentTime - lastGloveCheck) < GLOVE_CHECK_INTERVAL then
+            return cachedGlove
+        end
+        
+        if localPlayer:FindFirstChild("leaderstats") then
+            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+            if gloveValue then
+                cachedGlove = gloveValue.Value
+                lastGloveCheck = currentTime
+                return cachedGlove
             end
         end
+        
+        cachedGlove = "Default"
+        lastGloveCheck = currentTime
+        return cachedGlove
     end
-})
+    
+    -- Optimized function to get the correct remote
+    local function getGloveRemote()
+        local currentGlove = getCurrentGlove()
+        
+        -- Return cached remote if available and glove hasn't changed
+        if cachedRemote and currentGlove == cachedGlove then
+            return cachedRemote
+        end
+        
+        local remote = gloveHits[currentGlove]
+        
+        -- Fallback to GeneralHit or b if glove not found
+        if not remote then
+            remote = ReplicatedStorage.GeneralHit or ReplicatedStorage.b
+        end
+        
+        -- Validate remote exists
+        if remote and remote:IsA("RemoteEvent") then
+            cachedRemote = remote
+            return remote
+        end
+        
+        -- Ultimate fallback
+        return ReplicatedStorage.b
+    end
+    
+    -- Create slider first
+    local slapAuraSpeed = Tab:AddSlider({
+        Name = "Slap Aura Speed",
+        Min = 0.3,  -- Minimum safe speed to prevent spam
+        Max = 2,
+        Default = 0.5,
+        Color = Color3.fromRGB(255, 255, 255),
+        Increment = 0.1,
+        ValueName = "seconds",
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    -- Performance monitoring
+    local lastPerformanceCheck = 0
+    local framesProcessed = 0
+    local currentFPS = 60
+    
+    local function checkPerformance()
+        framesProcessed = framesProcessed + 1
+        local currentTime = tick()
+        
+        if currentTime - lastPerformanceCheck >= 1 then
+            currentFPS = framesProcessed
+            framesProcessed = 0
+            lastPerformanceCheck = currentTime
+            
+            -- If FPS is too low, disable slap aura to prevent crash
+            if currentFPS < 20 then
+                print("Warning: Low FPS detected (" .. currentFPS .. ") - Auto-disabling slap aura")
+                isSlapAuraEnabled = false
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                return false
+            end
+        end
+        return true
+    end
+    
+    -- Optimized player iteration with rate limiting
+    local lastPlayerScan = 0
+    local scannedPlayers = {}
+    local currentPlayerIndex = 1
+    
+    local function getNextPlayerToSlap()
+        if tick() - lastPlayerScan > 1 then  -- Refresh player list every second
+            scannedPlayers = {}
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= localPlayer and player.Character then
+                    table.insert(scannedPlayers, player)
+                end
+            end
+            lastPlayerScan = tick()
+        end
+        
+        if #scannedPlayers == 0 then
+            return nil
+        end
+        
+        -- Get next player with circular indexing
+        local player = scannedPlayers[currentPlayerIndex]
+        currentPlayerIndex = currentPlayerIndex + 1
+        if currentPlayerIndex > #scannedPlayers then
+            currentPlayerIndex = 1
+        end
+        
+        return player
+    end
+    
+    -- Create toggle
+    Tab:AddToggle({
+        Name = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            -- Skip notifications on initial load
+            if not scriptLoaded then
+                scriptLoaded = true
+                return
+            end
+            
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                -- Disconnect existing connection if any
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                end
+                
+                -- Reset cache
+                cachedRemote = nil
+                cachedGlove = nil
+                
+                -- Get current glove
+                local currentGlove = getCurrentGlove()
+                local remote = getGloveRemote()
+                
+                if not remote or not remote:IsA("RemoteEvent") then
+                    OrionLib:MakeNotification({
+                        Name = "Slap Aura Error",
+                        Content = "No valid remote found!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 3
+                    })
+                    isSlapAuraEnabled = false
+                    return
+                end
+                
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    -- Performance check
+                    if not checkPerformance() then
+                        return
+                    end
+                    
+                    -- Cooldown check
+                    local currentTime = tick()
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    -- Safety check - prevent infinite loops
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    -- Get local player position for distance check
+                    local localChar = localPlayer.Character
+                    local localPos = localChar and localChar.PrimaryPart and localChar.PrimaryPart.Position
+                    
+                    if not localPos then
+                        return
+                    end
+                    
+                    -- Get next player to slap
+                    local player = getNextPlayerToSlap()
+                    if not player then
+                        return
+                    end
+                    
+                    -- Check player's character
+                    local char = player.Character
+                    if not char then
+                        return
+                    end
+                    
+                    local humanoid = char:FindFirstChildOfClass("Humanoid")
+                    local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                    
+                    if not torso or not humanoid or humanoid.Health <= 0 then
+                        return
+                    end
+                    
+                    -- Distance check (40 studs max)
+                    local distance = (torso.Position - localPos).Magnitude
+                    if distance > 40 then
+                        return
+                    end
+                    
+                    -- Fire the remote (safe call)
+                    local success = pcall(function()
+                        remote:FireServer(torso)
+                    end)
+                    
+                    if success then
+                        lastHitTime = currentTime
+                        -- Optional: Add small delay to prevent spam
+                        task.wait(0.01)
+                    else
+                        print("Slap Aura: Error hitting player")
+                    end
+                end)
+                
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Enabled",
+                    Content = string.format("Speed: %.1fs | Glove: %s", currentCooldown, currentGlove),
+                    Image = "rbxassetid://7733919105",
+                    Time = 3
+                })
+                
+                print(string.format("Slap Aura: Enabled for glove '%s'", currentGlove))
+                
+            else
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Disabled",
+                    Content = "",
+                    Image = "rbxassetid://7733919105",
+                    Time = 2
+                })
+                
+                print("Slap Aura: Disabled")
+            end
+        end
+    })
+end
 
 -- Add section for Ghost On/Off
 Section = Tab:AddSection({
