@@ -1,9 +1,9 @@
 - Scripts 📜
-- Orion Hub 📜
+- Scripter Hub 📜
 - Scripter 😎
-- https://youtube.com/@ExploitqsServer (Youtube) 📺
-- https://discord.gg/TVrvpJsKwP (Discord) 💬
-- Total Games Scripted = (2)
-- Total Scripts = (10)
+- [https://youtube.com/@Scripter-Coder](https://www.youtube.com/@Scripter-Coder) (Youtube) 📺
+- [https://discord.gg/v5swRqZzBG](https://discord.gg/v5swRqZzBG) (Discord) 💬
+- Total Games Scripted = (15)
+- Total Scripts = (20)
 
 Good Luck! 
