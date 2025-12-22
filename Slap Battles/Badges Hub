@@ -12223,6 +12223,7 @@ do
         ["Riftshot"] = ReplicatedStorage.GeneralHit,
         ["Conker"] = ReplicatedStorage.GeneralHit,
         ["Wheelchair"] = ReplicatedStorage.GeneralHit,
+        ["Elf"] = ReplicatedStorage.GeneralHit,
         
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
