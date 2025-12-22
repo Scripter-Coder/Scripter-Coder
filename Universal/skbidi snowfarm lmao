@@ -66,12 +66,3 @@ local function toggleTeleport()
         end
     end
 end
-
--- Key bind (Press F to toggle)
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.F then
-        toggleTeleport()
-    end
-end)
-
-print("Snowflake Teleporter loaded! Press F to toggle auto-teleport.")
