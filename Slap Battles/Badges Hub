@@ -1,6 +1,6 @@
 --skid if u want idc just dont forget about credits or smt
 --Library
-local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library"))()
 
 --Startup Script Notification
 OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
@@ -5888,76 +5888,38 @@ Tab = Window:MakeTab({
 Tab:AddButton({
     Name = "Teleport To Jerry Boss Fight Place + Auto Get Santa",
     Callback = function()
-local currentPlaceId = game.PlaceId
+        local currentPlaceId = game.PlaceId
         
-if currentPlaceId == 6403373529 then
-    -- First place (6403373529) - Snowpeeps and Teleport only
-    local player = game.Players.LocalPlayer
-    
-    -- Click all Snowpeeps first (using correct path: workspace.Arena.XmasSnowPeeps)
-    wait(0.2)
-    local arena = workspace:FindFirstChild("Arena")
-    if arena then
-        local xmasSnowPeeps = arena:FindFirstChild("XmasSnowPeeps")
-        if xmasSnowPeeps then
-            for _, peep in ipairs(xmasSnowPeeps:GetChildren()) do
-                if peep:FindFirstChild("ClickDetector") then
-                    fireclickdetector(peep.ClickDetector)
-                    wait(0.1) -- Small delay between clicks
+        if currentPlaceId == 6403373529 then
+            -- First place (6403373529) - Snowpeeps and Teleport only
+            local player = game.Players.LocalPlayer
+            
+            -- Click all Snowpeeps first (using correct path: workspace.Arena.XmasSnowPeeps)
+            wait(0.2)
+            local arena = workspace:FindFirstChild("Arena")
+            if arena then
+                local xmasSnowPeeps = arena:FindFirstChild("XmasSnowPeeps")
+                if xmasSnowPeeps then
+                    for _, peep in ipairs(xmasSnowPeeps:GetChildren()) do
+                        if peep:FindFirstChild("ClickDetector") then
+                            fireclickdetector(peep.ClickDetector)
+                            wait(0.1) -- Small delay between clicks
+                        end
+                    end
                 end
             end
-        end
-    end
-    
-    -- Teleport to position
-    wait(0.2)
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(2, -5, 353)
-    end
-    
-elseif currentPlaceId == 95706409702231 then
-    -- Second place (95706409702231) - Teleport and Anti-AFK
-    -- This will auto-execute when arriving at the second place
-    local function executeSecondPlaceScript()
-        task.wait(20) -- Wait 20 seconds after arriving
-        
-        local player = game.Players.LocalPlayer
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            
             -- Teleport to position
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-6, 21, -542)
+            wait(0.2)
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(2, -5, 353)
+            end
             
-            -- Enable Anti AFK
-            _G.AntiAfk = true
-            local VirtualUser = game:GetService('VirtualUser')
-            
-            game:GetService('Players').LocalPlayer.Idled:Connect(function()
-                if _G.AntiAfk then
-                    VirtualUser:CaptureController()
-                    VirtualUser:ClickButton2(Vector2.new())
-                end
-            end)
-            
-            print("Auto-executed: Teleported to position and enabled Anti-AFK")
-        end
-    end
-    
-    -- Auto-execute the function
-    executeSecondPlaceScript()
-end
-
--- Auto-execution for when teleporting from first place to second place
--- This sets up the script to run automatically after teleport
-game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
-    if state == Enum.TeleportState.InProgress then
-        local targetPlaceId = 95706409702231 -- Second place ID
-        local teleportScript = [[
-            -- Wait for game to load
-            wait(5)
-            
-            -- Check if we're in the target place
-            if game.PlaceId == ]] .. targetPlaceId .. [[ then
-                -- Wait 20 seconds, then execute
-                task.wait(20)
+        elseif currentPlaceId == 95706409702231 then
+            -- Second place (95706409702231) - Teleport and Anti-AFK
+            -- This will auto-execute when arriving at the second place
+            local function executeSecondPlaceScript()
+                task.wait(20) -- Wait 20 seconds after arriving
                 
                 local player = game.Players.LocalPlayer
                 if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -5974,18 +5936,57 @@ game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
                             VirtualUser:ClickButton2(Vector2.new())
                         end
                     end)
+                    
+                    print("Auto-executed: Teleported to position and enabled Anti-AFK")
                 end
             end
-        ]]
-        
-        -- Queue the script to run after teleport
-        if syn and syn.queue_on_teleport then
-            syn.queue_on_teleport(teleportScript)
-        elseif queue_on_teleport then
-            queue_on_teleport(teleportScript)
+            
+            -- Auto-execute the function
+            executeSecondPlaceScript()
         end
+        
+        -- Auto-execution for when teleporting from first place to second place
+        -- This sets up the script to run automatically after teleport
+        game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+            if state == Enum.TeleportState.InProgress then
+                local targetPlaceId = 95706409702231 -- Second place ID
+                local teleportScript = [[
+                    -- Wait for game to load
+                    wait(5)
+                    
+                    -- Check if we're in the target place
+                    if game.PlaceId == ]] .. targetPlaceId .. [[ then
+                        -- Wait 20 seconds, then execute
+                        task.wait(20)
+                        
+                        local player = game.Players.LocalPlayer
+                        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            -- Teleport to position
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(-6, 21, -542)
+                            
+                            -- Enable Anti AFK
+                            _G.AntiAfk = true
+                            local VirtualUser = game:GetService('VirtualUser')
+                            
+                            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                                if _G.AntiAfk then
+                                    VirtualUser:CaptureController()
+                                    VirtualUser:ClickButton2(Vector2.new())
+                                end
+                            end)
+                        end
+                    end
+                ]]
+                
+                -- Queue the script to run after teleport
+                if syn and syn.queue_on_teleport then
+                    syn.queue_on_teleport(teleportScript)
+                elseif queue_on_teleport then
+                    queue_on_teleport(teleportScript)
+                end
+            end
+        end)
     end
-end)
 })
 
 Tab = Window:MakeTab({
