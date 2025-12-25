@@ -1,0 +1,227 @@
+-- ULTRA FAST AUTO PRESENT COLLECTOR
+local PresentSystem = {
+    Workspace = game:GetService("Workspace"),
+    Players = game:GetService("Players"),
+    RunService = game:GetService("RunService"),
+    VirtualInputManager = game:GetService("VirtualInputManager"),
+    
+    Player = nil,
+    
+    -- Feature states
+    isCollecting = false,
+    collectionThread = nil,
+    
+    -- Performance settings
+    TELEPORT_SPEED = 0.001, -- Ultra fast teleport (almost instant)
+    PROMPT_TRIGGER_DELAY = 0.001, -- Very short delay between prompts
+    MAX_TELEPORTS_PER_FRAME = 99, -- How many presents to process per frame
+}
+
+-- Initialize
+PresentSystem.Player = PresentSystem.Players.LocalPlayer
+
+-- Function to check if object is a REAL present
+function PresentSystem:isValidPresent(obj)
+    if not obj or not obj.Parent then
+        return false
+    end
+    
+    local isValidType = obj:IsA("BasePart") or obj:IsA("Model") or obj:IsA("MeshPart")
+    if not isValidType then
+        return false
+    end
+    
+    local nameLower = obj.Name:lower()
+    
+    -- Check if name contains "present" but is NOT just "present"
+    if string.find(nameLower, "present") then
+        if nameLower == "present" then
+            return false
+        end
+        
+        -- Accept any present that has additional text after "present"
+        if #nameLower > 7 then
+            return true
+        end
+    end
+    
+    return false
+end
+
+-- Function to get ALL presents from GeneralFolder
+function PresentSystem:getAllPresents()
+    local presents = {}
+    
+    local generalFolder = self.Workspace:FindFirstChild("#GAME") and 
+                         self.Workspace["#GAME"]:FindFirstChild("Folders") and 
+                         self.Workspace["#GAME"].Folders:FindFirstChild("GeneralFolder")
+    
+    if generalFolder then
+        -- Get ALL presents at once
+        for _, present in pairs(generalFolder:GetChildren()) do
+            if self:isValidPresent(present) then
+                -- Find the position
+                local position
+                if present:IsA("Model") then
+                    if present.PrimaryPart and present.PrimaryPart.Parent then
+                        position = present.PrimaryPart.Position
+                    else
+                        local firstPart = present:FindFirstChildWhichIsA("BasePart")
+                        if firstPart and firstPart.Parent then
+                            position = firstPart.Position
+                        end
+                    end
+                else
+                    position = present.Position
+                end
+                
+                if position then
+                    -- Find proximity prompt
+                    local prompt = present:FindFirstChildWhichIsA("ProximityPrompt")
+                    if not prompt then
+                        for _, descendant in ipairs(present:GetDescendants()) do
+                            if descendant:IsA("ProximityPrompt") then
+                                prompt = descendant
+                                break
+                            end
+                        end
+                    end
+                    
+                    table.insert(presents, {
+                        object = present,
+                        position = position,
+                        prompt = prompt
+                    })
+                end
+            end
+        end
+    end
+    
+    return presents
+end
+
+-- Function to process ALL presents simultaneously
+function PresentSystem:processAllPresents()
+    local character = self.Player.Character
+    if not character then return end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+    
+    -- Get ALL presents at once
+    local allPresents = self:getAllPresents()
+    
+    if #allPresents == 0 then
+        return
+    end
+    
+    -- Store original position to return to
+    local originalPosition = humanoidRootPart.Position
+    
+    -- First pass: INSTANTLY set all prompts to 0 hold duration
+    for _, presentData in ipairs(allPresents) do
+        if presentData.prompt and presentData.prompt.Parent then
+            presentData.prompt.HoldDuration = 0
+            presentData.prompt.Enabled = true
+            presentData.prompt.RequiresLineOfSight = false
+        end
+    end
+    
+    -- Second pass: INSTANTLY teleport to ALL presents and trigger prompts
+    local processedCount = 0
+    local batchSize = math.min(self.MAX_TELEPORTS_PER_FRAME, #allPresents)
+    
+    while processedCount < #allPresents and self.isCollecting do
+        local batch = {}
+        
+        -- Get next batch of presents
+        for i = 1, batchSize do
+            local index = processedCount + i
+            if index <= #allPresents then
+                table.insert(batch, allPresents[index])
+            end
+        end
+        
+        -- Process batch: Teleport and trigger prompts
+        for _, presentData in ipairs(batch) do
+            if not self.isCollecting then break end
+            
+            -- INSTANT teleport
+            pcall(function()
+                humanoidRootPart.CFrame = CFrame.new(presentData.position + Vector3.new(0, 3, 0))
+            end)
+            
+            -- Trigger prompt if exists
+            if presentData.prompt and presentData.prompt.Parent then
+                -- Fire the prompt
+                presentData.prompt:InputHoldBegin()
+                presentData.prompt:InputHoldEnd()
+                
+                -- Also send E key for good measure
+                self.VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                self.VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+            end
+            
+            processedCount = processedCount + 1
+            
+            -- Ultra short delay between presents in batch
+            task.wait(self.TELEPORT_SPEED)
+        end
+        
+        -- Small delay between batches
+        task.wait(self.PROMPT_TRIGGER_DELAY)
+    end
+    
+    -- Return to original position
+    if self.isCollecting then
+        pcall(function()
+            humanoidRootPart.CFrame = CFrame.new(originalPosition)
+        end)
+    end
+end
+
+-- Main collection loop that runs continuously
+function PresentSystem:collectAllPresents()
+    while self.isCollecting do
+        -- Process ALL presents in one go
+        self:processAllPresents()
+        
+        -- Very short wait before next cycle
+        task.wait(0.02)
+    end
+end
+
+-- Start the auto-collector
+function PresentSystem:start()
+    if self.isCollecting then return end
+    
+    self.isCollecting = true
+    
+    -- Start the collection thread
+    self.collectionThread = task.spawn(function()
+        PresentSystem:collectAllPresents()
+    end)
+    
+    print("AUTO PRESENT COLLECTOR STARTED: Instantly teleporting to ALL presents!")
+end
+
+-- Stop the auto-collector
+function PresentSystem:stop()
+    self.isCollecting = false
+    
+    if self.collectionThread then
+        task.cancel(self.collectionThread)
+        self.collectionThread = nil
+    end
+    
+    print("AUTO PRESENT COLLECTOR STOPPED")
+end
+
+-- Auto-start when script runs
+task.wait(2) -- Wait for game to load
+PresentSystem:start()
+
+-- Keep running until stopped
+while true do
+    task.wait(0.01)
+end
