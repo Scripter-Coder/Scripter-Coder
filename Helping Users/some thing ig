@@ -13,7 +13,7 @@ local humanoid = character:WaitForChild("Humanoid")
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 -- Configuration
-local TELEPORT_HEIGHT_OFFSET = 5 -- Studs above the hitbox
+local TELEPORT_HEIGHT_OFFSET = 0 -- Studs above the hitbox
 local SAFE_SPOT_POSITION = Vector3.new(500, 10, 500) -- High safe spot
 local SAFE_SPOT_SIZE = Vector3.new(50, 20, 50)
 local ENEMY_CHECK_RADIUS = 100 -- Studs to check for enemies
