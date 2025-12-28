@@ -1,5 +1,3 @@
-
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -68,6 +66,28 @@ else
 		end
 	end
 end
+
+-- Create circle button for reopening UI
+local CircleButton = Instance.new("ImageButton")
+CircleButton.Name = "ReopenUIButton"
+CircleButton.Image = "rbxassetid://7072719338" -- Default icon (plus/minus)
+CircleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+CircleButton.BackgroundTransparency = 0.2
+CircleButton.BorderSizePixel = 0
+CircleButton.Size = UDim2.new(0, 40, 0, 40)
+CircleButton.Position = UDim2.new(1, -50, 1, -50)
+CircleButton.AnchorPoint = Vector2.new(1, 1)
+CircleButton.Visible = false
+CircleButton.Parent = Orion
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(1, 0)
+UICorner.Parent = CircleButton
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(40, 40, 40)
+UIStroke.Thickness = 2
+UIStroke.Parent = CircleButton
 
 function OrionLib:IsRunning()
 	if gethui then
@@ -557,8 +577,10 @@ function OrionLib:MakeWindow(WindowConfig)
 				Size = UDim2.new(0, 32, 0, 32),
 				Position = UDim2.new(0, 10, 0.5, 0)
 			}), {
-				SetProps(MakeElement("Image", "https://www.roblox.com/headshot-thumbnail/image?userId=".. LocalPlayer.UserId .."&width=420&height=420&format=png"), {
-					Size = UDim2.new(1, 0, 1, 0)
+				-- CHANGED: Removed player thumbnail and replaced with generic user icon
+				SetProps(MakeElement("Image", "rbxassetid://2781888353"), { -- Generic user icon
+					Size = UDim2.new(1, 0, 1, 0),
+					ImageColor3 = Color3.fromRGB(200, 200, 200)
 				}),
 				AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://4031889928"), {
 					Size = UDim2.new(1, 0, 1, 0),
@@ -573,7 +595,8 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddThemeObject(MakeElement("Stroke"), "Stroke"),
 				MakeElement("Corner", 1)
 			}),
-			AddThemeObject(SetProps(MakeElement("Label", LocalPlayer.DisplayName, WindowConfig.HidePremium and 14 or 13), {
+			-- CHANGED: Display "User" instead of actual username
+			AddThemeObject(SetProps(MakeElement("Label", "User", WindowConfig.HidePremium and 14 or 13), {
 				Size = UDim2.new(1, -60, 0, 13),
 				Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
 				Font = Enum.Font.GothamBold,
@@ -605,13 +628,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		Size = UDim2.new(0, 615, 0, 344),
 		ClipsDescendants = true
 	}), {
-		--SetProps(MakeElement("Image", "rbxassetid://3523728077"), {
-		--	AnchorPoint = Vector2.new(0.5, 0.5),
-		--	Position = UDim2.new(0.5, 0, 0.5, 0),
-		--	Size = UDim2.new(1, 80, 1, 320),
-		--	ImageColor3 = Color3.fromRGB(33, 33, 33),
-		--	ImageTransparency = 0.7
-		--}),
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
 			Name = "TopBar"
@@ -646,20 +662,39 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	AddDraggingFunctionality(DragPoint, MainWindow)
 
+	-- Modified close button to show circle button instead of fully hiding
 	AddConnection(CloseBtn.MouseButton1Up, function()
+		-- Hide main window but show circle button
 		MainWindow.Visible = false
+		CircleButton.Visible = true
 		UIHidden = true
+		
+		-- Change circle button icon to show it's for reopening
+		CircleButton.Image = "rbxassetid://7072720870" -- Eye icon or similar
+		
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
-			Content = "Tap RightShift to reopen the interface",
+			Content = "Click the circle button in the bottom-right to reopen the interface",
 			Time = 5
 		})
 		WindowConfig.CloseCallback()
 	end)
 
+	-- Make circle button reopen the UI
+	AddConnection(CircleButton.MouseButton1Click, function()
+		if UIHidden then
+			MainWindow.Visible = true
+			CircleButton.Visible = false
+			-- Change circle button icon back to default
+			CircleButton.Image = "rbxassetid://7072719338"
+		end
+	end)
+
 	AddConnection(UserInputService.InputBegan, function(Input)
 		if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
 			MainWindow.Visible = true
+			CircleButton.Visible = false
+			CircleButton.Image = "rbxassetid://7072719338"
 		end
 	end)
 
@@ -1715,8 +1750,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		Content = "New UI Library Available at sirius.menu/discord and sirius.menu/rayfield",
 		Time = 5
 	})
-	
-
 	
 	return TabFunction
 end   
