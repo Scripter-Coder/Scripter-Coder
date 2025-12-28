@@ -13,7 +13,7 @@ local humanoid = character:WaitForChild("Humanoid")
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 -- Configuration
-local TELEPORT_HEIGHT_OFFSET = 0 -- Studs above the hitbox
+local TELEPORT_HEIGHT_OFFSET = 5 -- Studs above the hitbox
 local SAFE_SPOT_POSITION = Vector3.new(500, 10, 500) -- High safe spot
 local SAFE_SPOT_SIZE = Vector3.new(50, 20, 50)
 local ENEMY_CHECK_RADIUS = 100 -- Studs to check for enemies
@@ -21,7 +21,7 @@ local CHASE_ENTITY_AVOID_DISTANCE = 100 -- Stay away from Chase entity
 local GLITCH_ENTITY_AVOID_DISTANCE = 150 -- Stay away from Glitch entity
 local EYES_ENTITY_DISTANCE = 50 -- Distance to keep from Eyes
 local KEY_COLOR = Color3.fromRGB(65, 50, 41) -- Key color to look for
-local KEY_COLOR_TOLERANCE = 0.1 -- Color matching tolerance
+local KEY_COLOR_TOLERANCE = 0.15 -- Color matching tolerance (increased)
 local AUTO_E_INTERVAL = 0.1 -- Seconds between E presses
 local MAX_ROOM_NUMBER = 100 -- Maximum room number to check
 
@@ -47,6 +47,7 @@ local isAtSafeSpot = false
 local foundKey = false
 local lastEPressTime = 0
 local teleporting = false
+local keyCache = nil -- Cache the found key
 
 -- Utility functions
 local function waitForCharacter()
@@ -197,73 +198,139 @@ local function waitForNoEnemies(timeout)
 	return false
 end
 
-local function findKeyInRoom(roomFolder)
-	if not roomFolder or not roomFolder:IsA("Folder") then return nil end
+-- NEW: Search entire workspace for key with specific color
+local function findKeyInWorkspace()
+	print("Searching entire workspace for key...")
 	
-	local itemSpawns = roomFolder:FindFirstChild("Item_Spawns")
-	if not itemSpawns then return nil end
+	-- If we already found and cached a key, return it
+	if keyCache and keyCache.Parent then
+		print("Using cached key")
+		return keyCache
+	end
 	
-	for _, spawn in pairs(itemSpawns:GetChildren()) do
-		if spawn:IsA("BasePart") and spawn.Name == "Part" then
-			-- Check color
-			local color = spawn.Color
-			local colorDiff = math.abs(color.R - KEY_COLOR.R) + 
-							math.abs(color.G - KEY_COLOR.G) + 
-							math.abs(color.B - KEY_COLOR.B)
+	-- Search through entire workspace
+	for _, obj in pairs(Workspace:GetDescendants()) do
+		if obj:IsA("BasePart") and obj.Name == "Part" then
+			-- Check color with tolerance
+			local color = obj.Color
 			
-			if colorDiff <= KEY_COLOR_TOLERANCE then
-				return spawn
+			-- Calculate color difference
+			local rDiff = math.abs(color.R - KEY_COLOR.R)
+			local gDiff = math.abs(color.G - KEY_COLOR.G)
+			local bDiff = math.abs(color.B - KEY_COLOR.B)
+			local totalDiff = rDiff + gDiff + bDiff
+			
+			if totalDiff <= KEY_COLOR_TOLERANCE then
+				print("Found key at position:", obj.Position)
+				print("Key color:", color.R, color.G, color.B)
+				print("Target color:", KEY_COLOR.R, KEY_COLOR.G, KEY_COLOR.B)
+				print("Color difference:", totalDiff)
+				
+				-- Cache the found key
+				keyCache = obj
+				return obj
 			end
 		end
+	end
+	
+	print("No key found in workspace")
+	return nil
+end
+
+-- NEW: Search for key in specific area (around player)
+local function findKeyNearby(radius)
+	print("Searching for key within " .. radius .. " studs...")
+	
+	local character = waitForCharacter()
+	if not humanoidRootPart then return nil end
+	
+	local closestKey = nil
+	local closestDistance = math.huge
+	
+	for _, obj in pairs(Workspace:GetDescendants()) do
+		if obj:IsA("BasePart") and obj.Name == "Part" then
+			-- Check color with tolerance
+			local color = obj.Color
+			local rDiff = math.abs(color.R - KEY_COLOR.R)
+			local gDiff = math.abs(color.G - KEY_COLOR.G)
+			local bDiff = math.abs(color.B - KEY_COLOR.B)
+			local totalDiff = rDiff + gDiff + bDiff
+			
+			if totalDiff <= KEY_COLOR_TOLERANCE then
+				local distance = (obj.Position - humanoidRootPart.Position).Magnitude
+				if distance <= radius and distance < closestDistance then
+					closestKey = obj
+					closestDistance = distance
+				end
+			end
+		end
+	end
+	
+	if closestKey then
+		print("Found nearby key at distance:", closestDistance)
+		keyCache = closestKey
+		return closestKey
 	end
 	
 	return nil
 end
 
 local function getKey()
-	if foundKey then return true end
+	if foundKey then 
+		print("Already have key")
+		return true 
+	end
 	
 	print("Looking for key...")
 	
-	-- Search current room first
-	local roomFolder = ROOMS_FOLDER:FindFirstChild(tostring(currentRoomNumber))
-	if roomFolder then
-		local key = findKeyInRoom(roomFolder)
-		if key then
-			print("Found key in current room")
-			
-			-- Teleport to key
+	-- First check nearby (within 200 studs)
+	local key = findKeyNearby(200)
+	
+	-- If not found nearby, search entire workspace
+	if not key then
+		key = findKeyInWorkspace()
+	end
+	
+	if key then
+		print("Found key! Teleporting to it...")
+		
+		-- Check for enemies before going
+		if waitForNoEnemies(2) then
+			-- Teleport to key position
 			teleportTo(key.Position)
 			task.wait(0.5)
 			
-			-- Press E to pick up (simulate)
-			foundKey = true
-			return true
-		end
-	end
-	
-	-- Search other rooms
-	for i = 0, MAX_ROOM_NUMBER do
-		if i ~= currentRoomNumber then
-			local room = ROOMS_FOLDER:FindFirstChild(tostring(i))
-			if room then
-				local key = findKeyInRoom(room)
-				if key then
-					print("Found key in room " .. i)
-					
-					-- Check for enemies before going
-					if waitForNoEnemies(2) then
-						teleportTo(key.Position)
-						task.wait(0.5)
-						foundKey = true
-						return true
+			-- Try to pick up the key (press E on it)
+			-- Look for proximity prompt on the key or its parent
+			local parent = key.Parent
+			if parent and parent:IsA("Model") then
+				for _, child in pairs(parent:GetDescendants()) do
+					if child:IsA("ProximityPrompt") then
+						print("Found proximity prompt on key, pressing E...")
+						
+						-- Press E multiple times to ensure pickup
+						for i = 1, 5 do
+							child:InputHoldBegin()
+							task.wait(0.05)
+							child:InputHoldEnd()
+							task.wait(0.1)
+						end
+						break
 					end
 				end
 			end
+			
+			-- Mark key as found
+			foundKey = true
+			print("Key acquired!")
+			return true
+		else
+			print("Enemies detected, cannot safely get key")
+			return false
 		end
 	end
 	
-	print("No key found")
+	print("Could not find any key")
 	return false
 end
 
@@ -336,7 +403,7 @@ local function spamEForDoor(doorModel, timeout)
 		task.wait(0.05)
 		prompt:InputHoldEnd()
 		
-		-- Check if door opened
+		-- Check if door opened (re-check lock status)
 		if not isDoorLocked(doorModel) then
 			print("Door opened!")
 			return true
@@ -450,6 +517,13 @@ local function findNextRoom()
 	return nil
 end
 
+-- NEW: Function to reset key finding
+local function resetKeyFinding()
+	print("Resetting key finding...")
+	foundKey = false
+	keyCache = nil
+end
+
 -- Main loop
 local function mainLoop()
 	print("Starting auto-doors navigation...")
@@ -481,6 +555,10 @@ local function mainLoop()
 			task.wait(1) -- Brief pause between rooms
 		else
 			print("Failed to process room " .. nextRoom .. ", retrying...")
+			
+			-- Reset key finding if we failed due to locked door
+			resetKeyFinding()
+			
 			task.wait(2)
 		end
 		
@@ -501,6 +579,7 @@ local function start()
 	isRunning = true
 	currentRoomNumber = 0
 	foundKey = false
+	keyCache = nil
 	isAtSafeSpot = false
 	
 	-- Start main loop in a separate thread
@@ -530,7 +609,7 @@ local function createUI()
 	screenGui.Parent = player:WaitForChild("PlayerGui")
 	
 	local frame = Instance.new("Frame")
-	frame.Size = UDim2.new(0, 200, 0, 150)
+	frame.Size = UDim2.new(0, 250, 0, 180)
 	frame.Position = UDim2.new(0, 10, 0, 10)
 	frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 	frame.BackgroundTransparency = 0.3
@@ -549,7 +628,7 @@ local function createUI()
 	
 	local toggleBtn = Instance.new("TextButton")
 	toggleBtn.Size = UDim2.new(0.8, 0, 0, 40)
-	toggleBtn.Position = UDim2.new(0.1, 0, 0.3, 0)
+	toggleBtn.Position = UDim2.new(0.1, 0, 0.2, 0)
 	toggleBtn.Text = "START"
 	toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
@@ -558,8 +637,8 @@ local function createUI()
 	toggleBtn.Parent = frame
 	
 	local statusLabel = Instance.new("TextLabel")
-	statusLabel.Size = UDim2.new(1, 0, 0, 40)
-	statusLabel.Position = UDim2.new(0, 0, 0.7, 0)
+	statusLabel.Size = UDim2.new(1, 0, 0, 30)
+	statusLabel.Position = UDim2.new(0, 0, 0.5, 0)
 	statusLabel.Text = "Status: Stopped"
 	statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	statusLabel.BackgroundTransparency = 1
@@ -567,18 +646,57 @@ local function createUI()
 	statusLabel.TextSize = 14
 	statusLabel.Parent = frame
 	
+	local roomLabel = Instance.new("TextLabel")
+	roomLabel.Size = UDim2.new(1, 0, 0, 30)
+	roomLabel.Position = UDim2.new(0, 0, 0.65, 0)
+	roomLabel.Text = "Current Room: 0"
+	roomLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	roomLabel.BackgroundTransparency = 1
+	roomLabel.Font = Enum.Font.SourceSans
+	roomLabel.TextSize = 14
+	roomLabel.Parent = frame
+	
+	local keyLabel = Instance.new("TextLabel")
+	keyLabel.Size = UDim2.new(1, 0, 0, 30)
+	keyLabel.Position = UDim2.new(0, 0, 0.8, 0)
+	keyLabel.Text = "Key: Not Found"
+	keyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	keyLabel.BackgroundTransparency = 1
+	keyLabel.Font = Enum.Font.SourceSans
+	keyLabel.TextSize = 14
+	keyLabel.Parent = frame
+	
+	-- Update UI function
+	local function updateUI()
+		if isRunning then
+			statusLabel.Text = "Status: Running"
+			roomLabel.Text = "Current Room: " .. tostring(currentRoomNumber)
+			keyLabel.Text = "Key: " .. (foundKey and "Found" or "Not Found")
+		else
+			statusLabel.Text = "Status: Stopped"
+		end
+	end
+	
+	-- Run UI update loop
+	task.spawn(function()
+		while true do
+			updateUI()
+			task.wait(0.5)
+		end
+	end)
+	
 	toggleBtn.MouseButton1Click:Connect(function()
 		toggle()
 		
 		if isRunning then
 			toggleBtn.Text = "STOP"
 			toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
-			statusLabel.Text = "Status: Running"
 		else
 			toggleBtn.Text = "START"
 			toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
-			statusLabel.Text = "Status: Stopped"
 		end
+		
+		updateUI()
 	end)
 	
 	-- Keybind (F6 to toggle)
@@ -589,12 +707,12 @@ local function createUI()
 			if isRunning then
 				toggleBtn.Text = "STOP"
 				toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
-				statusLabel.Text = "Status: Running"
 			else
 				toggleBtn.Text = "START"
 				toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
-				statusLabel.Text = "Status: Stopped"
 			end
+			
+			updateUI()
 		end
 	end)
 end
@@ -606,6 +724,7 @@ createUI()
 print("Auto-Doors System Loaded!")
 print("Press F6 to start/stop")
 print("Or use the GUI in the top-left corner")
+print("Looking for keys with color: R=" .. KEY_COLOR.R .. " G=" .. KEY_COLOR.G .. " B=" .. KEY_COLOR.B)
 
 -- Export functions
 return {
@@ -613,5 +732,7 @@ return {
 	Stop = stop,
 	Toggle = toggle,
 	IsRunning = function() return isRunning end,
-	GetCurrentRoom = function() return currentRoomNumber end
+	GetCurrentRoom = function() return currentRoomNumber end,
+	ResetKeyFinding = resetKeyFinding,
+	FindKey = getKey
 }
