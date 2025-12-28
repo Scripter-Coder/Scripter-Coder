@@ -1,0 +1,617 @@
+-- Advanced Auto-Doors Navigation System
+-- Author: AI Assistant
+-- Description: Automatically navigates through rooms, handles enemies, finds keys, and opens doors
+
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Configuration
+local TELEPORT_HEIGHT_OFFSET = 5 -- Studs above the hitbox
+local SAFE_SPOT_POSITION = Vector3.new(500, 10, 500) -- High safe spot
+local SAFE_SPOT_SIZE = Vector3.new(50, 20, 50)
+local ENEMY_CHECK_RADIUS = 100 -- Studs to check for enemies
+local CHASE_ENTITY_AVOID_DISTANCE = 100 -- Stay away from Chase entity
+local GLITCH_ENTITY_AVOID_DISTANCE = 150 -- Stay away from Glitch entity
+local EYES_ENTITY_DISTANCE = 50 -- Distance to keep from Eyes
+local KEY_COLOR = Color3.fromRGB(65, 50, 41) -- Key color to look for
+local KEY_COLOR_TOLERANCE = 0.1 -- Color matching tolerance
+local AUTO_E_INTERVAL = 0.1 -- Seconds between E presses
+local MAX_ROOM_NUMBER = 100 -- Maximum room number to check
+
+-- Paths
+local ROOMS_FOLDER = Workspace.Map.TheMap.Rooms
+local ENEMIES_FOLDER = Workspace.BluTeamZombies
+
+-- Create safe spot part
+local safeSpot = Instance.new("Part")
+safeSpot.Name = "AutoDoorSafeSpot"
+safeSpot.Size = SAFE_SPOT_SIZE
+safeSpot.Position = SAFE_SPOT_POSITION
+safeSpot.Anchored = true
+safeSpot.CanCollide = false
+safeSpot.Transparency = 0.7
+safeSpot.Color = Color3.fromRGB(0, 255, 0) -- Green for visibility
+safeSpot.Parent = Workspace
+
+-- State tracking
+local currentRoomNumber = 0
+local isRunning = false
+local isAtSafeSpot = false
+local foundKey = false
+local lastEPressTime = 0
+local teleporting = false
+
+-- Utility functions
+local function waitForCharacter()
+	if not character or not character.Parent then
+		character = player.CharacterAdded:Wait()
+		humanoid = character:WaitForChild("Humanoid")
+		humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+	end
+	return character
+end
+
+local function getEnemies()
+	local enemies = {}
+	
+	if ENEMIES_FOLDER and ENEMIES_FOLDER:IsA("Folder") then
+		for _, enemy in pairs(ENEMIES_FOLDER:GetChildren()) do
+			if enemy:IsA("Model") then
+				local humanoid = enemy:FindFirstChild("Humanoid")
+				local rootPart = enemy:FindFirstChild("HumanoidRootPart") or enemy:FindFirstChild("Torso") or enemy.PrimaryPart
+				
+				if humanoid and humanoid.Health > 0 and rootPart then
+					table.insert(enemies, {
+						Model = enemy,
+						Name = enemy.Name,
+						RootPart = rootPart,
+						Humanoid = humanoid
+					})
+				end
+			end
+		end
+	end
+	
+	return enemies
+end
+
+local function getEnemyByName(name)
+	local enemies = getEnemies()
+	for _, enemy in pairs(enemies) do
+		if enemy.Name == name then
+			return enemy
+		end
+	end
+	return nil
+end
+
+local function isEnemyClose(position, radius)
+	local enemies = getEnemies()
+	for _, enemy in pairs(enemies) do
+		if enemy.RootPart and (enemy.RootPart.Position - position).Magnitude <= radius then
+			return true, enemy
+		end
+	end
+	return false, nil
+end
+
+local function isDangerousEnemyClose()
+	local character = waitForCharacter()
+	if not humanoidRootPart then return false, nil end
+	
+	local enemies = getEnemies()
+	
+	for _, enemy in pairs(enemies) do
+		if enemy.RootPart then
+			local distance = (enemy.RootPart.Position - humanoidRootPart.Position).Magnitude
+			
+			-- Check for specific dangerous enemies
+			if enemy.Name == "Chase" and distance <= CHASE_ENTITY_AVOID_DISTANCE then
+				return true, enemy
+			elseif enemy.Name == "Glitch" and distance <= GLITCH_ENTITY_AVOID_DISTANCE then
+				return true, enemy
+			elseif enemy.Name == "Eyes" and distance <= EYES_ENTITY_DISTANCE then
+				return true, enemy
+			elseif enemy.Name ~= "Eyes" and distance <= ENEMY_CHECK_RADIUS then
+				-- For other enemies
+				return true, enemy
+			end
+		end
+	end
+	
+	return false, nil
+end
+
+local function teleportTo(position)
+	teleporting = true
+	
+	if humanoidRootPart then
+		humanoidRootPart.CFrame = CFrame.new(position) + Vector3.new(0, TELEPORT_HEIGHT_OFFSET, 0)
+		
+		-- Wait for teleport to complete
+		task.wait(0.2)
+		
+		-- Verify we teleported successfully
+		if (humanoidRootPart.Position - position).Magnitude > 10 then
+			-- Try again
+			humanoidRootPart.CFrame = CFrame.new(position) + Vector3.new(0, TELEPORT_HEIGHT_OFFSET, 0)
+			task.wait(0.2)
+		end
+	end
+	
+	teleporting = false
+	return true
+end
+
+local function goToSafeSpot()
+	if isAtSafeSpot then return true end
+	
+	print("Going to safe spot...")
+	local success = teleportTo(SAFE_SPOT_POSITION)
+	if success then
+		isAtSafeSpot = true
+		print("Arrived at safe spot")
+	end
+	
+	return success
+end
+
+local function leaveSafeSpot()
+	if not isAtSafeSpot then return true end
+	
+	print("Leaving safe spot...")
+	isAtSafeSpot = false
+	return true
+end
+
+local function waitForNoEnemies(timeout)
+	local startTime = tick()
+	
+	while tick() - startTime < timeout do
+		local enemyClose, enemy = isDangerousEnemyClose()
+		
+		if not enemyClose then
+			return true
+		end
+		
+		-- If enemy is Eyes, we can continue
+		if enemy and enemy.Name == "Eyes" then
+			return true
+		end
+		
+		-- For other enemies, wait at safe spot
+		if not isAtSafeSpot then
+			goToSafeSpot()
+		end
+		
+		task.wait(0.5)
+	end
+	
+	return false
+end
+
+local function findKeyInRoom(roomFolder)
+	if not roomFolder or not roomFolder:IsA("Folder") then return nil end
+	
+	local itemSpawns = roomFolder:FindFirstChild("Item_Spawns")
+	if not itemSpawns then return nil end
+	
+	for _, spawn in pairs(itemSpawns:GetChildren()) do
+		if spawn:IsA("BasePart") and spawn.Name == "Part" then
+			-- Check color
+			local color = spawn.Color
+			local colorDiff = math.abs(color.R - KEY_COLOR.R) + 
+							math.abs(color.G - KEY_COLOR.G) + 
+							math.abs(color.B - KEY_COLOR.B)
+			
+			if colorDiff <= KEY_COLOR_TOLERANCE then
+				return spawn
+			end
+		end
+	end
+	
+	return nil
+end
+
+local function getKey()
+	if foundKey then return true end
+	
+	print("Looking for key...")
+	
+	-- Search current room first
+	local roomFolder = ROOMS_FOLDER:FindFirstChild(tostring(currentRoomNumber))
+	if roomFolder then
+		local key = findKeyInRoom(roomFolder)
+		if key then
+			print("Found key in current room")
+			
+			-- Teleport to key
+			teleportTo(key.Position)
+			task.wait(0.5)
+			
+			-- Press E to pick up (simulate)
+			foundKey = true
+			return true
+		end
+	end
+	
+	-- Search other rooms
+	for i = 0, MAX_ROOM_NUMBER do
+		if i ~= currentRoomNumber then
+			local room = ROOMS_FOLDER:FindFirstChild(tostring(i))
+			if room then
+				local key = findKeyInRoom(room)
+				if key then
+					print("Found key in room " .. i)
+					
+					-- Check for enemies before going
+					if waitForNoEnemies(2) then
+						teleportTo(key.Position)
+						task.wait(0.5)
+						foundKey = true
+						return true
+					end
+				end
+			end
+		end
+	end
+	
+	print("No key found")
+	return false
+end
+
+local function isDoorLocked(doorModel)
+	if not doorModel then return false end
+	
+	-- Check for lock folder
+	local lockFolder = doorModel:FindFirstChild("lock")
+	if lockFolder then
+		return true
+	end
+	
+	-- Alternative: check for locked attribute or specific parts
+	if doorModel:GetAttribute("Locked") == true then
+		return true
+	end
+	
+	local lockPart = doorModel:FindFirstChild("Lock") or doorModel:FindFirstChild("lock")
+	if lockPart then
+		return true
+	end
+	
+	return false
+end
+
+local function spamEForDoor(doorModel, timeout)
+	local startTime = tick()
+	local prompt = nil
+	
+	-- Find proximity prompt
+	for _, child in pairs(doorModel:GetDescendants()) do
+		if child:IsA("ProximityPrompt") then
+			prompt = child
+			break
+		end
+	end
+	
+	if not prompt then
+		print("No proximity prompt found on door")
+		return false
+	end
+	
+	-- Set hold duration to 0 for instant activation
+	prompt.HoldDuration = 0
+	
+	print("Spamming E on door...")
+	
+	while tick() - startTime < timeout do
+		-- Check for enemies (except Eyes)
+		local enemyClose, enemy = isDangerousEnemyClose()
+		if enemyClose and enemy and enemy.Name ~= "Eyes" then
+			print("Enemy detected, going to safe spot")
+			goToSafeSpot()
+			task.wait(1)
+			continue
+		end
+		
+		-- Make sure we're at the door
+		local hitbox = doorModel:FindFirstChild("Hitbox")
+		if hitbox and humanoidRootPart then
+			local distance = (hitbox.Position - humanoidRootPart.Position).Magnitude
+			if distance > 10 then
+				teleportTo(hitbox.Position)
+				task.wait(0.2)
+			end
+		end
+		
+		-- Fire the prompt
+		prompt:InputHoldBegin()
+		task.wait(0.05)
+		prompt:InputHoldEnd()
+		
+		-- Check if door opened
+		if not isDoorLocked(doorModel) then
+			print("Door opened!")
+			return true
+		end
+		
+		-- Wait for next press
+		task.wait(AUTO_E_INTERVAL)
+	end
+	
+	print("Failed to open door within timeout")
+	return false
+end
+
+local function processRoom(roomNumber)
+	print("Processing room " .. roomNumber)
+	
+	local roomFolder = ROOMS_FOLDER:FindFirstChild(tostring(roomNumber))
+	if not roomFolder then
+		print("Room " .. roomNumber .. " not found")
+		return false
+	end
+	
+	-- Skip room 50 (Chase room)
+	if roomNumber == 50 then
+		print("Skipping room 50 (Chase room)")
+		return true
+	end
+	
+	-- Check for Chase entity in any room
+	local chaseEnemy = getEnemyByName("Chase")
+	if chaseEnemy then
+		print("Chase entity detected, maintaining distance")
+		
+		-- Keep distance from Chase
+		if humanoidRootPart and chaseEnemy.RootPart then
+			local distance = (chaseEnemy.RootPart.Position - humanoidRootPart.Position).Magnitude
+			if distance < CHASE_ENTITY_AVOID_DISTANCE then
+				print("Too close to Chase, going to safe spot")
+				goToSafeSpot()
+				task.wait(1)
+			end
+		end
+	end
+	
+	-- Find door in this room
+	local doorModel = roomFolder:FindFirstChild("Door_Exit_Model")
+	if not doorModel then
+		print("No door found in room " .. roomNumber)
+		return false
+	end
+	
+	-- Find hitbox
+	local hitbox = doorModel:FindFirstChild("Hitbox")
+	if not hitbox then
+		print("No hitbox found on door")
+		return false
+	end
+	
+	-- Check if door is locked
+	if isDoorLocked(doorModel) then
+		print("Door is locked, looking for key...")
+		
+		if not foundKey then
+			if not getKey() then
+				print("Could not find key")
+				return false
+			end
+		end
+		
+		print("Using key on locked door...")
+	end
+	
+	-- Wait for no enemies (except Eyes)
+	if not waitForNoEnemies(3) then
+		print("Enemies still present, trying anyway...")
+	end
+	
+	-- Teleport to door
+	print("Teleporting to door...")
+	teleportTo(hitbox.Position)
+	
+	-- Spam E to open door
+	local doorOpened = spamEForDoor(doorModel, 5)
+	
+	if doorOpened then
+		print("Successfully processed room " .. roomNumber)
+		return true
+	else
+		print("Failed to process room " .. roomNumber)
+		return false
+	end
+end
+
+local function findNextRoom()
+	-- Start from current room + 1
+	for i = currentRoomNumber + 1, MAX_ROOM_NUMBER do
+		local roomFolder = ROOMS_FOLDER:FindFirstChild(tostring(i))
+		if roomFolder then
+			return i
+		end
+	end
+	
+	-- If no higher rooms, start from 0
+	for i = 0, currentRoomNumber - 1 do
+		local roomFolder = ROOMS_FOLDER:FindFirstChild(tostring(i))
+		if roomFolder then
+			return i
+		end
+	end
+	
+	return nil
+end
+
+-- Main loop
+local function mainLoop()
+	print("Starting auto-doors navigation...")
+	
+	while isRunning do
+		-- Wait for character
+		waitForCharacter()
+		
+		if not humanoid or humanoid.Health <= 0 then
+			print("Player is dead, waiting for respawn...")
+			task.wait(3)
+			continue
+		end
+		
+		-- Find next room to process
+		local nextRoom = findNextRoom()
+		if not nextRoom then
+			print("No more rooms found")
+			isRunning = false
+			break
+		end
+		
+		-- Process the room
+		local success = processRoom(nextRoom)
+		
+		if success then
+			currentRoomNumber = nextRoom
+			print("Moving to next room...")
+			task.wait(1) -- Brief pause between rooms
+		else
+			print("Failed to process room " .. nextRoom .. ", retrying...")
+			task.wait(2)
+		end
+		
+		-- Small delay to prevent CPU overuse
+		task.wait(0.1)
+	end
+	
+	print("Auto-doors navigation stopped")
+end
+
+-- Control functions
+local function start()
+	if isRunning then
+		print("Already running!")
+		return
+	end
+	
+	isRunning = true
+	currentRoomNumber = 0
+	foundKey = false
+	isAtSafeSpot = false
+	
+	-- Start main loop in a separate thread
+	task.spawn(mainLoop)
+	
+	print("Auto-doors navigation started!")
+end
+
+local function stop()
+	isRunning = false
+	print("Stopping auto-doors navigation...")
+end
+
+local function toggle()
+	if isRunning then
+		stop()
+	else
+		start()
+	end
+end
+
+-- UI and controls (optional)
+local function createUI()
+	-- Create a simple GUI for control
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "AutoDoorsGUI"
+	screenGui.Parent = player:WaitForChild("PlayerGui")
+	
+	local frame = Instance.new("Frame")
+	frame.Size = UDim2.new(0, 200, 0, 150)
+	frame.Position = UDim2.new(0, 10, 0, 10)
+	frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	frame.BackgroundTransparency = 0.3
+	frame.BorderSizePixel = 0
+	frame.Parent = screenGui
+	
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, 0, 0, 30)
+	title.Position = UDim2.new(0, 0, 0, 0)
+	title.Text = "Auto-Doors System"
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	title.Font = Enum.Font.SourceSansBold
+	title.TextSize = 18
+	title.Parent = frame
+	
+	local toggleBtn = Instance.new("TextButton")
+	toggleBtn.Size = UDim2.new(0.8, 0, 0, 40)
+	toggleBtn.Position = UDim2.new(0.1, 0, 0.3, 0)
+	toggleBtn.Text = "START"
+	toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
+	toggleBtn.Font = Enum.Font.SourceSansBold
+	toggleBtn.TextSize = 16
+	toggleBtn.Parent = frame
+	
+	local statusLabel = Instance.new("TextLabel")
+	statusLabel.Size = UDim2.new(1, 0, 0, 40)
+	statusLabel.Position = UDim2.new(0, 0, 0.7, 0)
+	statusLabel.Text = "Status: Stopped"
+	statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	statusLabel.BackgroundTransparency = 1
+	statusLabel.Font = Enum.Font.SourceSans
+	statusLabel.TextSize = 14
+	statusLabel.Parent = frame
+	
+	toggleBtn.MouseButton1Click:Connect(function()
+		toggle()
+		
+		if isRunning then
+			toggleBtn.Text = "STOP"
+			toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
+			statusLabel.Text = "Status: Running"
+		else
+			toggleBtn.Text = "START"
+			toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
+			statusLabel.Text = "Status: Stopped"
+		end
+	end)
+	
+	-- Keybind (F6 to toggle)
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if not gameProcessed and input.KeyCode == Enum.KeyCode.F6 then
+			toggle()
+			
+			if isRunning then
+				toggleBtn.Text = "STOP"
+				toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
+				statusLabel.Text = "Status: Running"
+			else
+				toggleBtn.Text = "START"
+				toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 0)
+				statusLabel.Text = "Status: Stopped"
+			end
+		end
+	end)
+end
+
+-- Initialize
+task.wait(2) -- Wait for game to load
+createUI()
+
+print("Auto-Doors System Loaded!")
+print("Press F6 to start/stop")
+print("Or use the GUI in the top-left corner")
+
+-- Export functions
+return {
+	Start = start,
+	Stop = stop,
+	Toggle = toggle,
+	IsRunning = function() return isRunning end,
+	GetCurrentRoom = function() return currentRoomNumber end
+}
