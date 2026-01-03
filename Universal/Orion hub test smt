@@ -542,7 +542,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		Position = UDim2.new(0, 0, 0, 0)
 	}), {
 		SearchBox,
-		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://3944680095"), {
+		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7072718646"), {
 			Size = UDim2.new(0, 16, 0, 16),
 			Position = UDim2.new(1, -25, 0, 12),
 			ImageColor3 = Color3.fromRGB(160, 160, 160)
