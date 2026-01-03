@@ -512,7 +512,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 
 	local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
-		Size = UDim2.new(1, 0, 1, -50)
+		Size = UDim2.new(1, 0, 1, -90), -- Adjusted for search bar height
+		Position = UDim2.new(0, 0, 0, 40) -- Position below search bar
 	}), {
 		MakeElement("List"),
 		MakeElement("Padding", 8, 0, 0, 8)
@@ -520,6 +521,82 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	AddConnection(TabHolder.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
 		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolder.UIListLayout.AbsoluteContentSize.Y + 16)
+	end)
+
+	-- Search Bar Implementation
+	local SearchBox = AddThemeObject(Create("TextBox", {
+		Size = UDim2.new(1, -20, 0, 30),
+		Position = UDim2.new(0, 10, 0, 5),
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
+		PlaceholderText = "Search Tabs...",
+		Font = Enum.Font.GothamSemibold,
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false
+	}), "Text")
+
+	local SearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
+		Size = UDim2.new(1, 0, 0, 40),
+		Position = UDim2.new(0, 0, 0, 0)
+	}), {
+		SearchBox,
+		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
+			Size = UDim2.new(0, 16, 0, 16),
+			Position = UDim2.new(1, -25, 0, 12),
+			ImageColor3 = Color3.fromRGB(160, 160, 160)
+		}), "TextDark"),
+		AddThemeObject(MakeElement("Stroke"), "Stroke")
+	}), "Second")
+
+	-- Store all created tabs for filtering
+	local AllTabs = {}
+	local CurrentFilter = ""
+
+	local function FilterTabs(searchText)
+		CurrentFilter = searchText:lower()
+		
+		for _, tabData in pairs(AllTabs) do
+			local tabButton = tabData.Button
+			local tabName = tabData.Name
+			
+			if searchText == "" then
+				-- Show all tabs when search is empty
+				tabButton.Visible = true
+				TweenService:Create(tabButton, TweenInfo.new(0.2), {Position = UDim2.new(0, 0, 0, tabData.OriginalPosition.Y.Offset)}):Play()
+			else
+				-- Show only tabs that match the search
+				if string.find(tabName:lower(), CurrentFilter) then
+					tabButton.Visible = true
+					TweenService:Create(tabButton, TweenInfo.new(0.2), {Position = UDim2.new(0, 0, 0, tabData.OriginalPosition.Y.Offset)}):Play()
+				else
+					tabButton.Visible = false
+				end
+			end
+		end
+		
+		-- Recalculate tab positions
+		local visibleCount = 0
+		for _, tabData in pairs(AllTabs) do
+			if tabData.Button.Visible then
+				tabData.Button.Position = UDim2.new(0, 0, 0, visibleCount * 30)
+				visibleCount = visibleCount + 1
+			end
+		end
+	end
+
+	-- Connect search functionality
+	AddConnection(SearchBox:GetPropertyChangedSignal("Text"), function()
+		FilterTabs(SearchBox.Text)
+	end)
+
+	AddConnection(SearchBox.Focused, function()
+		TweenService:Create(SearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
+	end)
+
+	AddConnection(SearchBox.FocusLost, function()
+		TweenService:Create(SearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
 	end)
 
 	local CloseBtn = SetChildren(SetProps(MakeElement("Button"), {
@@ -564,6 +641,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			Size = UDim2.new(0, 1, 1, 0),
 			Position = UDim2.new(1, -1, 0, 0)
 		}), "Stroke"), 
+		SearchContainer, -- Added search bar to the sidebar
 		TabHolder,
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
@@ -764,7 +842,8 @@ function OrionLib:MakeWindow(WindowConfig)
 
 		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
 			Size = UDim2.new(1, 0, 0, 30),
-			Parent = TabHolder
+			Parent = TabHolder,
+			Name = TabConfig.Name
 		}), {
 			AddThemeObject(SetProps(MakeElement("Image", TabConfig.Icon), {
 				AnchorPoint = Vector2.new(0, 0.5),
@@ -827,6 +906,22 @@ function OrionLib:MakeWindow(WindowConfig)
 			TabFrame.Title.Font = Enum.Font.GothamBlack
 			Container.Visible = true   
 		end)
+
+		-- Store tab data for filtering
+		local tabIndex = #AllTabs
+		AllTabs[TabConfig.Name] = {
+			Button = TabFrame,
+			Name = TabConfig.Name,
+			OriginalPosition = TabFrame.Position,
+			Index = tabIndex
+		}
+
+		-- Apply current filter to new tab
+		if CurrentFilter ~= "" then
+			if not string.find(TabConfig.Name:lower(), CurrentFilter) then
+				TabFrame.Visible = false
+			end
+		end
 
 		local function GetElements(ItemParent)
 			local ElementFunction = {}
