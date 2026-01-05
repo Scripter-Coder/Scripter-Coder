@@ -1,1 +1,1142 @@
-d
+--skid if u want idc just dont forget about credits or smt
+--Library
+local OrionLib = loadstring(game:HttpGet("https://gist.githubusercontent.com/Scripter-Coder/39eb43cc6530717e76d79899a794d4e1/raw/222482765b9cb8e249bba197240a5b712b4722e7/Orion%2520Library%2520Source%2520From%2520Start"))()
+
+--Startup Script Notification
+OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 then
+
+local Window = OrionLib:MakeWindow({Name = "🎃 Halloween Hub (Scripter Hub) 👻",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Halloween Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+Tab = Window:MakeTab({
+    Name = "Welcome",
+    Icon = "rbxassetid://7734059095",
+    PremiumOnly = false
+})
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
+Section = Tab:AddSection({
+    Name = "Before u will start using mine script would u like to bypass anticheat?"
+})
+
+Section = Tab:AddSection({
+    Name = "NOTE: It supports only high/good executors like Solara/Xeno doesnt support"
+})
+
+Tab:AddButton({
+	Name = "Bypass All Anticheat",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+task.wait(1.5)
+OrionLib:MakeNotification({Name = "Success",Content = "Bypassed All Anticheat",Image = "rbxassetid://7733715400",Time = 3})
+end
+})
+
+Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Section = Tab:AddSection({
+    Name = "Equip Gloves"
+})
+
+Tab:AddButton({
+    Name = "Equip Killstreak (5k+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Killstreak"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Hallow Jack (Jack's will Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Hallow Jack"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Rattlebones (Candy King Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Rattlebones"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Necromancer (Sweet-Tooth Sovereign Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Necromancer"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Poltergeist (Fetch me their Souls Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Poltergeist"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Harvester (The Cornfeared Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Harvester"].ClickDetector)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Teleports Stuff"
+})
+
+local CandyCornCollector = "Teleport" -- Default fallback
+local AutoCollectCandyCorns = false
+local AutoServerhopCandyCorns = false
+
+Tab:AddDropdown({
+    Name = "Choose Option To Auto Collect Candy Corns",
+    Default = "Teleport",
+    Options = {"Teleport", "Bring"},
+    Callback = function(Value)
+        CandyCornCollector = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Collect Candy Corns",
+    Default = false,
+    Callback = function(Value)
+        AutoCollectCandyCorns = Value
+        
+        if Value then
+            -- Check if player already has the badge
+            if hasNecromancerBadge() then
+                OrionLib:MakeNotification({
+                    Name = "Already Have Badge",
+                    Content = "You already have Necromancer glove badge! The farm will not work.",
+                    Image = "rbxassetid://7734059095",
+                    Time = 5
+                })
+                AutoCollectCandyCorns = false
+                return
+            end
+            
+            if CandyCornCollector == "Teleport" then
+                -- Auto Teleport to Candy Corns (BaseParts)
+                task.spawn(function()
+                    while AutoCollectCandyCorns do
+                        -- Check for badge again in case they got it during farming
+                        if hasNecromancerBadge() then
+                            OrionLib:MakeNotification({
+                                Name = "Badge Obtained!",
+                                Content = "You got the Necromancer glove badge! Farm stopped.",
+                                Image = "rbxassetid://7734059095",
+                                Time = 5
+                            })
+                            AutoCollectCandyCorns = false
+                            break
+                        end
+                        
+                        local character = game.Players.LocalPlayer.Character
+                        if character and character:FindFirstChild("HumanoidRootPart") then
+                            local foundCandyCorn = false
+                            
+                            -- Search for BaseParts in CandyCorns folder
+                            for _, part in pairs(workspace.CandyCorns:GetChildren()) do
+                                if not AutoCollectCandyCorns then break end
+                                
+                                if part:IsA("BasePart") then
+                                    foundCandyCorn = true
+                                    -- Teleport to the BasePart
+                                    character.HumanoidRootPart.CFrame = CFrame.new(part.Position + Vector3.new(0, 3, 0))
+                                    task.wait(0.2) -- Small delay between teleports
+                                    break -- Focus on one at a time
+                                end
+                            end
+                            
+                            if not foundCandyCorn then
+                                task.wait(0.5) -- Wait if no candy corns found
+                            end
+                        end
+                        task.wait()
+                    end
+                end)
+            elseif CandyCornCollector == "Bring" then
+                -- Auto Bring Candy Corns (BaseParts) to player - directly to touch
+                task.spawn(function()
+                    while AutoCollectCandyCorns do
+                        -- Check for badge again in case they got it during farming
+                        if hasNecromancerBadge() then
+                            OrionLib:MakeNotification({
+                                Name = "Badge Obtained!",
+                                Content = "You got the Necromancer glove badge! Farm stopped.",
+                                Image = "rbxassetid://7734059095",
+                                Time = 5
+                            })
+                            AutoCollectCandyCorns = false
+                            break
+                        end
+                        
+                        local character = game.Players.LocalPlayer.Character
+                        if character and character:FindFirstChild("HumanoidRootPart") then
+                            local humanoidRootPart = character.HumanoidRootPart
+                            
+                            -- Bring all BaseParts in CandyCorns folder directly to player
+                            for _, part in pairs(workspace.CandyCorns:GetChildren()) do
+                                if not AutoCollectCandyCorns then break end
+                                
+                                if part:IsA("BasePart") then
+                                    -- Move the BasePart directly to player's position (touching)
+                                    part.CFrame = humanoidRootPart.CFrame
+                                end
+                            end
+                        end
+                        task.wait(0.1)
+                    end
+                end)
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Zombies (1)",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(103505724406848)
+    end
+})
+
+Tab:AddButton({
+    Name = "Zombies (2) [PATCHED]",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(417, 360, -13)
+    end
+})
+
+Tab:AddButton({
+    Name = "Pim's Corn Maze (1)",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(92483185275059)
+    end
+})
+
+Tab:AddButton({
+    Name = "Pim's Corn Maze (2) [PATCHED]",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Arena.Halloween_Decorations.PimsCornMazeEntry.TeleportMain.Hitbox.CFrame
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Other Stuff"
+})
+
+-- ========== Helper: Create Billboard ESP ==========
+local function createESP(parent, name, text, color)
+    local esp = Instance.new("BillboardGui", parent)
+    esp.Name = name
+    esp.Adornee = parent
+    esp.Size = UDim2.new(0, 150, 0, 40)
+    esp.StudsOffset = Vector3.new(0, 2, 0)
+    esp.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", esp)
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.TextSize = 16
+    label.Font = Enum.Font.FredokaOne
+    label.TextColor3 = color
+    label.TextStrokeTransparency = 0.2
+    label.Text = text
+
+    -- Create highlight
+    local highlight = Instance.new("Highlight")
+    highlight.Name = name .. "Highlight"
+    highlight.Adornee = parent
+    highlight.FillColor = color
+    highlight.FillTransparency = 0.5
+    highlight.OutlineColor = color
+    highlight.OutlineTransparency = 0
+    highlight.Parent = parent
+
+    return label
+end
+
+Tab:AddToggle({
+    Name = "Grave ESP",
+    Default = false,
+    Callback = function(Value)
+        GraveESP = Value
+
+        if not Value then
+            local grave = workspace:FindFirstChild("Gravestone")
+            if grave and grave:IsA("Model") then
+                local gui = grave:FindFirstChild("GraveESP")
+                if gui then gui:Destroy() end
+                local highlight = grave:FindFirstChild("GraveESPHighlight")
+                if highlight then highlight:Destroy() end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while GraveESP do
+                local graveTarget = workspace:FindFirstChild("Gravestone")
+                if graveTarget and graveTarget:IsA("Model") and not graveTarget:FindFirstChild("GraveESP") then
+                    createESP(graveTarget, "GraveESP", "Grave", Color3.fromRGB(255, 0, 0))
+                end
+                task.wait(0.5)
+            end
+        end)
+    end
+})
+
+Tab:AddButton({
+    Name = "Killstreak Slap Aura",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Right Arm"
+        if player.Character and player.Character:FindFirstChild("Right Arm") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Right Arm"]
+            }
+
+            -- Fire the server with the "Right Arm" part as an argument
+            ReplicatedStorage.KSHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Killstreak",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+Tab:AddButton({
+    Name = "Click On Grave",
+    Callback = function()
+fireclickdetector(workspace.Gravestone.ClickDetector)
+    end
+})
+
+AntiAfk = Tab:AddToggle({
+	Name = "Anti Afk",
+	Default = false,
+	Callback = function(Value)
+	_G.AntiAfk = Value
+local VirtualUser = game:GetService('VirtualUser')
+
+game:GetService('Players').LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
+	end    
+})
+
+-- SETTINGS
+Tab = Window:MakeTab({
+    Name = "Settings",
+    Icon = "rbxassetid://7734053495",
+    PremiumOnly = false
+})
+
+-- Section: Value Changer
+Section = Tab:AddSection({
+    Name = "Value Changer"
+})
+
+Tab:AddTextbox({
+    Name = "How Many Slaps? (Visual)",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Section: Badge Giver
+Section = Tab:AddSection({
+    Name = "Badge Giver"
+})
+
+Tab:AddButton({
+    Name = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+-- Variables
+local nametagText = ""
+local autoNametag = false
+local player = game.Players.LocalPlayer
+
+-- Textbox for nametag
+Tab:AddTextbox({
+    Name = "Type Ur Own Any Nametag",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+-- Button to apply nametag once
+Tab:AddButton({
+    Name = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter text in the textbox first!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Find and update nametag
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    OrionLib:MakeNotification({
+                        Name = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "TopLabel not found!",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Nametag not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Character not found!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Toggle for auto nametag
+Tab:AddToggle({
+    Name = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            -- Start auto nametag loop
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+-- Auto reapply nametag when character respawns
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        -- Wait for character to fully load
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Section = Tab:AddSection({
+    Name = "Slap Aura"
+})
+
+-- Optimized Slap Aura with anti-freeze protection
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    local scriptLoaded = false
+    
+    -- Optimized: Only include common gloves to reduce memory
+    local gloveHits = {
+        ["Default"] = ReplicatedStorage.b,
+        ["Diamond"] = ReplicatedStorage.DiamondHit,
+        ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
+        ["Brick"] = ReplicatedStorage.BrickHit,
+        ["Snow"] = ReplicatedStorage.SnowHit,
+        ["Pull"] = ReplicatedStorage.PullHit,
+        ["Flash"] = ReplicatedStorage.FlashHit,
+        ["Spring"] = ReplicatedStorage.springhit,
+        ["Swapper"] = ReplicatedStorage.HitSwapper,
+        ["Bull"] = ReplicatedStorage.BullHit,
+        ["Dice"] = ReplicatedStorage.DiceHit,
+        ["Ghost"] = ReplicatedStorage.GhostHit,
+        ["Stun"] = ReplicatedStorage.HtStun,
+        ["Za Hando"] = ReplicatedStorage.zhramt,
+        ["Fort"] = ReplicatedStorage.Fort,
+        ["Magnet"] = ReplicatedStorage.MagnetHIT,
+        ["Pusher"] = ReplicatedStorage.PusherHit,
+        ["Anchor"] = ReplicatedStorage.hitAnchor,
+        ["Space"] = ReplicatedStorage.HtSpace,
+        ["Boomerang"] = ReplicatedStorage.BoomerangH,
+        ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mail"] = ReplicatedStorage.MailHit,
+        ["Golden"] = ReplicatedStorage.GoldenHit,
+        ["MR"] = ReplicatedStorage.MisterHit,
+        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Replica"] = ReplicatedStorage.ReplicaHit,
+        ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Killstreak"] = ReplicatedStorage.KSHit,
+        ["Reverse"] = ReplicatedStorage.ReverseHit,
+        ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
+        ["Duelist"] = ReplicatedStorage.DuelistHit,
+        ["Ice"] = ReplicatedStorage.IceHit,
+        ["Adios"] = ReplicatedStorage.hitAdios,
+        ["Blocked"] = ReplicatedStorage.BlockedHit,
+        ["Engineer"] = ReplicatedStorage.engiehit,
+        ["Rocky"] = ReplicatedStorage.RockyHit,
+        ["Conveyor"] = ReplicatedStorage.ConvHit,
+        ["Phantom"] = ReplicatedStorage.PhantomHit,
+        ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
+        ["Wormhole"] = ReplicatedStorage.WormHit,
+        ["STOP"] = ReplicatedStorage.STOP,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
+        ["Nightmare"] = ReplicatedStorage.nightmarehit,
+        ["Pylon"] = ReplicatedStorage.PylonHit,
+        ["Thor"] = ReplicatedStorage.ThorHit,
+        ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Plague"] = ReplicatedStorage.PlagueHit,
+        ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
+        ["[REDACTED]"] = ReplicatedStorage.ReHit,
+        ["bus"] = ReplicatedStorage.hitbus,
+        ["Mitten"] = ReplicatedStorage.MittenHit,
+        ["Phase"] = ReplicatedStorage.PhaseH,
+        ["Warp"] = ReplicatedStorage.WarpHt,
+        ["Bomb"] = ReplicatedStorage.BombHit,
+        ["Bubble"] = ReplicatedStorage.BubbleHit,
+        ["Jet"] = ReplicatedStorage.JetHit,
+        ["Shard"] = ReplicatedStorage.ShardHIT,
+        ["CULT"] = ReplicatedStorage.CULTHit,
+        ["bob"] = ReplicatedStorage.bobhit,
+        ["buddies"] = ReplicatedStorage.buddiesHIT,
+        ["Moon"] = ReplicatedStorage.CelestialHit,
+        ["Spy"] = ReplicatedStorage.SpyHit,
+        ["Detonator"] = ReplicatedStorage.DetonatorHit,
+        ["Rage"] = ReplicatedStorage.GRRRR,
+        ["Trap"] = ReplicatedStorage.traphi,
+        ["Orbit"] = ReplicatedStorage.Orbihit,
+        ["Hybrid"] = ReplicatedStorage.HybridCLAP,
+        ["Slapple"] = ReplicatedStorage.SlappleHit,
+        ["Disarm"] = ReplicatedStorage.DisarmH,
+        ["Dominance"] = ReplicatedStorage.DominanceHit,
+        ["Link"] = ReplicatedStorage.LinkHit,
+        ["rob"] = ReplicatedStorage.robhit,
+        ["Rhythm"] = ReplicatedStorage.rhythmhit,
+        ["Rojo"] = ReplicatedStorage.RojoHit,
+        ["Hitman"] = ReplicatedStorage.HitmanHit,
+        ["Retro"] = ReplicatedStorage.RetroHit,
+        ["Null"] = ReplicatedStorage.NullHit,
+        ["Tinkerer"] = ReplicatedStorage.TinkererHit,
+        ["OVERKILL"] = ReplicatedStorage.Overkillhit,
+        ["CUSTOM"] = ReplicatedStorage.CustomHit,
+        ["spin"] = ReplicatedStorage.spinhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Error"] = ReplicatedStorage.Errorhit,
+        ["Acrobat"] = ReplicatedStorage.AcHit,
+        ["God's Hand"] = ReplicatedStorage.Godshand,
+        ["The Flex"] = ReplicatedStorage.FlexHit,
+    }
+    
+    -- Cache for performance
+    local cachedRemote = nil
+    local cachedGlove = nil
+    local lastGloveCheck = 0
+    local GLOVE_CHECK_INTERVAL = 5 -- Only check glove every 5 seconds
+    
+    -- Optimized function to get current glove
+    local function getCurrentGlove()
+        local currentTime = tick()
+        
+        -- Use cache to avoid checking every frame
+        if cachedGlove and (currentTime - lastGloveCheck) < GLOVE_CHECK_INTERVAL then
+            return cachedGlove
+        end
+        
+        if localPlayer:FindFirstChild("leaderstats") then
+            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+            if gloveValue then
+                cachedGlove = gloveValue.Value
+                lastGloveCheck = currentTime
+                return cachedGlove
+            end
+        end
+        
+        cachedGlove = "Default"
+        lastGloveCheck = currentTime
+        return cachedGlove
+    end
+    
+    -- Optimized function to get the correct remote
+    local function getGloveRemote()
+        local currentGlove = getCurrentGlove()
+        
+        -- Return cached remote if available and glove hasn't changed
+        if cachedRemote and currentGlove == cachedGlove then
+            return cachedRemote
+        end
+        
+        local remote = gloveHits[currentGlove]
+        
+        -- Fallback to GeneralHit or b if glove not found
+        if not remote then
+            remote = ReplicatedStorage.GeneralHit or ReplicatedStorage.b
+        end
+        
+        -- Validate remote exists
+        if remote and remote:IsA("RemoteEvent") then
+            cachedRemote = remote
+            return remote
+        end
+        
+        -- Ultimate fallback
+        return ReplicatedStorage.b
+    end
+    
+    -- Create slider first
+    local slapAuraSpeed = Tab:AddSlider({
+        Name = "Slap Aura Speed",
+        Min = 0.3,  -- Minimum safe speed to prevent spam
+        Max = 2,
+        Default = 0.5,
+        Color = Color3.fromRGB(255, 255, 255),
+        Increment = 0.1,
+        ValueName = "seconds",
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    -- Performance monitoring
+    local lastPerformanceCheck = 0
+    local framesProcessed = 0
+    local currentFPS = 60
+    
+    local function checkPerformance()
+        framesProcessed = framesProcessed + 1
+        local currentTime = tick()
+        
+        if currentTime - lastPerformanceCheck >= 1 then
+            currentFPS = framesProcessed
+            framesProcessed = 0
+            lastPerformanceCheck = currentTime
+            
+            -- If FPS is too low, disable slap aura to prevent crash
+            if currentFPS < 20 then
+                print("Warning: Low FPS detected (" .. currentFPS .. ") - Auto-disabling slap aura")
+                isSlapAuraEnabled = false
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                return false
+            end
+        end
+        return true
+    end
+    
+    -- Optimized player iteration with rate limiting
+    local lastPlayerScan = 0
+    local scannedPlayers = {}
+    local currentPlayerIndex = 1
+    
+    local function getNextPlayerToSlap()
+        if tick() - lastPlayerScan > 1 then  -- Refresh player list every second
+            scannedPlayers = {}
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= localPlayer and player.Character then
+                    table.insert(scannedPlayers, player)
+                end
+            end
+            lastPlayerScan = tick()
+        end
+        
+        if #scannedPlayers == 0 then
+            return nil
+        end
+        
+        -- Get next player with circular indexing
+        local player = scannedPlayers[currentPlayerIndex]
+        currentPlayerIndex = currentPlayerIndex + 1
+        if currentPlayerIndex > #scannedPlayers then
+            currentPlayerIndex = 1
+        end
+        
+        return player
+    end
+    
+    -- Create toggle
+    Tab:AddToggle({
+        Name = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            -- Skip notifications on initial load
+            if not scriptLoaded then
+                scriptLoaded = true
+                return
+            end
+            
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                -- Disconnect existing connection if any
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                end
+                
+                -- Reset cache
+                cachedRemote = nil
+                cachedGlove = nil
+                
+                -- Get current glove
+                local currentGlove = getCurrentGlove()
+                local remote = getGloveRemote()
+                
+                if not remote or not remote:IsA("RemoteEvent") then
+                    OrionLib:MakeNotification({
+                        Name = "Slap Aura Error",
+                        Content = "No valid remote found!",
+                        Image = "rbxassetid://7733919105",
+                        Time = 3
+                    })
+                    isSlapAuraEnabled = false
+                    return
+                end
+                
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    -- Performance check
+                    if not checkPerformance() then
+                        return
+                    end
+                    
+                    -- Cooldown check
+                    local currentTime = tick()
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    -- Safety check - prevent infinite loops
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    -- Get local player position for distance check
+                    local localChar = localPlayer.Character
+                    local localPos = localChar and localChar.PrimaryPart and localChar.PrimaryPart.Position
+                    
+                    if not localPos then
+                        return
+                    end
+                    
+                    -- Get next player to slap
+                    local player = getNextPlayerToSlap()
+                    if not player then
+                        return
+                    end
+                    
+                    -- Check player's character
+                    local char = player.Character
+                    if not char then
+                        return
+                    end
+                    
+                    local humanoid = char:FindFirstChildOfClass("Humanoid")
+                    local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                    
+                    if not torso or not humanoid or humanoid.Health <= 0 then
+                        return
+                    end
+                    
+                    -- Distance check (40 studs max)
+                    local distance = (torso.Position - localPos).Magnitude
+                    if distance > 40 then
+                        return
+                    end
+                    
+                    -- Fire the remote (safe call)
+                    local success = pcall(function()
+                        remote:FireServer(torso)
+                    end)
+                    
+                    if success then
+                        lastHitTime = currentTime
+                        -- Optional: Add small delay to prevent spam
+                        task.wait(0.01)
+                    else
+                        print("Slap Aura: Error hitting player")
+                    end
+                end)
+                
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Enabled",
+                    Content = string.format("Speed: %.1fs | Glove: %s", currentCooldown, currentGlove),
+                    Image = "rbxassetid://7733919105",
+                    Time = 3
+                })
+                
+                print(string.format("Slap Aura: Enabled for glove '%s'", currentGlove))
+                
+            else
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Disabled",
+                    Content = "",
+                    Image = "rbxassetid://7733919105",
+                    Time = 2
+                })
+                
+                print("Slap Aura: Disabled")
+            end
+        end
+    })
+end
+
+-- Add section for Ghost On/Off
+Section = Tab:AddSection({
+    Name = "Ghost On/Off"
+})
+
+Tab:AddToggle({
+    Name = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Ghost Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+-- Add section for Server Settings
+Section = Tab:AddSection({
+    Name = "Server Settings"
+})
+
+-- Rejoin button
+Tab:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+-- ServerHop (Regular Server)
+Tab:AddButton({
+    Name = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+        local Deleted = false
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        -- Start teleporting to new servers
+        Teleport()
+    end
+})
+
+-- ServerHop (Small Server)
+Tab:AddButton({
+    Name = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Kick/Reset If Stuck"
+})
+
+Tab:AddButton({
+    Name = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tab:AddButton({
+    Name = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Arena Settings"
+})
+
+Tab:AddDropdown({
+    Name = "Enter",
+    Default = "Arena",
+    Options = {"Arena", "Arena Default"},
+    Callback = function(Value)
+        AutoEnter = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoEnter = Value
+
+        -- Coroutine for auto entering the Arena
+        while _G.AutoEnter and AutoEnter == "Arena" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport1.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+
+        -- Coroutine for auto entering the Arena Default
+        while _G.AutoEnter and AutoEnter == "Arena Default" do
+            repeat task.wait() until game.Players.LocalPlayer.Character
+
+            local character = game.Players.LocalPlayer.Character
+            if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                repeat
+                    task.wait()
+                    local head = character:WaitForChild("Head")
+                    local teleportPart = workspace.Lobby.Teleport2.TouchInterest.Parent
+                    firetouchinterest(head, teleportPart, 0)
+                    firetouchinterest(head, teleportPart, 1)
+                until character:FindFirstChild("entered")
+            end
+
+            task.wait()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+end
+OrionLib:Init()
