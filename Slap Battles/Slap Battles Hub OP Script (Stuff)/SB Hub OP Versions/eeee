@@ -1,4 +1,4 @@
--- Orion Hub Configuration System (No UI Version)
+-- Orion Hub Configuration System (No UI Version) - FIXED
 -- Created by [Your Name]
 
 -- Services
@@ -12,13 +12,13 @@ local currentConfig = nil
 local autoLoadEnabled = false
 local configsList = {}
 
+-- Store all script settings here
+local ScriptSettings = {}
+
 -- Create configs folder if it doesn't exist
 if not isfolder(configsFolder) then
     makefolder(configsFolder)
 end
-
--- Get Orion library (assuming it's already loaded)
-local OrionLib = nil -- You'll need to set this to your actual Orion library
 
 -- Function to refresh configs list
 local function refreshConfigsList()
@@ -37,6 +37,42 @@ local function refreshConfigsList()
     return configsList
 end
 
+-- Function to register a setting (call this when you create toggles/sliders)
+local function registerSetting(name, valueObject, settingType)
+    ScriptSettings[name] = {
+        Object = valueObject,
+        Type = settingType or "Toggle" -- Can be "Toggle", "Slider", "Dropdown", "TextBox"
+    }
+end
+
+-- Function to get setting value
+local function getSettingValue(name)
+    if ScriptSettings[name] then
+        local obj = ScriptSettings[name].Object
+        if obj and obj.Value ~= nil then
+            return obj.Value
+        elseif obj and obj.Get ~= nil then
+            return obj:Get()
+        end
+    end
+    return nil
+end
+
+-- Function to set setting value
+local function setSettingValue(name, value)
+    if ScriptSettings[name] then
+        local obj = ScriptSettings[name].Object
+        if obj and obj.Set ~= nil then
+            obj:Set(value)
+            return true
+        elseif obj and obj.Value ~= nil then
+            obj.Value = value
+            return true
+        end
+    end
+    return false
+end
+
 -- Function to save configuration
 local function saveConfig(configName, overwrite)
     if not configName or configName == "" then
@@ -53,18 +89,25 @@ local function saveConfig(configName, overwrite)
         return false
     end
     
-    -- Gather all current settings from your script
-    -- MODIFY THIS SECTION BASED ON YOUR SCRIPT'S SETTINGS
+    -- Gather all current settings
     local configData = {
         Version = "1.0",
         SavedAt = os.date("%Y-%m-%d %H:%M:%S"),
         GameId = game.GameId,
         PlayerName = player.Name,
         Settings = {}
-        -- Example: Save your actual settings here
-        -- Settings["AutoFarm"] = AutoFarm.Value
-        -- Settings["WalkSpeed"] = WalkSpeed.Value
     }
+    
+    -- Save all registered settings
+    for name, setting in pairs(ScriptSettings) do
+        local value = getSettingValue(name)
+        if value ~= nil then
+            configData.Settings[name] = {
+                Value = value,
+                Type = setting.Type
+            }
+        end
+    end
     
     -- Convert to JSON
     local jsonData
@@ -124,17 +167,20 @@ local function loadConfig(configName)
     end
     
     -- Apply settings
-    -- MODIFY THIS SECTION BASED ON YOUR SCRIPT'S SETTINGS
+    local loadedCount = 0
     if configData.Settings then
-        -- Example: Apply your actual settings here
-        -- if configData.Settings["AutoFarm"] then
-        --     AutoFarm:Set(configData.Settings["AutoFarm"])
-        -- end
-        print("[Config] Applying settings from '" .. configName .. "'...")
+        for name, settingData in pairs(configData.Settings) do
+            if settingData.Value ~= nil then
+                local success = setSettingValue(name, settingData.Value)
+                if success then
+                    loadedCount = loadedCount + 1
+                end
+            end
+        end
     end
     
     currentConfig = configName
-    print("[Config] Loaded: '" .. configName .. "' successfully!")
+    print("[Config] Loaded: '" .. configName .. "' successfully! (" .. loadedCount .. " settings applied)")
     
     return true
 end
@@ -293,6 +339,11 @@ return {
     loadConfig = loadConfig,
     deleteConfig = deleteConfig,
     overwriteConfig = function(configName) return saveConfig(configName, true) end,
+    
+    -- Settings Management
+    registerSetting = registerSetting,
+    getSettingValue = getSettingValue,
+    setSettingValue = setSettingValue,
     
     -- Auto-load Functions
     setAutoLoad = setAutoLoadConfig,
