@@ -1,0 +1,2700 @@
+-- First section - Secret Badge 1
+local Section = Tab:AddSection({
+    Name = "Secret Badge 1"
+})
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+-- Local variables instead of _G for better performance
+local AutoShootSettings = {
+    GunName = "Minigun",
+    ShootingSpeed = 6,
+    MaxDistance = 1000,
+    Enabled = false
+}
+
+-- Use weak tables for state management
+local ShootSystem = setmetatable({
+    connection = nil,
+    isRunning = false,
+    isHolding = false,
+    holdStartTime = 0,
+    currentTarget = nil,
+    twoPhaseGunPhase = 1,
+    lastShootTime = 0,
+    _cleaningUp = false,
+    
+    -- Cached data
+    cachedNPCFolder = nil,
+    cachedMainAttackEvent = nil,
+    cachedCrackedBas = setmetatable({}, {__mode = "v"})
+}, {
+    __index = function(self, key)
+        if key == "Player" then
+            local player = Players.LocalPlayer
+            if not player then
+                Players.PlayerAdded:Wait()
+                player = Players.LocalPlayer
+            end
+            rawset(self, "Player", player)
+            return player
+        end
+        return nil
+    end
+})
+
+-- FIXED: Moved all tool definitions into single tables
+local TOOL_DATA = {
+    HOLD_TOOLS = {
+        ["TMG V2"] = true,
+        ["SMOGGTTLTSG"] = true
+    },
+    
+    TWO_PHASE_GUNS = {
+        ["The Eggsterminator"] = true,
+        ["Firework Launcher"] = true,
+        ["Nubids Bow"] = true,
+        ["Pumpkin Launcher"] = true
+    }
+}
+
+-- Function to check if tool requires holding
+local function isHoldTool(toolName)
+    return TOOL_DATA.HOLD_TOOLS[toolName] == true
+end
+
+-- Function to check if using two-phase gun
+local function isTwoPhaseGun(toolName)
+    return TOOL_DATA.TWO_PHASE_GUNS[toolName] == true
+end
+
+-- Cache for NPC folder with timeout
+local lastFolderCheck = 0
+local function getNPCFolder()
+    local currentTime = tick()
+    if ShootSystem.cachedNPCFolder and (currentTime - lastFolderCheck) < 10 then
+        return ShootSystem.cachedNPCFolder
+    end
+    
+    local success, npcFolder = pcall(function()
+        return Workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("VisibleInstances"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+    end)
+
+    if not success then
+        local gameFolder = Workspace:WaitForChild("#GAME", 5)
+        if gameFolder then
+            local foldersFolder = gameFolder:FindFirstChild("Folders")
+            if foldersFolder then
+                local visibleInstancesFolder = foldersFolder:FindFirstChild("VisibleInstances")
+                if visibleInstancesFolder then
+                    local humanoidFolder = visibleInstancesFolder:FindFirstChild("HumanoidFolder")
+                    if humanoidFolder then
+                        npcFolder = humanoidFolder:FindFirstChild("NPCFolder")
+                    end
+                end
+            end
+        end
+    end
+    
+    if not npcFolder then
+        warn("[AutoShoot] Failed to find NPCFolder")
+        return nil
+    end
+    
+    ShootSystem.cachedNPCFolder = npcFolder
+    lastFolderCheck = currentTime
+    return npcFolder
+end
+
+-- Cache for MainAttack event with timeout
+local lastEventCheck = 0
+local function getMainAttackEvent()
+    local currentTime = tick()
+    if ShootSystem.cachedMainAttackEvent and (currentTime - lastEventCheck) < 10 then
+        return ShootSystem.cachedMainAttackEvent
+    end
+    
+    local success, result = pcall(function()
+        local gameSystem = ReplicatedStorage:FindFirstChild("#GAME")
+        if gameSystem then
+            local storage = gameSystem:FindFirstChild("_Storage")
+            if storage then
+                local events = storage:FindFirstChild("Events")
+                if events then
+                    return events:FindFirstChild("MainAttack")
+                end
+            end
+        end
+        return ReplicatedStorage:FindFirstChild("Events") and ReplicatedStorage.Events:FindFirstChild("MainAttack")
+    end)
+    
+    if success and result then
+        ShootSystem.cachedMainAttackEvent = result
+        lastEventCheck = currentTime
+        return result
+    end
+    
+    warn("[AutoShoot] MainAttack event not found!")
+    return nil
+end
+
+-- Safe function to get character
+local function getCharacter()
+    local player = ShootSystem.Player
+    if not player then return nil end
+    return player.Character
+end
+
+-- Safe function to get tool from player's inventory
+local function getToolFromInventory(toolName)
+    local player = ShootSystem.Player
+    if not player then return nil end
+    
+    -- Check backpack first
+    local backpack = player.Backpack
+    if backpack then
+        local tool = backpack:FindFirstChild(toolName)
+        if tool then return tool end
+    end
+    
+    -- Check character
+    local character = getCharacter()
+    if character then
+        return character:FindFirstChild(toolName)
+    end
+    
+    return nil
+end
+
+-- Pre-calculated vectors to reduce allocations
+local VECTOR_CONSTANTS = {
+    Eggsterminator = {
+        D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+        ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195)
+    },
+    FireworkLauncher = {
+        D = Vector3.new(0.38899344205856323, -0.3426230549812317, -0.8551569581031799),
+        ALV = Vector3.new(29.256534576416016, -18.421175003051758, -80.44036865234375),
+        O_Offset = Vector3.new(0, 10, 0)
+    },
+    NubidsBow = {
+        D = Vector3.new(0.6941893696784973, -0.5254542231559753, -0.4919338822364807)
+    },
+    PumpkinLauncher = {
+        D = Vector3.new(0.288735032081604, -0.41787561774253845, -0.8614013195037842),
+        ALV = Vector3.new(6.480532169342041, 122.91216278076172, -108.04387664794922)
+    },
+    CameraOffset = Vector3.new(0, 1.5, 0)
+}
+
+-- Optimized two-phase gun attacks with reduced table allocations
+local function executeTwoPhaseAttack(toolName, target, phase)
+    local character = getCharacter()
+    if not character then return end
+    
+    local tool = getToolFromInventory(toolName)
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getMainAttackEvent()
+    if not event then return end
+    
+    local headPos = head.Position
+    
+    if toolName == "The Eggsterminator" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = headPos,
+                D = VECTOR_CONSTANTS.Eggsterminator.D,
+                T = tool,
+                SP = headPos,
+                HP = headPos,
+                RS = headPos
+            })
+        else
+            event:FireServer({
+                ALV = VECTOR_CONSTANTS.Eggsterminator.ALV,
+                EP = headPos,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    elseif toolName == "Firework Launcher" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                D = VECTOR_CONSTANTS.FireworkLauncher.D,
+                RS = headPos,
+                AN = toolName,
+                T = tool,
+                O = headPos - VECTOR_CONSTANTS.FireworkLauncher.O_Offset,
+                SP = headPos,
+                FireworkCount = 2,
+                HP = headPos,
+                CanExplodeFirework = true
+            })
+        else
+            event:FireServer({
+                ALV = VECTOR_CONSTANTS.FireworkLauncher.ALV,
+                EP = headPos,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    elseif toolName == "Nubids Bow" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = headPos,
+                D = VECTOR_CONSTANTS.NubidsBow.D,
+                T = tool,
+                SP = headPos,
+                HP = headPos,
+                RS = headPos
+            })
+        else
+            event:FireServer({
+                AN = toolName .. " Hit",
+                H = head,
+                T = tool
+            })
+        end
+    elseif toolName == "Pumpkin Launcher" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = headPos,
+                D = VECTOR_CONSTANTS.PumpkinLauncher.D,
+                T = tool,
+                SP = headPos,
+                HP = headPos,
+                RS = headPos
+            })
+        else
+            event:FireServer({
+                ALV = VECTOR_CONSTANTS.PumpkinLauncher.ALV,
+                EP = headPos,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    end
+end
+
+-- Optimized regular attack with reduced table allocations
+local function fireRegularAttack(target, gunName, isHold)
+    local character = getCharacter()
+    if not character then return end
+    
+    local gunTool = getToolFromInventory(gunName)
+    if not gunTool then return end
+    
+    -- Ensure tool is equipped if needed
+    if gunTool.Parent == ShootSystem.Player.Backpack then
+        local currentTool = character:FindFirstChildWhichIsA("Tool")
+        if currentTool then
+            currentTool.Parent = ShootSystem.Player.Backpack
+        end
+        gunTool.Parent = character
+        task.wait(0.05)
+    end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+    if not primaryPart then return end
+    
+    local event = getMainAttackEvent()
+    if not event then return end
+    
+    local attackArgs = {
+        FD = head.Position,
+        SD = Vector3.new(),
+        FO = primaryPart.Position + VECTOR_CONSTANTS.CameraOffset,
+        T = gunTool,
+        AN = gunName,
+        H = head,
+        BM = 22.15,
+        RP = primaryPart.Position,
+        HP = head.Position,
+        SP = head.Position
+    }
+    
+    if isHold then
+        attackArgs.IsHolding = true
+        attackArgs.Duration = 0.1
+    end
+    
+    event:FireServer(attackArgs)
+end
+
+-- Optimized CrackedBas finding with caching
+local lastTargetScan = 0
+local function findCrackedBasTarget(character, maxDistance)
+    local currentTime = tick()
+    
+    -- Use cached target if recent
+    if ShootSystem.currentTarget and ShootSystem.currentTarget.Parent then
+        if (currentTime - lastTargetScan) < 0.5 then
+            local head = ShootSystem.currentTarget:FindFirstChild("Head")
+            if head and character and character.PrimaryPart then
+                local dist = (character.PrimaryPart.Position - head.Position).Magnitude
+                if dist <= maxDistance then
+                    local humanoid = ShootSystem.currentTarget:FindFirstChildOfClass("Humanoid")
+                    if humanoid and humanoid.Health > 0 then
+                        return ShootSystem.currentTarget
+                    end
+                end
+            end
+        end
+    end
+    
+    local npcFolder = getNPCFolder()
+    if not npcFolder or not character or not character.PrimaryPart then return nil end
+    
+    local closestTarget = nil
+    local closestDistance = maxDistance
+    local charPos = character.PrimaryPart.Position
+    
+    -- Scan for CrackedBas
+    for _, npc in ipairs(npcFolder:GetChildren()) do
+        if not ShootSystem.isRunning then break end
+        
+        if npc:IsA("Model") and npc.Name == "CrackedBas" then
+            local humanoid = npc:FindFirstChildOfClass("Humanoid")
+            local head = npc:FindFirstChild("Head")
+            
+            if humanoid and head and humanoid.Health > 0 then
+                local dist = (charPos - head.Position).Magnitude
+                if dist <= closestDistance then
+                    closestDistance = dist
+                    closestTarget = npc
+                end
+            end
+        end
+    end
+    
+    lastTargetScan = currentTime
+    ShootSystem.currentTarget = closestTarget
+    
+    return closestTarget
+end
+
+-- Main loop with proper cleanup handling
+local function startLoop()
+    if ShootSystem.connection then
+        ShootSystem.connection:Disconnect()
+        ShootSystem.connection = nil
+    end
+    
+    ShootSystem.connection = RunService.Heartbeat:Connect(function()
+        if ShootSystem._cleaningUp or not ShootSystem.isRunning then 
+            if ShootSystem.connection then
+                ShootSystem.connection:Disconnect()
+                ShootSystem.connection = nil
+            end
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getCharacter()
+        
+        if not character or not character.PrimaryPart then 
+            task.wait(0.1)
+            return 
+        end
+        
+        local crackedBasTarget = findCrackedBasTarget(character, AutoShootSettings.MaxDistance)
+        
+        if crackedBasTarget then
+            local shootInterval = 1 / math.clamp(AutoShootSettings.ShootingSpeed, 1, 60)
+            
+            if isTwoPhaseGun(AutoShootSettings.GunName) then
+                local tool = getToolFromInventory(AutoShootSettings.GunName)
+                if not tool then
+                    task.wait(0.5)
+                    return
+                end
+                
+                if currentTime - ShootSystem.lastShootTime >= 0.01 then
+                    executeTwoPhaseAttack(AutoShootSettings.GunName, crackedBasTarget, ShootSystem.twoPhaseGunPhase)
+                    
+                    ShootSystem.twoPhaseGunPhase = ShootSystem.twoPhaseGunPhase == 1 and 2 or 1
+                    ShootSystem.lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isHoldTool(AutoShootSettings.GunName)
+                
+                if isHoldWeapon then
+                    if ShootSystem.currentTarget ~= crackedBasTarget then
+                        ShootSystem.isHolding = false
+                        ShootSystem.currentTarget = crackedBasTarget
+                    end
+                    
+                    if not ShootSystem.isHolding then
+                        ShootSystem.isHolding = true
+                        ShootSystem.holdStartTime = currentTime
+                        fireRegularAttack(crackedBasTarget, AutoShootSettings.GunName, true)
+                    elseif currentTime - ShootSystem.holdStartTime >= shootInterval then
+                        fireRegularAttack(crackedBasTarget, AutoShootSettings.GunName, true)
+                        ShootSystem.holdStartTime = currentTime
+                    end
+                elseif currentTime - ShootSystem.lastShootTime >= shootInterval then
+                    fireRegularAttack(crackedBasTarget, AutoShootSettings.GunName, false)
+                    ShootSystem.lastShootTime = currentTime
+                end
+            end
+        else
+            ShootSystem.isHolding = false
+            ShootSystem.twoPhaseGunPhase = 1
+        end
+    end)
+end
+
+-- Safe cleanup function
+local function cleanup()
+    if ShootSystem._cleaningUp then return end
+    
+    ShootSystem._cleaningUp = true
+    ShootSystem.isRunning = false
+    ShootSystem.isHolding = false
+    ShootSystem.currentTarget = nil
+    ShootSystem.twoPhaseGunPhase = 1
+    
+    if ShootSystem.connection then
+        ShootSystem.connection:Disconnect()
+        ShootSystem.connection = nil
+    end
+    
+    -- Clear caches
+    ShootSystem.cachedCrackedBas = setmetatable({}, {__mode = "v"})
+    
+    task.wait(0.1)
+    ShootSystem._cleaningUp = false
+end
+
+-- Character respawn handler
+ShootSystem.Player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if AutoShootSettings.Enabled then
+        ShootSystem.isRunning = true
+        task.wait(1)
+        startLoop()
+    end
+end)
+
+-- UI Elements
+Tab:AddTextbox({
+    Name = "Gun Name",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        AutoShootSettings.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        AutoShootSettings.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        AutoShootSettings.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot",
+    Default = false,
+    Callback = function(Value)
+        AutoShootSettings.Enabled = Value
+        
+        if Value then
+            ShootSystem.isRunning = true
+            ShootSystem.isHolding = false
+            ShootSystem.currentTarget = nil
+            ShootSystem.lastShootTime = 0
+            ShootSystem.twoPhaseGunPhase = 1
+            
+            task.spawn(function()
+                getMainAttackEvent() -- Pre-cache event
+                task.wait(1)
+                if ShootSystem.isRunning then
+                    startLoop()
+                end
+            end)
+        else
+            cleanup()
+        end
+    end
+})
+
+-- Auto cleanup on script termination
+local cleanupConnection
+cleanupConnection = game:GetService("CoreGui").ChildRemoved:Connect(function(child)
+    if child.Name == "Dex" or child.Name == "ScriptWare" or string.find(child.Name:lower(), "executor") then
+        cleanup()
+        if cleanupConnection then
+            cleanupConnection:Disconnect()
+        end
+    end
+end)
+
+-- Periodic cleanup
+task.spawn(function()
+    while true do
+        task.wait(60)
+        if not ShootSystem.isRunning then
+            collectgarbage("collect")
+        end
+    end
+end)
+
+Tab:AddButton({
+    Name = "Teleport To Room",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map._Other.Shop.ShopPictureFrame.Back.ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To WhiteBas",
+    Callback = function()
+        local function findWhiteBas()
+            -- Search in NPCFolder first
+            local npcFolder = workspace:FindFirstChild("#GAME") and 
+                             workspace["#GAME"]:FindFirstChild("Folders") and 
+                             workspace["#GAME"].Folders:FindFirstChild("VisibleInstances") and 
+                             workspace["#GAME"].Folders.VisibleInstances:FindFirstChild("HumanoidFolder") and 
+                             workspace["#GAME"].Folders.VisibleInstances.HumanoidFolder:FindFirstChild("NPCFolder")
+            
+            if npcFolder then
+                local whiteBas = npcFolder:FindFirstChild("WhiteBas")
+                if whiteBas then
+                    return whiteBas
+                end
+            end
+            
+            -- Search in entire workspace as backup
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "WhiteBas" then
+                    return obj
+                end
+            end
+            
+            return nil
+        end
+        
+        local whiteBas = findWhiteBas()
+        local character = game.Players.LocalPlayer.Character
+        
+        if whiteBas and character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            local whiteBasPosition = whiteBas:GetPrimaryPartCFrame().Position
+            
+            if humanoidRootPart and whiteBasPosition then
+                humanoidRootPart.CFrame = CFrame.new(whiteBasPosition + Vector3.new(0, 5, 0))
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Successfully teleported to WhiteBas!",
+                    Time = 3
+                })
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Failed to find position for teleport",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Teleport",
+                Content = "WhiteBas not found in the game!",
+                Time = 3
+            })
+        end
+    end
+})
+
+local SecretBadge1Section = Tab:AddSection({
+    Name = "Super Secret Badge 1"
+})
+
+-- Get the local player
+local Player = Players.LocalPlayer
+
+-- Local settings for Super Secret Badge 1
+local SuperSecret1Settings = {
+    GunName = "Minigun",
+    ShootingSpeed = 6,
+    MaxDistance = 1000,
+    Enabled = false
+}
+
+-- State management with weak references for Super Secret Badge 1
+local SuperSecret1System = setmetatable({
+    connection = nil,
+    isRunning = false,
+    isHolding = false,
+    holdStartTime = 0,
+    currentTarget = nil,
+    twoPhaseGunPhase = 1,
+    lastShootTime = 0,
+    _cleaningUp = false,
+    
+    -- Cached references
+    cachedMainAttackEvent = nil,
+    cachedNPCFolder = nil
+}, {
+    __index = function(self, key)
+        if key == "Player" then
+            local player = Players.LocalPlayer
+            if not player then
+                Players.PlayerAdded:Wait()
+                player = Players.LocalPlayer
+            end
+            rawset(self, "Player", player)
+            return player
+        end
+        return nil
+    end
+})
+
+-- Tool definitions with dictionary lookups for O(1) access
+local SUPER_SECRET_1_TOOL_DATA = {
+    HOLD_TOOLS = {
+        ["TMG V2"] = true,
+        ["SMOGGTTLTSG"] = true
+    },
+    
+    TWO_PHASE_GUNS = {
+        ["The Eggsterminator"] = true,
+        ["Firework Launcher"] = true,
+        ["Nubids Bow"] = true,
+        ["Pumpkin Launcher"] = true
+    }
+}
+
+-- Pre-calculated vectors to reduce allocations
+local SUPER_SECRET_1_VECTOR_CONSTANTS = {
+    Eggsterminator = {
+        D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+        ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195)
+    },
+    FireworkLauncher = {
+        D = Vector3.new(0.38899344205856323, -0.3426230549812317, -0.8551569581031799),
+        ALV = Vector3.new(29.256534576416016, -18.421175003051758, -80.44036865234375)
+    },
+    NubidsBow = {
+        D = Vector3.new(0.6941893696784973, -0.5254542231559753, -0.4919338822364807)
+    },
+    PumpkinLauncher = {
+        D = Vector3.new(0.288735032081604, -0.41787561774253845, -0.8614013195037842),
+        ALV = Vector3.new(6.480532169342041, 122.91216278076172, -108.04387664794922)
+    },
+    CameraOffset = Vector3.new(0, 1.5, 0)
+}
+
+-- Helper functions for Super Secret Badge 1
+local function isSuperSecret1HoldTool(toolName)
+    return SUPER_SECRET_1_TOOL_DATA.HOLD_TOOLS[toolName] == true
+end
+
+local function isSuperSecret1TwoPhaseGun(toolName)
+    return SUPER_SECRET_1_TOOL_DATA.TWO_PHASE_GUNS[toolName] == true
+end
+
+-- Cache for MainAttack event for Super Secret Badge 1
+local lastSuperSecret1EventCheck = 0
+local function getSuperSecret1MainAttackEvent()
+    local currentTime = tick()
+    if SuperSecret1System.cachedMainAttackEvent and (currentTime - lastSuperSecret1EventCheck) < 10 then
+        return SuperSecret1System.cachedMainAttackEvent
+    end
+    
+    -- Try new path first
+    local gameSystem = ReplicatedStorage:FindFirstChild("#GAME")
+    if gameSystem then
+        local storage = gameSystem:FindFirstChild("_Storage")
+        if storage then
+            local events = storage:FindFirstChild("Events")
+            if events then
+                local mainAttack = events:FindFirstChild("MainAttack")
+                if mainAttack then
+                    SuperSecret1System.cachedMainAttackEvent = mainAttack
+                    lastSuperSecret1EventCheck = currentTime
+                    return mainAttack
+                end
+            end
+        end
+    end
+    
+    -- Fallback to old path
+    local events = ReplicatedStorage:FindFirstChild("Events")
+    if events then
+        local mainAttack = events:FindFirstChild("MainAttack")
+        if mainAttack then
+            SuperSecret1System.cachedMainAttackEvent = mainAttack
+            lastSuperSecret1EventCheck = currentTime
+            return mainAttack
+        end
+    end
+    
+    return nil
+end
+
+-- Get character safely for Super Secret Badge 1
+local function getSuperSecret1Character()
+    local player = SuperSecret1System.Player
+    if not player then return nil end
+    return player.Character
+end
+
+-- Get tool from inventory for Super Secret Badge 1
+local function getSuperSecret1ToolFromInventory(toolName)
+    local player = SuperSecret1System.Player
+    if not player then return nil end
+    
+    -- Check backpack first
+    local backpack = player.Backpack
+    if backpack then
+        local tool = backpack:FindFirstChild(toolName)
+        if tool then return tool end
+    end
+    
+    -- Check character
+    local character = getSuperSecret1Character()
+    if character then
+        return character:FindFirstChild(toolName)
+    end
+    
+    return nil
+end
+
+-- Regular attack function for Super Secret Badge 1
+local function SuperSecret1FireAttack(target, gunName)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local gunTool = getSuperSecret1ToolFromInventory(gunName)
+    if not gunTool then return end
+    
+    -- Equip if in backpack
+    if gunTool.Parent == SuperSecret1System.Player.Backpack then
+        local equipped = character:FindFirstChildWhichIsA("Tool")
+        if equipped then
+            equipped.Parent = SuperSecret1System.Player.Backpack
+        end
+        gunTool.Parent = character
+        task.wait(0.05)
+    end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+    if not primaryPart then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        FD = head.Position,
+        SD = Vector3.new(),
+        FO = primaryPart.Position + SUPER_SECRET_1_VECTOR_CONSTANTS.CameraOffset,
+        T = gunTool,
+        AN = gunName,
+        H = head,
+        BM = 22.15,
+        RP = primaryPart.Position,
+        HP = head.Position,
+        SP = head.Position
+    })
+end
+
+-- Hold attack function for Super Secret Badge 1
+local function SuperSecret1HoldAttack(target, gunName)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local gunTool = getSuperSecret1ToolFromInventory(gunName)
+    if not gunTool then return end
+    
+    -- Equip if in backpack
+    if gunTool.Parent == SuperSecret1System.Player.Backpack then
+        local equipped = character:FindFirstChildWhichIsA("Tool")
+        if equipped then
+            equipped.Parent = SuperSecret1System.Player.Backpack
+        end
+        gunTool.Parent = character
+        task.wait(0.05)
+    end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+    if not primaryPart then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        FD = head.Position,
+        SD = Vector3.new(),
+        FO = primaryPart.Position + SUPER_SECRET_1_VECTOR_CONSTANTS.CameraOffset,
+        T = gunTool,
+        AN = gunName,
+        H = head,
+        BM = 22.15,
+        RP = primaryPart.Position,
+        HP = head.Position,
+        SP = head.Position,
+        IsHolding = true,
+        Duration = 0.1
+    })
+end
+
+-- Two-phase gun functions for Super Secret Badge 1
+local function SuperSecret1EggsterminatorAttack(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("The Eggsterminator")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        A = character,
+        AN = "The Eggsterminator",
+        O = head.Position,
+        D = SUPER_SECRET_1_VECTOR_CONSTANTS.Eggsterminator.D,
+        T = tool,
+        SP = head.Position,
+        HP = head.Position,
+        RS = head.Position
+    })
+end
+
+local function SuperSecret1EggsterminatorExplode(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("The Eggsterminator")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        ALV = SUPER_SECRET_1_VECTOR_CONSTANTS.Eggsterminator.ALV,
+        EP = head.Position,
+        T = tool,
+        AN = "The EggsterminatorExplode",
+        A = character
+    })
+end
+
+local function SuperSecret1FireworkLauncherAttack(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Firework Launcher")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        A = character,
+        D = SUPER_SECRET_1_VECTOR_CONSTANTS.FireworkLauncher.D,
+        RS = head.Position,
+        AN = "Firework Launcher",
+        T = tool,
+        O = head.Position - Vector3.new(0, 10, 0),
+        SP = head.Position,
+        FireworkCount = 2,
+        HP = head.Position,
+        CanExplodeFirework = true
+    })
+end
+
+local function SuperSecret1FireworkLauncherExplode(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Firework Launcher")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        ALV = SUPER_SECRET_1_VECTOR_CONSTANTS.FireworkLauncher.ALV,
+        EP = head.Position,
+        T = tool,
+        AN = "Firework LauncherExplode",
+        A = character
+    })
+end
+
+local function SuperSecret1NubidsBowAttack(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Nubids Bow")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        A = character,
+        AN = "Nubids Bow",
+        O = head.Position,
+        D = SUPER_SECRET_1_VECTOR_CONSTANTS.NubidsBow.D,
+        T = tool,
+        SP = head.Position,
+        HP = head.Position,
+        RS = head.Position
+    })
+end
+
+local function SuperSecret1NubidsBowHit(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Nubids Bow")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        AN = "Nubids Bow Hit",
+        H = head,
+        T = tool
+    })
+end
+
+local function SuperSecret1PumpkinLauncherAttack(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Pumpkin Launcher")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        A = character,
+        AN = "Pumpkin Launcher",
+        O = head.Position,
+        D = SUPER_SECRET_1_VECTOR_CONSTANTS.PumpkinLauncher.D,
+        T = tool,
+        SP = head.Position,
+        HP = head.Position,
+        RS = head.Position
+    })
+end
+
+local function SuperSecret1PumpkinLauncherExplode(target)
+    local character = getSuperSecret1Character()
+    if not character then return end
+    
+    local tool = getSuperSecret1ToolFromInventory("Pumpkin Launcher")
+    if not tool then return end
+    
+    local head = target:FindFirstChild("Head")
+    if not head then return end
+    
+    local event = getSuperSecret1MainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        ALV = SUPER_SECRET_1_VECTOR_CONSTANTS.PumpkinLauncher.ALV,
+        EP = head.Position,
+        T = tool,
+        AN = "Pumpkin LauncherExplode",
+        A = character
+    })
+end
+
+-- Unified two-phase handler for Super Secret Badge 1
+local function SuperSecret1HandleTwoPhaseGun(target, gunName, phase)
+    if gunName == "The Eggsterminator" then
+        if phase == 1 then
+            SuperSecret1EggsterminatorAttack(target)
+        else
+            SuperSecret1EggsterminatorExplode(target)
+        end
+    elseif gunName == "Firework Launcher" then
+        if phase == 1 then
+            SuperSecret1FireworkLauncherAttack(target)
+        else
+            SuperSecret1FireworkLauncherExplode(target)
+        end
+    elseif gunName == "Nubids Bow" then
+        if phase == 1 then
+            SuperSecret1NubidsBowAttack(target)
+        else
+            SuperSecret1NubidsBowHit(target)
+        end
+    elseif gunName == "Pumpkin Launcher" then
+        if phase == 1 then
+            SuperSecret1PumpkinLauncherAttack(target)
+        else
+            SuperSecret1PumpkinLauncherExplode(target)
+        end
+    end
+end
+
+-- Cache for NPC folder for Super Secret Badge 1
+local lastSuperSecret1FolderCheck = 0
+local function getSuperSecret1NPCFolder()
+    local currentTime = tick()
+    if SuperSecret1System.cachedNPCFolder and (currentTime - lastSuperSecret1FolderCheck) < 10 then
+        return SuperSecret1System.cachedNPCFolder
+    end
+    
+    local success, npcFolder = pcall(function()
+        return Workspace:WaitForChild("#GAME"):WaitForChild("Folders"):WaitForChild("VisibleInstances"):WaitForChild("HumanoidFolder"):WaitForChild("NPCFolder")
+    end)
+
+    if not success then
+        local gameFolder = Workspace:FindFirstChild("#GAME") or Workspace:FindFirstChild("GAME")
+        if gameFolder then
+            local folders = gameFolder:FindFirstChild("Folders")
+            if folders then
+                local visibleInstances = folders:FindFirstChild("VisibleInstances")
+                if visibleInstances then
+                    local humanoidFolder = visibleInstances:FindFirstChild("HumanoidFolder")
+                    if humanoidFolder then
+                        npcFolder = humanoidFolder:FindFirstChild("NPCFolder")
+                    end
+                end
+            end
+        end
+    end
+    
+    SuperSecret1System.cachedNPCFolder = npcFolder
+    lastSuperSecret1FolderCheck = currentTime
+    return npcFolder
+end
+
+-- Find CrackedBas/WhiteBas target for Super Secret Badge 1
+local lastSuperSecret1TargetScan = 0
+local SuperSecret1CachedTargets = setmetatable({}, {__mode = "v"})
+local function SuperSecret1FindTargetBas(character, maxDistance)
+    local currentTime = tick()
+    if not character or not character.PrimaryPart then return nil end
+    
+    -- Use cached target if recent
+    if SuperSecret1System.currentTarget and SuperSecret1System.currentTarget.Parent then
+        if (currentTime - lastSuperSecret1TargetScan) < 0.5 then
+            local head = SuperSecret1System.currentTarget:FindFirstChild("Head")
+            if head then
+                local dist = (character.PrimaryPart.Position - head.Position).Magnitude
+                if dist <= maxDistance then
+                    local humanoid = SuperSecret1System.currentTarget:FindFirstChildOfClass("Humanoid")
+                    if humanoid and humanoid.Health > 0 then
+                        return SuperSecret1System.currentTarget
+                    end
+                end
+            end
+        end
+    end
+    
+    local npcFolder = getSuperSecret1NPCFolder()
+    if not npcFolder then return nil end
+    
+    local closestTarget = nil
+    local closestDistance = maxDistance
+    local charPos = character.PrimaryPart.Position
+    
+    -- Scan for targets
+    for _, npc in ipairs(npcFolder:GetChildren()) do
+        if not SuperSecret1System.isRunning then break end
+        
+        if npc:IsA("Model") and (npc.Name == "CrackedBas" or npc.Name == "WhiteBas") then
+            local humanoid = npc:FindFirstChildOfClass("Humanoid")
+            local head = npc:FindFirstChild("Head")
+            
+            if humanoid and head and humanoid.Health > 0 then
+                local dist = (charPos - head.Position).Magnitude
+                if dist <= closestDistance then
+                    closestDistance = dist
+                    closestTarget = npc
+                end
+            end
+        end
+    end
+    
+    lastSuperSecret1TargetScan = currentTime
+    SuperSecret1System.currentTarget = closestTarget
+    return closestTarget
+end
+
+-- Main loop function for Super Secret Badge 1
+local function SuperSecret1StartLoop()
+    if SuperSecret1System.connection then
+        SuperSecret1System.connection:Disconnect()
+        SuperSecret1System.connection = nil
+    end
+    
+    SuperSecret1System.connection = RunService.Heartbeat:Connect(function()
+        if SuperSecret1System._cleaningUp or not SuperSecret1System.isRunning then 
+            if SuperSecret1System.connection then
+                SuperSecret1System.connection:Disconnect()
+                SuperSecret1System.connection = nil
+            end
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getSuperSecret1Character()
+        
+        if not character or not character.PrimaryPart then 
+            task.wait(0.1)
+            return 
+        end
+        
+        local targetBas = SuperSecret1FindTargetBas(character, SuperSecret1Settings.MaxDistance)
+        
+        if targetBas then
+            local shootInterval = 1 / math.clamp(SuperSecret1Settings.ShootingSpeed, 1, 60)
+            
+            if isSuperSecret1TwoPhaseGun(SuperSecret1Settings.GunName) then
+                local tool = getSuperSecret1ToolFromInventory(SuperSecret1Settings.GunName)
+                if not tool then
+                    task.wait(0.5)
+                    return
+                end
+                
+                if currentTime - SuperSecret1System.lastShootTime >= 0.01 then
+                    SuperSecret1HandleTwoPhaseGun(targetBas, SuperSecret1Settings.GunName, SuperSecret1System.twoPhaseGunPhase)
+                    
+                    SuperSecret1System.twoPhaseGunPhase = SuperSecret1System.twoPhaseGunPhase == 1 and 2 or 1
+                    SuperSecret1System.lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isSuperSecret1HoldTool(SuperSecret1Settings.GunName)
+                
+                if isHoldWeapon then
+                    if SuperSecret1System.currentTarget ~= targetBas then
+                        SuperSecret1System.isHolding = false
+                        SuperSecret1System.currentTarget = targetBas
+                    end
+                    
+                    if not SuperSecret1System.isHolding then
+                        SuperSecret1System.isHolding = true
+                        SuperSecret1System.holdStartTime = currentTime
+                        SuperSecret1HoldAttack(targetBas, SuperSecret1Settings.GunName)
+                    elseif currentTime - SuperSecret1System.holdStartTime >= shootInterval then
+                        SuperSecret1HoldAttack(targetBas, SuperSecret1Settings.GunName)
+                        SuperSecret1System.holdStartTime = currentTime
+                    end
+                elseif currentTime - SuperSecret1System.lastShootTime >= shootInterval then
+                    SuperSecret1FireAttack(targetBas, SuperSecret1Settings.GunName)
+                    SuperSecret1System.lastShootTime = currentTime
+                end
+            end
+        else
+            SuperSecret1System.isHolding = false
+            SuperSecret1System.twoPhaseGunPhase = 1
+        end
+    end)
+end
+
+-- Cleanup function for Super Secret Badge 1
+local function SuperSecret1Cleanup()
+    if SuperSecret1System._cleaningUp then return end
+    
+    SuperSecret1System._cleaningUp = true
+    SuperSecret1System.isRunning = false
+    SuperSecret1System.isHolding = false
+    SuperSecret1System.currentTarget = nil
+    SuperSecret1System.twoPhaseGunPhase = 1
+    
+    if SuperSecret1System.connection then
+        SuperSecret1System.connection:Disconnect()
+        SuperSecret1System.connection = nil
+    end
+    
+    task.wait(0.1)
+    SuperSecret1System._cleaningUp = false
+end
+
+-- Character respawn handler for Super Secret Badge 1
+SuperSecret1System.Player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if SuperSecret1Settings.Enabled then
+        SuperSecret1System.isRunning = true
+        task.wait(1)
+        SuperSecret1StartLoop()
+    end
+end)
+
+-- UI Elements for Super Secret Badge 1
+Tab:AddTextbox({
+    Name = "Gun Name (SS1)",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        SuperSecret1Settings.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed (SS1)",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        SuperSecret1Settings.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance (SS1)",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        SuperSecret1Settings.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot (SS1)",
+    Default = false,
+    Callback = function(Value)
+        SuperSecret1Settings.Enabled = Value
+        
+        if Value then
+            SuperSecret1System.isRunning = true
+            SuperSecret1System.isHolding = false
+            SuperSecret1System.currentTarget = nil
+            SuperSecret1System.lastShootTime = 0
+            SuperSecret1System.twoPhaseGunPhase = 1
+            
+            task.spawn(function()
+                getSuperSecret1MainAttackEvent() -- Pre-cache
+                task.wait(1)
+                if SuperSecret1System.isRunning then
+                    SuperSecret1StartLoop()
+                end
+            end)
+        else
+            SuperSecret1Cleanup()
+        end
+    end
+})
+
+-- Auto cleanup on script termination for Super Secret Badge 1
+local SuperSecret1CleanupConnection
+SuperSecret1CleanupConnection = game:GetService("CoreGui").ChildRemoved:Connect(function(child)
+    if child.Name == "Dex" or child.Name == "ScriptWare" or string.find(child.Name:lower(), "executor") then
+        SuperSecret1Cleanup()
+        if SuperSecret1CleanupConnection then
+            SuperSecret1CleanupConnection:Disconnect()
+        end
+    end
+end)
+
+-- Periodic memory cleanup for Super Secret Badge 1
+task.spawn(function()
+    while true do
+        task.wait(60)
+        if not SuperSecret1System.isRunning then
+            collectgarbage("collect")
+        end
+    end
+end)
+
+Tab:AddButton({
+    Name = "Teleport To Room (SS1)",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map._Other.Shop.ShopPictureFrame.Back.ClickDetector)
+    end
+})
+
+-- Button 1: View WhiteBas
+Tab:AddButton({
+    Name = "View WhiteBas (SS1)",
+    Callback = function()
+        local target = workspace["#GAME"].Folders.VisibleInstances.HumanoidFolder.NPCFolder.WhiteBas
+        if target then
+            workspace.CurrentCamera.CameraSubject = target
+            warn("Now viewing: WhiteBas")
+        else
+            warn("WhiteBas not found!")
+        end
+    end
+})
+
+-- Button 2: Unview (Return to Local Player)
+Tab:AddButton({
+    Name = "Unview WhiteBas (SS1)",
+    Callback = function()
+        local character = Players.LocalPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                workspace.CurrentCamera.CameraSubject = humanoid
+            else
+                workspace.CurrentCamera.CameraSubject = character
+            end
+            warn("Returned to local player")
+        else
+            warn("Local player character not found!")
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Remove Touch Part",
+    Callback = function()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.TouchPart:destroy()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.TouchPart2:destroy()
+workspace["#GAME"].Map.BlackRoom.WhiteRoom.SoundRaycastPart:destroy()
+    end
+})
+
+local spamEnabled = false  -- Variable to track whether spam is enabled
+local spamLoop            -- Declare loop variable to control the loop
+
+Tab:AddToggle({
+    Name = "Auto Spam Click Head",
+    Default = false,
+    Callback = function(Value)
+        spamEnabled = Value  -- Set the spamEnabled status based on toggle value
+
+        -- If the toggle is on, start the spam loop
+        if spamEnabled then
+            -- Start the spam loop
+            spamLoop = task.spawn(function()
+                while spamEnabled do
+                    -- Fire the click detector on the WhiteBasFakeHead
+                    local clickDetector = workspace["#GAME"].Map.WhiteBasFakeHead:FindFirstChild("ClickDetector")
+                    if clickDetector then
+                        fireclickdetector(clickDetector)
+                    else
+                        print("ClickDetector not found.")
+                    end
+                    task.wait(0.1)  -- Wait for 0.1 seconds before firing again
+                end
+            end)
+        else
+            -- If the toggle is off, stop the loop
+            if spamLoop then
+                task.cancel(spamLoop)  -- Properly cancel the loop
+                spamLoop = nil  -- Reset the loop variable
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Bring Head Cube",
+    Callback = function()
+local player = game.Players.LocalPlayer  -- Get the local player
+local character = player.Character or player.CharacterAdded:Wait()  -- Get the character
+local targetPart = workspace["#GAME"].Map.WhiteBasFakeHead  -- The part to move (WhiteBasFakeHead)
+
+-- Function to bring the part to the player's character position
+local function bringPartToPlayer()
+    if targetPart and character then
+        -- Get the character's HumanoidRootPart position
+        local characterPosition = character:WaitForChild("HumanoidRootPart").Position
+        
+        -- Set the part's position to the character's position
+        targetPart.CFrame = CFrame.new(characterPosition)  -- Teleport the part to the character's position
+        print("Part has been brought to the character.")
+    else
+        warn("Target part or character not found.")
+    end
+end
+
+-- Call the function to bring the part to the player once
+bringPartToPlayer()
+    end
+})
+
+local player = game.Players.LocalPlayer  -- Get the local player
+local character = player.Character or player.CharacterAdded:Wait()  -- Get the character
+local targetPart = workspace["#GAME"].Map:FindFirstChild("WhiteBasFakeHead")  -- Try to find the part (WhiteBasFakeHead)
+local bringLoop = nil  -- Variable to store the loop
+
+-- Function to bring the part to the player's character position
+local function bringPartToPlayer()
+    if targetPart and character then
+        -- Get the character's HumanoidRootPart position
+        local characterPosition = character:WaitForChild("HumanoidRootPart").Position
+        
+        -- Set the part's position to the character's position
+        targetPart.CFrame = CFrame.new(characterPosition)  -- Teleport the part to the character's position
+        print("Part has been brought to the character.")
+    else
+        warn("Target part or character not found.")
+    end
+end
+
+-- Toggle to control the spamming of bringPartToPlayer
+Tab:AddToggle({
+    Name = "Auto Bring Head Cube",
+    Default = false,
+    Enabled = targetPart ~= nil,  -- Only enable toggle if the part exists
+    Callback = function(Value)
+        if targetPart == nil then
+            warn("WhiteBasFakeHead not found, toggle will not function.")
+            return  -- If the part doesn't exist, return early and don't run the loop
+        end
+        
+        if Value then
+            -- Start the loop to bring the part every 0.3 seconds
+            bringLoop = task.spawn(function()
+                while Value do  -- Loop while the toggle is enabled
+                    bringPartToPlayer()  -- Call the function to bring the part
+                    task.wait(0.3)  -- Wait for 0.3 seconds before repeating
+                end
+            end)
+        else
+            -- Stop the loop if toggle is off
+            if bringLoop then
+                bringLoop = false  -- This stops the loop by breaking the condition
+            end
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Open/Close Door",
+    Callback = function()
+        fireclickdetector(workspace["#GAME"].Map.BlackRoom.WhiteRoom.Door.ClickDetector)
+    end
+})
+
+-- Define all toggles and their state
+local spamToggles = {
+    YellowBas = { Enabled = false, Loop = nil },
+    GreyBas   = { Enabled = false, Loop = nil },
+    BlueBas   = { Enabled = false, Loop = nil },
+    WhiteBas  = { Enabled = false, Loop = nil },
+    BlackBas  = { Enabled = false, Loop = nil },
+}
+
+-- Generic function to handle toggle behavior for all Bas
+local function createGlobalSpamToggle()
+    local toggleEnabled = false
+    Tab:AddToggle({
+        Name = "Auto Spam Click All Bas",
+        Default = false,
+        Callback = function(Value)
+            toggleEnabled = Value
+
+            if toggleEnabled then
+                -- Start the spam loop for all Bas
+                for _, basename in ipairs({"YellowBas", "GreyBas", "BlueBas", "WhiteBas", "BlackBas"}) do
+                    spamToggles[basename].Enabled = true
+                    spamToggles[basename].Loop = task.spawn(function()
+                        while spamToggles[basename].Enabled do
+                            local clickDetectorPath = workspace:FindFirstChild("#GAME")
+                            if clickDetectorPath and clickDetectorPath:FindFirstChild("Map") and clickDetectorPath.Map:FindFirstChild(basename) then
+                                local cd = clickDetectorPath.Map[basename]:FindFirstChild("ClickDetector")
+                                if cd then
+                                    fireclickdetector(cd)
+                                else
+                                    print(basename .. " ClickDetector not found. Waiting...")
+                                end
+                            else
+                                print(basename .. " path not found. Waiting...")
+                            end
+                            task.wait(0.1) -- Minimal delay to prevent lag
+                        end
+                    end)
+                end
+            else
+                -- Stop all loops by setting enabled to false
+                for _, basename in ipairs({"YellowBas", "GreyBas", "BlueBas", "WhiteBas", "BlackBas"}) do
+                    spamToggles[basename].Enabled = false
+                end
+            end
+        end
+    })
+end
+
+-- Create the global toggle for all Bas
+createGlobalSpamToggle()
+
+local modelNotifications = {
+    ["YellowBas"] = {Title = "Alert!", Content = "Yellow Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["GreyBas"] = {Title = "Alert!", Content = "Grey Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["BlueBas"] = {Title = "Alert!", Content = "Blue Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["WhiteBas"] = {Title = "Alert!", Content = "White Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+    ["BlackBas"] = {Title = "Alert!", Content = "Black Head has spawned!", Image = "rbxassetid://7733658271", Time = 3},
+}
+
+local modelListenerEnabled = false
+local conn
+
+Tab:AddToggle({
+    Name = "Auto Notify Heads Spawn",
+    Default = false,
+    Callback = function(Value)
+        modelListenerEnabled = Value
+
+        if not Value then
+            if conn then conn:Disconnect() end
+            conn = nil
+            return
+        end
+
+        conn = workspace.DescendantAdded:Connect(function(obj)
+            if obj:IsA("BasePart") and modelNotifications[obj.Name] then
+                local notif = modelNotifications[obj.Name]
+                OrionLib:MakeNotification({
+                    Name = notif.Title,
+                    Content = notif.Content,
+                    Time = notif.Time or 3, -- default duration
+                    Image = notif.Image
+                })
+            end
+        end)
+    end
+})
+
+local SecretBadge2Section = Tab:AddSection({
+    Name = "Secret Badge 2"
+})
+
+Tab:AddButton({
+    Name = "Enable/Disable Fire",
+    Callback = function()
+fireclickdetector(workspace["#GAME"].Map.Houses["Blue House"].Rooms.LivingRoom.Fireplace.Base.Dial.Interactive.ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Collect All Bacon Parts",
+    Callback = function()
+        -- Iterate through all parts inside workspace["#GAME"].Map
+        -- and fire ClickDetector for each part named "Part"
+        local map = workspace["#GAME"].Map
+ 
+        for _, part in pairs(map:GetChildren()) do
+            if part:IsA("BasePart") and part.Name == "Part" then
+                local clickDetector = part:FindFirstChild("ClickDetector")
+                if clickDetector then
+                    -- Fire the ClickDetector for each "Part"
+                    fireclickdetector(clickDetector)
+                end
+            end
+        end
+    end
+})
+
+local autoClickCorrectImageEnabled = false
+local autoClickCorrectImageLoop
+
+Tab:AddToggle({
+    Name = "Auto Click Correct Image",
+    Default = false,
+    Callback = function(Value)
+        autoClickCorrectImageEnabled = Value
+
+        if Value then
+            autoClickCorrectImageLoop = task.spawn(function()
+                while autoClickCorrectImageEnabled do
+                    local pictureFrame = workspace:FindFirstChild("#GAME")
+                        :FindFirstChild("Map")
+                        :FindFirstChild("Houses")
+                        :FindFirstChild("Blue House")
+                        :FindFirstChild("Rooms")
+                        :FindFirstChild("LivingRoom")
+                        :FindFirstChild("Fireplace")
+                        :FindFirstChild("PouwkPictureFrame")
+
+                    if pictureFrame then
+                        local crackedBasFace = pictureFrame:FindFirstChild("CrackedBasFace")
+                        local clickDetector = pictureFrame:FindFirstChild("ClickDetector")
+
+                        if crackedBasFace and clickDetector then
+                            local decal = crackedBasFace:FindFirstChildOfClass("Decal")
+                            if decal and decal.Texture then
+                                local textureId = decal.Texture
+                                if textureId == "http://www.roblox.com/asset/?id=15044103899" or textureId == "rbxassetid://15044103899" then
+                                    fireclickdetector(clickDetector)
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        else
+            autoClickCorrectImageEnabled = false
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip All Bacon Parts (Stand Close To Fire)",
+    Callback = function()
+        local requiredParts = {
+            "Right Leg",
+            "Left Leg",
+            "Right Arm",
+            "Left Arm",
+            "Torso",
+            "Head"
+        }
+
+        local missingParts = {}
+        local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+        local backpack = game.Players.LocalPlayer.Backpack
+
+        -- Iterate over all required parts and check if they exist in the Backpack
+        for _, partName in ipairs(requiredParts) do
+            local part = backpack:FindFirstChild(partName)
+            if part then
+                -- If the part exists in the Backpack, equip it
+                part.Parent = character
+            else
+                -- If the part is missing, add it to the missingParts list
+                table.insert(missingParts, partName)
+            end
+        end
+
+        -- If there are missing parts, show a notification
+        if #missingParts > 0 then
+            local missingPartsMessage = table.concat(missingParts, ", ")
+            OrionLib:MakeNotification({
+                Name = "Missing Parts",
+                Content = "Not Found: " .. missingPartsMessage,
+                Image = "rbxassetid://13181258092", -- You can use an error icon or any other
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "All Parts Equipped",
+                Content = "Successfully equipped all Bacon parts.",
+                Image = "rbxassetid://13181258092", -- Use a success icon
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Hatred",
+    Callback = function()
+        local function findHatred()
+            -- Search in NPCFolder first
+            local npcFolder = workspace:FindFirstChild("#GAME") and 
+                             workspace["#GAME"]:FindFirstChild("Map") and 
+                             workspace["#GAME"].Folders:FindFirstChild("BerendHall") and 
+                             workspace["#GAME"].Folders.VisibleInstances:FindFirstChild("BerendFolder")
+            
+            if npcFolder then
+                local Hatred = npcFolder:FindFirstChild("Berend")
+                if Hatred then
+                    return Hatred
+                end
+            end
+            
+            -- Search in entire workspace as backup
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "Berend" then
+                    return obj
+                end
+            end
+            
+            return nil
+        end
+        
+        local Hatred = findHatred()
+        local character = game.Players.LocalPlayer.Character
+        
+        if Hatred and character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            local HatredPosition = Hatred:GetPrimaryPartCFrame().Position
+            
+            if humanoidRootPart and HatredPosition then
+                humanoidRootPart.CFrame = CFrame.new(HatredPosition + Vector3.new(0, 5, 0))
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Successfully teleported to Hatred!",
+                    Time = 3
+                })
+            else
+                OrionLib:MakeNotification({
+                    Name = "Teleport",
+                    Content = "Failed to find position for teleport",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Teleport",
+                Content = "Hatred not found in the game!",
+                Time = 3
+            })
+        end
+    end
+})
+
+local SuperSecretBadge2Section = Tab:AddSection({
+    Name = "Super Secret Badge 2"
+})
+
+Tab:AddLabel("SOON")
+
+local ValentinesSection = Tab:AddSection({
+    Name = "Valentines 2025 - Secret Badge"
+})
+
+Tab:AddButton({
+    Name = "Click GERARD",
+    Callback = function()
+        -- Find GERARD in the correct path: workspace["#GAME"].Folders.GeneralFolder
+        local function findGerard()
+            -- Check the correct path
+            local gameFolder = workspace:FindFirstChild("#GAME")
+            if not gameFolder then
+                warn("Could not find #GAME folder")
+                return nil
+            end
+            
+            local foldersFolder = gameFolder:FindFirstChild("Folders")
+            if not foldersFolder then
+                warn("Could not find Folders folder")
+                return nil
+            end
+            
+            local generalFolder = foldersFolder:FindFirstChild("GeneralFolder")
+            if not generalFolder then
+                warn("Could not find GeneralFolder")
+                return nil
+            end
+            
+            -- Search for GERARD in GeneralFolder
+            for _, child in ipairs(generalFolder:GetChildren()) do
+                if child:IsA("Model") and child.Name == "GERARD" then
+                    return child
+                end
+            end
+            
+            -- Also check subfolders if GERARD is inside another folder in GeneralFolder
+            for _, child in ipairs(generalFolder:GetChildren()) do
+                if child:IsA("Folder") then
+                    for _, model in ipairs(child:GetChildren()) do
+                        if model:IsA("Model") and model.Name == "GERARD" then
+                            return model
+                        end
+                    end
+                end
+            end
+            
+            return nil
+        end
+        
+        -- Find and click GERARD
+        local gerardModel = findGerard()
+        
+        if gerardModel then
+            local clickDetector = gerardModel:FindFirstChild("ClickDetector")
+            if clickDetector and clickDetector:IsA("ClickDetector") then
+                fireclickdetector(clickDetector)
+                print("Successfully clicked GERARD!")
+            else
+                warn("GERARD found but no ClickDetector attached")
+            end
+        else
+            warn("Could not find GERARD model at: workspace['#GAME'].Folders.GeneralFolder")
+        end
+    end
+})
+
+-- Gerard Auto-Click System using tables to reduce locals
+local GerardSystem = {
+    autoClicking = false,
+    clickConnection = nil,
+    lastClickTime = 0,
+    CLICK_COOLDOWN = 0.1
+}
+
+-- Single unified function that handles everything
+function GerardSystem:handleGerard()
+    -- Find Gerard
+    local gameFolder = workspace:FindFirstChild("#GAME")
+    if not gameFolder then return false, "Game folder not found" end
+    
+    local folders = gameFolder:FindFirstChild("Folders")
+    if not folders then return false, "Folders not found" end
+    
+    local generalFolder = folders:FindFirstChild("GeneralFolder")
+    if not generalFolder then return false, "GeneralFolder not found" end
+    
+    local gerard = generalFolder:FindFirstChild("Gerard")
+    if not gerard then return false, "Gerard not found" end
+    
+    local clickDetector = gerard:FindFirstChildOfClass("ClickDetector")
+    if not clickDetector then return false, "ClickDetector not found" end
+    
+    -- Check progress if available
+    local current, total = nil, nil
+    local hrp = gerard:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        local billboardGui = hrp:FindFirstChild("BillboardGui")
+        if billboardGui then
+            local textLabel = billboardGui:FindFirstChild("TextLabel")
+            if textLabel and textLabel.Text then
+                local match1, match2 = textLabel.Text:match("(%d+)/(%d+)")
+                current, total = tonumber(match1), tonumber(match2)
+            end
+        end
+    end
+    
+    return true, gerard, clickDetector, current, total
+end
+
+-- Main auto-click loop
+function GerardSystem:startAutoClick()
+    if self.clickConnection then
+        self.clickConnection:Disconnect()
+        self.clickConnection = nil
+    end
+    
+    self.autoClicking = true
+    
+    self.clickConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if not self.autoClicking then return end
+        
+        local currentTime = tick()
+        if currentTime - self.lastClickTime < self.CLICK_COOLDOWN then return end
+        
+        -- Single function call for everything
+        local success, gerard, clickDetector, current, total = self:handleGerard()
+        
+        if success then
+            -- Check progress
+            if current and total then
+                if current >= total - 1 then
+                    self:stopAutoClick()
+                    return
+                end
+            end
+            
+            -- Click Gerard
+            if clickDetector then
+                fireclickdetector(clickDetector)
+                self.lastClickTime = currentTime
+            end
+        end
+    end)
+end
+
+-- Stop function
+function GerardSystem:stopAutoClick()
+    self.autoClicking = false
+    
+    if self.clickConnection then
+        self.clickConnection:Disconnect()
+        self.clickConnection = nil
+    end
+end
+
+-- Toggle
+Tab:AddToggle({
+    Name = "Auto Click GERARD (24 Times Only Max)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            GerardSystem:startAutoClick()
+        else
+            GerardSystem:stopAutoClick()
+        end
+    end
+})
+
+local AnniversarySection = Tab:AddSection({
+    Name = "Anniversary 2024 - Secret Badge"
+})
+
+-- Local settings for Anniversary Badge
+local AnniversarySettings = {
+    GunName = "Minigun",
+    ShootingSpeed = 6,
+    MaxDistance = 1000,
+    Enabled = false
+}
+
+-- State management for Anniversary Badge
+local AnniversarySystem = setmetatable({
+    connection = nil,
+    isRunning = false,
+    isHolding = false,
+    holdStartTime = 0,
+    currentTarget = nil,
+    twoPhaseGunPhase = 1,
+    lastShootTime = 0,
+    _cleaningUp = false,
+    
+    -- Cached references
+    cachedMainAttackEvent = nil,
+    cachedCanBeShotFolder = nil,
+    cachedBalloons = setmetatable({}, {__mode = "v"})
+}, {
+    __index = function(self, key)
+        if key == "Player" then
+            local player = Players.LocalPlayer
+            if not player then
+                Players.PlayerAdded:Wait()
+                player = Players.LocalPlayer
+            end
+            rawset(self, "Player", player)
+            return player
+        end
+        return nil
+    end
+})
+
+-- Tool definitions for Anniversary Badge
+local ANNIVERSARY_TOOL_DATA = {
+    HOLD_TOOLS = {
+        ["TMG V2"] = true,
+        ["SMOGGTTLTSG"] = true
+    },
+    
+    TWO_PHASE_GUNS = {
+        ["The Eggsterminator"] = true,
+        ["Firework Launcher"] = true,
+        ["Nubids Bow"] = true,
+        ["Pumpkin Launcher"] = true
+    }
+}
+
+-- Pre-calculated vectors for Anniversary Badge
+local ANNIVERSARY_VECTOR_CONSTANTS = {
+    Eggsterminator = {
+        D = Vector3.new(-0.560801088809967, -0.5042180418968201, -0.6567087173461914),
+        ALV = Vector3.new(-0.20522019267082214, -391.42498779296875, -5.5823869705200195)
+    },
+    FireworkLauncher = {
+        D = Vector3.new(0.38899344205856323, -0.3426230549812317, -0.8551569581031799),
+        ALV = Vector3.new(29.256534576416016, -18.421175003051758, -80.44036865234375)
+    },
+    NubidsBow = {
+        D = Vector3.new(0.6941893696784973, -0.5254542231559753, -0.4919338822364807)
+    },
+    PumpkinLauncher = {
+        D = Vector3.new(0.288735032081604, -0.41787561774253845, -0.8614013195037842),
+        ALV = Vector3.new(6.480532169342041, 122.91216278076172, -108.04387664794922)
+    },
+    CameraOffset = Vector3.new(0, 1.5, 0),
+    FireworkOffset = Vector3.new(0, 10, 0)
+}
+
+-- Helper functions for Anniversary Badge
+local function isAnniversaryHoldTool(toolName)
+    return ANNIVERSARY_TOOL_DATA.HOLD_TOOLS[toolName] == true
+end
+
+local function isAnniversaryTwoPhaseGun(toolName)
+    return ANNIVERSARY_TOOL_DATA.TWO_PHASE_GUNS[toolName] == true
+end
+
+-- Get character safely for Anniversary Badge
+local function getAnniversaryCharacter()
+    local player = AnniversarySystem.Player
+    if not player then return nil end
+    return player.Character
+end
+
+-- Cache for MainAttack event for Anniversary Badge
+local lastAnniversaryEventCheck = 0
+local function getAnniversaryMainAttackEvent()
+    local currentTime = tick()
+    if AnniversarySystem.cachedMainAttackEvent and (currentTime - lastAnniversaryEventCheck) < 10 then
+        return AnniversarySystem.cachedMainAttackEvent
+    end
+    
+    -- Try new path first
+    local gameSystem = ReplicatedStorage:FindFirstChild("#GAME")
+    if gameSystem then
+        local storage = gameSystem:FindFirstChild("_Storage")
+        if storage then
+            local events = storage:FindFirstChild("Events")
+            if events then
+                local mainAttack = events:FindFirstChild("MainAttack")
+                if mainAttack then
+                    AnniversarySystem.cachedMainAttackEvent = mainAttack
+                    lastAnniversaryEventCheck = currentTime
+                    return mainAttack
+                end
+            end
+        end
+    end
+    
+    -- Fallback to old path
+    local events = ReplicatedStorage:FindFirstChild("Events")
+    if events then
+        local mainAttack = events:FindFirstChild("MainAttack")
+        if mainAttack then
+            AnniversarySystem.cachedMainAttackEvent = mainAttack
+            lastAnniversaryEventCheck = currentTime
+            return mainAttack
+        end
+    end
+    
+    warn("[Anniversary] MainAttack event not found!")
+    return nil
+end
+
+-- Get tool from inventory for Anniversary Badge
+local function getAnniversaryToolFromInventory(toolName)
+    local player = AnniversarySystem.Player
+    if not player then return nil end
+    
+    -- Check backpack first
+    local backpack = player.Backpack
+    if backpack then
+        local tool = backpack:FindFirstChild(toolName)
+        if tool then return tool end
+    end
+    
+    -- Check character
+    local character = getAnniversaryCharacter()
+    if character then
+        return character:FindFirstChild(toolName)
+    end
+    
+    return nil
+end
+
+-- Regular attack for balloons
+local function fireAnniversaryAttackBalloon(target, gunName)
+    local character = getAnniversaryCharacter()
+    if not character then return end
+    
+    local gunTool = getAnniversaryToolFromInventory(gunName)
+    if not gunTool then return end
+    
+    -- Equip if in backpack
+    if gunTool.Parent == AnniversarySystem.Player.Backpack then
+        local equipped = character:FindFirstChildWhichIsA("Tool")
+        if equipped then
+            equipped.Parent = AnniversarySystem.Player.Backpack
+        end
+        gunTool.Parent = character
+        task.wait(0.05)
+    end
+    
+    local targetPosition = target.Position
+    local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+    if not primaryPart then return end
+    
+    local event = getAnniversaryMainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        FD = targetPosition,
+        SD = Vector3.new(),
+        FO = primaryPart.Position + ANNIVERSARY_VECTOR_CONSTANTS.CameraOffset,
+        T = gunTool,
+        AN = gunName,
+        H = target,
+        BM = 22.15,
+        RP = primaryPart.Position,
+        HP = targetPosition,
+        SP = targetPosition
+    })
+end
+
+-- Hold attack for balloons
+local function holdAnniversaryAttackBalloon(target, gunName)
+    local character = getAnniversaryCharacter()
+    if not character then return end
+    
+    local gunTool = getAnniversaryToolFromInventory(gunName)
+    if not gunTool then return end
+    
+    -- Equip if in backpack
+    if gunTool.Parent == AnniversarySystem.Player.Backpack then
+        local equipped = character:FindFirstChildWhichIsA("Tool")
+        if equipped then
+            equipped.Parent = AnniversarySystem.Player.Backpack
+        end
+        gunTool.Parent = character
+        task.wait(0.05)
+    end
+    
+    local targetPosition = target.Position
+    local primaryPart = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
+    if not primaryPart then return end
+    
+    local event = getAnniversaryMainAttackEvent()
+    if not event then return end
+    
+    event:FireServer({
+        FD = targetPosition,
+        SD = Vector3.new(),
+        FO = primaryPart.Position + ANNIVERSARY_VECTOR_CONSTANTS.CameraOffset,
+        T = gunTool,
+        AN = gunName,
+        H = target,
+        BM = 22.15,
+        RP = primaryPart.Position,
+        HP = targetPosition,
+        SP = targetPosition,
+        IsHolding = true,
+        Duration = 0.1
+    })
+end
+
+-- Two-phase gun attacks for balloons
+local function executeAnniversaryTwoPhaseAttack(toolName, target, phase)
+    local character = getAnniversaryCharacter()
+    if not character then return end
+    
+    local tool = getAnniversaryToolFromInventory(toolName)
+    if not tool then return end
+    
+    local targetPosition = target.Position
+    local event = getAnniversaryMainAttackEvent()
+    if not event then return end
+    
+    if toolName == "The Eggsterminator" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = targetPosition,
+                D = ANNIVERSARY_VECTOR_CONSTANTS.Eggsterminator.D,
+                T = tool,
+                SP = targetPosition,
+                HP = targetPosition,
+                RS = targetPosition
+            })
+        else
+            event:FireServer({
+                ALV = ANNIVERSARY_VECTOR_CONSTANTS.Eggsterminator.ALV,
+                EP = targetPosition,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    elseif toolName == "Firework Launcher" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                D = ANNIVERSARY_VECTOR_CONSTANTS.FireworkLauncher.D,
+                RS = targetPosition,
+                AN = toolName,
+                T = tool,
+                O = targetPosition - ANNIVERSARY_VECTOR_CONSTANTS.FireworkOffset,
+                SP = targetPosition,
+                FireworkCount = 2,
+                HP = targetPosition,
+                CanExplodeFirework = true
+            })
+        else
+            event:FireServer({
+                ALV = ANNIVERSARY_VECTOR_CONSTANTS.FireworkLauncher.ALV,
+                EP = targetPosition,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    elseif toolName == "Nubids Bow" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = targetPosition,
+                D = ANNIVERSARY_VECTOR_CONSTANTS.NubidsBow.D,
+                T = tool,
+                SP = targetPosition,
+                HP = targetPosition,
+                RS = targetPosition
+            })
+        else
+            event:FireServer({
+                AN = toolName .. " Hit",
+                H = target,
+                T = tool
+            })
+        end
+    elseif toolName == "Pumpkin Launcher" then
+        if phase == 1 then
+            event:FireServer({
+                A = character,
+                AN = toolName,
+                O = targetPosition,
+                D = ANNIVERSARY_VECTOR_CONSTANTS.PumpkinLauncher.D,
+                T = tool,
+                SP = targetPosition,
+                HP = targetPosition,
+                RS = targetPosition
+            })
+        else
+            event:FireServer({
+                ALV = ANNIVERSARY_VECTOR_CONSTANTS.PumpkinLauncher.ALV,
+                EP = targetPosition,
+                T = tool,
+                AN = toolName .. "Explode",
+                A = character
+            })
+        end
+    end
+end
+
+-- Cache for CanBeShotFolder for Anniversary Badge
+local lastAnniversaryFolderCheck = 0
+local function getAnniversaryCanBeShotFolder()
+    local currentTime = tick()
+    if AnniversarySystem.cachedCanBeShotFolder and (currentTime - lastAnniversaryFolderCheck) < 10 then
+        return AnniversarySystem.cachedCanBeShotFolder
+    end
+    
+    local gameFolder = Workspace:FindFirstChild("#GAME") or Workspace:FindFirstChild("GAME")
+    if not gameFolder then
+        lastAnniversaryFolderCheck = currentTime
+        return nil
+    end
+    
+    local folders = gameFolder:FindFirstChild("Folders")
+    if not folders then
+        lastAnniversaryFolderCheck = currentTime
+        return nil
+    end
+    
+    local visibleInstances = folders:FindFirstChild("VisibleInstances")
+    if not visibleInstances then
+        lastAnniversaryFolderCheck = currentTime
+        return nil
+    end
+    
+    local attackFolder = visibleInstances:FindFirstChild("Attack")
+    if not attackFolder then
+        lastAnniversaryFolderCheck = currentTime
+        return nil
+    end
+    
+    local canBeShotFolder = attackFolder:FindFirstChild("CanBeShotFolder")
+    AnniversarySystem.cachedCanBeShotFolder = canBeShotFolder
+    lastAnniversaryFolderCheck = currentTime
+    
+    return canBeShotFolder
+end
+
+-- Find PartyBalloons with caching for Anniversary Badge
+local lastAnniversaryBalloonScan = 0
+local function findAnniversaryPartyBalloons(character, maxDistance)
+    local currentTime = tick()
+    
+    -- Use cached target if recent
+    if AnniversarySystem.currentTarget and AnniversarySystem.currentTarget.Parent then
+        if (currentTime - lastAnniversaryBalloonScan) < 0.5 then
+            if character and character.PrimaryPart then
+                local dist = (character.PrimaryPart.Position - AnniversarySystem.currentTarget.Position).Magnitude
+                if dist <= maxDistance then
+                    return AnniversarySystem.currentTarget
+                end
+            end
+        end
+    end
+    
+    local canBeShotFolder = getAnniversaryCanBeShotFolder()
+    if not canBeShotFolder or not character or not character.PrimaryPart then 
+        return nil 
+    end
+    
+    local closestBalloon = nil
+    local closestDistance = maxDistance
+    local charPos = character.PrimaryPart.Position
+    
+    -- Scan for PartyBalloons
+    for _, obj in ipairs(canBeShotFolder:GetChildren()) do
+        if not AnniversarySystem.isRunning then break end
+        
+        if obj:IsA("MeshPart") and obj.Name == "PartyBalloon" then
+            local dist = (charPos - obj.Position).Magnitude
+            if dist <= closestDistance then
+                closestDistance = dist
+                closestBalloon = obj
+            end
+        end
+    end
+    
+    lastAnniversaryBalloonScan = currentTime
+    AnniversarySystem.currentTarget = closestBalloon
+    
+    return closestBalloon
+end
+
+-- Main loop for Anniversary Badge
+local function startAnniversaryLoop()
+    if AnniversarySystem.connection then
+        AnniversarySystem.connection:Disconnect()
+        AnniversarySystem.connection = nil
+    end
+    
+    AnniversarySystem.connection = RunService.Heartbeat:Connect(function()
+        if AnniversarySystem._cleaningUp or not AnniversarySystem.isRunning then 
+            if AnniversarySystem.connection then
+                AnniversarySystem.connection:Disconnect()
+                AnniversarySystem.connection = nil
+            end
+            return 
+        end
+        
+        local currentTime = tick()
+        local character = getAnniversaryCharacter()
+        
+        if not character or not character.PrimaryPart then 
+            task.wait(0.1)
+            return 
+        end
+        
+        local targetBalloon = findAnniversaryPartyBalloons(character, AnniversarySettings.MaxDistance)
+        
+        if targetBalloon then
+            local shootInterval = 1 / math.clamp(AnniversarySettings.ShootingSpeed, 1, 60)
+            
+            if isAnniversaryTwoPhaseGun(AnniversarySettings.GunName) then
+                local tool = getAnniversaryToolFromInventory(AnniversarySettings.GunName)
+                if not tool then
+                    task.wait(0.5)
+                    return
+                end
+                
+                if currentTime - AnniversarySystem.lastShootTime >= 0.01 then
+                    executeAnniversaryTwoPhaseAttack(AnniversarySettings.GunName, targetBalloon, AnniversarySystem.twoPhaseGunPhase)
+                    
+                    AnniversarySystem.twoPhaseGunPhase = AnniversarySystem.twoPhaseGunPhase == 1 and 2 or 1
+                    AnniversarySystem.lastShootTime = currentTime
+                end
+            else
+                local isHoldWeapon = isAnniversaryHoldTool(AnniversarySettings.GunName)
+                
+                if isHoldWeapon then
+                    if AnniversarySystem.currentTarget ~= targetBalloon then
+                        AnniversarySystem.isHolding = false
+                        AnniversarySystem.currentTarget = targetBalloon
+                    end
+                    
+                    if not AnniversarySystem.isHolding then
+                        AnniversarySystem.isHolding = true
+                        AnniversarySystem.holdStartTime = currentTime
+                        holdAnniversaryAttackBalloon(targetBalloon, AnniversarySettings.GunName)
+                    elseif currentTime - AnniversarySystem.holdStartTime >= shootInterval then
+                        holdAnniversaryAttackBalloon(targetBalloon, AnniversarySettings.GunName)
+                        AnniversarySystem.holdStartTime = currentTime
+                    end
+                elseif currentTime - AnniversarySystem.lastShootTime >= shootInterval then
+                    fireAnniversaryAttackBalloon(targetBalloon, AnniversarySettings.GunName)
+                    AnniversarySystem.lastShootTime = currentTime
+                end
+            end
+        else
+            AnniversarySystem.isHolding = false
+            AnniversarySystem.twoPhaseGunPhase = 1
+        end
+    end)
+end
+
+-- Cleanup function for Anniversary Badge
+local function anniversaryCleanup()
+    if AnniversarySystem._cleaningUp then return end
+    
+    AnniversarySystem._cleaningUp = true
+    AnniversarySystem.isRunning = false
+    AnniversarySystem.isHolding = false
+    AnniversarySystem.currentTarget = nil
+    AnniversarySystem.twoPhaseGunPhase = 1
+    
+    if AnniversarySystem.connection then
+        AnniversarySystem.connection:Disconnect()
+        AnniversarySystem.connection = nil
+    end
+    
+    -- Clear caches
+    AnniversarySystem.cachedBalloons = setmetatable({}, {__mode = "v"})
+    
+    task.wait(0.1)
+    AnniversarySystem._cleaningUp = false
+end
+
+-- Character respawn handler for Anniversary Badge
+AnniversarySystem.Player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if AnniversarySettings.Enabled then
+        AnniversarySystem.isRunning = true
+        task.wait(1)
+        startAnniversaryLoop()
+    end
+end)
+
+-- UI Elements for Anniversary Badge
+Tab:AddTextbox({
+    Name = "Gun Name (Anniversary)",
+    Default = "Minigun",
+    TextDisappear = false,
+    Callback = function(Text)
+        AnniversarySettings.GunName = tostring(Text) or "Minigun"
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Shooting Speed (Anniversary)",
+    Default = "6",
+    TextDisappear = false,
+    Callback = function(Text)
+        AnniversarySettings.ShootingSpeed = math.clamp(tonumber(Text) or 6, 1, 60)
+    end
+})
+
+Tab:AddTextbox({
+    Name = "Max Distance (Anniversary)",
+    Default = "1000",
+    TextDisappear = false,
+    Callback = function(Text)
+        AnniversarySettings.MaxDistance = math.clamp(tonumber(Text) or 1000, 10, 5000)
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Shoot (Anniversary)",
+    Default = false,
+    Callback = function(Value)
+        AnniversarySettings.Enabled = Value
+        
+        if Value then
+            AnniversarySystem.isRunning = true
+            AnniversarySystem.isHolding = false
+            AnniversarySystem.currentTarget = nil
+            AnniversarySystem.lastShootTime = 0
+            AnniversarySystem.twoPhaseGunPhase = 1
+            
+            task.spawn(function()
+                getAnniversaryMainAttackEvent() -- Pre-cache
+                task.wait(1)
+                if AnniversarySystem.isRunning then
+                    startAnniversaryLoop()
+                end
+            end)
+        else
+            anniversaryCleanup()
+        end
+    end
+})
+
+-- Auto cleanup on script termination for Anniversary Badge
+local anniversaryCleanupConnection
+anniversaryCleanupConnection = game:GetService("CoreGui").ChildRemoved:Connect(function(child)
+    if child.Name == "Dex" or child.Name == "ScriptWare" or string.find(child.Name:lower(), "executor") then
+        anniversaryCleanup()
+        if anniversaryCleanupConnection then
+            anniversaryCleanupConnection:Disconnect()
+        end
+    end
+end)
+
+-- Periodic memory cleanup for Anniversary Badge
+task.spawn(function()
+    while true do
+        task.wait(60)
+        if not AnniversarySystem.isRunning then
+            collectgarbage("collect")
+        end
+    end
+end)
+
+-- ========== Clown Mouse System ==========
+
+local CM = { -- ClownMouse system
+    bring = false,  -- ClownMouseBring
+    esp = false     -- ClownMouseESP
+}
+
+-- Helper function to create ESP (moved outside do block)
+local function createClownMouseESP(target, guiName, text, color)
+    if not target or not target:IsA("Model") then return end
+    
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Name = guiName
+    billboardGui.Adornee = target
+    billboardGui.Size = UDim2.new(0, 100, 0, 40)
+    billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+    billboardGui.AlwaysOnTop = true
+    billboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    billboardGui.Parent = target
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Name = "ESPText"
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = text
+    textLabel.TextColor3 = color
+    textLabel.TextSize = 14
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextStrokeTransparency = 0.5
+    textLabel.Parent = billboardGui
+end
+
+-- Helper function to create Highlight (moved outside do block)
+_G.createClownMouseHighlight = function(target, color, highlightName)
+    if not target or not target:IsA("Model") then return end
+    
+    local highlight = Instance.new("Highlight")
+    highlight.Name = highlightName
+    highlight.Adornee = target
+    highlight.FillColor = color
+    highlight.OutlineColor = color
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+    highlight.Parent = target
+end
+
+Tab:AddToggle({
+    Name = "Auto Bring Clown Mouse (Kinda Works)",
+    Default = false,
+    Callback = function(Value) 
+        CM.bring = Value
+        if not Value then return end
+        
+        task.spawn(function()
+            while CM.bring do
+                local character = game.Players.LocalPlayer.Character
+                if character then
+                    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+                    
+                    -- Check for ClownMouseModel
+                    local gameFolder = workspace:FindFirstChild("#GAME")
+                    if gameFolder then
+                        local mapFolder = gameFolder:FindFirstChild("Map")
+                        if mapFolder then
+                            local clownMouseModel = mapFolder:FindFirstChild("ClownMouseModel")
+                            
+                            if clownMouseModel then
+                                -- Find all BaseParts named "Part" inside ClownMouseModel
+                                for _, part in pairs(clownMouseModel:GetDescendants()) do
+                                    if part:IsA("BasePart") and part.Name == "Part" then
+                                        -- Touch the part to bring it
+                                        firetouchinterest(humanoidRootPart, part, 0)
+                                        firetouchinterest(humanoidRootPart, part, 1)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                task.wait(0.1)
+            end
+        end)
+    end
+})
+
+-- ========== Clown Mouse ESP ==========
+Tab:AddToggle({
+    Name = "Clown Mouse ESP",
+    Default = false,
+    Callback = function(Value)
+        CM.esp = Value
+        if not Value then
+            -- Clean up ESP elements
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BillboardGui") and v.Name == "ClownMouseESP" then
+                    v:Destroy()
+                end
+                if v:IsA("Highlight") and v.Name == "ClownMouseHighlight" then
+                    v:Destroy()
+                end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while CM.esp do
+                -- Check for ClownMouseModel
+                local gameFolder = workspace:FindFirstChild("#GAME")
+                if gameFolder then
+                    local mapFolder = gameFolder:FindFirstChild("Map")
+                    if mapFolder then
+                        local clownMouseModel = mapFolder:FindFirstChild("ClownMouseModel")
+                        
+                        if clownMouseModel then
+                            -- Create ESP for the model
+                            if not clownMouseModel:FindFirstChild("ClownMouseESP") then
+                                createClownMouseESP(clownMouseModel, "ClownMouseESP", "ClownMouseModel", Color3.fromRGB(255, 0, 0))
+                            end
+                            
+                            -- Create highlight
+                            if not clownMouseModel:FindFirstChild("ClownMouseHighlight") then
+                                createClownMouseHighlight(clownMouseModel, Color3.fromRGB(255, 0, 0), "ClownMouseHighlight")
+                            end
+                        else
+                            -- Clean up if model not found
+                            for _, v in pairs(workspace:GetDescendants()) do
+                                if v:IsA("BillboardGui") and v.Name == "ClownMouseESP" then
+                                    v:Destroy()
+                                end
+                                if v:IsA("Highlight") and v.Name == "ClownMouseHighlight" then
+                                    v:Destroy()
+                                end
+                            end
+                        end
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+})
