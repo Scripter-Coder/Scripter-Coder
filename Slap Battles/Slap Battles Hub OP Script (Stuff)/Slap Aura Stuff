@@ -1,18 +1,4 @@
--- Optimized Slap Aura with updated glove list
-do
-    local RunService = game:GetService("RunService")
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local Players = game:GetService("Players")
-    
-    local slapAuraConnection
-    local lastHitTime = 0
-    local currentCooldown = 0.5
-    local isSlapAuraEnabled = false
-    local localPlayer = Players.LocalPlayer
-    
-    -- UPDATED glove hits list with Counter changed to GeneralHit
-    local gloveHits = {
-        -- Standard Gloves
+		-- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
         ["Dual"] = ReplicatedStorage.GeneralHit,
         ["Diamond"] = ReplicatedStorage.DiamondHit,
@@ -193,7 +179,7 @@ do
         ["Quake"] = ReplicatedStorage.GeneralHit,
         ["Psycho"] = ReplicatedStorage.GeneralHit,
         ["Kraken"] = ReplicatedStorage.GeneralHit,
-        ["Counter"] = ReplicatedStorage.GeneralHit,  -- CHANGED from CounterHit
+        ["Counter"] = ReplicatedStorage.GeneralHit,
         ["Hammer"] = ReplicatedStorage.GeneralHit,
         ["rob"] = ReplicatedStorage.robhit,
         ["Rhythm"] = ReplicatedStorage.rhythmhit,
@@ -264,7 +250,7 @@ do
         ["Riftshot"] = ReplicatedStorage.GeneralHit,
         ["Conker"] = ReplicatedStorage.GeneralHit,
         ["Wheelchair"] = ReplicatedStorage.GeneralHit,
-	["Shopkeeper"] = ReplicatedStorage.GeneralHit,
+		["Shopkeeper"] = ReplicatedStorage.GeneralHit,
         
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
@@ -285,155 +271,6 @@ do
         ["GeneralHit"] = ReplicatedStorage.GeneralHit,
         ["b"] = ReplicatedStorage.b,
         ["HtStun"] = ReplicatedStorage.HtStun
-    }
-    
-    -- Function to get current glove
-    local function getCurrentGlove()
-        if localPlayer:FindFirstChild("leaderstats") then
-            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
-            if gloveValue then
-                return gloveValue.Value
-            end
-        end
-        return "Default"
-    end
-    
-    -- Function to get the remote for a glove (with fallback)
-    local function getGloveRemote(gloveName)
-        local remote = gloveHits[gloveName]
-        
-        -- If remote doesn't exist in the table or is not a RemoteEvent, fallback to b
-        if not remote or not remote:IsA("RemoteEvent") then
-            return ReplicatedStorage.b
-        end
-        
-        return remote
-    end
-
-    -- Create slider
-    local slapAuraSpeed = Tab:AddSlider({
-        Name = "Slap Aura Speed",
-        Min = 0.1,
-        Max = 2,
-        Default = 0.5,
-        Color = Color3.fromRGB(255, 255, 255),
-        Increment = 0.1,
-        ValueName = "seconds",
-        Callback = function(Value)
-            currentCooldown = Value
-        end
-    })
-    
-    -- Create toggle
-    Tab:AddToggle({
-        Name = "Slap Aura",
-        Default = false,
-        Callback = function(enabled)
-            isSlapAuraEnabled = enabled
-            
-            if enabled then
-                -- Disconnect existing connection
-                if slapAuraConnection then
-                    slapAuraConnection:Disconnect()
-                    slapAuraConnection = nil
-                end
-                
-                -- Get current glove
-                local currentGlove = getCurrentGlove()
-                print("Slap Aura: Current glove = " .. currentGlove)
-                
-                -- Get the remote for this glove
-                local remote = getGloveRemote(currentGlove)
-                
-                if not remote or not remote:IsA("RemoteEvent") then
-                    OrionLib:MakeNotification({
-                        Name = "Slap Aura Error",
-                        Content = "No remote found for glove: " .. currentGlove,
-                        Image = "rbxassetid://7733919105",
-                        Time = 3
-                    })
-                    isSlapAuraEnabled = false
-                    return
-                end
-                
-                print("Slap Aura: Using remote = " .. remote.Name)
-                
-                -- Start slap aura
-                slapAuraConnection = RunService.Heartbeat:Connect(function()
-                    local currentTime = tick()
-                    
-                    -- Check cooldown
-                    if currentTime - lastHitTime < currentCooldown then
-                        return
-                    end
-                    
-                    -- Check if still enabled and has character
-                    if not isSlapAuraEnabled or not localPlayer.Character then
-                        return
-                    end
-                    
-                    -- Get local character position
-                    local localChar = localPlayer.Character
-                    local localRoot = localChar:FindFirstChild("HumanoidRootPart")
-                    if not localRoot then
-                        return
-                    end
-                    
-                    -- Find players to slap
-                    for _, player in ipairs(Players:GetPlayers()) do
-                        if player ~= localPlayer and player.Character then
-                            local char = player.Character
-                            local humanoid = char:FindFirstChildOfClass("Humanoid")
-                            local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
-                            
-                            -- Check if valid target
-                            if torso and humanoid and humanoid.Health > 0 then
-                                -- Optional distance check (40 studs max)
-                                local playerRoot = char:FindFirstChild("HumanoidRootPart")
-                                if playerRoot then
-                                    local distance = (playerRoot.Position - localRoot.Position).Magnitude
-                                    if distance > 40 then
-                                        continue
-                                    end
-                                end
-                                
-                                -- Fire the remote
-                                local success, errorMsg = pcall(function()
-                                    remote:FireServer(torso)
-                                end)
-                                
-                                if success then
-                                    lastHitTime = currentTime
-                                    break -- Hit one player per cycle
-                                else
-                                    print("Slap Aura Error: " .. tostring(errorMsg))
-                                end
-                            end
-                        end
-                    end
-                end)
-                
-                OrionLib:MakeNotification({
-                    Name = "Slap Aura Enabled",
-                    Content = "Glove: " .. currentGlove,
-                    Image = "rbxassetid://7733919105",
-                    Time = 3
-                })
-                
-            else
-                -- Disable
-                if slapAuraConnection then
-                    slapAuraConnection:Disconnect()
-                    slapAuraConnection = nil
-                end
-                
-                OrionLib:MakeNotification({
-                    Name = "Slap Aura Disabled",
-                    Content = "",
-                    Image = "rbxassetid://7733919105",
-                    Time = 2
-                })
-            end
         end
     })
 end
