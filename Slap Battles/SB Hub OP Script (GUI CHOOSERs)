@@ -67,7 +67,7 @@ CloseButton.TextSize = 12
 -- Button functions
 local function loadOrionHub()
     -- Replace this with your actual Orion Hub loadstring
-    local orionLoadstring = "loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt"))()"
+    local orionLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt'))()"
     
     -- Execute the loadstring
     local success, err = pcall(function()
