@@ -1,0 +1,4036 @@
+--skid if u want idc just dont forget about credits or smt
+--Webhook
+local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
+
+-- Fluent Hub Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+-- Startup Script Notification
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "Script Loads (Can Take 1-5 Seconds)",
+    Duration = 1
+})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 or game.PlaceId == 122901288403496 or game.PlaceId == 79885102123162 or game.PlaceId == 86643839793301 or game.PlaceId == 113228834069218 or game.PlaceId == 95356852680586 then
+
+local Window = Fluent:CreateWindow({
+    Title = "Masteries Hub (Scripter Hub)",
+    SubTitle = "by Scripter",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "GoodLuck!",
+    Duration = 3
+})
+
+-- Create all tabs
+local Tabs = {
+    Welcome = Window:AddTab({ Title = "Welcome", Icon = "rbxassetid://7734059095" }),
+    spin = Window:AddTab({ Title = "spin", Icon = "rbxassetid://7734068321" }),
+    Stick = Window:AddTab({ Title = "Stick", Icon = "rbxassetid://7734068321" }),
+    Brick = Window:AddTab({ Title = "Brick", Icon = "rbxassetid://7734068321" }),
+    Flash = Window:AddTab({ Title = "Flash", Icon = "rbxassetid://7734068321" }),
+    Spring = Window:AddTab({ Title = "Spring", Icon = "rbxassetid://7734068321" }),
+    Fort = Window:AddTab({ Title = "Fort", Icon = "rbxassetid://7734068321" }),
+    Space = Window:AddTab({ Title = "Space", Icon = "rbxassetid://7734068321" }),
+    Hive = Window:AddTab({ Title = "Hive", Icon = "rbxassetid://7734068321" }),
+    Defense = Window:AddTab({ Title = "Defense", Icon = "rbxassetid://7734068321" }),
+    Killstreak = Window:AddTab({ Title = "Killstreak", Icon = "rbxassetid://7734068321" }),
+    Engineer = Window:AddTab({ Title = "Engineer", Icon = "rbxassetid://7734068321" }),
+    Phantom = Window:AddTab({ Title = "Phantom", Icon = "rbxassetid://7734068321" }),
+    Wormhole = Window:AddTab({ Title = "Wormhole", Icon = "rbxassetid://7734068321" }),
+    Stalker = Window:AddTab({ Title = "Stalker", Icon = "rbxassetid://7734068321" }),
+    Cherry = Window:AddTab({ Title = "Cherry", Icon = "rbxassetid://7734068321" }),
+    Booster = Window:AddTab({ Title = "Booster", Icon = "rbxassetid://7734068321" }),
+    BONK = Window:AddTab({ Title = "BONK", Icon = "rbxassetid://7734068321" }),
+    Cloud = Window:AddTab({ Title = "Cloud", Icon = "rbxassetid://7734068321" }),
+    Soul = Window:AddTab({ Title = "Soul", Icon = "rbxassetid://7734068321" }),
+    REDACTED = Window:AddTab({ Title = "[REDACTED]", Icon = "rbxassetid://7734068321" }),
+    bus = Window:AddTab({ Title = "bus", Icon = "rbxassetid://7734068321" }),
+    Phase = Window:AddTab({ Title = "Phase", Icon = "rbxassetid://7734068321" }),
+    Bomb = Window:AddTab({ Title = "Bomb", Icon = "rbxassetid://7734068321" }),
+    Bubble = Window:AddTab({ Title = "Bubble", Icon = "rbxassetid://7734068321" }),
+    Shard = Window:AddTab({ Title = "Shard", Icon = "rbxassetid://7734068321" }),
+    Moon = Window:AddTab({ Title = "Moon", Icon = "rbxassetid://7734068321" }),
+    Rage = Window:AddTab({ Title = "Rage", Icon = "rbxassetid://7734068321" }),
+    Chain = Window:AddTab({ Title = "Chain", Icon = "rbxassetid://7734068321" }),
+    Tycoon = Window:AddTab({ Title = "Tycoon", Icon = "rbxassetid://7734068321" }),
+    Stone = Window:AddTab({ Title = "🗿", Icon = "rbxassetid://7734068321" }),
+    Obby = Window:AddTab({ Title = "Obby", Icon = "rbxassetid://7734068321" }),
+    Voodoo = Window:AddTab({ Title = "Voodoo", Icon = "rbxassetid://7734068321" }),
+    rob = Window:AddTab({ Title = "rob", Icon = "rbxassetid://7734068321" }),
+    Tinkerer = Window:AddTab({ Title = "Tinkerer", Icon = "rbxassetid://7734068321" }),
+    Glovel = Window:AddTab({ Title = "Glovel", Icon = "rbxassetid://7734068321" }),
+    Run = Window:AddTab({ Title = "Run", Icon = "rbxassetid://7734068321" }),
+    Plank = Window:AddTab({ Title = "Plank", Icon = "rbxassetid://7734068321" }),
+    CarKeys = Window:AddTab({ Title = "Car Keys", Icon = "rbxassetid://7734068321" }),
+    UltraInstinct = Window:AddTab({ Title = "Ultra Instinct", Icon = "rbxassetid://7734068321" }),
+    Acrobat = Window:AddTab({ Title = "Acrobat", Icon = "rbxassetid://7734068321" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local player = game.Players.LocalPlayer
+
+-- Welcome Tab
+Tabs.Welcome:AddParagraph({
+    Title = "Welcome",
+    Content = "Hello " .. player.Name .. "!"
+})
+
+Tabs.Welcome:AddSection("Before u will start using mine script would u like to bypass anticheat?")
+
+Tabs.Welcome:AddButton({
+    Title = "Bypass All Anticheat",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+        task.wait(1.5)
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Bypassed All Anticheat",
+            Duration = 3
+        })
+    end
+})
+
+Tabs.Welcome:AddSection("Give FE/Visual Free Mastery")
+
+local function addMasteryButton(name)
+    Tabs.Welcome:AddButton({
+        Title = name,
+        Callback = function()
+            local mod = require(game.ReplicatedFirst.Dependencies.GloveMasteryClient)
+            hookfunction(mod.IsMasteredVersionEnabled, function(self, g)
+                return g == name or old(self, g)
+            end)
+        end
+    })
+end
+
+local masteryNames = {
+    "spin", "Stick", "Brick", "Flash", "Spring", "Fort", "Space", "Hive", "Killstreak", "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Plank", "Car Keys", "Ultra Instinct", "Acrobat",
+}
+
+for _, name in ipairs(masteryNames) do
+    addMasteryButton(name)
+end
+
+-- spin Tab
+Tabs.spin:AddSection("1 Quest")
+
+Tabs.spin:AddButton({
+    Title = "AFK (10 Hours)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "spin" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17893, -24, -3542)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Spin Glove/Enter Arena",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AntiAfkToggle = Tabs.spin:AddToggle("AntiAfk", {
+    Title = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        _G.AntiAfk = Value
+        local VirtualUser = game:GetService('VirtualUser')
+
+        game:GetService('Players').LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+    end
+})
+
+-- Stick Tab
+Tabs.Stick:AddSection("1 Quest")
+
+Tabs.Stick:AddButton({
+    Title = "Stick Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Stick" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Stick",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Brick Tab
+Tabs.Brick:AddSection("1 Quest")
+
+local brickMasterRunning = false
+local brickMasterConnection = nil
+
+local BrickMasterToggle = Tabs.Brick:AddToggle("BrickMaster", {
+    Title = "Auto Obtain Brick Master Badge",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                task.wait(0.5)
+                local player = game.Players.LocalPlayer
+
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    task.wait(0.5)
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(17894, -24, -3533)
+                end
+
+                task.wait(0.5)
+                
+                getgenv().BrickMasterLoop = true
+                task.spawn(function()
+                    while getgenv().BrickMasterLoop do
+                        game:GetService("ReplicatedStorage").lbrick:FireServer()
+                        local gui = game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel
+                        gui.Text = tonumber(gui.Text) + 1
+                        task.wait(1.5)
+                    end
+                end)
+                
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Brick Glove/Enter Arena",
+                    Duration = 3
+                })
+                return false
+            end
+        else
+            getgenv().BrickMasterLoop = false
+        end
+    end
+})
+
+Tabs.Brick:AddSection("3 Quest")
+
+local UnionsFlingToggle = Tabs.Brick:AddToggle("UnionsFling", {
+    Title = "Auto Fling Bricks (can lag)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
+                
+                getgenv().UnionsFlingLoop = true
+                local originalWalkSpeed = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").WalkSpeed
+                
+                task.spawn(function()
+                    local RunService = game:GetService("RunService")
+                    local speaker = game.Players.LocalPlayer
+                    local flinging = true
+                    
+                    local noclipConnection
+                    noclipConnection = RunService.Stepped:Connect(function()
+                        if speaker.Character then
+                            for _, part in pairs(speaker.Character:GetDescendants()) do
+                                if part:IsA("BasePart") and part.CanCollide then
+                                    part.CanCollide = false
+                                end
+                            end
+                        end
+                    end)
+                    
+                    local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+                    if humanoid then
+                        humanoid.Died:Connect(function()
+                            flinging = false
+                            if noclipConnection then
+                                noclipConnection:Disconnect()
+                            end
+                            getgenv().UnionsFlingLoop = false
+                        end)
+                    end
+                    
+                    while getgenv().UnionsFlingLoop and flinging do
+                        RunService.Heartbeat:Wait()
+                        local character = speaker.Character
+                        local root = character and character:FindFirstChild("HumanoidRootPart")
+                        local vel, movel = nil, 0.1
+
+                        while not (character and character.Parent and root and root.Parent) do
+                            RunService.Heartbeat:Wait()
+                            character = speaker.Character
+                            root = character and character:FindFirstChild("HumanoidRootPart")
+                        end
+
+                        vel = root.Velocity
+                        root.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+
+                        RunService.RenderStepped:Wait()
+                        if character and character.Parent and root and root.Parent then
+                            root.Velocity = vel
+                        end
+
+                        RunService.Stepped:Wait()
+                        if character and character.Parent and root and root.Parent then
+                            root.Velocity = vel + Vector3.new(0, movel, 0)
+                            movel = movel * -1
+                        end
+                        
+                        local unions = {}
+                        for _, obj in pairs(workspace:GetDescendants()) do
+                            if obj:IsA("BasePart") and obj.Name == "Union" then
+                                local hasTouchInterest = false
+                                for _, child in pairs(obj:GetChildren()) do
+                                    if child:IsA("TouchTransmitter") or child.Name == "TouchInterest" then
+                                        hasTouchInterest = true
+                                        break
+                                    end
+                                end
+                                
+                                if hasTouchInterest then
+                                    table.insert(unions, obj)
+                                end
+                            end
+                        end
+                    end
+                    
+                    if noclipConnection then
+                        noclipConnection:Disconnect()
+                    end
+                end)
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Brick Glove first!",
+                    Duration = 3
+                })
+                return false
+            end
+        else
+            getgenv().UnionsFlingLoop = false
+            
+            if game.Players.LocalPlayer.Character then
+                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+                if humanoid then
+                    humanoid.WalkSpeed = 16
+                end
+            end
+            
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("BasePart") and obj.Name == "Union" then
+                    local velocity = obj:FindFirstChild("FlingVelocity")
+                    if velocity then
+                        velocity:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Flash Tab
+Tabs.Flash:AddSection("1-3 Quest")
+
+Tabs.Flash:AddButton({
+    Title = "Auto Use Ability (Instant But Kicks)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Flash" then
+            for i = 1, 1500 do
+                game:GetService("ReplicatedStorage"):WaitForChild("FlashTeleport"):FireServer()
+                task.wait()
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Flash Glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Flash:AddSection("2 Quest")
+
+local running = false
+local AutoSlapFlashToggle = Tabs.Flash:AddToggle("AutoSlapFlash", {
+    Title = "Auto Slap/Use Ability 750 Times",
+    Default = false,
+    Callback = function(AutoSlapFlash)
+        running = AutoSlapFlash
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireFlashHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("FlashHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Flash" then
+                    ReplicatedStorage:WaitForChild("FlashTeleport"):FireServer()
+                    teleportToRandomPlayer()
+                    fireFlashHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Flash Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Tabs.Flash:AddButton({
+    Title = "Flash Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Flash" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.FlashHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Flash",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Spring Tab
+Tabs.Spring:AddSection("1-3 Quest")
+
+Tabs.Spring:AddButton({
+    Title = "Spring Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Spring" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.springhit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Spring",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Fort Tab
+Tabs.Fort:AddSection("1 Quest")
+
+Tabs.Fort:AddButton({
+    Title = "Get Badge + Plank Glove",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+            local hrp = player.Character.HumanoidRootPart
+            local originalPos = hrp.CFrame
+
+            hrp.CFrame = CFrame.new(8, 97, 4)
+            wait(0.2)
+            hrp.Anchored = true
+            wait(0.3)
+            game:GetService("ReplicatedStorage").Fortlol:FireServer()
+            wait(3.5)
+            hrp.Anchored = false
+            wait(0.1)
+            hrp.CFrame = CFrame.new(8, 106, -6)
+            wait(0.5)
+            hrp.CFrame = originalPos
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Fort Glove/Enter Arena", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.Fort:AddSection("2 Quest")
+
+Tabs.Fort:AddButton({
+    Title = "Destroy Wall (Stay Very Close To Wall)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            game.ReplicatedStorage.SelfKnockback:FireServer({ Force = 0, Direction = Vector3.new(0, 0.01, 0) })
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Fort Glove", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.Fort:AddSection("3 Quest")
+
+Tabs.Fort:AddButton({
+    Title = "Build Wall",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.leaderstats.Glove.Value == "Fort" then
+            game:GetService("ReplicatedStorage").Fortlol:FireServer()
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Fort Glove", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+local BuildWallToggle = Tabs.Fort:AddToggle("BuildWall", {
+    Title = "Auto Build Wall",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local player = game.Players.LocalPlayer
+            if player.leaderstats.Glove.Value == "Fort" then
+                getgenv().BuildWallLoop = true
+                task.spawn(function()
+                    while getgenv().BuildWallLoop do
+                        game:GetService("ReplicatedStorage").Fortlol:FireServer()
+                        task.wait(3.5)
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Fort Glove", 
+                    Duration = 3 
+                })
+                return false
+            end
+        else
+            getgenv().BuildWallLoop = false
+        end
+    end
+})
+
+Tabs.Fort:AddSection("2-3 Quest")
+
+local AutoWall = false
+local AutoBuildDestroyToggle = Tabs.Fort:AddToggle("AutoBuildDestroy", {
+    Title = "Auto Build And Destroy Wall",
+    Default = false,
+    Callback = function(Value)
+        AutoWall = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoWall then
+            if player.leaderstats.Glove.Value == "Fort" then
+                task.spawn(function()
+                    while AutoWall do
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(10019, -42, 9960)
+                        wait(1)
+                        game:GetService("ReplicatedStorage").Fortlol:FireServer()
+                        wait(1)
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(10018, -42, 9951)
+                        wait(1)
+                        game.ReplicatedStorage.SelfKnockback:FireServer({ Force = 0, Direction = Vector3.new(0, 0.01, 0) })
+                        wait(4)
+
+                        if player.leaderstats.Glove.Value ~= "Fort" then
+                            AutoWall = false
+                            Fluent:Notify({ 
+                                Title = "Error", 
+                                Content = "Equip Fort Glove", 
+                                Duration = 3 
+                            })
+                        end
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Fort Glove", 
+                    Duration = 3 
+                })
+            end
+        end
+    end
+})
+
+-- Space Tab
+Tabs.Space:AddSection("1 Quest")
+
+local SpaceAbilityToggle = Tabs.Space:AddToggle("SpaceAbility", {
+    Title = "Auto Use Ability",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                getgenv().SpaceAbilityLoop = true
+                task.spawn(function()
+                    while getgenv().SpaceAbilityLoop do
+                        game:GetService("ReplicatedStorage").ZeroGSound:FireServer()
+                        task.wait()
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Space Glove", 
+                    Duration = 3 
+                })
+                return false
+            end
+        else
+            getgenv().SpaceAbilityLoop = false
+        end
+    end
+})
+
+Tabs.Space:AddSection("2 Quest")
+
+Tabs.Space:AddButton({
+    Title = "Someone Using bus?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "bus" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the bus glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the bus glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Space:AddButton({
+    Title = "Teleport To bus Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "bus" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "bus Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local GiftfarmToggle = Tabs.Space:AddToggle("Giftfarm", {
+    Title = "Auto Bring Bus",
+    Default = false,
+    Callback = function(Value) 
+        Giftfarm = Value
+        while Giftfarm do
+            for i,v in pairs(game.Workspace:GetChildren()) do
+                if v.Name == "BusModel" then
+                    firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                end
+            end
+            task.wait()
+        end
+    end
+})
+
+Tabs.Space:AddSection("3 Quest")
+
+Tabs.Space:AddButton({
+    Title = "Teleport To Cannon Island",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(229, 47, 170)
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Space Glove", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.Space:AddButton({
+    Title = "Teleport To Slapple Island",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-389, 51, -23)
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Space Glove", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.Space:AddSection("4 Quest")
+
+local AutoSlapSpaceToggle = Tabs.Space:AddToggle("AutoSlapSpace", {
+    Title = "Auto Slap/Use Ability 500 Times",
+    Default = false,
+    Callback = function(AutoSlapSpace)
+        running = AutoSlapSpace
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireSpaceHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("HtSpace"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            while true do
+                if LocalPlayer.leaderstats.Glove.Value == "Space" then
+                    ReplicatedStorage:WaitForChild("ZeroGSound"):FireServer()
+                    teleportToRandomPlayer()
+                    fireSpaceHitForAllPlayers()
+                    task.wait()
+                else
+                    Fluent:Notify({ 
+                        Title = "Error", 
+                        Content = "Equip Space Glove", 
+                        Duration = 3 
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+-- Hive Tab
+Tabs.Hive:AddSection("1-4 Quest")
+
+local AutoAbiltySlapHiveToggle = Tabs.Hive:AddToggle("AutoAbiltySlapHive", {
+    Title = "Auto Slap/Use Ability",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapHiveRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapHiveRunning then
+            if player.leaderstats.Glove.Value == "Hive" then
+                task.spawn(function()
+                    while AutoAbiltySlapHiveRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = targetPlayer.Character.HumanoidRootPart
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+
+                        task.wait(1)
+                    end
+
+                    while true do
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(1)
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(14)
+                    end
+                end)
+            else
+                AutoAbiltySlapHiveRunning = false
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Hive Glove", 
+                    Duration = 3 
+                })
+            end
+        end
+    end
+})
+
+-- Defense Tab
+Tabs.Defense:AddSection("1-4 Quest")
+
+local AutoAbiltySlapDefenseToggle = Tabs.Defense:AddToggle("AutoAbiltySlapDefense", {
+    Title = "Auto Slap/Use Ability",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapDefenseRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapDefenseRunning then
+            if player.leaderstats.Glove.Value == "Defense" then
+                task.spawn(function()
+                    while AutoAbiltySlapDefenseRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = targetPlayer.Character.HumanoidRootPart
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+
+                        task.wait(1)
+                    end
+
+                    while true do
+                        game:GetService("ReplicatedStorage").Barrier:FireServer()
+                        task.wait(25)
+                    end
+                end)
+            else
+                AutoAbiltySlapDefenseRunning = false
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Defense Glove", 
+                    Duration = 3 
+                })
+            end
+        end
+    end
+})
+
+-- Killstreak Tab
+Tabs.Killstreak:AddSection("1-3 Quest")
+
+local AutoSlapKillstreakToggle = Tabs.Killstreak:AddToggle("AutoSlapKillstreak", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapKillstreak)
+        local running = AutoSlapKillstreak
+
+        local function teleportToRandomPlayer()
+            local Players = game:GetService("Players")
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= Players.LocalPlayer
+
+                local randomPlayerCharacter = randomPlayer.Character
+                if randomPlayerCharacter and randomPlayerCharacter:FindFirstChild("HumanoidRootPart") then
+                    local teleportPosition = randomPlayerCharacter.HumanoidRootPart.Position
+                    Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+                end
+            end
+        end
+
+        local function fireKSHitForAllPlayers()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    ReplicatedStorage:WaitForChild("KSHit"):FireServer(player.Character.HumanoidRootPart)
+                end
+            end
+        end
+
+        local function runAutoSlapKillstreakLoop()
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+                while running do
+                    wait(0.2)
+                    teleportToRandomPlayer()
+                    fireKSHitForAllPlayers()
+                    wait(1)
+                end
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Killstreak Glove", 
+                    Duration = 3 
+                })
+            end
+        end
+
+        if AutoSlapKillstreak then
+            running = true
+            runAutoSlapKillstreakLoop()
+        else
+            running = false
+        end
+    end
+})
+
+-- Engineer Tab
+Tabs.Engineer:AddSection("1-3 Quest")
+
+Tabs.Engineer:AddButton({
+    Title = "Spawn Sentry",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Engineer" then
+            game:GetService("ReplicatedStorage").Sentry:FireServer()
+        else
+            Fluent:Notify({ 
+                Title = "Error", 
+                Content = "Equip Engineer Glove", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+local AutoSentryToggle = Tabs.Engineer:AddToggle("AutoSentry", {
+    Title = "Auto Spawn Sentry",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Engineer" then
+                getgenv().AutoSentryLoop = true
+                task.spawn(function()
+                    while getgenv().AutoSentryLoop do
+                        game:GetService("ReplicatedStorage").Sentry:FireServer()
+                        task.wait()
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Engineer Glove", 
+                    Duration = 3 
+                })
+                return false
+            end
+        else
+            getgenv().AutoSentryLoop = false
+        end
+    end
+})
+
+-- Phantom Tab
+Tabs.Phantom:AddSection("1-2-3 Quest")
+
+Tabs.Phantom:AddButton({
+    Title = "Phantom Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Phantom" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.PhantomHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Phantom",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Phantom:AddButton({
+    Title = "Use Phantom's Ability",
+    Callback = function()  
+        local args = {
+            [1] = game:GetService("Players").LocalPlayer.Character.Phantom
+        }
+        game:GetService("ReplicatedStorage").PhantomDash:InvokeServer(unpack(args))
+    end
+})
+
+-- Wormhole Tab
+Tabs.Wormhole:AddSection("1 Quest")
+
+Tabs.Wormhole:AddButton({
+    Title = "Wormhole Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Wormhole" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.WormHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Wormhole",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Wormhole:AddSection("2 Quest")
+
+local AutoTeleportWormholeToggle = Tabs.Wormhole:AddToggle("AutoTeleportWormhole", {
+    Title = "Auto Teleport To Wormholes",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Wormhole" then
+                getgenv().AutoTeleportLoop = true
+                task.spawn(function()
+                    while getgenv().AutoTeleportLoop do
+                        local args = {
+                            [1] = CFrame.new(-15.540994644165039, -4.673734664916992, -7.913032531738281) * CFrame.Angles(0.02266099490225315, -0.13298073410987854, 0.0024420826230198145)
+                        }
+                        game:GetService("ReplicatedStorage").WormholeTP:FireServer(unpack(args))
+                        task.wait()
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Wormhole/Use In Lobby", 
+                    Duration = 3 
+                })
+                return false
+            end
+        else
+            getgenv().AutoTeleportLoop = false
+        end
+    end
+})
+
+Tabs.Wormhole:AddSection("3 Quest")
+
+local AutoPlaceWormholeToggle = Tabs.Wormhole:AddToggle("AutoPlaceWormhole", {
+    Title = "Auto Place Wormholes",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Wormhole" then
+                getgenv().AutoWormholeLoop = true
+                task.spawn(function()
+                    while getgenv().AutoWormholeLoop do
+                        game:GetService("ReplicatedStorage").WormholePlace:FireServer()
+                        task.wait()
+                    end
+                end)
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Wormhole/Use In Lobby", 
+                    Duration = 3 
+                })
+                return false
+            end
+        else
+            getgenv().AutoWormholeLoop = false
+        end
+    end
+})
+
+-- Stalker Tab
+Tabs.Stalker:AddSection("1-2 Quest")
+
+local AutoSlapStalkerToggle = Tabs.Stalker:AddToggle("AutoSlapStalker", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapStalker)
+        local running = AutoSlapStalker
+
+        local function teleportToRandomPlayer()
+            local Players = game:GetService("Players")
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= Players.LocalPlayer
+
+                local randomPlayerCharacter = randomPlayer.Character
+                if randomPlayerCharacter and randomPlayerCharacter:FindFirstChild("HumanoidRootPart") then
+                    local teleportPosition = randomPlayerCharacter.HumanoidRootPart.Position
+                    Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+                end
+            end
+        end
+
+        local function fireGeneralHitForAllPlayers()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                end
+            end
+        end
+
+        local function runAutoSlapStalkerLoop()
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Stalker" then
+                while running do
+                    wait(0.2)
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    wait(1)
+                end
+            else
+                Fluent:Notify({ 
+                    Title = "Error", 
+                    Content = "Equip Stalker Glove", 
+                    Duration = 3 
+                })
+            end
+        end
+
+        if AutoSlapStalker then
+            running = true
+            runAutoSlapStalkerLoop()
+        else
+            running = false
+        end
+    end
+})
+
+-- Cherry Tab
+Tabs.Cherry:AddSection("1-2-3 Quest")
+
+local cherryCloneLoop = false
+local AutoCherryToggle = Tabs.Cherry:AddToggle("AutoCherry", {
+    Title = "Auto Spawn Cherry Clones",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            cherryCloneLoop = true
+            
+            spawn(function()
+                while cherryCloneLoop do
+                    local player = game.Players.LocalPlayer
+                    
+                    if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Cherry" then
+                        if player.Character and player.Character:FindFirstChild("entered") then
+                            game:GetService("ReplicatedStorage").Events.Cherry:FireServer()
+                        else
+                            Fluent:Notify({
+                                Title = "Not Entered",
+                                Content = "You need to enter the arena first!",
+                                Duration = 3
+                            })
+                            wait(1)
+                        end
+                    else
+                        Fluent:Notify({
+                            Title = "Wrong Glove",
+                            Content = "You need Cherry glove equipped!",
+                            Duration = 3
+                        })
+                        wait(1)
+                    end
+                    
+                    wait(0.1)
+                end
+            end)
+        else
+            cherryCloneLoop = false
+        end
+    end
+})
+
+-- Booster Tab
+Tabs.Booster:AddSection("1 Quest")
+
+local AutoSlapBoosterToggle = Tabs.Booster:AddToggle("AutoSlapBooster", {
+    Title = "Ambush Players 750 Times",
+    Default = false,
+    Callback = function(AutoSlapBooster)
+        running = AutoSlapBooster
+
+        if not running then
+            return
+        end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Booster" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Booster Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+-- BONK Tab
+Tabs.BONK:AddSection("1-2 Quest")
+
+local AutoSlapBonkToggle = Tabs.BONK:AddToggle("AutoSlapBonk", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapBonk)
+        running = AutoSlapBonk
+
+        if not running then
+            return
+        end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "BONK" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip BONK Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Tabs.BONK:AddSection("3 Quest")
+
+local AutoBonkToggle = Tabs.BONK:AddToggle("AutoBonk", {
+    Title = "Auto Use BONK's Hammer",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoBonkLoop = true
+            task.spawn(function()
+                while getgenv().AutoBonkLoop do
+                    game:GetService("ReplicatedStorage").BONK:FireServer()
+                    task.wait(0.1)
+                end
+            end)
+        else
+            getgenv().AutoBonkLoop = false
+        end
+    end
+})
+
+-- Cloud Tab
+Tabs.Cloud:AddSection("1 Quest")
+
+Tabs.Cloud:AddButton({
+    Title = "Cloud Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.CloudHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Cloud",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Cloud:AddSection("2 Quest")
+
+Tabs.Cloud:AddButton({
+    Title = "AFK 200 Minutes",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" then
+            local teleportPosition = Vector3.new(-980, -151, 2)
+            local player = game.Players.LocalPlayer
+
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Cloud/Use In Arena/Stay In Cloud",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Cloud:AddSection("3 Quest")
+
+local CloudSpeedSlider = Tabs.Cloud:AddSlider("CloudSpeed", {
+    Title = "Set Speed Cloud",
+    Description = "Adjust cloud speed multiplier",
+    Default = 0.5,
+    Min = 0.1,
+    Max = 1.2,
+    Rounding = 1,
+    Callback = function(Value)
+        _G.SetSpeedCloud = Value
+    end
+})
+
+local CloudSpeedToggle = Tabs.Cloud:AddToggle("CloudSpeed", {
+    Title = "Auto Set Cloud Speed",
+    Default = false,
+    Callback = function(Value)
+        _G.CloudSpeed = Value
+
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" then
+            while _G.CloudSpeed and game.Players.LocalPlayer.leaderstats.Glove.Value == "Cloud" do
+                for i, v in pairs(game.Workspace:GetChildren()) do
+                    if v.Name:match(game.Players.LocalPlayer.Name) and v:FindFirstChild("BodyVelocity") then
+                        v.BodyVelocity.Velocity = v.BodyVelocity.Velocity * _G.SetSpeedCloud
+                    end
+                end
+                task.wait(0.10)
+            end
+        elseif _G.CloudSpeed == true then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Cloud",
+                Duration = 5
+            })
+            wait(0.05)
+            CloudSpeedToggle:SetValue(false)
+        end
+    end
+})
+
+Tabs.Cloud:AddSection("4 Quest")
+
+local AutoPickUpCloudToggle = Tabs.Cloud:AddToggle("AutoPickUpCloud", {
+    Title = "Auto Pick Up People",
+    Default = false,
+    Callback = function(Value)
+        AutoPickUpCloudRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoPickUpCloudRunning then
+            if player.leaderstats.Glove.Value == "Cloud" then
+                task.spawn(function()
+                    while AutoPickUpCloudRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer = nil
+
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        if targetPlayer and targetPlayer.Character then
+                            local targetHRP = targetPlayer.Character.HumanoidRootPart
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position)
+                        end
+
+                        task.wait(1)
+                    end
+                end)
+            else
+                AutoPickUpCloudRunning = false
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Cloud Glove",
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+-- Soul Tab
+Tabs.Soul:AddSection("1-2-3-4 Quest")
+
+Tabs.Soul:AddButton({
+    Title = "Soul Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Soul" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Soul",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoSoulToggle = Tabs.Soul:AddToggle("AutoSoul", {
+    Title = "Auto Use Ability",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoSoulLoop = true
+            task.spawn(function()
+                while getgenv().AutoSoulLoop do
+                    local SoulObject = game:GetService("Workspace"):FindFirstChild("Lobby")
+                    if SoulObject then
+                        SoulObject = SoulObject:FindFirstChild("Soul")
+                        if SoulObject and SoulObject:FindFirstChild("ClickDetector") then
+                            fireclickdetector(SoulObject.ClickDetector)
+                        end
+                    end
+                    
+                    task.wait(0.5)
+                    
+                    game:GetService("ReplicatedStorage").Events.soul:FireServer()
+                    
+                    task.wait(2.8)
+                end
+            end)
+        else
+            getgenv().AutoSoulLoop = false
+        end
+    end
+})
+
+-- [REDACTED] Tab
+Tabs.REDACTED:AddSection("1-2-3 Quest")
+
+Tabs.REDACTED:AddButton({
+    Title = "Spawn Portal",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "[REDACTED]" then
+            game:GetService("ReplicatedStorage").Well:FireServer()
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Redacted",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local SecurePortalToggle = Tabs.REDACTED:AddToggle("SecurePortal", {
+    Title = "Auto Secure Portal",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.workspace:FindFirstChild("WellModel") and workspace.WellModel:FindFirstChild("Portal") then
+                getgenv().SecurePortalLoop = true
+                task.spawn(function()
+                    while getgenv().SecurePortalLoop do
+                        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.WellModel.Portal.CFrame
+                        end
+                        task.wait()
+                    end
+                end)
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Portal Not Spawned/Founded",
+                    Duration = 3
+                })
+                return false
+            end
+        else
+            getgenv().SecurePortalLoop = false
+        end
+    end
+})
+
+-- bus Tab
+Tabs.bus:AddSection("1 Quest")
+
+Tabs.bus:AddButton({
+    Title = "bus Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "bus" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.hitbus:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip bus",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.bus:AddSection("2-3 Quest")
+
+Tabs.bus:AddButton({
+    Title = "Spawn Bus (Normal)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bus" then
+            game:GetService("ReplicatedStorage").busmoment:FireServer()
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Bus",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.bus:AddButton({
+    Title = "Spawn Bus (Fast + Kicks)",
+    Callback = function()
+        while true do
+            game:GetService("ReplicatedStorage").busmoment:FireServer()
+            wait()
+        end
+    end
+})
+
+-- Phase Tab
+Tabs.Phase:AddSection("1-3 Quest")
+
+local AutoAbiltySlapPhaseToggle = Tabs.Phase:AddToggle("AutoAbiltySlapPhase", {
+    Title = "Auto Ability + Slap People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbiltySlapPhaseRunning = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbiltySlapPhaseRunning then
+            if player.leaderstats.Glove.Value == "Phase" then
+                task.spawn(function()
+                    while AutoAbiltySlapPhaseRunning do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local targetPlayer
+
+                        repeat
+                            targetPlayer = players[math.random(1, #players)]
+                        until targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+                        if targetPlayer and targetPlayer.Character then
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPlayer.Character.HumanoidRootPart.Position)
+                        end
+
+                        task.wait(1)
+                    end
+                end)
+
+                task.spawn(function()
+                    while true do
+                        game:GetService("ReplicatedStorage").PhaseA:FireServer()
+                        task.wait(14)
+                    end
+                end)
+            else
+                AutoAbiltySlapPhaseRunning = false
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Phase Glove",
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+Tabs.Phase:AddSection("2 Quest")
+
+Tabs.Phase:AddButton({
+    Title = "Auto Ability + Teleport To All Islands (Takes 112 Seconds)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+        if player.leaderstats.Glove.Value == "Phase" and player.Character:FindFirstChild("entered") then
+            local function phaseTo(position)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(122, 255, 3)
+                task.wait(0.1)
+                game:GetService("ReplicatedStorage").PhaseA:FireServer()
+                task.wait(0.1)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+                task.wait(14)
+            end
+
+            phaseTo(Vector3.new(236, -16, -6))
+            phaseTo(Vector3.new())
+            phaseTo(Vector3.new(4, -5, -223))
+            phaseTo(Vector3.new(-216, -5, -6))
+            phaseTo(Vector3.new(-401, 51, -16))
+            phaseTo(Vector3.new(256, 34, 194))
+            phaseTo(Vector3.new(4, -5, 215))
+            phaseTo(Vector3.new(-125, -5, 122))
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Phase Glove/Use In Arena",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Bomb Tab
+Tabs.Bomb:AddSection("1-2-3 Quest")
+
+Tabs.Bomb:AddButton({
+    Title = "Throw Bomb/Explode Bomb",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bomb" then
+            game:GetService("ReplicatedStorage").BombThrow:FireServer("Ebutton")
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Bomb",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoBombTasksToggle = Tabs.Bomb:AddToggle("AutoBombTasks", {
+    Title = "Auto Do 1-2-3 Tasks",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bomb" then
+                getgenv().AutoBombTasksLoop = true
+                task.spawn(function()
+                    while getgenv().AutoBombTasksLoop do
+                        local player = game.Players.LocalPlayer
+
+                        if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
+                            task.wait(1)
+                            continue
+                        end
+
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(-908, 328, 5)
+                        task.wait(1)
+
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(10019, -42, 9960)
+                        task.wait(1)
+
+                        game:GetService("ReplicatedStorage").BombThrow:FireServer("Ebutton")
+                        task.wait(1)
+
+                        local bombFound = false
+                        for i = 1, 30 do
+                            if not getgenv().AutoBombTasksLoop then break end
+                            
+                            for _, v in pairs(game.Workspace:GetChildren()) do
+                                if string.find(v.Name, "_bømb") then
+                                    player.Character.HumanoidRootPart.CFrame = v.CFrame
+                                    bombFound = true
+                                    break
+                                end
+                            end
+                            
+                            if bombFound then
+                                break
+                            else
+                                task.wait(1)
+                            end
+                        end
+
+                        task.wait(9)
+                        
+                        local humanoid = player.Character:FindFirstChild("Humanoid")
+                        if humanoid then
+                            humanoid.Health = 0
+                        end
+                        
+                        task.wait(23)
+                    end
+                end)
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Bomb Glove",
+                    Duration = 3
+                })
+                return false
+            end
+        else
+            getgenv().AutoBombTasksLoop = false
+        end
+    end
+})
+
+-- Bubble Tab
+Tabs.Bubble:AddSection("1-2-3-4 Quest")
+
+Tabs.Bubble:AddButton({
+    Title = "Use Bubble's Ability",
+    Callback = function()  
+        game:GetService("ReplicatedStorage").BubbleThrow:FireServer()
+    end
+})
+
+local AutoBubbleToggle = Tabs.Bubble:AddToggle("AutoBubble", {
+    Title = "Auto Use Bubble's Ability",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoBubbleLoop = true
+            task.spawn(function()
+                while getgenv().AutoBubbleLoop do
+                    game:GetService("ReplicatedStorage").BubbleThrow:FireServer()
+                    task.wait(10)
+                end
+            end)
+        else
+            getgenv().AutoBubbleLoop = false
+        end
+    end
+})
+
+Tabs.Bubble:AddButton({
+    Title = "Bubble Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Bubble" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.BubbleHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Bubble",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Shard Tab
+Tabs.Shard:AddSection("1-2-3-4-5 Quest")
+
+local shardCloneLoop = false
+local AutoShardToggle = Tabs.Shard:AddToggle("AutoShard", {
+    Title = "Auto Use Shard's Glove Ability",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            shardCloneLoop = true
+            
+            spawn(function()
+                while shardCloneLoop do
+                    local player = game.Players.LocalPlayer
+                    
+                    if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value == "Shard" then
+                        if player.Character and player.Character:FindFirstChild("entered") then
+                            game:GetService("ReplicatedStorage").Events.Shards:FireServer()
+                        else
+                            Fluent:Notify({
+                                Title = "Not Entered",
+                                Content = "You need to enter the arena first!",
+                                Duration = 3
+                            })
+                            wait(1)
+                        end
+                    else
+                        Fluent:Notify({
+                            Title = "Wrong Glove",
+                            Content = "You need Shard glove equipped!",
+                            Duration = 3
+                        })
+                        wait(1)
+                    end
+                    
+                    wait(0.1)
+                end
+            end)
+        else
+            shardCloneLoop = false
+        end
+    end
+})
+
+Tabs.Shard:AddButton({
+    Title = "Shard Slap Aura",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        replicatedStorage.ShardHIT:FireServer(leftArm)
+                    end
+                end
+            end
+
+            wait(0.5)
+        end
+    end
+})
+
+-- Moon Tab
+Tabs.Moon:AddSection("1-2 Quest")
+
+local autoRagdollLoop = nil
+local AutoRagdollToggle = Tabs.Moon:AddToggle("AutoRagdoll", {
+    Title = "Auto Ragdoll + Touch Ground",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            autoRagdollLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                    game.ReplicatedStorage.SelfKnockback:FireServer({
+                        ["Force"] = 0,
+                        ["Direction"] = Vector3.new(0, 0.01, 0)
+                    })
+                    
+                    if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1, -5, 8)
+                    end
+                end
+            end)
+        else
+            if autoRagdollLoop then
+                autoRagdollLoop:Disconnect()
+                autoRagdollLoop = nil
+            end
+        end
+    end
+})
+
+local moonGloveLoop = nil
+local AutoMoonEquipToggle = Tabs.Moon:AddToggle("AutoMoonEquip", {
+    Title = "Auto Spam Equip/Unequip Moon Glove",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            moonGloveLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                local player = game.Players.LocalPlayer
+                local backpack = player:FindFirstChild("Backpack")
+                
+                if backpack then
+                    local moonTool = backpack:FindFirstChild("Moon")
+                    
+                    if moonTool then
+                        local character = player.Character
+                        local currentlyEquipped = character and character:FindFirstChild("Moon")
+                        
+                        if currentlyEquipped then
+                            moonTool.Parent = backpack
+                        else
+                            moonTool.Parent = character
+                        end
+                    end
+                end
+            end)
+        else
+            if moonGloveLoop then
+                moonGloveLoop:Disconnect()
+                moonGloveLoop = nil
+            end
+        end
+    end
+})
+
+-- Rage Tab
+Tabs.Rage:AddSection("1-4 Quest")
+
+Tabs.Rage:AddButton({
+    Title = "Rage Slap Aura",
+    Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
+
+        local function fireForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Torso") then
+                    ReplicatedStorage.GRRRR:FireServer(player.Character.Torso)
+                end
+            end
+        end
+
+        while true do
+            fireForAllPlayers()
+            wait(0.5)
+        end
+    end
+})
+
+Tabs.Rage:AddButton({
+    Title = "Use Rage Ability",
+    Callback = function()
+        game:GetService("ReplicatedStorage").GRRRRR:FireServer()
+    end
+})
+
+-- Chain Tab
+Tabs.Chain:AddSection("1-2-3 Quest")
+
+local AutoSlapChainToggle = Tabs.Chain:AddToggle("AutoSlapChain", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapChain)
+        running = AutoSlapChain
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Chain" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Chain Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+-- Tycoon Tab
+Tabs.Tycoon:AddSection("1-3 Quest")
+
+Tabs.Tycoon:AddButton({
+    Title = "Place Tycoon To Safe Spot",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Tycoon" then
+            local player = game.Players.LocalPlayer
+
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
+            task.wait(1)
+
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(17884, -24, -3539)
+            task.wait(1)
+
+            local args = {
+                [1] = CFrame.new(17893.552734375, -26.257728576660156, -3535.35888671875, 
+                0.00862560048699379, 3.3499091500743816e-08, -0.9999628067016602, 
+                8.43312697451637e-10, 1, 3.350761090814558e-08, 
+                0.9999628067016602, -1.1323045834288337e-09, 0.00862560048699379)
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+            task.wait(1)
+
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Tycoon Glove/Get Safespot",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoSlapTycoonToggle = Tabs.Tycoon:AddToggle("AutoSlapTycoon", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapTycoon)
+        running = AutoSlapTycoon
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+                            targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                        )
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Tycoon" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Tycoon Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+-- 🗿 Tab
+Tabs.Stone:AddSection("1 Quest")
+
+Tabs.Stone:AddButton({
+    Title = "Spawn 🗿",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "🗿" then
+            local args = {
+                [1] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+            }
+            game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args))
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip 🗿",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Stone:AddSection("2-3 Quest")
+
+Tabs.Stone:AddButton({
+    Title = "🗿 Slap Aura",
+    Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
+
+        local function fireForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Torso") then
+                    ReplicatedStorage.GeneralHit:FireServer(player.Character.Torso)
+                end
+            end
+        end
+
+        while true do
+            fireForAllPlayers()
+            wait(1)
+        end
+    end
+})
+
+-- Obby Tab
+Tabs.Obby:AddSection("1 Quest")
+
+Tabs.Obby:AddButton({
+    Title = "Obby Slap Aura",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                local character = player.Character
+                if character then
+                    local leftArm = character:FindFirstChild("Left Arm")
+                    if leftArm then
+                        replicatedStorage.GeneralHit:FireServer(leftArm)
+                    end
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+-- Voodoo Tab
+Tabs.Voodoo:AddSection("1-2 Quest")
+
+local AutoSlapVoodooToggle = Tabs.Voodoo:AddToggle("AutoSlapVoodoo", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapVoodoo)
+        running = AutoSlapVoodoo
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Voodoo" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Voodoo Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Tabs.Voodoo:AddSection("3 Quest")
+
+local voodooToggle = false
+local loopThread = nil
+local AutoVoodooAbilityToggle = Tabs.Voodoo:AddToggle("AutoVoodooAbility", {
+    Title = "Voodoo Spam Ability Without CD",
+    Default = false,
+    Callback = function(state)
+        voodooToggle = state
+        local player = game.Players.LocalPlayer
+
+        if voodooToggle then
+            if player.leaderstats and player.leaderstats.Glove.Value == "Voodoo" then
+                loopThread = task.spawn(function()
+                    while voodooToggle and player.leaderstats.Glove.Value == "Voodoo" do
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                        task.wait(3.5)
+                    end
+                end)
+            else
+                voodooToggle = false
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Voodoo Glove",
+                    Duration = 3
+                })
+            end
+        else
+            if loopThread then
+                print("Voodoo spam stopped")
+                loopThread = nil
+            end
+        end
+    end
+})
+
+-- rob Tab
+Tabs.rob:AddSection("1 Quest")
+
+Tabs.rob:AddButton({
+    Title = "Create Null Portal (Need Bob And Rob Gloves)",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+        wait(0.5)
+
+        fireclickdetector(game:GetService("Workspace").Lobby.rob.ClickDetector)
+        wait(0.5)
+        game:GetService("ReplicatedStorage").rob:FireServer()
+        wait(0.5)
+
+        fireclickdetector(game:GetService("Workspace").Lobby.bob.ClickDetector)
+        wait(0.5)
+        game:GetService("ReplicatedStorage").bob:FireServer()
+
+        Fluent:Notify({
+            Title = "Error",
+            Content = "Need Bob/Rob Badges To Own",
+            Duration = 3
+        })
+    end
+})
+
+Tabs.rob:AddSection("2 Quest")
+
+local WalkspeedSlider = Tabs.rob:AddSlider("Walkspeed", {
+    Title = "WalkSpeed",
+    Description = "Adjust your walkspeed",
+    Default = 20,
+    Min = 20,
+    Max = 1000,
+    Rounding = 1,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        Walkspeed = Value
+    end
+})
+
+local WalkspeedInput = Tabs.rob:AddInput("WalkspeedInput", {
+    Title = "WalkSpeed",
+    Description = "Enter custom walkspeed value",
+    Default = "UserSpeed",
+    Placeholder = "Enter speed",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        Walkspeed = Value
+    end
+})
+
+local KeepWalkspeedToggle = Tabs.rob:AddToggle("KeepWalkspeed", {
+    Title = "Walkspeed Set Auto",
+    Default = false,
+    Callback = function(Value)
+        KeepWalkspeed = Value
+
+        while KeepWalkspeed do
+            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+               game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= Walkspeed then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Walkspeed
+            end
+            task.wait()
+        end
+    end
+})
+
+Tabs.rob:AddSection("3 Quest")
+
+local AutoAbsorb = false
+local AutoAbsorbToggle = Tabs.rob:AddToggle("AutoAbsorb", {
+    Title = "Auto Absorb People",
+    Default = false,
+    Callback = function(Value)
+        AutoAbsorb = Value
+        local player = game.Players.LocalPlayer
+
+        if AutoAbsorb then
+            if player.leaderstats.Glove.Value:lower() == "rob" then
+                task.spawn(function()
+                    while AutoAbsorb do
+                        local players = game:GetService("Players"):GetPlayers()
+                        local target
+
+                        repeat
+                            target = players[math.random(1, #players)]
+                        until target ~= player and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+
+                        local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                        if targetHRP and player.Character:FindFirstChild("HumanoidRootPart") then
+                            player.Character.HumanoidRootPart.CFrame = CFrame.new(targetHRP.Position + Vector3.new(0, 0, 2))
+                        end
+
+                        game:GetService("ReplicatedStorage"):FindFirstChild("Ability"):FireServer()
+                        task.wait(1)
+                    end
+                end)
+            else
+                AutoAbsorb = false
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Rob Glove",
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+local AutoRobToggle = Tabs.rob:AddToggle("AutoRob", {
+    Title = "Auto Rob Transformation",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoRobLoop = true
+            task.spawn(function()
+                while getgenv().AutoRobLoop do
+                    local robObject = game:GetService("Workspace"):FindFirstChild("Lobby")
+                    if robObject then
+                        robObject = robObject:FindFirstChild("rob")
+                        if robObject and robObject:FindFirstChild("ClickDetector") then
+                            fireclickdetector(robObject.ClickDetector)
+                        end
+                    end
+                    
+                    task.wait(0.5)
+                    
+                    game:GetService("ReplicatedStorage").rob:FireServer()
+                    
+                    task.wait(17)
+                end
+            end)
+        else
+            getgenv().AutoRobLoop = false
+        end
+    end
+})
+
+Tabs.rob:AddSection("4 Quest")
+
+Tabs.rob:AddButton({
+    Title = "Equip Reaper (3.5k+ Slaps Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Reaper"].ClickDetector)
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Equip Killstreak (5k+ Slaps Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Killstreak"].ClickDetector)
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Equip God's Hand (65k+ Slaps Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["God's Hand"].ClickDetector)
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Equip bob (bob Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["bob"].ClickDetector)
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Equip Tycoon (Plate Master Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Tycoon"].ClickDetector)
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Someone Using Reaper?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Reaper" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the Reaper glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Reaper glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Someone Using Killstreak?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Killstreak" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the Killstreak glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Killstreak glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Someone Using God's Hand?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "God's Hand" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the God's Hand glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the God's Hand glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Someone Using bob?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "bob" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the bob glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the bob glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Someone Using Tycoon?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Tycoon" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the Tycoon glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Tycoon glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Teleport To Reaper Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Reaper" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Reaper Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Teleport To Killstreak Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Killstreak" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Killstreak Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Teleport To God's Hand Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "God's Hand" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "God's Hand Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Teleport To bob Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "bob" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "bob Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Teleport To Tycoon Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Tycoon" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Tycoon Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Reaper Slap Aura",
+    Callback = function()   
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Reaper" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Left Arm") then
+                    local args = { [1] = player.Character["Left Arm"] }
+                    ReplicatedStorage.ReaperHit:FireServer(unpack(args))
+                end
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Reaper",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Killstreak Slap Aura",
+    Callback = function()   
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Left Arm") then
+                    local args = { [1] = player.Character["Left Arm"] }
+                    ReplicatedStorage.KSHit:FireServer(unpack(args))
+                end
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Killstreak",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Use God's Hand Ability",
+    Callback = function()   
+        game:GetService("ReplicatedStorage").TimestopJump:FireServer()
+        game:GetService("ReplicatedStorage").Timestopchoir:FireServer()
+        game:GetService("ReplicatedStorage").Timestop:FireServer()
+    end
+})
+
+Tabs.rob:AddButton({
+    Title = "Use bob Ability",
+    Callback = function()   
+        game:GetService("ReplicatedStorage").bob:FireServer()
+    end
+})
+
+local AutoTycoonClickToggle = Tabs.rob:AddToggle("AutoTycoonClick", {
+    Title = "Auto Click Tycoon",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoTycoon = Value
+
+        while _G.AutoTycoon do
+            for _, v in pairs(workspace:GetChildren()) do
+                if string.find(v.Name, "ÅTycoon") then
+                    local clickPart = v:FindFirstChild("Click")
+                    if clickPart and clickPart:IsA("BasePart") then
+                        local detector = clickPart:FindFirstChildOfClass("ClickDetector")
+                        if detector then
+                            fireclickdetector(detector)
+                        end
+                    end
+                end
+            end
+            task.wait()
+        end
+    end
+})
+
+-- Tinkerer Tab
+Tabs.Tinkerer:AddSection("1-3 Quest")
+
+local AutoFrenzyToggle = Tabs.Tinkerer:AddToggle("AutoFrenzy", {
+    Title = "Auto Spawn Frenzy Bots",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoFrenzyLoop = true
+            task.spawn(function()
+                while getgenv().AutoFrenzyLoop do
+                    game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                    task.wait(7)
+                end
+            end)
+        else
+            getgenv().AutoFrenzyLoop = false
+        end
+    end
+})
+
+Tabs.Tinkerer:AddButton({
+    Title = "Tinkerer Slap Aura",
+    Callback = function()   
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Tinkerer" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Left Leg") then
+                        local args = {
+                            [1] = player.Character["Left Leg"],
+                            [2] = false
+                        }
+                        ReplicatedStorage.TinkererHit:FireServer(unpack(args))
+                    end
+                end
+                wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Tinkerer",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Glovel Tab
+Tabs.Glovel:AddSection("1 Quest")
+
+Tabs.Glovel:AddButton({
+    Title = "Dig 350 Times",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Glovel" then
+            while true do
+                game:GetService("ReplicatedStorage").GlovelFunc:InvokeServer()
+                wait()
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Glovel Glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Glovel:AddSection("2-3 Quest")
+
+Tabs.Glovel:AddButton({
+    Title = "Glovel Slap Aura (Only Critical Hits)",
+    Callback = function()
+        while true do
+            local players = game:GetService("Players")
+            local replicatedStorage = game:GetService("ReplicatedStorage")
+
+            for _, player in ipairs(players:GetPlayers()) do
+                if player.Character and player.Character:FindFirstChild("Head") then
+                    local args = {
+                        player.Character.Head,
+                        true
+                    }
+
+                    replicatedStorage.GeneralHit:FireServer(unpack(args))
+                end
+            end
+
+            wait(1)
+        end
+    end
+})
+
+-- Run Tab
+Tabs.Run:AddSection("TEMPORARY DISABLED")
+
+-- Plank Tab
+Tabs.Plank:AddSection("1-2-3 Quests")
+
+local AutoPlankToggle = Tabs.Plank:AddToggle("AutoPlank", {
+    Title = "Auto Use Plank On Players",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoPlank = Value
+        
+        while _G.AutoPlank and task.wait(0.1) do
+            local players = game:GetService("Players"):GetPlayers()
+            local targetPlayers = {}
+            
+            for _, player in ipairs(players) do
+                if player ~= game:GetService("Players").LocalPlayer and player.Character then
+                    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+                    if hrp then
+                        table.insert(targetPlayers, {
+                            player = player,
+                            position = hrp.Position
+                        })
+                    end
+                end
+            end
+            
+            if #targetPlayers > 0 then
+                local randomTarget = targetPlayers[math.random(1, #targetPlayers)]
+                
+                local args = {
+                    [1] = "OutOfBody",
+                    [2] = {
+                        ["mousebehavior"] = Enum.MouseBehavior.Default,
+                        ["ismoving"] = false,
+                        ["dir"] = Vector3.new(
+                            randomTarget.position.X,
+                            randomTarget.position.Y,
+                            randomTarget.position.Z
+                        )
+                    }
+                }
+                
+                game:GetService("ReplicatedStorage").Blink:FireServer(unpack(args))
+            end
+        end
+    end
+})
+
+-- Car Keys Tab
+Tabs.CarKeys:AddSection("1 Quest")
+
+local toggleOn = false
+local upgradeLoop = nil
+
+local attributeFrames = {
+    "UtilityAttributeFrame",
+    "ArmorAttributeFrame",
+    "ReverseAttributeFrame",
+    "SteerAngleAttributeFrame",
+    "AccelerationAttributeFrame",
+    "MaxSpeedAttributeFrame",
+    "KnockbackAttributeFrame"
+}
+
+local AutoUpgradeCarToggle = Tabs.CarKeys:AddToggle("AutoUpgradeCar", {
+    Title = "Auto Upgrade All Stats",
+    Default = false,
+    Callback = function(Value)
+        toggleOn = Value
+        if toggleOn then
+            upgradeLoop = task.spawn(function()
+                while toggleOn do
+                    for _, attr in ipairs(attributeFrames) do
+                        local args = { attr }
+                        game:GetService("ReplicatedStorage"):WaitForChild("CarKeysUpgrade"):FireServer(unpack(args))
+                        task.wait(0.1)
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        else
+            toggleOn = false
+        end
+    end
+})
+
+Tabs.CarKeys:AddSection("2-3 Quest")
+
+Tabs.CarKeys:AddButton({
+    Title = "Car Keys Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Car Keys" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Car Keys",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Ultra Instinct Tab
+Tabs.UltraInstinct:AddSection("1-2 Quest")
+
+local AutoSlapUltraToggle = Tabs.UltraInstinct:AddToggle("AutoSlapUltra", {
+    Title = "Auto Slap Players",
+    Default = false,
+    Callback = function(AutoSlapVoodoo)
+        running = AutoSlapVoodoo
+
+        if not running then
+            return
+        end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer = nil
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireGeneralHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Ultra Instinct" then
+                    teleportToRandomPlayer()
+                    fireGeneralHitForAllPlayers()
+                    count += 1
+                    task.wait(1)
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "Equip Ultra Instinct Glove",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Tabs.UltraInstinct:AddButton({
+    Title = "Teleport to Random Player",
+    Callback = function()
+        local players = {}
+        local localPlayer = game.Players.LocalPlayer
+        
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer and player.Character then
+                local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    table.insert(players, player)
+                end
+            end
+        end
+        
+        if #players > 0 then
+            local randomPlayer = players[math.random(1, #players)]
+            local targetHRP = randomPlayer.Character.HumanoidRootPart
+            
+            if localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                localPlayer.Character.HumanoidRootPart.CFrame = targetHRP.CFrame
+            end
+        end
+    end
+})
+
+local AutoTeleportPlayersToggle = Tabs.UltraInstinct:AddToggle("AutoTeleportPlayers", {
+    Title = "Auto Teleport to Random Players",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            getgenv().AutoTeleportPlayersLoop = true
+            task.spawn(function()
+                while getgenv().AutoTeleportPlayersLoop do
+                    local localPlayer = game.Players.LocalPlayer
+                    local players = {}
+                    
+                    for _, player in pairs(game.Players:GetPlayers()) do
+                        if player ~= localPlayer and player.Character then
+                            local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                table.insert(players, player)
+                            end
+                        end
+                    end
+                    
+                    if #players > 0 and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        local randomPlayer = players[math.random(1, #players)]
+                        local targetHRP = randomPlayer.Character.HumanoidRootPart
+                        
+                        localPlayer.Character.HumanoidRootPart.CFrame = targetHRP.CFrame
+                    end
+                    
+                    task.wait(0.1)
+                end
+            end)
+        else
+            getgenv().AutoTeleportPlayersLoop = false
+        end
+    end
+})
+
+-- Acrobat Tab
+Tabs.Acrobat:AddSection("1-2-3 Quest")
+
+Tabs.Acrobat:AddButton({
+    Title = "No Cooldown Abilities Script (NOT AUTO)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local tool = character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool")
+
+        while character.Humanoid.Health ~= 0 do
+            local localscript = tool:FindFirstChildOfClass("LocalScript")
+            local localscriptclone = localscript:Clone()
+            localscriptclone = localscript:Clone()
+            localscriptclone:Clone()
+            localscript:Destroy()
+            localscriptclone.Parent = tool
+            wait(0.1)
+        end
+    end
+})
+
+Tabs.Acrobat:AddButton({
+    Title = "Acrobat Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Acrobat" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.AcHit:FireServer(unpack(args))
+                    end
+                end
+                task.wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Acrobat",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Settings Tab
+Tabs.Settings:AddSection("Value Changer")
+
+local SlapChanger
+local SlapsInput = Tabs.Settings:AddInput("SlapsInput", {
+    Title = "How Many Slaps? (Visual)",
+    Description = "Enter the number of slaps to display",
+    Default = "",
+    Placeholder = "Enter number",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local NullShardsInput = Tabs.Settings:AddInput("NullShardsInput", {
+    Title = "How Many Null Shards? (Visual)",
+    Description = "Enter the number of null shards to display",
+    Default = "",
+    Placeholder = "Enter number",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        local nullshardNumber = tonumber(Value)
+        if nullshardNumber and nullshardNumber >= 0 then
+            getgenv().nullshardChanger = tostring(nullshardNumber)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Type a correct number (0 or greater)!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Set Null Shards (Visual)",
+    Callback = function()
+        if getgenv().nullshardChanger then
+            local playerName = game.Players.LocalPlayer.Name
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local playerData = ReplicatedStorage:WaitForChild("PlayerData", 5)
+
+            if playerData then
+                local playerFolder = playerData:WaitForChild(playerName, 5)
+                if playerFolder then
+                    local nullShardsValue = playerFolder:WaitForChild("NullShards", 5)
+                    if nullShardsValue and nullShardsValue.ClassName == "StringValue" then
+                        nullShardsValue.Value = getgenv().nullshardChanger
+                    end
+                end
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter a valid number first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Badge Giver")
+
+Tabs.Settings:AddButton({
+    Title = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+local nametagText = ""
+local autoNametag = false
+local player = game.Players.LocalPlayer
+
+local NametagInput = Tabs.Settings:AddInput("NametagInput", {
+    Title = "Type Ur Own Any Nametag",
+    Description = "Enter custom text for your nametag",
+    Default = "",
+    Placeholder = "Enter nametag text",
+    Numeric = false,
+    Finished = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter text in the textbox first!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    Fluent:Notify({
+                        Title = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Duration = 3
+                    })
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "TopLabel not found!",
+                        Duration = 3
+                    })
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Nametag not found!",
+                    Duration = 3
+                })
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoNametagToggle = Tabs.Settings:AddToggle("AutoNametag", {
+    Title = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tabs.Settings:AddSection("Slap Aura")
+
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    
+    local gloveHits = {
+        ["b"] = ReplicatedStorage.b,
+        ["GeneralHit"] = ReplicatedStorage.GeneralHit,
+    }
+    
+    local function getCurrentGlove()
+        if localPlayer:FindFirstChild("leaderstats") then
+            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+            if gloveValue then
+                return gloveValue.Value
+            end
+        end
+        return "Default"
+    end
+    
+    local function getGloveRemote(gloveName)
+        local remote = gloveHits[gloveName]
+        
+        if remote and typeof(remote) == "Instance" and remote:IsA("RemoteEvent") then
+            return remote
+        end
+        
+        if remote and type(remote) == "string" then
+            local pathRemote = ReplicatedStorage:FindFirstChild(remote, true)
+            if pathRemote and pathRemote:IsA("RemoteEvent") then
+                return pathRemote
+            end
+        end
+        
+        local variations = {
+            gloveName .. "Hit",
+            "hit" .. gloveName,
+            gloveName .. "H",
+            "Ht" .. gloveName,
+            gloveName:upper() .. "Hit",
+            gloveName:lower() .. "hit"
+        }
+        
+        for _, variation in ipairs(variations) do
+            local foundRemote = ReplicatedStorage:FindFirstChild(variation)
+            if foundRemote and foundRemote:IsA("RemoteEvent") then
+                return foundRemote
+            end
+        end
+        
+        if ReplicatedStorage:FindFirstChild("GeneralHit") then
+            return ReplicatedStorage.GeneralHit
+        else
+            return ReplicatedStorage.b
+        end
+    end
+    
+    local function autoDetectGloveRemote(gloveName)
+        local commonRemotes = {
+            "b", "GeneralHit"
+        }
+        
+        for _, remoteName in ipairs(commonRemotes) do
+            if remoteName:lower():find(gloveName:lower()) or gloveName:lower():find(remoteName:lower()) then
+                local remote = ReplicatedStorage:FindFirstChild(remoteName)
+                if remote and remote:IsA("RemoteEvent") then
+                    return remote
+                end
+            end
+        end
+        
+        for _, child in pairs(ReplicatedStorage:GetChildren()) do
+            if child:IsA("RemoteEvent") then
+                local nameLower = child.Name:lower()
+                local gloveLower = gloveName:lower()
+                
+                if nameLower:find(gloveLower) or nameLower:find("hit") or nameLower:find("slap") then
+                    return child
+                end
+            end
+        end
+        
+        return ReplicatedStorage:FindFirstChild("b") or ReplicatedStorage:FindFirstChild("GeneralHit")
+    end
+
+    local SlapAuraSpeedSlider = Tabs.Settings:AddSlider("SlapAuraSpeed", {
+        Title = "Slap Aura Speed",
+        Description = "Set the cooldown between slaps",
+        Default = 0.5,
+        Min = 0.1,
+        Max = 2,
+        Rounding = 1,
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    local SlapAuraToggle = Tabs.Settings:AddToggle("SlapAura", {
+        Title = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                local currentGlove = getCurrentGlove()
+                local remote = getGloveRemote(currentGlove)
+                
+                if not remote or not remote:IsA("RemoteEvent") then
+                    remote = autoDetectGloveRemote(currentGlove)
+                    
+                    if not remote or not remote:IsA("RemoteEvent") then
+                        Fluent:Notify({
+                            Title = "Slap Aura Error",
+                            Content = "No remote found for glove: " .. currentGlove,
+                            Duration = 3
+                        })
+                        isSlapAuraEnabled = false
+                        return
+                    end
+                end
+                
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    local currentTime = tick()
+                    
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    local localChar = localPlayer.Character
+                    local localRoot = localChar:FindFirstChild("HumanoidRootPart")
+                    if not localRoot then
+                        return
+                    end
+                    
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player ~= localPlayer and player.Character then
+                            local char = player.Character
+                            local humanoid = char:FindFirstChildOfClass("Humanoid")
+                            local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                            
+                            if torso and humanoid and humanoid.Health > 0 then
+                                local playerRoot = char:FindFirstChild("HumanoidRootPart")
+                                if playerRoot then
+                                    local distance = (playerRoot.Position - localRoot.Position).Magnitude
+                                    if distance > 40 then
+                                        continue
+                                    end
+                                end
+                                
+                                local success = pcall(function()
+                                    remote:FireServer(torso)
+                                end)
+                                
+                                if success then
+                                    lastHitTime = currentTime
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end)
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Enabled",
+                    Content = "Glove: " .. currentGlove,
+                    Duration = 3
+                })
+                
+            else
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Disabled",
+                    Content = "",
+                    Duration = 2
+                })
+            end
+        end
+    })
+end
+
+Tabs.Settings:AddSection("Ghost On/Off")
+
+local GhostInvisibilityToggle = Tabs.Settings:AddToggle("GhostInvisibility", {
+    Title = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Ghost Glove",
+                    Duration = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Server Settings")
+
+Tabs.Settings:AddButton({
+    Title = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        Teleport()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Tabs.Settings:AddSection("Kick/Reset If Stuck")
+
+Tabs.Settings:AddButton({
+    Title = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Arena Settings")
+
+local AutoEnterActive = false
+local AutoEnterMode = "Arena"
+
+local AutoEnterDropdown = Tabs.Settings:AddDropdown("AutoEnterMode", {
+    Title = "Enter Mode",
+    Description = "Select which arena to auto-enter",
+    Values = {"Arena", "Arena Default"},
+    Multi = false,
+    Default = "Arena",
+    Callback = function(Value)
+        AutoEnterMode = Value
+    end
+})
+
+local AutoEnterToggle = Tabs.Settings:AddToggle("AutoEnter", {
+    Title = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        AutoEnterActive = Value
+        
+        if Value then
+            task.spawn(function()
+                while AutoEnterActive do
+                    local player = game.Players.LocalPlayer
+                    local character = player.Character
+                    
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        local entered = character:FindFirstChild("entered")
+                        
+                        if not entered then
+                            local teleportFolder = workspace.Lobby
+                            local teleportPart = nil
+                            
+                            if AutoEnterMode == "Arena" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
+                            elseif AutoEnterMode == "Arena Default" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                            end
+                            
+                            if teleportPart then
+                                local touchPart = nil
+                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or teleportPart:FindFirstChild("TouchInterest")
+                                
+                                if touchInterest then
+                                    touchPart = touchInterest.Parent
+                                else
+                                    touchPart = teleportPart
+                                end
+                                
+                                if touchPart and touchPart:IsA("BasePart") then
+                                    local hrp = character:FindFirstChild("HumanoidRootPart")
+                                    if hrp then
+                                        local originalPosition = touchPart.Position
+                                        local originalAnchored = touchPart.Anchored
+                                        
+                                        touchPart.Anchored = false
+                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
+                                        
+                                        firetouchinterest(hrp, touchPart, 0)
+                                        task.wait(0.05)
+                                        firetouchinterest(hrp, touchPart, 1)
+                                        
+                                        task.wait(0.1)
+                                        touchPart.Position = originalPosition
+                                        touchPart.Anchored = originalAnchored
+                                    end
+                                end
+                            end
+                        end
+                    else
+                        task.wait(1)
+                        continue
+                    end
+                    
+                    task.wait(0.5)
+                end
+            end)
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Destroy Script")
+
+Tabs.Settings:AddButton({
+    Title = "Destroy Gui",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
+
+end -- END OF PLACE ID CHECK
+
+Fluent:Notify({
+    Title = "Script Loaded",
+    Content = "Masteries Hub (Scripter Hub) has been loaded successfully!",
+    Duration = 3
+})

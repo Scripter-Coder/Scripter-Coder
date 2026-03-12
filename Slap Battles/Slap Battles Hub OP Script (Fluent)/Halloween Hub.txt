@@ -1,0 +1,1089 @@
+--skid if u want idc just dont forget about credits or smt
+-- Fluent Hub Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+-- Startup Script Notification
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "Script Loads (Can Take 1-5 Seconds)",
+    Duration = 1
+})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 then
+
+local Window = Fluent:CreateWindow({
+    Title = "🎃 Halloween Hub (Scripter Hub) 👻",
+    SubTitle = "by Scripter",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "GoodLuck!",
+    Duration = 3
+})
+
+-- Create tabs
+local Tabs = {
+    Welcome = Window:AddTab({ Title = "Welcome", Icon = "rbxassetid://7734059095" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "rbxassetid://7733960981" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local player = game.Players.LocalPlayer
+
+-- Welcome Tab
+Tabs.Welcome:AddParagraph({
+    Title = "Welcome",
+    Content = "Hello " .. player.Name .. "!"
+})
+
+Tabs.Welcome:AddSection("Before u will start using mine script would u like to bypass anticheat?")
+
+Tabs.Welcome:AddParagraph({
+    Title = "Note",
+    Content = "NOTE: It supports only high/good executors like Solara/Xeno doesnt support"
+})
+
+Tabs.Welcome:AddButton({
+    Title = "Bypass All Anticheat",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+        task.wait(1.5)
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Bypassed All Anticheat",
+            Duration = 3
+        })
+    end
+})
+
+-- Main Tab
+Tabs.Main:AddSection("Equip Gloves")
+
+Tabs.Main:AddButton({
+    Title = "Equip Killstreak (5k+ Slaps Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Killstreak"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Equip Hallow Jack (Jack's will Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Hallow Jack"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Equip Rattlebones (Candy King Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Rattlebones"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Equip Necromancer (Sweet-Tooth Sovereign Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Necromancer"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Equip Poltergeist (Fetch me their Souls Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Poltergeist"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Equip Harvester (The Cornfeared Badge Need)",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Harvester"].ClickDetector)
+    end
+})
+
+Tabs.Main:AddSection("Teleports Stuff")
+
+local CandyCornCollector = "Teleport"
+local AutoCollectCandyCorns = false
+local AutoServerhopCandyCorns = false
+
+-- Function to check if player has Necromancer badge
+local function hasNecromancerBadge()
+    return game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 2124654160) or
+           game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 2124847851)
+end
+
+local CandyCornDropdown = Tabs.Main:AddDropdown("CandyCornCollector", {
+    Title = "Choose Option To Auto Collect Candy Corns",
+    Description = "Select Teleport to move to candy corns or Bring to bring them to you",
+    Values = {"Teleport", "Bring"},
+    Multi = false,
+    Default = "Teleport",
+    Callback = function(Value)
+        CandyCornCollector = Value
+    end
+})
+
+local AutoCollectCandyCornsToggle = Tabs.Main:AddToggle("AutoCollectCandyCorns", {
+    Title = "Auto Collect Candy Corns",
+    Default = false,
+    Callback = function(Value)
+        AutoCollectCandyCorns = Value
+        
+        if Value then
+            if hasNecromancerBadge() then
+                Fluent:Notify({
+                    Title = "Already Have Badge",
+                    Content = "You already have Necromancer glove badge! The farm will not work.",
+                    Duration = 5
+                })
+                AutoCollectCandyCorns = false
+                AutoCollectCandyCornsToggle:SetValue(false)
+                return
+            end
+            
+            if CandyCornCollector == "Teleport" then
+                task.spawn(function()
+                    while AutoCollectCandyCorns do
+                        if hasNecromancerBadge() then
+                            Fluent:Notify({
+                                Title = "Badge Obtained!",
+                                Content = "You got the Necromancer glove badge! Farm stopped.",
+                                Duration = 5
+                            })
+                            AutoCollectCandyCorns = false
+                            AutoCollectCandyCornsToggle:SetValue(false)
+                            break
+                        end
+                        
+                        local character = game.Players.LocalPlayer.Character
+                        if character and character:FindFirstChild("HumanoidRootPart") then
+                            local foundCandyCorn = false
+                            
+                            for _, part in pairs(workspace.CandyCorns:GetChildren()) do
+                                if not AutoCollectCandyCorns then break end
+                                
+                                if part:IsA("BasePart") then
+                                    foundCandyCorn = true
+                                    character.HumanoidRootPart.CFrame = CFrame.new(part.Position + Vector3.new(0, 3, 0))
+                                    task.wait(0.2)
+                                    break
+                                end
+                            end
+                            
+                            if not foundCandyCorn then
+                                task.wait(0.5)
+                            end
+                        end
+                        task.wait()
+                    end
+                end)
+            elseif CandyCornCollector == "Bring" then
+                task.spawn(function()
+                    while AutoCollectCandyCorns do
+                        if hasNecromancerBadge() then
+                            Fluent:Notify({
+                                Title = "Badge Obtained!",
+                                Content = "You got the Necromancer glove badge! Farm stopped.",
+                                Duration = 5
+                            })
+                            AutoCollectCandyCorns = false
+                            AutoCollectCandyCornsToggle:SetValue(false)
+                            break
+                        end
+                        
+                        local character = game.Players.LocalPlayer.Character
+                        if character and character:FindFirstChild("HumanoidRootPart") then
+                            local humanoidRootPart = character.HumanoidRootPart
+                            
+                            for _, part in pairs(workspace.CandyCorns:GetChildren()) do
+                                if not AutoCollectCandyCorns then break end
+                                
+                                if part:IsA("BasePart") then
+                                    part.CFrame = humanoidRootPart.CFrame
+                                end
+                            end
+                        end
+                        task.wait(0.1)
+                    end
+                end)
+            end
+        end
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Zombies (1)",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(103505724406848)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Zombies (2) [PATCHED]",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(417, 360, -13)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Pim's Corn Maze (1)",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(92483185275059)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Pim's Corn Maze (2) [PATCHED]",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Arena.Halloween_Decorations.PimsCornMazeEntry.TeleportMain.Hitbox.CFrame
+    end
+})
+
+Tabs.Main:AddSection("Other Stuff")
+
+-- Helper: Create Billboard ESP
+local function createESP(parent, name, text, color)
+    local esp = Instance.new("BillboardGui", parent)
+    esp.Name = name
+    esp.Adornee = parent
+    esp.Size = UDim2.new(0, 150, 0, 40)
+    esp.StudsOffset = Vector3.new(0, 2, 0)
+    esp.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", esp)
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.TextSize = 16
+    label.Font = Enum.Font.FredokaOne
+    label.TextColor3 = color
+    label.TextStrokeTransparency = 0.2
+    label.Text = text
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = name .. "Highlight"
+    highlight.Adornee = parent
+    highlight.FillColor = color
+    highlight.FillTransparency = 0.5
+    highlight.OutlineColor = color
+    highlight.OutlineTransparency = 0
+    highlight.Parent = parent
+
+    return label
+end
+
+local GraveESPToggle = Tabs.Main:AddToggle("GraveESP", {
+    Title = "Grave ESP",
+    Default = false,
+    Callback = function(Value)
+        GraveESP = Value
+
+        if not Value then
+            local grave = workspace:FindFirstChild("Gravestone")
+            if grave and grave:IsA("Model") then
+                local gui = grave:FindFirstChild("GraveESP")
+                if gui then gui:Destroy() end
+                local highlight = grave:FindFirstChild("GraveESPHighlight")
+                if highlight then highlight:Destroy() end
+            end
+            return
+        end
+
+        task.spawn(function()
+            while GraveESP do
+                local graveTarget = workspace:FindFirstChild("Gravestone")
+                if graveTarget and graveTarget:IsA("Model") and not graveTarget:FindFirstChild("GraveESP") then
+                    createESP(graveTarget, "GraveESP", "Grave", Color3.fromRGB(255, 0, 0))
+                end
+                task.wait(0.5)
+            end
+        end)
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Killstreak Slap Aura",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.KSHit:FireServer(unpack(args))
+                    end
+                end
+                wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Killstreak",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Click On Grave",
+    Callback = function()
+        fireclickdetector(workspace.Gravestone.ClickDetector)
+    end
+})
+
+local AntiAfkToggle = Tabs.Main:AddToggle("AntiAfk", {
+    Title = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        _G.AntiAfk = Value
+        local VirtualUser = game:GetService('VirtualUser')
+
+        game:GetService('Players').LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+    end
+})
+
+-- Settings Tab
+Tabs.Settings:AddSection("Value Changer")
+
+local SlapChanger
+local SlapsInput = Tabs.Settings:AddInput("SlapsInput", {
+    Title = "How Many Slaps? (Visual)",
+    Description = "Enter the number of slaps to display",
+    Default = "",
+    Placeholder = "Enter number",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Badge Giver")
+
+Tabs.Settings:AddButton({
+    Title = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+local nametagText = ""
+local autoNametag = false
+
+local NametagInput = Tabs.Settings:AddInput("NametagInput", {
+    Title = "Type Ur Own Any Nametag",
+    Description = "Enter custom text for your nametag",
+    Default = "",
+    Placeholder = "Enter nametag text",
+    Numeric = false,
+    Finished = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter text in the textbox first!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    Fluent:Notify({
+                        Title = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Duration = 3
+                    })
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "TopLabel not found!",
+                        Duration = 3
+                    })
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Nametag not found!",
+                    Duration = 3
+                })
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoNametagToggle = Tabs.Settings:AddToggle("AutoNametag", {
+    Title = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tabs.Settings:AddSection("Slap Aura")
+
+-- Optimized Slap Aura with anti-freeze protection
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    local scriptLoaded = false
+    
+    -- Optimized: Only include common gloves to reduce memory
+    local gloveHits = {
+        ["Default"] = ReplicatedStorage.b,
+        ["Diamond"] = ReplicatedStorage.DiamondHit,
+        ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
+        ["Brick"] = ReplicatedStorage.BrickHit,
+        ["Snow"] = ReplicatedStorage.SnowHit,
+        ["Pull"] = ReplicatedStorage.PullHit,
+        ["Flash"] = ReplicatedStorage.FlashHit,
+        ["Spring"] = ReplicatedStorage.springhit,
+        ["Swapper"] = ReplicatedStorage.HitSwapper,
+        ["Bull"] = ReplicatedStorage.BullHit,
+        ["Dice"] = ReplicatedStorage.DiceHit,
+        ["Ghost"] = ReplicatedStorage.GhostHit,
+        ["Stun"] = ReplicatedStorage.HtStun,
+        ["Za Hando"] = ReplicatedStorage.zhramt,
+        ["Fort"] = ReplicatedStorage.Fort,
+        ["Magnet"] = ReplicatedStorage.MagnetHIT,
+        ["Pusher"] = ReplicatedStorage.PusherHit,
+        ["Anchor"] = ReplicatedStorage.hitAnchor,
+        ["Space"] = ReplicatedStorage.HtSpace,
+        ["Boomerang"] = ReplicatedStorage.BoomerangH,
+        ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mail"] = ReplicatedStorage.MailHit,
+        ["Golden"] = ReplicatedStorage.GoldenHit,
+        ["MR"] = ReplicatedStorage.MisterHit,
+        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Replica"] = ReplicatedStorage.ReplicaHit,
+        ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Killstreak"] = ReplicatedStorage.KSHit,
+        ["Reverse"] = ReplicatedStorage.ReverseHit,
+        ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
+        ["Duelist"] = ReplicatedStorage.DuelistHit,
+        ["Ice"] = ReplicatedStorage.IceHit,
+        ["Adios"] = ReplicatedStorage.hitAdios,
+        ["Blocked"] = ReplicatedStorage.BlockedHit,
+        ["Engineer"] = ReplicatedStorage.engiehit,
+        ["Rocky"] = ReplicatedStorage.RockyHit,
+        ["Conveyor"] = ReplicatedStorage.ConvHit,
+        ["Phantom"] = ReplicatedStorage.PhantomHit,
+        ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
+        ["Wormhole"] = ReplicatedStorage.WormHit,
+        ["STOP"] = ReplicatedStorage.STOP,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
+        ["Nightmare"] = ReplicatedStorage.nightmarehit,
+        ["Pylon"] = ReplicatedStorage.PylonHit,
+        ["Thor"] = ReplicatedStorage.ThorHit,
+        ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Plague"] = ReplicatedStorage.PlagueHit,
+        ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
+        ["[REDACTED]"] = ReplicatedStorage.ReHit,
+        ["bus"] = ReplicatedStorage.hitbus,
+        ["Mitten"] = ReplicatedStorage.MittenHit,
+        ["Phase"] = ReplicatedStorage.PhaseH,
+        ["Warp"] = ReplicatedStorage.WarpHt,
+        ["Bomb"] = ReplicatedStorage.BombHit,
+        ["Bubble"] = ReplicatedStorage.BubbleHit,
+        ["Jet"] = ReplicatedStorage.JetHit,
+        ["Shard"] = ReplicatedStorage.ShardHIT,
+        ["CULT"] = ReplicatedStorage.CULTHit,
+        ["bob"] = ReplicatedStorage.bobhit,
+        ["buddies"] = ReplicatedStorage.buddiesHIT,
+        ["Moon"] = ReplicatedStorage.CelestialHit,
+        ["Spy"] = ReplicatedStorage.SpyHit,
+        ["Detonator"] = ReplicatedStorage.DetonatorHit,
+        ["Rage"] = ReplicatedStorage.GRRRR,
+        ["Trap"] = ReplicatedStorage.traphi,
+        ["Orbit"] = ReplicatedStorage.Orbihit,
+        ["Hybrid"] = ReplicatedStorage.HybridCLAP,
+        ["Slapple"] = ReplicatedStorage.SlappleHit,
+        ["Disarm"] = ReplicatedStorage.DisarmH,
+        ["Dominance"] = ReplicatedStorage.DominanceHit,
+        ["Link"] = ReplicatedStorage.LinkHit,
+        ["rob"] = ReplicatedStorage.robhit,
+        ["Rhythm"] = ReplicatedStorage.rhythmhit,
+        ["Rojo"] = ReplicatedStorage.RojoHit,
+        ["Hitman"] = ReplicatedStorage.HitmanHit,
+        ["Retro"] = ReplicatedStorage.RetroHit,
+        ["Null"] = ReplicatedStorage.NullHit,
+        ["Tinkerer"] = ReplicatedStorage.TinkererHit,
+        ["OVERKILL"] = ReplicatedStorage.Overkillhit,
+        ["CUSTOM"] = ReplicatedStorage.CustomHit,
+        ["spin"] = ReplicatedStorage.spinhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Error"] = ReplicatedStorage.Errorhit,
+        ["Acrobat"] = ReplicatedStorage.AcHit,
+        ["God's Hand"] = ReplicatedStorage.Godshand,
+        ["The Flex"] = ReplicatedStorage.FlexHit,
+    }
+    
+    -- Cache for performance
+    local cachedRemote = nil
+    local cachedGlove = nil
+    local lastGloveCheck = 0
+    local GLOVE_CHECK_INTERVAL = 5
+    
+    local function getCurrentGlove()
+        local currentTime = tick()
+        
+        if cachedGlove and (currentTime - lastGloveCheck) < GLOVE_CHECK_INTERVAL then
+            return cachedGlove
+        end
+        
+        if localPlayer:FindFirstChild("leaderstats") then
+            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+            if gloveValue then
+                cachedGlove = gloveValue.Value
+                lastGloveCheck = currentTime
+                return cachedGlove
+            end
+        end
+        
+        cachedGlove = "Default"
+        lastGloveCheck = currentTime
+        return cachedGlove
+    end
+    
+    local function getGloveRemote()
+        local currentGlove = getCurrentGlove()
+        
+        if cachedRemote and currentGlove == cachedGlove then
+            return cachedRemote
+        end
+        
+        local remote = gloveHits[currentGlove]
+        
+        if not remote then
+            remote = ReplicatedStorage.GeneralHit or ReplicatedStorage.b
+        end
+        
+        if remote and remote:IsA("RemoteEvent") then
+            cachedRemote = remote
+            return remote
+        end
+        
+        return ReplicatedStorage.b
+    end
+    
+    local SlapAuraSpeedSlider = Tabs.Settings:AddSlider("SlapAuraSpeed", {
+        Title = "Slap Aura Speed",
+        Description = "Set the cooldown between slaps (minimum 0.3s)",
+        Default = 0.5,
+        Min = 0.3,
+        Max = 2,
+        Rounding = 1,
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    -- Performance monitoring
+    local lastPerformanceCheck = 0
+    local framesProcessed = 0
+    local currentFPS = 60
+    
+    local function checkPerformance()
+        framesProcessed = framesProcessed + 1
+        local currentTime = tick()
+        
+        if currentTime - lastPerformanceCheck >= 1 then
+            currentFPS = framesProcessed
+            framesProcessed = 0
+            lastPerformanceCheck = currentTime
+            
+            if currentFPS < 20 then
+                print("Warning: Low FPS detected (" .. currentFPS .. ") - Auto-disabling slap aura")
+                isSlapAuraEnabled = false
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                return false
+            end
+        end
+        return true
+    end
+    
+    -- Optimized player iteration with rate limiting
+    local lastPlayerScan = 0
+    local scannedPlayers = {}
+    local currentPlayerIndex = 1
+    
+    local function getNextPlayerToSlap()
+        if tick() - lastPlayerScan > 1 then
+            scannedPlayers = {}
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= localPlayer and player.Character then
+                    table.insert(scannedPlayers, player)
+                end
+            end
+            lastPlayerScan = tick()
+        end
+        
+        if #scannedPlayers == 0 then
+            return nil
+        end
+        
+        local player = scannedPlayers[currentPlayerIndex]
+        currentPlayerIndex = currentPlayerIndex + 1
+        if currentPlayerIndex > #scannedPlayers then
+            currentPlayerIndex = 1
+        end
+        
+        return player
+    end
+    
+    local SlapAuraToggle = Tabs.Settings:AddToggle("SlapAura", {
+        Title = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            if not scriptLoaded then
+                scriptLoaded = true
+                return
+            end
+            
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                end
+                
+                cachedRemote = nil
+                cachedGlove = nil
+                
+                local currentGlove = getCurrentGlove()
+                local remote = getGloveRemote()
+                
+                if not remote or not remote:IsA("RemoteEvent") then
+                    Fluent:Notify({
+                        Title = "Slap Aura Error",
+                        Content = "No valid remote found!",
+                        Duration = 3
+                    })
+                    isSlapAuraEnabled = false
+                    SlapAuraToggle:SetValue(false)
+                    return
+                end
+                
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    if not checkPerformance() then
+                        return
+                    end
+                    
+                    local currentTime = tick()
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    local localChar = localPlayer.Character
+                    local localPos = localChar and localChar.PrimaryPart and localChar.PrimaryPart.Position
+                    
+                    if not localPos then
+                        return
+                    end
+                    
+                    local player = getNextPlayerToSlap()
+                    if not player then
+                        return
+                    end
+                    
+                    local char = player.Character
+                    if not char then
+                        return
+                    end
+                    
+                    local humanoid = char:FindFirstChildOfClass("Humanoid")
+                    local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                    
+                    if not torso or not humanoid or humanoid.Health <= 0 then
+                        return
+                    end
+                    
+                    local distance = (torso.Position - localPos).Magnitude
+                    if distance > 40 then
+                        return
+                    end
+                    
+                    local success = pcall(function()
+                        remote:FireServer(torso)
+                    end)
+                    
+                    if success then
+                        lastHitTime = currentTime
+                        task.wait(0.01)
+                    end
+                end)
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Enabled",
+                    Content = string.format("Speed: %.1fs | Glove: %s", currentCooldown, currentGlove),
+                    Duration = 3
+                })
+                
+            else
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Disabled",
+                    Content = "",
+                    Duration = 2
+                })
+            end
+        end
+    })
+end
+
+Tabs.Settings:AddSection("Ghost On/Off")
+
+local GhostInvisibilityToggle = Tabs.Settings:AddToggle("GhostInvisibility", {
+    Title = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Ghost Glove",
+                    Duration = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Server Settings")
+
+Tabs.Settings:AddButton({
+    Title = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        Teleport()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Tabs.Settings:AddSection("Kick/Reset If Stuck")
+
+Tabs.Settings:AddButton({
+    Title = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Arena Settings")
+
+local AutoEnter = "Arena"
+local AutoEnterDropdown = Tabs.Settings:AddDropdown("AutoEnterMode", {
+    Title = "Enter Mode",
+    Description = "Select which arena to auto-enter",
+    Values = {"Arena", "Arena Default"},
+    Multi = false,
+    Default = "Arena",
+    Callback = function(Value)
+        AutoEnter = Value
+    end
+})
+
+local AutoEnterToggle = Tabs.Settings:AddToggle("AutoEnter", {
+    Title = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoEnter = Value
+
+        if Value then
+            -- Coroutine for auto entering the Arena
+            task.spawn(function()
+                while _G.AutoEnter and AutoEnter == "Arena" do
+                    repeat task.wait() until game.Players.LocalPlayer.Character
+
+                    local character = game.Players.LocalPlayer.Character
+                    if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                        repeat
+                            task.wait()
+                            local head = character:WaitForChild("Head")
+                            local teleportPart = workspace.Lobby.Teleport1.TouchInterest.Parent
+                            firetouchinterest(head, teleportPart, 0)
+                            firetouchinterest(head, teleportPart, 1)
+                        until character:FindFirstChild("entered")
+                    end
+
+                    task.wait()
+                end
+            end)
+
+            -- Coroutine for auto entering the Arena Default
+            task.spawn(function()
+                while _G.AutoEnter and AutoEnter == "Arena Default" do
+                    repeat task.wait() until game.Players.LocalPlayer.Character
+
+                    local character = game.Players.LocalPlayer.Character
+                    if not character:FindFirstChild("entered") and character:FindFirstChild("HumanoidRootPart") then
+                        repeat
+                            task.wait()
+                            local head = character:WaitForChild("Head")
+                            local teleportPart = workspace.Lobby.Teleport2.TouchInterest.Parent
+                            firetouchinterest(head, teleportPart, 0)
+                            firetouchinterest(head, teleportPart, 1)
+                        until character:FindFirstChild("entered")
+                    end
+
+                    task.wait()
+                end
+            end)
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Destroy Script")
+
+Tabs.Settings:AddButton({
+    Title = "Destroy Gui",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
+
+end -- END OF PLACE ID CHECK
+
+Fluent:Notify({
+    Title = "Script Loaded",
+    Content = "🎃 Halloween Hub (Scripter Hub) has been loaded successfully! 👻",
+    Duration = 3
+})

@@ -1,0 +1,1853 @@
+--skid if u want idc just dont forget about credits or smt
+--Webhook
+local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
+
+-- Fluent Hub Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+-- Startup Script Notification
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "Script Loads (Can Take 1-5 Seconds)",
+    Duration = 1
+})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 or game.PlaceId == 122901288403496 or game.PlaceId == 79885102123162 or game.PlaceId == 86643839793301 or game.PlaceId == 113228834069218 or game.PlaceId == 95356852680586 then
+
+local Window = Fluent:CreateWindow({
+    Title = "Slap Farm Hub (Scripter Hub)",
+    SubTitle = "by Scripter",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+Fluent:Notify({
+    Title = "From Scripter",
+    Content = "GoodLuck!",
+    Duration = 3
+})
+
+-- Create tabs
+local Tabs = {
+    Welcome = Window:AddTab({ Title = "Welcome", Icon = "rbxassetid://7734059095" }),
+    DualBot = Window:AddTab({ Title = "Dual Bot", Icon = "rbxassetid://7733955740" }),
+    Dual = Window:AddTab({ Title = "Dual", Icon = "rbxassetid://7733955740" }),
+    Engineer = Window:AddTab({ Title = "Engineer", Icon = "rbxassetid://7733955740" }),
+    Angler = Window:AddTab({ Title = "Angler", Icon = "rbxassetid://7733955740" }),
+    Bounty = Window:AddTab({ Title = "Bounty", Icon = "rbxassetid://7733955740" }),
+    Debug = Window:AddTab({ Title = "Debug", Icon = "rbxassetid://7733955740" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local player = game.Players.LocalPlayer
+
+-- Welcome Tab
+Tabs.Welcome:AddParagraph({
+    Title = "Welcome",
+    Content = "Hello " .. player.Name .. "!"
+})
+
+Tabs.Welcome:AddSection("Before u will start using mine script would u like to bypass anticheat?")
+
+Tabs.Welcome:AddButton({
+    Title = "Bypass All Anticheat",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+        task.wait(1.5)
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Bypassed All Anticheat",
+            Duration = 3
+        })
+    end
+})
+
+-- Slapples Section
+Tabs.Welcome:AddSection("Slapples")
+
+local SlappleFarmToggle = Tabs.Welcome:AddToggle("SlappleFarm", {
+    Title = "Auto Collect Slapples",
+    Default = false,
+    Callback = function(Value)
+        SlappleFarm = Value
+        while SlappleFarm do
+            if game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+                for _, v in pairs(workspace.Arena.island5.Slapples:GetChildren()) do
+                    local plrChar = game.Players.LocalPlayer.Character
+                    if plrChar and plrChar:FindFirstChild("HumanoidRootPart") and plrChar:FindFirstChild("entered") then
+                        if (v.Name == "Slapple" or v.Name == "GoldenSlapple") and v:FindFirstChild("Glove") and v.Glove:FindFirstChildWhichIsA("TouchTransmitter") then
+                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 0)
+                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 1)
+                        end
+                    end
+                end
+            end
+            task.wait()
+        end
+    end
+})
+
+-- Auto Slapples ServerHop Section
+Tabs.Welcome:AddSection("Auto Slapples ServerHop")
+
+Tabs.Welcome:AddButton({
+    Title = "Auto Serverhop Collect Slapples",
+    Callback = function()
+        getgenv().SlapFarmAutoExecute = true
+        ActivatedScript = true
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Umbrella-Scripter/Slap-Battles/refs/heads/main/Slapple-Farm.lua"))()
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Copied To Clipboard/Put In AutoExecute",
+            Duration = 3
+        })
+    end
+})
+
+-- Dual Bot Tab (Complete with all settings)
+-- Upgraded Dual Glove Auto Slap Bot for Fluent Hub
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- Control variables
+local dualBotActive = false
+local ignoreRocks = false
+local ignoreOneshots = false
+local ignoreBarzilPortal = false
+local autoCollectSlapples = false
+local slappingSpeed = 0.3 -- Default delay between slaps
+local noclipEnabled = true
+local flySpeed = 100 -- Studs per second
+local detectionSpeed = 0.5 -- Detection interval
+
+-- Character references
+local character
+local humanoidRootPart
+local noclipConnection
+
+-- Enable noclip
+local function enableNoclip()
+    if noclipConnection then
+        noclipConnection:Disconnect()
+    end
+    
+    noclipConnection = RunService.Stepped:Connect(function()
+        if not character then 
+            if noclipConnection then
+                noclipConnection:Disconnect()
+            end
+            return 
+        end
+        
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+    end)
+end
+
+-- Disable noclip
+local function disableNoclip()
+    if noclipConnection then
+        noclipConnection:Disconnect()
+        noclipConnection = nil
+    end
+    
+    if character then
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true
+            end
+        end
+    end
+end
+
+-- Get the primary part position of a model
+local function getModelPosition(model)
+    if model:IsA("Model") then
+        local primaryPart = model.PrimaryPart
+        if primaryPart then
+            return primaryPart.Position
+        elseif model:FindFirstChild("HumanoidRootPart") then
+            return model.HumanoidRootPart.Position
+        elseif model:FindFirstChild("Torso") then
+            return model.Torso.Position
+        elseif model:FindFirstChild("Head") then
+            return model.Head.Position
+        end
+    elseif model:IsA("BasePart") then
+        return model.Position
+    end
+    return Vector3.new(0, 0, 0)
+end
+
+-- Simple teleport to position (fast and reliable)
+local function teleportToPosition(position)
+    if not character or not humanoidRootPart then return false end
+    
+    if noclipEnabled then
+        enableNoclip()
+    end
+    
+    local success = pcall(function()
+        humanoidRootPart.CFrame = CFrame.new(position)
+    end)
+    
+    return success
+end
+
+-- Fast fly to position with velocity
+local function fastFlyToPosition(position)
+    if not character or not humanoidRootPart then return false end
+    
+    if noclipEnabled then
+        enableNoclip()
+    end
+    
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(40000, 40000, 40000)
+    bodyVelocity.P = 10000
+    bodyVelocity.Parent = humanoidRootPart
+    
+    local direction = (position - humanoidRootPart.Position)
+    local distance = direction.Magnitude
+    local unitDirection = direction.Unit
+    
+    bodyVelocity.Velocity = unitDirection * math.min(flySpeed, distance * 2)
+    
+    local startTime = tick()
+    local reached = false
+    
+    while tick() - startTime < 5 and dualBotActive do
+        if not character or not humanoidRootPart then break end
+        
+        local currentDistance = (humanoidRootPart.Position - position).Magnitude
+        
+        if currentDistance < 10 then
+            reached = true
+            break
+        end
+        
+        local newDirection = (position - humanoidRootPart.Position)
+        local newUnitDirection = newDirection.Unit
+        bodyVelocity.Velocity = newUnitDirection * math.min(flySpeed, currentDistance * 2)
+        
+        task.wait(0.1)
+    end
+    
+    if bodyVelocity then
+        bodyVelocity:Destroy()
+    end
+    
+    if reached then
+        pcall(function()
+            humanoidRootPart.CFrame = CFrame.new(position)
+        end)
+    end
+    
+    return reached
+end
+
+-- Update character references
+local function setupCharacter()
+    character = player.Character
+    if character then
+        humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        if noclipEnabled then
+            enableNoclip()
+        end
+    end
+end
+
+-- Character setup
+setupCharacter()
+player.CharacterAdded:Connect(function(newChar)
+    character = newChar
+    task.wait(0.5)
+    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    if noclipEnabled then
+        enableNoclip()
+    end
+end)
+
+-- Check if player is in arena (has entered)
+local function isPlayerInArena(plr)
+    if not plr.Character then return false end
+    
+    local entered = plr.Character:FindFirstChild("entered")
+    if entered then return true end
+    
+    return false
+end
+
+-- Check if we are in arena
+local function amIInArena()
+    return isPlayerInArena(player)
+end
+
+-- Check if Dual glove is equipped
+local function isDualEquipped()
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        local glove = leaderstats:FindFirstChild("Glove")
+        if glove then
+            return glove.Value == "Dual"
+        end
+    end
+    return false
+end
+
+-- Check if player has rock
+local function hasRock(plr)
+    if not plr.Character then return false end
+    local rock = plr.Character:FindFirstChild("rock")
+    if rock and rock:IsA("BasePart") then
+        return true
+    end
+    return false
+end
+
+-- Check if player has one-shot glove
+local function hasOneshotGlove(plr)
+    local leaderstats = plr:FindFirstChild("leaderstats")
+    if leaderstats then
+        local glove = leaderstats:FindFirstChild("Glove")
+        if glove then
+            local gloveValue = glove.Value
+            local oneshotGloves = {
+                "OVERKILL",
+                "MEGAROCK", 
+                "CUSTOM",
+                "Error",
+                "The Flex",
+                "Spectator"
+            }
+            
+            for _, oneshotGlove in ipairs(oneshotGloves) do
+                if gloveValue == oneshotGlove then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+-- Barzil portal control
+local function controlBarzilPortal()
+    local brazilFolder = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("brazil")
+    if brazilFolder then
+        for _, v in pairs(brazilFolder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanTouch = not ignoreBarzilPortal
+            end
+        end
+    end
+end
+
+-- Get CLOSEST player who has entered (excluding self) with filters
+local function getClosestPlayer()
+    if not character or not humanoidRootPart then return nil end
+    
+    local closestPlayer = nil
+    local closestDistance = math.huge
+    
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= player and plr.Character then
+            local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                if isPlayerInArena(plr) then
+                    local shouldSkip = false
+                    
+                    if ignoreRocks and hasRock(plr) then
+                        shouldSkip = true
+                    end
+                    
+                    if ignoreOneshots and hasOneshotGlove(plr) then
+                        shouldSkip = true
+                    end
+                    
+                    if not shouldSkip then
+                        local distance = (humanoidRootPart.Position - hrp.Position).Magnitude
+                        if distance < closestDistance then
+                            closestDistance = distance
+                            closestPlayer = plr
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    return closestPlayer
+end
+
+-- Use GeneralHit remote with configurable speed
+local function useGeneralHit(target)
+    if not character or not target or not target.Character then return end
+    
+    local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+    if not targetHRP then return end
+    
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local generalHitRemote = ReplicatedStorage:FindFirstChild("GeneralHit")
+    
+    if generalHitRemote then
+        for i = 1, 3 do
+            pcall(function()
+                generalHitRemote:FireServer(targetHRP)
+            end)
+            task.wait(slappingSpeed)
+        end
+    end
+end
+
+-- Find and get the Glove meshpart from a Slapple model
+local function getGloveFromSlapple(slappleModel)
+    if not slappleModel then return nil end
+    
+    local glove = slappleModel:FindFirstChild("Glove")
+    if glove and glove:IsA("BasePart") then
+        if glove.Transparency < 1 and glove:FindFirstChildOfClass("TouchTransmitter") then
+            return glove
+        end
+    end
+    
+    return nil
+end
+
+-- Find a valid slapple to collect
+local function findValidSlapple()
+    local island5 = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("island5")
+    if not island5 then return nil end
+    
+    local slapplesFolder = island5:FindFirstChild("Slapples")
+    if not slapplesFolder then return nil end
+    
+    local validSlapples = {}
+    
+    for _, slappleModel in pairs(slapplesFolder:GetChildren()) do
+        if slappleModel.Name == "Slapple" or slappleModel.Name == "GoldenSlapple" then
+            local glove = getGloveFromSlapple(slappleModel)
+            if glove then
+                table.insert(validSlapples, {
+                    model = slappleModel,
+                    glove = glove,
+                    position = glove.Position
+                })
+            end
+        end
+    end
+    
+    if #validSlapples > 0 then
+        return validSlapples[math.random(#validSlapples)]
+    end
+    
+    return nil
+end
+
+-- Auto collect slapples function
+local function collectSlapples()
+    if not character or not humanoidRootPart or not autoCollectSlapples then return end
+    
+    local slappleData = findValidSlapple()
+    if not slappleData then return end
+    
+    local slapplePos = slappleData.position + Vector3.new(0, 5, 0)
+    local distance = (humanoidRootPart.Position - slapplePos).Magnitude
+    
+    if distance > 1000 then
+        return
+    end
+    
+    teleportToPosition(slapplePos)
+    task.wait(0.2)
+    
+    if slappleData.glove and slappleData.glove.Parent then
+        firetouchinterest(humanoidRootPart, slappleData.glove, 0)
+        task.wait(0.05)
+        firetouchinterest(humanoidRootPart, slappleData.glove, 1)
+        
+        Fluent:Notify({
+            Title = "Collected",
+            Content = "Collected " .. slappleData.model.Name,
+            Duration = 1
+        })
+    end
+end
+
+-- Main Dual bot function
+local function startDualBot()
+    Fluent:Notify({
+        Title = "Dual Bot Started",
+        Content = "Bot is now active!",
+        Duration = 3
+    })
+    
+    local lastSlappleCheck = 0
+    local slappleCooldown = 3
+    
+    while dualBotActive do
+        if character and humanoidRootPart then
+            if not isDualEquipped() then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Dual glove!",
+                    Duration = 3
+                })
+                dualBotActive = false
+                DualBotToggle:SetValue(false)
+                break
+            end
+            
+            if not amIInArena() then
+                Fluent:Notify({
+                    Title = "Warning",
+                    Content = "Enter the arena first!",
+                    Duration = 2
+                })
+                task.wait(2)
+                continue
+            end
+            
+            if ignoreBarzilPortal then
+                controlBarzilPortal()
+            end
+            
+            if autoCollectSlapples then
+                local currentTime = tick()
+                if currentTime - lastSlappleCheck > slappleCooldown then
+                    task.spawn(function()
+                        collectSlapples()
+                    end)
+                    lastSlappleCheck = currentTime
+                end
+            end
+            
+            local target = getClosestPlayer()
+            
+            if target and target.Character then
+                local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                if targetHRP then
+                    local distance = (humanoidRootPart.Position - targetHRP.Position).Magnitude
+                    
+                    if distance < 1000 then
+                        local flyPosition = targetHRP.Position + Vector3.new(0, 5, 0)
+                        
+                        local reached = fastFlyToPosition(flyPosition)
+                        
+                        if reached then
+                            useGeneralHit(target)
+                        end
+                    end
+                end
+            end
+        else
+            setupCharacter()
+        end
+        
+        task.wait(detectionSpeed)
+    end
+    
+    disableNoclip()
+    
+    Fluent:Notify({
+        Title = "Dual Bot Stopped",
+        Content = "Bot is now inactive",
+        Duration = 3
+    })
+end
+
+-- Dual Bot Tab UI
+Tabs.DualBot:AddSection("Dual Glove Bot Settings")
+
+local DualBotToggle = Tabs.DualBot:AddToggle("DualBot", {
+    Title = "Enable Dual Bot",
+    Default = false,
+    Callback = function(value)
+        if value then
+            if not isDualEquipped() then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Dual glove first!",
+                    Duration = 3
+                })
+                return false
+            end
+            
+            dualBotActive = true
+            task.spawn(startDualBot)
+        else
+            dualBotActive = false
+        end
+    end
+})
+
+local NoclipToggle = Tabs.DualBot:AddToggle("Noclip", {
+    Title = "Enable Noclip (Recommended)",
+    Default = true,
+    Callback = function(value)
+        noclipEnabled = value
+        if value then
+            enableNoclip()
+            Fluent:Notify({
+                Title = "Noclip Enabled",
+                Content = "You will pass through walls",
+                Duration = 2
+            })
+        else
+            disableNoclip()
+            Fluent:Notify({
+                Title = "Noclip Disabled",
+                Content = "Normal collision enabled",
+                Duration = 2
+            })
+        end
+    end
+})
+
+Tabs.DualBot:AddSection("Player Filters")
+
+local IgnoreRocksToggle = Tabs.DualBot:AddToggle("IgnoreRocks", {
+    Title = "Ignore Rocks",
+    Default = false,
+    Callback = function(value)
+        ignoreRocks = value
+    end
+})
+
+local IgnoreOneshotsToggle = Tabs.DualBot:AddToggle("IgnoreOneshots", {
+    Title = "Ignore One-Shot Gloves",
+    Default = false,
+    Callback = function(value)
+        ignoreOneshots = value
+    end
+})
+
+local IgnoreBarzilToggle = Tabs.DualBot:AddToggle("IgnoreBarzil", {
+    Title = "Ignore Barzil Portal",
+    Default = false,
+    Callback = function(value)
+        ignoreBarzilPortal = value
+        
+        if value then
+            local brazilFolder = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("brazil")
+            if brazilFolder then
+                for _, v in pairs(brazilFolder:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanTouch = false
+                    end
+                end
+            end
+            Fluent:Notify({
+                Title = "Barzil Portal Disabled",
+                Content = "Portal CanTouch set to false",
+                Duration = 3
+            })
+        else
+            local brazilFolder = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("brazil")
+            if brazilFolder then
+                for _, v in pairs(brazilFolder:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanTouch = true
+                    end
+                end
+            end
+        end
+    end
+})
+
+local AutoCollectSlapplesToggle = Tabs.DualBot:AddToggle("AutoCollectSlapples", {
+    Title = "Auto Collect Slapples",
+    Default = false,
+    Callback = function(value)
+        autoCollectSlapples = value
+        if value then
+            Fluent:Notify({
+                Title = "Slapple Farm Enabled",
+                Content = "Will collect slapples",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.DualBot:AddSection("Bot Settings")
+
+local SlappingSpeedSlider = Tabs.DualBot:AddSlider("SlappingSpeed", {
+    Title = "Slapping Speed",
+    Description = "Delay between slaps (seconds)",
+    Default = 0.3,
+    Min = 0.1,
+    Max = 1,
+    Rounding = 1,
+    Callback = function(value)
+        slappingSpeed = value
+        Fluent:Notify({
+            Title = "Speed Changed",
+            Content = "Slapping delay: " .. value .. "s",
+            Duration = 2
+        })
+    end
+})
+
+local FlySpeedSlider = Tabs.DualBot:AddSlider("FlySpeed", {
+    Title = "Fly Speed",
+    Description = "Speed in studs per second",
+    Default = 100,
+    Min = 50,
+    Max = 300,
+    Rounding = 1,
+    Callback = function(value)
+        flySpeed = value
+        Fluent:Notify({
+            Title = "Speed Changed",
+            Content = "Fly speed: " .. value .. " studs/sec",
+            Duration = 2
+        })
+    end
+})
+
+local DetectionSpeedSlider = Tabs.DualBot:AddSlider("DetectionSpeed", {
+    Title = "Detection Speed",
+    Description = "Interval between scans (seconds)",
+    Default = 0.5,
+    Min = 0.1,
+    Max = 2,
+    Rounding = 1,
+    Callback = function(value)
+        detectionSpeed = value
+        Fluent:Notify({
+            Title = "Detection Speed",
+            Content = "Detection interval: " .. value .. "s",
+            Duration = 2
+        })
+    end
+})
+
+local StatusLabel = Tabs.DualBot:AddParagraph({
+    Title = "Status",
+    Content = "Status: Ready"
+})
+
+-- Update status periodically
+task.spawn(function()
+    while true do
+        task.wait(1)
+        if dualBotActive then
+            if isDualEquipped() then
+                if amIInArena() then
+                    local target = getClosestPlayer()
+                    if target then
+                        local distance = 0
+                        if character and humanoidRootPart and target.Character then
+                            local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                            if targetHRP then
+                                distance = (humanoidRootPart.Position - targetHRP.Position).Magnitude
+                            end
+                        end
+                        StatusLabel:SetText("Status: Active | Target: " .. target.Name .. " (" .. math.floor(distance) .. " studs)")
+                    else
+                        StatusLabel:SetText("Status: Active | No players in arena")
+                    end
+                else
+                    StatusLabel:SetText("Status: NOT IN ARENA - Enter arena!")
+                end
+            else
+                StatusLabel:SetText("Status: ERROR - Equip Dual glove!")
+            end
+        else
+            StatusLabel:SetText("Status: Ready")
+        end
+    end
+end)
+
+Fluent:Notify({
+    Title = "Dual Glove Bot Loaded",
+    Content = "Equip Dual, enter arena, then enable bot!",
+    Duration = 5
+})
+
+-- Dual Tab (Simple)
+Tabs.Dual:AddToggle("DualSlapFarm", {
+    Title = "Dual Slap Farm",
+    Default = false,
+    Callback = function(state)
+        _G.DualSlapRunning = state
+
+        local function teleportToRandomPlayer()
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= LocalPlayer
+
+                local char = randomPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame
+                end
+            end
+        end
+
+        local function fireGeneralHitForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character then
+                    local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
+                    if rightArm then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(rightArm)
+                    end
+                end
+            end
+        end
+
+        local function runAutoDualSlapLoop()
+            local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
+            local glove = leaderstats and leaderstats:FindFirstChild("Glove")
+
+            if not (glove and glove.Value == "Dual") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Dual glove.",
+                    Duration = 3
+                })
+                _G.DualSlapRunning = false
+                return
+            end
+
+            while _G.DualSlapRunning do
+                task.wait(0.5)
+                teleportToRandomPlayer()
+                fireGeneralHitForAllPlayers()
+            end
+        end
+
+        if state then
+            coroutine.wrap(runAutoDualSlapLoop)()
+        else
+            _G.DualSlapRunning = false
+        end
+    end
+})
+
+-- Engineer Tab
+Tabs.Engineer:AddToggle("EngineerFarm", {
+    Title = "Engineer Slap Farm (Someone Script/U Engineer)",
+    Default = false,
+    Callback = function(Value)
+        EngineerFarm = Value
+
+        if EngineerFarm then
+            task.spawn(function()
+                while EngineerFarm do
+                    local turret = game.workspace:FindFirstChild("Turret")
+                    if turret and turret:FindFirstChild("HingePart") and turret.HingePart:FindFirstChild("Glove") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = turret.HingePart.Glove.CFrame
+                    end
+                    task.wait()
+                end
+            end)
+        end
+    end
+})
+
+-- Angler Tab
+Tabs.Angler:AddToggle("AnglerFarm", {
+    Title = "Angler Slap Farm (Auto Fishing)",
+    Default = false,
+    Callback = function(Value)
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local FishermanEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Fisherman")
+        local running = true
+
+        local function autoFish()
+            while running do
+                task.wait(8)
+                local args = { "cast" }
+                FishermanEvent:FireServer(unpack(args))
+            end
+        end
+
+        if Value then
+            running = true
+            coroutine.wrap(autoFish)()
+        else
+            running = false
+        end
+    end
+})
+
+-- Bounty Tab
+_G.BountySlapRunning = false
+
+Tabs.Bounty:AddToggle("BountySlapFarm", {
+    Title = "Bounty Slap Farm",
+    Default = false,
+    Callback = function(state)
+        _G.BountySlapRunning = state
+
+        local function teleportToRandomPlayer()
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= LocalPlayer
+
+                local char = randomPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame
+                end
+            end
+        end
+
+        local function fireGeneralHitForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character then
+                    local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
+                    if rightArm then
+                        ReplicatedStorage.GeneralHit:FireServer(rightArm)
+                    end
+                end
+            end
+        end
+
+        local function runAutoSlapBountyLoop()
+            if LocalPlayer.leaderstats.Glove.Value ~= "Bounty" then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Bounty glove.",
+                    Duration = 3
+                })
+                _G.BountySlapRunning = false
+                return
+            end
+
+            while _G.BountySlapRunning do
+                wait(0.5)
+                teleportToRandomPlayer()
+                fireGeneralHitForAllPlayers()
+            end
+        end
+
+        if state then
+            coroutine.wrap(runAutoSlapBountyLoop)()
+        else
+            _G.BountySlapRunning = false
+        end
+    end
+})
+
+Tabs.Bounty:AddButton({
+    Title = "Bounty Slap Farm 2 (Slap Aura)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = { [1] = player.Character["Right Arm"] }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                    end
+                end
+                wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Killstreak",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Bounty:AddToggle("AutoGiveCards", {
+    Title = "Auto Give Yourself Cards",
+    Default = false,
+    Callback = function(Value)
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local running = true
+
+        local function giveCardsLoop()
+            while running do
+                ReplicatedStorage:WaitForChild("GeneralAbility"):FireServer()
+                task.wait(0.1)
+            end
+        end
+
+        if Value then
+            running = true
+            coroutine.wrap(giveCardsLoop)()
+        else
+            running = false
+        end
+    end
+})
+
+-- Debug Tab
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+local ActiveToggles = {}
+
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerHitbox(playerName)
+    local hitboxName = playerName .. "_hitbox"
+    local hitbox = Workspace:FindFirstChild(hitboxName)
+    if hitbox and hitbox:IsA("Part") then
+        return hitbox
+    end
+    return nil
+end
+
+local function GetLocalPlayerHitbox()
+    local hitboxName = LocalPlayer.Name .. "_hitbox"
+    local hitbox = Workspace:FindFirstChild(hitboxName)
+    if hitbox and hitbox:IsA("Part") then
+        return hitbox
+    end
+    return nil
+end
+
+local function GetAnyHitbox()
+    for _, obj in pairs(Workspace:GetChildren()) do
+        if obj:IsA("Part") and string.match(obj.Name, "_hitbox$") then
+            return obj
+        end
+    end
+    return nil
+end
+
+local function FlyToTarget(targetHitbox)
+    local character = LocalPlayer.Character
+    if not character then return end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+    
+    for _, obj in pairs(humanoidRootPart:GetChildren()) do
+        if obj:IsA("BodyVelocity") then
+            obj:Destroy()
+        end
+    end
+    
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.MaxForce = Vector3.new(50000, 50000, 50000)
+    bodyVelocity.Parent = humanoidRootPart
+    
+    local direction = (targetHitbox.Position - humanoidRootPart.Position).Unit
+    local distance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
+    
+    local speed = 50 + (distance * 2)
+    bodyVelocity.Velocity = direction * speed
+    
+    local connection
+    connection = RunService.Heartbeat:Connect(function()
+        local currentDistance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
+        if currentDistance < 10 then
+            bodyVelocity:Destroy()
+            connection:Disconnect()
+            humanoidRootPart.CFrame = targetHitbox.CFrame + Vector3.new(0, 0, 0)
+        end
+    end)
+    
+    delay(3, function()
+        if bodyVelocity and bodyVelocity.Parent then
+            bodyVelocity:Destroy()
+        end
+        if connection then
+            connection:Disconnect()
+        end
+    end)
+end
+
+Tabs.Debug:AddSection("Player Selection")
+
+local PlayerDropdown = Tabs.Debug:AddDropdown("PlayerSelect", {
+    Title = "Select Player",
+    Description = "Choose a player to target",
+    Values = RefreshPlayersList(),
+    Multi = false,
+    Default = "",
+    Callback = function(Value)
+        SelectedPlayer = Value
+    end
+})
+
+Tabs.Debug:AddButton({
+    Title = "Refresh Players List",
+    Callback = function()
+        PlayerDropdown:SetValues(RefreshPlayersList())
+    end
+})
+
+Tabs.Debug:AddToggle("AutoSpawnCube", {
+    Title = "Auto Spawn Cube",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["AutoSpawn"] = Value
+        if Value then
+            coroutine.wrap(function()
+                local DebugEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Debug")
+                
+                while ActiveToggles["AutoSpawn"] do
+                    local localHitbox = GetLocalPlayerHitbox()
+                    if not localHitbox then
+                        DebugEvent:FireServer()
+                    end
+                    task.wait(0.1)
+                end
+            end)()
+        end
+    end
+})
+
+Tabs.Debug:AddSection("Auto Teleport")
+
+Tabs.Debug:AddToggle("TeleportToSelected", {
+    Title = "Auto Touch Cube's Selected Player",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["TeleportToSelected"] = Value
+        if Value then
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToSelected"] and SelectedPlayer do
+                    local targetHitbox = GetPlayerHitbox(SelectedPlayer)
+                    if targetHitbox then
+                        FlyToTarget(targetHitbox)
+                    end
+                    task.wait(0.1)
+                end
+            end)()
+        end
+    end
+})
+
+Tabs.Debug:AddToggle("TeleportToAny", {
+    Title = "Auto Touch To Any Cube",
+    Default = false,
+    Callback = function(Value)
+        ActiveToggles["TeleportToAny"] = Value
+        if Value then
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToAny"] do
+                    local anyHitbox = GetAnyHitbox()
+                    if anyHitbox then
+                        FlyToTarget(anyHitbox)
+                    end
+                    task.wait(0.1)
+                end
+            end)()
+        end
+    end
+})
+
+-- Settings Tab
+Tabs.Settings:AddSection("Value Changer")
+
+local SlapChanger
+local SlapsInput = Tabs.Settings:AddInput("SlapsInput", {
+    Title = "How Many Slaps? (Visual)",
+    Description = "Enter the number of slaps to display",
+    Default = "",
+    Placeholder = "Enter number",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local NullShardsInput = Tabs.Settings:AddInput("NullShardsInput", {
+    Title = "How Many Null Shards? (Visual)",
+    Description = "Enter the number of null shards to display",
+    Default = "",
+    Placeholder = "Enter number",
+    Numeric = true,
+    Finished = false,
+    Callback = function(Value)
+        local nullshardNumber = tonumber(Value)
+        if nullshardNumber and nullshardNumber >= 0 then
+            getgenv().nullshardChanger = tostring(nullshardNumber)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Type a correct number (0 or greater)!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Set Null Shards (Visual)",
+    Callback = function()
+        if getgenv().nullshardChanger then
+            local playerName = game.Players.LocalPlayer.Name
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local playerData = ReplicatedStorage:WaitForChild("PlayerData", 5)
+
+            if playerData then
+                local playerFolder = playerData:WaitForChild(playerName, 5)
+                if playerFolder then
+                    local nullShardsValue = playerFolder:WaitForChild("NullShards", 5)
+                    if nullShardsValue and nullShardsValue.ClassName == "StringValue" then
+                        nullShardsValue.Value = getgenv().nullshardChanger
+                    end
+                end
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter a valid number first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Badge Giver")
+
+Tabs.Settings:AddButton({
+    Title = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+local AntiAfkToggle = Tabs.Settings:AddToggle("AntiAfk", {
+    Title = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        _G.AntiAfk = Value
+        local VirtualUser = game:GetService('VirtualUser')
+
+        game:GetService('Players').LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+    end
+})
+
+local nametagText = ""
+local autoNametag = false
+
+local NametagInput = Tabs.Settings:AddInput("NametagInput", {
+    Title = "Type Ur Own Any Nametag",
+    Description = "Enter custom text for your nametag",
+    Default = "",
+    Placeholder = "Enter nametag text",
+    Numeric = false,
+    Finished = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please enter text in the textbox first!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    Fluent:Notify({
+                        Title = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Duration = 3
+                    })
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "TopLabel not found!",
+                        Duration = 3
+                    })
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Nametag not found!",
+                    Duration = 3
+                })
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+local AutoNametagToggle = Tabs.Settings:AddToggle("AutoNametag", {
+    Title = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tabs.Settings:AddSection("Slap Aura")
+
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    
+    local gloveHits = {
+        ["b"] = ReplicatedStorage.b,
+        ["GeneralHit"] = ReplicatedStorage.GeneralHit,
+    }
+    
+    local function getCurrentGlove()
+        if localPlayer:FindFirstChild("leaderstats") then
+            local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+            if gloveValue then
+                return gloveValue.Value
+            end
+        end
+        return "Default"
+    end
+    
+    local function getGloveRemote(gloveName)
+        local remote = gloveHits[gloveName]
+        
+        if remote and typeof(remote) == "Instance" and remote:IsA("RemoteEvent") then
+            return remote
+        end
+        
+        if remote and type(remote) == "string" then
+            local pathRemote = ReplicatedStorage:FindFirstChild(remote, true)
+            if pathRemote and pathRemote:IsA("RemoteEvent") then
+                return pathRemote
+            end
+        end
+        
+        local variations = {
+            gloveName .. "Hit",
+            "hit" .. gloveName,
+            gloveName .. "H",
+            "Ht" .. gloveName,
+            gloveName:upper() .. "Hit",
+            gloveName:lower() .. "hit"
+        }
+        
+        for _, variation in ipairs(variations) do
+            local foundRemote = ReplicatedStorage:FindFirstChild(variation)
+            if foundRemote and foundRemote:IsA("RemoteEvent") then
+                return foundRemote
+            end
+        end
+        
+        if ReplicatedStorage:FindFirstChild("GeneralHit") then
+            return ReplicatedStorage.GeneralHit
+        else
+            return ReplicatedStorage.b
+        end
+    end
+    
+    local function autoDetectGloveRemote(gloveName)
+        local commonRemotes = {
+            "b", "GeneralHit"
+        }
+        
+        for _, remoteName in ipairs(commonRemotes) do
+            if remoteName:lower():find(gloveName:lower()) or gloveName:lower():find(remoteName:lower()) then
+                local remote = ReplicatedStorage:FindFirstChild(remoteName)
+                if remote and remote:IsA("RemoteEvent") then
+                    return remote
+                end
+            end
+        end
+        
+        for _, child in pairs(ReplicatedStorage:GetChildren()) do
+            if child:IsA("RemoteEvent") then
+                local nameLower = child.Name:lower()
+                local gloveLower = gloveName:lower()
+                
+                if nameLower:find(gloveLower) or nameLower:find("hit") or nameLower:find("slap") then
+                    return child
+                end
+            end
+        end
+        
+        return ReplicatedStorage:FindFirstChild("b") or ReplicatedStorage:FindFirstChild("GeneralHit")
+    end
+
+    local SlapAuraSpeedSlider = Tabs.Settings:AddSlider("SlapAuraSpeed", {
+        Title = "Slap Aura Speed",
+        Description = "Set the cooldown between slaps",
+        Default = 0.5,
+        Min = 0.1,
+        Max = 2,
+        Rounding = 1,
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    local SlapAuraToggle = Tabs.Settings:AddToggle("SlapAura", {
+        Title = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                local currentGlove = getCurrentGlove()
+                local remote = getGloveRemote(currentGlove)
+                
+                if not remote or not remote:IsA("RemoteEvent") then
+                    remote = autoDetectGloveRemote(currentGlove)
+                    
+                    if not remote or not remote:IsA("RemoteEvent") then
+                        Fluent:Notify({
+                            Title = "Slap Aura Error",
+                            Content = "No remote found for glove: " .. currentGlove,
+                            Duration = 3
+                        })
+                        isSlapAuraEnabled = false
+                        return
+                    end
+                end
+                
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    local currentTime = tick()
+                    
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    local localChar = localPlayer.Character
+                    local localRoot = localChar:FindFirstChild("HumanoidRootPart")
+                    if not localRoot then
+                        return
+                    end
+                    
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player ~= localPlayer and player.Character then
+                            local char = player.Character
+                            local humanoid = char:FindFirstChildOfClass("Humanoid")
+                            local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                            
+                            if torso and humanoid and humanoid.Health > 0 then
+                                local playerRoot = char:FindFirstChild("HumanoidRootPart")
+                                if playerRoot then
+                                    local distance = (playerRoot.Position - localRoot.Position).Magnitude
+                                    if distance > 40 then
+                                        continue
+                                    end
+                                end
+                                
+                                local success = pcall(function()
+                                    remote:FireServer(torso)
+                                end)
+                                
+                                if success then
+                                    lastHitTime = currentTime
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end)
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Enabled",
+                    Content = "Glove: " .. currentGlove,
+                    Duration = 3
+                })
+                
+            else
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                Fluent:Notify({
+                    Title = "Slap Aura Disabled",
+                    Content = "",
+                    Duration = 2
+                })
+            end
+        end
+    })
+end
+
+Tabs.Settings:AddSection("Ghost On/Off")
+
+local GhostInvisibilityToggle = Tabs.Settings:AddToggle("GhostInvisibility", {
+    Title = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Equip Ghost Glove",
+                    Duration = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Server Settings")
+
+Tabs.Settings:AddButton({
+    Title = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        Teleport()
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Tabs.Settings:AddSection("Kick/Reset If Stuck")
+
+Tabs.Settings:AddButton({
+    Title = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Arena Settings")
+
+local AutoEnterActive = false
+local AutoEnterMode = "Arena"
+
+local AutoEnterDropdown = Tabs.Settings:AddDropdown("AutoEnterMode", {
+    Title = "Enter Mode",
+    Description = "Select which arena to auto-enter",
+    Values = {"Arena", "Arena Default"},
+    Multi = false,
+    Default = "Arena",
+    Callback = function(Value)
+        AutoEnterMode = Value
+    end
+})
+
+local AutoEnterToggle = Tabs.Settings:AddToggle("AutoEnter", {
+    Title = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        AutoEnterActive = Value
+        
+        if Value then
+            task.spawn(function()
+                while AutoEnterActive do
+                    local player = game.Players.LocalPlayer
+                    local character = player.Character
+                    
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        local entered = character:FindFirstChild("entered")
+                        
+                        if not entered then
+                            local teleportFolder = workspace.Lobby
+                            local teleportPart = nil
+                            
+                            if AutoEnterMode == "Arena" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
+                            elseif AutoEnterMode == "Arena Default" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                            end
+                            
+                            if teleportPart then
+                                local touchPart = nil
+                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or teleportPart:FindFirstChild("TouchInterest")
+                                
+                                if touchInterest then
+                                    touchPart = touchInterest.Parent
+                                else
+                                    touchPart = teleportPart
+                                end
+                                
+                                if touchPart and touchPart:IsA("BasePart") then
+                                    local hrp = character:FindFirstChild("HumanoidRootPart")
+                                    if hrp then
+                                        local originalPosition = touchPart.Position
+                                        local originalAnchored = touchPart.Anchored
+                                        
+                                        touchPart.Anchored = false
+                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
+                                        
+                                        firetouchinterest(hrp, touchPart, 0)
+                                        task.wait(0.05)
+                                        firetouchinterest(hrp, touchPart, 1)
+                                        
+                                        task.wait(0.1)
+                                        touchPart.Position = originalPosition
+                                        touchPart.Anchored = originalAnchored
+                                    end
+                                end
+                            end
+                        end
+                    else
+                        task.wait(1)
+                        continue
+                    end
+                    
+                    task.wait(0.5)
+                end
+            end)
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tabs.Settings:AddButton({
+    Title = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Tabs.Settings:AddSection("Destroy Script")
+
+Tabs.Settings:AddButton({
+    Title = "Destroy Gui",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
+
+end -- END OF PLACE ID CHECK
+
+Fluent:Notify({
+    Title = "Script Loaded",
+    Content = "Slap Farm Hub (Scripter Hub) has been loaded successfully!",
+    Duration = 3
+})
