@@ -22,7 +22,7 @@ Fluent:Notify({
 --If Slap Battles Then
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 124596094333302 then
 local Window = Fluent:CreateWindow({
-    Title = gameName .. " Hub (Scripter Hub) OP V. 12.8.8",
+    Title = gameName .. " Hub (Scripter Hub) OP V. 12.9.3",
     SubTitle = "by Scripter",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -5824,6 +5824,26 @@ local KeepJumppowerToggle = Tabs.Main:AddToggle("KeepJumppower", {
 Tabs.Changelogs:AddSection("Changelogs Info")
 
 Tabs.Changelogs:AddParagraph({
+    Title = "V. 12.9.3",
+    Content = [[
+-BADGES HUB-
+[+] Added Undead Tab
+[+] Added Equip Clock (Untimely End Badge Need) Button
+[+] Added Summon Clock (Spawns At Air) Button
+[+] Added Teleport To Void And Die (Revive Time Has To Dissapear First) Button
+-ALL HUBS-
+[x] Updated Slap Aura
+
+FLUENT HUB UPDATED TOO
+
+Settings:
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]]
+})
+
+Tabs.Changelogs:AddParagraph({
     Title = "V. 12.8.8",
     Content = [[
 -BADGES HUB-
@@ -7556,7 +7576,7 @@ end -- END OF PLACE ID CHECK
 
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = gameName .. " Hub (Scripter Hub) OP V. 12.8.8 loaded successfully!",
+    Content = gameName .. " Hub (Scripter Hub) OP V. 12.9.3 loaded successfully!",
     Duration = 3
 })
 
