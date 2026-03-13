@@ -12158,6 +12158,36 @@ Tab:AddButton({
     end
 })
 
+Tab = Window:MakeTab({
+	Name = "Undead",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+    Tab:AddButton({
+    Name = "Equip Clock (Untimely End Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Clock"].ClickDetector)
+    end
+})
+
+    Tab:AddButton({
+    Name = "Summon Clock (Spawns At Air)",
+    Callback = function()
+local args = {
+	CFrame.new(0, 0, 0)
+}
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+    end
+})
+
+   Tab:AddButton({
+    Name = "Teleport To Void And Die (Revive Time Has To Dissapear First)",
+    Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =CFrame.new(-82, -30, -106)
+    end
+})
+
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
