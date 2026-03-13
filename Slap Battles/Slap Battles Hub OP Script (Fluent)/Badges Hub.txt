@@ -149,6 +149,7 @@ local Tabs = {
     Glaxe = Window:AddTab({ Title = "Glaxe", Icon = "rbxassetid://7733673987" }),
     Pinata = Window:AddTab({ Title = "Piñata", Icon = "rbxassetid://7733673987" }),
     Penguin = Window:AddTab({ Title = "Penguin", Icon = "rbxassetid://7733673987" }),
+    Undead = Window:AddTab({ Title = "Undead", Icon = "rbxassetid://7733673987" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -10759,6 +10760,30 @@ Tabs.Penguin:AddButton({
     Title = "Teleport To Penguin Teleport Place",
     Callback = function()
         game:GetService("TeleportService"):Teleport(86643839793301)
+    end
+})
+
+Tabs.Undead:AddButton({
+    Title = "Equip Clock (Untimely End Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Clock"].ClickDetector)
+    end
+})
+
+Tabs.Undead:AddButton({
+    Title = "Summon Clock (Spawns At Air)",
+    Callback = function()
+local args = {
+	CFrame.new(0, 0, 0)
+}
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Undead:AddButton({
+    Title = "Teleport To Void And Die (Revive Time Has To Dissapear First)",
+    Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =CFrame.new(-82, -30, -106)
     end
 })
 
