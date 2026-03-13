@@ -16,7 +16,7 @@ OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can T
 --If Slap Battles Then
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 124596094333302 then
 local Window = OrionLib:MakeWindow({
-    Name = gameName .. " Hub (Scripter Hub) OP V. 12.8.8",
+    Name = gameName .. " Hub (Scripter Hub) OP V. 12.9.3",
     HidePremium = true,
     SaveConfig = false,
     ConfigFolder = configsFolder,
@@ -8672,6 +8672,23 @@ local Tab = Window:MakeTab({
 Section = Tab:AddSection({
     Name = "Changelogs Info"
 })
+
+Tab:AddParagraph("V. 12.9.3:", [[
+-BADGES HUB-
+[+] Added Undead Tab
+[+] Added Equip Clock (Untimely End Badge Need) Button
+[+] Added Summon Clock (Spawns At Air) Button
+[+] Added Teleport To Void And Die (Revive Time Has To Dissapear First) Button
+-ALL HUBS-
+[x] Updated Slap Aura
+
+FLUENT HUB UPDATED TOO
+
+Settings:
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]])
 
 Tab:AddParagraph("V. 12.8.8:", [[
 -BADGES HUB-
