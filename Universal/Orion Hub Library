@@ -12,18 +12,36 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
 		Default = {
-        Main = Color3.fromRGB(15, 15, 15),      -- Almost pure black
-        Second = Color3.fromRGB(20, 20, 20),    -- Very dark gray
-        Stroke = Color3.fromRGB(40, 40, 40),    -- Dark gray
-        Divider = Color3.fromRGB(45, 45, 45),   -- Dark gray
-        Text = Color3.fromRGB(255, 255, 255),   -- Pure white
-        TextDark = Color3.fromRGB(180, 180, 180) -- Light gray
+        Main = Color3.fromRGB(15, 15, 15),
+        Second = Color3.fromRGB(20, 20, 20),
+        Stroke = Color3.fromRGB(40, 40, 40),
+        Divider = Color3.fromRGB(45, 45, 45),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextDark = Color3.fromRGB(180, 180, 180)
 		}
 	},
 	SelectedTheme = "Default",
 	Folder = nil,
-	SaveCfg = false
+	SaveCfg = false,
+	FileOpsAllowed = true
 }
+
+-- Check if file operations should be disabled for this game
+local function IsFileOpsDisabled()
+	local disabledGameIds = {
+		110258689672367, -- Doors: Before Hotel+
+		10549820578,    -- Doors: April Fools 2023
+	}
+	
+	for _, id in ipairs(disabledGameIds) do
+		if game.PlaceId == id then
+			return true
+		end
+	end
+	return false
+end
+
+OrionLib.FileOpsAllowed = not IsFileOpsDisabled()
 
 --Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
 local Icons = {}
@@ -70,7 +88,7 @@ end
 -- Create circle button for reopening UI
 local CircleButton = Instance.new("ImageButton")
 CircleButton.Name = "ReopenUIButton"
-CircleButton.Image = "rbxassetid://7072719338" -- Default icon (plus/minus)
+CircleButton.Image = "rbxassetid://7072719338"
 CircleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 CircleButton.BackgroundTransparency = 0.2
 CircleButton.BorderSizePixel = 0
@@ -95,7 +113,6 @@ function OrionLib:IsRunning()
 	else
 		return Orion.Parent == game:GetService("CoreGui")
 	end
-
 end
 
 local function AddConnection(Signal, Function)
@@ -141,7 +158,7 @@ local function AddDraggingFunctionality(DragPoint, Main)
 		UserInputService.InputChanged:Connect(function(Input)
 			if Input == DragInput and Dragging then
 				local Delta = Input.Position - MousePos
-				TweenService:Create(Main, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+				TweenService:Create(Main, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale,FramePos.Y.Offset + Delta.Y)}):Play()
 			end
 		end)
 	end)
@@ -233,23 +250,27 @@ local function UnpackColor(Color)
 end
 
 local function LoadCfg(Config)
-	local Data = HttpService:JSONDecode(Config)
-	table.foreach(Data, function(a,b)
-		if OrionLib.Flags[a] then
-			spawn(function() 
-				if OrionLib.Flags[a].Type == "Colorpicker" then
-					OrionLib.Flags[a]:Set(UnpackColor(b))
-				else
-					OrionLib.Flags[a]:Set(b)
-				end    
-			end)
-		else
-			warn("Orion Library Config Loader - Could not find ", a ,b)
-		end
+	if not OrionLib.FileOpsAllowed then return end
+	
+	pcall(function()
+		local Data = HttpService:JSONDecode(Config)
+		table.foreach(Data, function(a,b)
+			if OrionLib.Flags[a] then
+				spawn(function() 
+					if OrionLib.Flags[a].Type == "Colorpicker" then
+						OrionLib.Flags[a]:Set(UnpackColor(b))
+					else
+						OrionLib.Flags[a]:Set(b)
+					end    
+				end)
+			end
+		end)
 	end)
 end
 
 local function SaveCfg(Name)
+	if not OrionLib.FileOpsAllowed or not OrionLib.SaveCfg then return end
+	
 	local Data = {}
 	for i,v in pairs(OrionLib.Flags) do
 		if v.Save then
@@ -260,7 +281,13 @@ local function SaveCfg(Name)
 			end
 		end	
 	end
-	writefile(OrionLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
+	
+	pcall(function()
+		if not isfolder(OrionLib.Folder) then
+			makefolder(OrionLib.Folder)
+		end
+		writefile(OrionLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
+	end)
 end
 
 local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3}
@@ -469,7 +496,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 end    
 
 function OrionLib:Init()
-	if OrionLib.SaveCfg then	
+	if OrionLib.SaveCfg and OrionLib.FileOpsAllowed then	
 		pcall(function()
 			if isfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt") then
 				LoadCfg(readfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt"))
@@ -505,15 +532,17 @@ function OrionLib:MakeWindow(WindowConfig)
 	OrionLib.Folder = WindowConfig.ConfigFolder
 	OrionLib.SaveCfg = WindowConfig.SaveConfig
 
-	if WindowConfig.SaveConfig then
-		if not isfolder(WindowConfig.ConfigFolder) then
-			makefolder(WindowConfig.ConfigFolder)
-		end	
+	if WindowConfig.SaveConfig and OrionLib.FileOpsAllowed then
+		pcall(function()
+			if not isfolder(WindowConfig.ConfigFolder) then
+				makefolder(WindowConfig.ConfigFolder)
+			end
+		end)
 	end
 
 	local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
-		Size = UDim2.new(1, 0, 1, -90), -- Adjusted for search bar height
-		Position = UDim2.new(0, 0, 0, 40) -- Position below search bar
+		Size = UDim2.new(1, 0, 1, -90),
+		Position = UDim2.new(0, 0, 0, 40)
 	}), {
 		MakeElement("List"),
 		MakeElement("Padding", 8, 0, 0, 8)
@@ -523,19 +552,19 @@ function OrionLib:MakeWindow(WindowConfig)
 		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolder.UIListLayout.AbsoluteContentSize.Y + 16)
 	end)
 
-local SearchBox = AddThemeObject(Create("TextBox", {
-    Size = UDim2.new(1, -20, 0, 30),
-    Position = UDim2.new(0, 10, 0, 5),
-    BackgroundTransparency = 1,
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
-    PlaceholderText = "Search Tabs...",
-    Font = Enum.Font.GothamSemibold,
-    TextSize = 14,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    ClearTextOnFocus = false,
-    Text = "" -- THIS IS IMPORTANT - sets initial text to empty
-}), "Text")
+	local SearchBox = AddThemeObject(Create("TextBox", {
+		Size = UDim2.new(1, -20, 0, 30),
+		Position = UDim2.new(0, 10, 0, 5),
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
+		PlaceholderText = "Search Tabs...",
+		Font = Enum.Font.GothamSemibold,
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false,
+		Text = ""
+	}), "Text")
 
 	local SearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
 		Size = UDim2.new(1, 0, 0, 40),
@@ -550,7 +579,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 		AddThemeObject(MakeElement("Stroke"), "Stroke")
 	}), "Second")
 
-	-- Store all created tabs for filtering
 	local AllTabs = {}
 	local CurrentFilter = ""
 
@@ -562,11 +590,9 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 			local tabName = tabData.Name
 			
 			if searchText == "" then
-				-- Show all tabs when search is empty
 				tabButton.Visible = true
 				TweenService:Create(tabButton, TweenInfo.new(0.2), {Position = UDim2.new(0, 0, 0, tabData.OriginalPosition.Y.Offset)}):Play()
 			else
-				-- Show only tabs that match the search
 				if string.find(tabName:lower(), CurrentFilter) then
 					tabButton.Visible = true
 					TweenService:Create(tabButton, TweenInfo.new(0.2), {Position = UDim2.new(0, 0, 0, tabData.OriginalPosition.Y.Offset)}):Play()
@@ -576,7 +602,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 			end
 		end
 		
-		-- Recalculate tab positions
 		local visibleCount = 0
 		for _, tabData in pairs(AllTabs) do
 			if tabData.Button.Visible then
@@ -586,7 +611,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 		end
 	end
 
-	-- Connect search functionality
 	AddConnection(SearchBox:GetPropertyChangedSignal("Text"), function()
 		FilterTabs(SearchBox.Text)
 	end)
@@ -641,7 +665,7 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 			Size = UDim2.new(0, 1, 1, 0),
 			Position = UDim2.new(1, -1, 0, 0)
 		}), "Stroke"), 
-		SearchContainer, -- Added search bar to the sidebar
+		SearchContainer,
 		TabHolder,
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
@@ -655,8 +679,7 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 				Size = UDim2.new(0, 32, 0, 32),
 				Position = UDim2.new(0, 10, 0.5, 0)
 			}), {
-				-- CHANGED: Removed player thumbnail and replaced with generic user icon
-				SetProps(MakeElement("Image", "rbxassetid://2781888353"), { -- Generic user icon
+				SetProps(MakeElement("Image", "rbxassetid://2781888353"), {
 					Size = UDim2.new(1, 0, 1, 0),
 					ImageColor3 = Color3.fromRGB(200, 200, 200)
 				}),
@@ -673,7 +696,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 				AddThemeObject(MakeElement("Stroke"), "Stroke"),
 				MakeElement("Corner", 1)
 			}),
-			-- CHANGED: Display "User" instead of actual username
 			AddThemeObject(SetProps(MakeElement("Label", "User", WindowConfig.HidePremium and 14 or 13), {
 				Size = UDim2.new(1, -60, 0, 13),
 				Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
@@ -740,16 +762,11 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 
 	AddDraggingFunctionality(DragPoint, MainWindow)
 
-	-- Modified close button to show circle button instead of fully hiding
 	AddConnection(CloseBtn.MouseButton1Up, function()
-		-- Hide main window but show circle button
 		MainWindow.Visible = false
 		CircleButton.Visible = true
 		UIHidden = true
-		
-		-- Change circle button icon to show it's for reopening
-		CircleButton.Image = "rbxassetid://7072720870" -- Eye icon or similar
-		
+		CircleButton.Image = "rbxassetid://7072720870"
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
 			Content = "Click the circle button in the bottom-right to reopen the interface",
@@ -758,12 +775,10 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 		WindowConfig.CloseCallback()
 	end)
 
-	-- Make circle button reopen the UI
 	AddConnection(CircleButton.MouseButton1Click, function()
 		if UIHidden then
 			MainWindow.Visible = true
 			CircleButton.Visible = false
-			-- Change circle button icon back to default
 			CircleButton.Image = "rbxassetid://7072719338"
 		end
 	end)
@@ -907,7 +922,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 			Container.Visible = true   
 		end)
 
-		-- Store tab data for filtering
 		local tabIndex = #AllTabs
 		AllTabs[TabConfig.Name] = {
 			Button = TabFrame,
@@ -916,7 +930,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 			Index = tabIndex
 		}
 
-		-- Apply current filter to new tab
 		if CurrentFilter ~= "" then
 			if not string.find(TabConfig.Name:lower(), CurrentFilter) then
 				TabFrame.Visible = false
@@ -1416,7 +1429,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 				}), "Second")
 
 				AddConnection(BindBox.Value:GetPropertyChangedSignal("Text"), function()
-					--BindBox.Size = UDim2.new(0, BindBox.Value.TextBounds.X + 16, 0, 24)
 					TweenService:Create(BindBox, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, BindBox.Value.TextBounds.X + 16, 0, 24)}):Play()
 				end)
 
@@ -1542,7 +1554,6 @@ local SearchBox = AddThemeObject(Create("TextBox", {
 				}), "Second")
 
 				AddConnection(TextboxActual:GetPropertyChangedSignal("Text"), function()
-					--TextContainer.Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)
 					TweenService:Create(TextContainer, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)}):Play()
 				end)
 
