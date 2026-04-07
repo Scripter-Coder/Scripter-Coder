@@ -1,0 +1,288 @@
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library"))()
+
+local Window = OrionLib:MakeWindow({Name = "Slap Battles From TEMU Hub OP",HidePremium = true,IntroEnabled = true,IntroText = gameName,IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+    local Tab = Window:MakeTab({
+        Name = "Badges",
+        Icon = "rbxassetid://7733673987",
+        PremiumOnly = false
+    })
+
+    Tab:AddSection({ Name = "Auto Scythe" })
+
+    Tab:AddButton({
+        Name = "Scythe",
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/main/Scythe"))()
+        end
+    })
+
+    Tab:AddSection({ Name = "Auto Druid" })
+
+Tab:AddButton({
+    Name = "Auto Place Defences",
+    Callback = function()
+    task.wait(1)
+        -- Define each tower with its own position and delay
+        -- Format: {position, delay, type, name}
+        local towers = {
+            -- Yellow Flowers (Defence2) - Individual delays
+            {{27, 11, -9}, 36, "Defence2", "Yellow Flower #1"},
+            {{28, 11, -2}, 30, "Defence2", "Yellow Flower #2"},
+            {{28, 11, 3}, 25, "Defence2", "Yellow Flower #3"},
+            {{29, 11, 9}, 10, "Defence2", "Yellow Flower #4"},
+            {{30, 11, 15}, 15, "Defence2", "Yellow Flower #5"},
+            
+            -- Purple Flowers (Defence1) - Individual delays
+            {{41, 11, -15}, 10, "Defence1", "Purple Flower #1"},
+            {{42, 11, -12}, 8, "Defence1", "Purple Flower #2"},
+            {{42, 11, -9}, 10, "Defence1", "Purple Flower #3"},
+            {{43, 11, -4}, 11, "Defence1", "Purple Flower #4"},
+            {{45, 11, 1}, 0.5, "Defence1", "Purple Flower #5"},
+            {{46, 11, 6}, 7, "Defence1", "Purple Flower #6"},
+            {{46, 11, 10}, 0.5, "Defence1", "Purple Flower #7"},
+            {{47, 11, 15}, 0.5, "Defence1", "Purple Flower #8"},
+            
+            -- Ten Flowers (Defence3) - Individual delays
+            {{26, 11, -21}, 16, "Defence3", "Ten Flower #1"},
+            {{30, 11, -22}, 1, "Defence3", "Ten Flower #2"},
+            {{34, 11, -22}, 11, "Defence3", "Ten Flower #3"},
+            {{40, 11, -24}, 25, "Defence3", "Ten Flower #4"},
+            {{45, 11, -24}, 18, "Defence3", "Ten Flower #5"},
+            {{51, 11, -26}, 20, "Defence3", "Ten Flower #6"}
+        }
+        
+        -- Function to place a defense
+        local function placeDefence(position, defenceType)
+            local args = {
+                [1] = "PlaceDefence",
+                [2] = {
+                    ["cf"] = CFrame.new(unpack(position)),
+                    ["defencename"] = defenceType
+                }
+            }
+            game:GetService("ReplicatedStorage").TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+        end
+        
+        -- Start placing towers with individual delays
+        print("Starting to place all 19 towers...")
+        
+        for i, towerData in ipairs(towers) do
+            local position = towerData[1]
+            local delay = towerData[2]
+            local defenceType = towerData[3]
+            local towerName = towerData[4]
+            
+            -- Place the tower
+            placeDefence(position, defenceType)
+            print("Placed: " .. towerName)
+            
+            -- Wait for the specified delay (except for the last tower)
+            if i < #towers then
+                task.wait(delay)
+            end
+        end
+        
+        print("All 19 towers placed!")
+        
+        -- Show notification with safe image ID
+        pcall(function()
+            OrionLib:MakeNotification({
+                Name = "Auto Units",
+                Content = "All towers placed successfully!",
+                Image = "rbxassetid://7734059095", -- Using a valid image ID
+                Time = 3
+            })
+        end)
+        
+        -- Alternative notification using game's built-in system
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Auto Units",
+            Text = "All towers placed successfully!",
+            Duration = 3
+        })
+    end
+})
+
+-- Variables
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local autoUpgradeEnabled = false
+local upgradeConnection = nil
+
+-- Function to upgrade a defense
+local function upgradeDefence(defence)
+    local args = {
+        "Upgrade",
+        {
+            defence = defence
+        }
+    }
+    ReplicatedStorage.TowerDefenceAssets.TD_Event:FireServer(unpack(args))
+end
+
+-- Function to upgrade all defenses
+local function upgradeAllDefences()
+    local map = workspace.Maps:FindFirstChild("hacedgame146's Map")
+    if not map then return end
+    
+    local defences = map:FindFirstChild("Defences")
+    if not defences then return end
+    
+    for _, child in ipairs(defences:GetChildren()) do
+        if child:IsA("Model") then
+            upgradeDefence(child)
+        end
+    end
+end
+
+-- Toggle
+Tab:AddToggle({
+    Name = "Auto Upgrade Defences",
+    Default = false,
+    Callback = function(Value)
+        autoUpgradeEnabled = Value
+        
+        if autoUpgradeEnabled then
+            upgradeConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                if autoUpgradeEnabled then
+                    upgradeAllDefences()
+                end
+            end)
+            OrionLib:MakeNotification({
+                Name = "Auto Upgrade",
+                Content = "Started!",
+                Time = 2
+            })
+        else
+            if upgradeConnection then
+                upgradeConnection:Disconnect()
+                upgradeConnection = nil
+            end
+            OrionLib:MakeNotification({
+                Name = "Auto Upgrade",
+                Content = "Stopped!",
+                Time = 2
+            })
+        end
+    end
+})
+
+    Tab:AddSection({ Name = "Auto Tank" })
+
+Tab:AddButton({
+	Name = "Auto Get Tank Glove",
+	Callback = function()   
+		if game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 4390302507334168) and game.Players.LocalPlayer.leaderstats.Slaps.Value >= 50000 then
+			task.wait(0.3)
+			fireclickdetector(workspace.Lobby["Pillow"].ClickDetector)
+			task.wait(0.3)
+			game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack({[1]=CFrame.new(17894.3867, -20.5577297, -3562.97974, 0.999158919, -1.34026186e-08, -0.04100601, 1.42693359e-08, 1, 2.08436735e-08, 0.04100601, -2.14112692e-08, 0.999158919);}))
+			for i = 1, 200 do
+				game:GetService("ReplicatedStorage").Events.PillowEvent:FireServer("AddPillow")
+			end
+			task.wait(0.3)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.791, -23.6096096, -3577.8042, -0.999188364, 4.7269662e-08, 0.040281646, 4.80706674e-08, 1, 1.89165021e-08, -0.040281646, 2.08375148e-08, -0.999188364)
+			fireclickdetector(workspace.Lobby["Shotgun"].ClickDetector)
+			task.wait(0.3)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1209, 328, 4)
+			task.wait(0.3)
+
+			-- Equip Shotgun from inventory
+			local shotgunTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Shotgun")
+			if not shotgunTool then
+				shotgunTool = game.Players.LocalPlayer.Character:FindFirstChild("Shotgun")
+			end
+			if shotgunTool then
+				game.Players.LocalPlayer.Character.Humanoid:EquipTool(shotgunTool)
+			end
+			task.wait(0.3)
+
+			-- Auto slap players until 30 coins
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local reachedTarget = false
+			
+			while not reachedTarget do
+				task.wait(0.1)
+				
+				-- Check coin count
+				local success, coinsText = pcall(function()
+					return game.Players.LocalPlayer.PlayerGui.shotgun_Main.shotgun_hud.coins.Text
+				end)
+				
+				if success and coinsText then
+					local coins = tonumber(coinsText:match("%d+")) or 0
+					if coins >= 30 then
+						reachedTarget = true
+						break
+					end
+				end
+				
+				-- Get all eligible players (in arena)
+				local eligiblePlayers = {}
+				for _, player in pairs(Players:GetPlayers()) do
+					if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("entered") then
+						table.insert(eligiblePlayers, player)
+					end
+				end
+				
+				-- Teleport to random player and slap
+				if #eligiblePlayers > 0 then
+					local randomPlayer = eligiblePlayers[math.random(1, #eligiblePlayers)]
+					if randomPlayer and randomPlayer.Character and randomPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						-- Teleport with 0.5 second delay
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = randomPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 5)
+						task.wait(0.5)
+						
+						-- Slap the player
+						if randomPlayer.Character and randomPlayer.Character:FindFirstChild("Right Arm") then
+							local args = { randomPlayer.Character["Right Arm"] }
+							ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+						end
+					end
+				end
+			end
+			
+			task.wait(0.3)
+
+			-- Purchase explosive upgrade
+			for i = 1, 2 do
+				local args = { "purchase", "explosive" }
+				game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("shotgun"):FireServer(unpack(args))
+			end
+			task.wait(0.3)
+			
+			-- Destroy pillow fort
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.791, -23.6096096, -3577.8042, -0.999188364, 4.7269662e-08, 0.040281646, 4.80706674e-08, 1, 1.89165021e-08, -0.040281646, 2.08375148e-08, -0.999188364)
+			repeat 
+				task.wait()
+				game:GetService("ReplicatedStorage").GeneralAbility:FireServer("explosive")
+			until workspace:FindFirstChild(game.Players.LocalPlayer.Name.."'s PillowFort") == nil
+			
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "You Dont Own Pillow/50k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+	end
+})
+
+Tab:AddButton({
+	Name = "Anti Void",
+	Callback = function()
+--ANTI VOID--
+if workspace:FindFirstChild("AntiVoid") == nil then
+--ANTI VOID--
+local Safespot = Instance.new("Part",workspace)
+Safespot.Name = "AntiVoid"
+Safespot.Position = Vector3.new(-51, -12, 108)
+Safespot.Size = Vector3.new(1000000, 1, 1000000)
+Safespot.Anchored = true
+Safespot.CanCollide = true
+Safespot.Transparency = .5
+--ANTI VOID--
+OrionLib:MakeNotification({Name = "Success",Content = "Created Successfully!",Image = "rbxassetid://7733715400",Time = 3})
+else
+game.workspace.AntiVoid:Destroy()
+OrionLib:MakeNotification({Name = "Success",Content = "Removed Successfully!",Image = "rbxassetid://7733715400",Time = 3})
+end
+end
+})
