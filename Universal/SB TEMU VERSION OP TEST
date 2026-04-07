@@ -1,12 +1,14 @@
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library"))()
+
 local Window = OrionLib:MakeWindow({Name = "Slap Battles From TEMU Hub OP",HidePremium = true,IntroEnabled = true,IntroText = gameName,IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
 
-    local Tab = Window:MakeTab({
+    local Tab = Window:MakeTab({a
         Name = "Badges",
         Icon = "rbxassetid://7733673987",
         PremiumOnly = false
     })
 
-    Tab:AddSection({ Name = "Other - Scythe" })
+    Tab:AddSection({ Name = "Auto Scythe" })
 
     Tab:AddButton({
         Name = "Scythe",
@@ -165,7 +167,7 @@ Tab:AddToggle({
     end
 })
 
-    Tab:AddSection({ Name = "Auto Druid" })
+    Tab:AddSection({ Name = "Auto Tank" })
 
 Tab:AddButton({
 	Name = "Auto Get Tank Glove",
