@@ -1,0 +1,4846 @@
+--skid if u want idc just dont forget about credits or smt
+--Webhook
+local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
+
+--Library
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library"))()
+
+--Startup Script Notification
+OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
+
+--If Slap Battles Then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 or game.PlaceId == 122901288403496 or game.PlaceId == 79885102123162 or game.PlaceId == 86643839793301 or game.PlaceId == 113228834069218 or game.PlaceId == 95356852680586 then
+
+local Window = OrionLib:MakeWindow({Name = "Script Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Script Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+
+OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
+
+Tab = Window:MakeTab({
+    Name = "Welcome",
+    Icon = "rbxassetid://7734059095",
+    PremiumOnly = false
+})
+
+local player = game.Players.LocalPlayer
+Tab:AddLabel("Hello " .. player.Name .. "!")
+
+Section = Tab:AddSection({
+    Name = "Before u will start using mine script would u like to bypass anticheat?"
+})
+
+Tab:AddButton({
+	Name = "Bypass All Anticheat",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+task.wait(1.5)
+OrionLib:MakeNotification({Name = "Success",Content = "Bypassed All Anticheat",Image = "rbxassetid://7733715400",Time = 3})
+end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Info",
+    Icon = "rbxassetid://7734053426",
+    PremiumOnly = false
+})
+
+Tab:AddParagraph("Article Hub", "Total Scripts: 2")
+Tab:AddParagraph("AstroSX", "Total Scripts: 14")
+Tab:AddParagraph("BaconScripter", "Total Scripts: 18")
+Tab:AddParagraph("DonjoSx", "Total Scripts: 30")
+Tab:AddParagraph("Ekanite", "Total Scripts: 12")
+Tab:AddParagraph("Herkle", "Total Scripts: 1")
+Tab:AddParagraph("Incognito Scripts", "Total Scripts: 49")
+Tab:AddParagraph("Kiet Scripter", "Total Scripts: 62")
+Tab:AddParagraph("Nexer", "Total Scripts: 177")
+Tab:AddParagraph("Scrept", "Total Scripts: 2")
+Tab:AddParagraph("Scripter", "Total Scripts: 21")
+Tab:AddParagraph("TimerScripts", "Total Scripts: 24")
+Tab:AddParagraph("The Darkness Keeps Growing", "Total Scripts: 71")
+Tab:AddParagraph("Virus_SX", "Total Scripts: 25")
+
+Tab:AddParagraph("All Scripters", "Total Scripts: 508")
+
+local Tab = Window:MakeTab({
+	Name = "Article Hub",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Article Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File-Script/Slap_Battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Farm Bob 1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File/FarmBob1.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "AstroSX",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Astro Glove Unfinished",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Astro-Glove-Unfinished/refs/heads/main/Discountinued"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Project Astro Reborn",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Project-Astro-/refs/heads/main/Project%20Astro%20Reborn"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Edgelord Astro",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Edgelord/refs/heads/main/Edgelord%20Astro"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Coordinate Checker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Coordinate-Checker-/refs/heads/main/Coordinate%20Checker"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Project Astro Universal Keyless",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Project-Astro-Univeraal/refs/heads/main/Project%20Astro%20Universal%20Keyless1-2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Project Astro Universal Official",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Project-Astro-Universal-Official/refs/heads/main/Project%20Astro%20Universal%20Official"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Project Astro V4",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Authorized-members-only/refs/heads/main/Project%20Astro%20V4"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE 500 Killstreak Fanmade",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Fe-500-Killstreak-Fanmade/refs/heads/main/500%20Killstreak"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Project Astro SB Legacy",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Project-astro-Sb-Legacy/refs/heads/main/Legacy%20ver"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Full Sword",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Auto-Full-Sword/refs/heads/main/Full%20Sword"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Death Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Edgelord-v0.2/refs/heads/main/Death%20glove"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Plushiee",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Plushiee/refs/heads/main/Rah"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Wssp Hub (Early Access)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Test2/refs/heads/main/Wssp%20hub%20(early%20access)"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Test/refs/heads/main/Test"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "BaconScripter",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Nothing",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/Nothing/refs/heads/main/447854973747854973747854973744"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Anti AFK",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/GUI/refs/heads/main/Anti%20AFK"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/Script/refs/heads/main/Slap%20Battles/Bob%20Farm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Give Players Kill Reaper",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/Script/refs/heads/main/Slap%20Battles/Give%20Players%20Kill%20Reaper"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Baller Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/BallerFarm.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "CT To Get Trap Fast",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/CTtoGetTrapFast.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fish Farm + Get Kinetic",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/FishFarm%2BGetKinetic.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Get Chain SBBB",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/GetChainSBBB.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Get Full Charge Kinetic",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/GetFullChargeKinetic.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Get Hallow Jack",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/GetHallowJack.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/OPSlapsFarm.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SBBB Badges Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/SBBB%20Badges%20Hub.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SB Get Null + Get Tinkerer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/SBGetNull%2BGetTinkerer.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Candy Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/Slap%20Battles%20Candy%20Farm.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Christmas Events",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/BaconScripterLua/refs/heads/main/SlapBattles%26ChristmasEvents.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "slap battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/rcdabest/refs/heads/main/slapbattles"))()
+end
+})
+
+Tab:AddButton({
+	Name = "R20",
+	Callback = function()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/cheesynob39/R2O/main/Main.lua")))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/1-Line-Scripts/refs/heads/main/Slap%20Battles"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "DonjoSx",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Asgore car meme",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/Asgore%20car%20meme.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Voodoo/Trap/Fish",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/AutoVoodoo%26Trap%26Fish.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "CustomGlove Ruler",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/CustomGlove_ruler.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude mod 100%",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/Elude_mod_100%25_UI.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Gloves Abuser",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/GlovesAbuser.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Max Gojo",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/Max_Gojo.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "XMasHub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/XMasHub.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "femboy glove custom",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/femboy%20glove%20custom.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "free ability",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dramukin-fermal/Slap-battles/refs/heads/main/free%20ability.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Alchemist abuser",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Alchemist%20abuser.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer slap farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Boxer-slap-farm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Brick Abuser",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Brick-Abuser.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Glove Morph",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Glove-Morph"))()
+end
+})
+
+Tab:AddButton({
+	Name = "MUI [GloveCustom]",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/MUI%5BGloveCustom%5D.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mace Mastery",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Mace-Mastery.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm GUI",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/Mastery-FarmGUI"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm GUI V1+",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/MasteryFarmGUIV1%5BPlus%5D"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Helper Newest Version",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/MasteryHelper.NewestVersion"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Helper V1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/MasteryHelperV1.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SBSD Mojjos",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/SBSDMojjos.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Self Ban Inf Jump",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/SlapBattlesSelfBanInfJump.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SuperCrasher!!!Uwa!SoLag:skull:DontAskWhyISTheLinkSoLongLol,ILikeItAlsoRememeberYouHaveToEquipGrappleToUseThisScript>-<",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/SuperCrasher!!!Uwa!SoLag%3Askull%3ADontAskWhyISTheLinkSoLongLol%2CILikeItAlsoRememeberYouHaveToEquipGrappleToUseThisScript>-<"))()
+end
+})
+
+Tab:AddButton({
+	Name = "UnFinished Death Glove MadeByTheFool",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/UnFinishedDeathGlove-MadeByTheFool-.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "[FAKE] Glovel Mastery",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/%5BFake%5DGlovelMastery"))()
+end
+})
+
+Tab:AddButton({
+	Name = "death 0.8",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/death%5B0.8%5D.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "schlob matstery",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/schlob-matstery.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "scp096",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/scp096.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Admin CMDR",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/General-SB-/refs/heads/main/AdminCMDR.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Security",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/General-SB-/refs/heads/main/Security.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SB Nuker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Premium-Scripts/refs/heads/main/SBNuker.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Ekanite",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Mastery helper",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/Mastery_helper.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Shopkeeper",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/Shopkeeper.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "car keys race",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/car_keys_race.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "conker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/conker.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "debug",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/debug.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "harvester",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/harvester.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "paint",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/paint.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "plate",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/plate.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "reflect",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/reflect.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "snowman",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/snowman.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "stalker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/stalker.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/test.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Herkle",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Herkle Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/decryp1/Herkle-Hub/refs/heads/main/game%20redirect"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Incognito Scripts",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Alchemist Abuser",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/AlchemistAbuser"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Harvester",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/AutoHarvester"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Poltergeist",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/AutoPoltergeist"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Slasher",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/AutoSlasher"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Badges Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/BadgesHub"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ban Evidence",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/BanEvidence"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bounty Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/BountyFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Candy Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/CandyFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Edgelord",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/Edgelord"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Equip Any Badge Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/EquipAnyBadgeGloves"))()
+end
+})
+
+Tab:AddButton({
+	Name = "God Human",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/GodHuman"))()
+end
+})
+
+Tab:AddButton({
+	Name = "GodMode",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/GodMode"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Bounty",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantBounty"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Car Keys",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantCarKeys"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Dave",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantDave"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Debug",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantDebug"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantGloves"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Masteries",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantMasteries"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Mortis",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantMortis"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Plate",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantPlate"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Reflect",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/InstantReflect"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kick Gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/KickGui"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Killstreak Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/KillstreakFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "No Cooldown",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/NoCooldown"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Sans Comeback",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SansComeback"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Sans Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SansGlove"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Sans Glove Finished",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SansGloveFinished"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Server Destroyer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/ServerDestroyer"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Clock",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SlapFarmClock"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Dual",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SlapFarmDual"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Mace",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SlapFarmMace"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm OP",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SlapFarmOP"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SlapFarmScript"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Snow Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/SnowFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tycoon Clicker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapBattles/refs/heads/main/TycoonClicker"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer Farm Rework",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/BoxerFarmRework"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Slap Farm Best",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/OPSlapFarmBest"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Paid Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/PaidSlapFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Paid Slap Farm V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/PaidSlapFarmV2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm OP",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/SlapFarmOP"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/SlapFarmScript"))()
+end
+})
+
+Tab:AddButton({
+	Name = "destination",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapFarmScript/refs/heads/main/destination"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Win - SR",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapRoyale/refs/heads/main/InstantWin"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Win Paid - SR",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapRoyale/refs/heads/main/InstantWinPaid"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Win Script - SR",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SlapRoyale/refs/heads/main/InstantWinScript"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Custom Death Sound",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SCROPT/refs/heads/main/CustomDeathSound"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SCROPT",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SCROPT/refs/heads/main/SCROPT.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SCROPT 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/SCROPT/refs/heads/main/SCROPT2.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "inco hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/IncognitoScripts/refs/heads/main/incohub.txt"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Kiet Scripter",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "FE Car",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/FECar.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fe 1000 Killstreak V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/Fe1000KillstreakV2.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "IMAGINARY GLOVE",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/IMAGINARYGLOVE.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ryomen Sukuna",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/RyomenSukuna.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/Test.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/Test2.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ZAWARUDO",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/CustomGlove/refs/heads/main/ZAWARUDO.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Attack Titan Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/AttackTitanTest"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Debug",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/AutoDebug.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Harvester Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/AutoGetHarvesterGlove.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Lag Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/AutoLagGlove.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/BoxerFarm.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Brick Control",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/BrickControl"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Change Color All",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/ChangeColorAll.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE custom 500 killstreak",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FEcustom500killstreak.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE 1000 Killstreak",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/Fe1000Killstreak"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Edgelord 2.0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeEdgelord2.0.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Free Emote",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Glove Master",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeGloveMaster.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Hallow Purple",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeHallowPurple.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Killerfish 2.0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeKillerfish2.0.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FE Music",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeMusic"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Free All Glove Badge",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FreeAllGloveBadge.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Free Private Server",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FreePrivateServer.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Get New Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/GetNewGlove.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Minos Prime FanMade",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/MinosPrimeFanMade.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Minos Prime FanMade 2.0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/MinosPrimeFanMade2.0.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OVERSEER Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/OVERSEERGlove.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Protected Script (7364978843381148)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/Protected_7364978843381148.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Protected Script (8343134358921399)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/Protected_8343134358921399.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SlapBattles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/SlapBattles"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles But Admin Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/SlapBattlesButAdminGloves.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Idk What To Name It",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/SlapBattlesIdkWhatToNameIt.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "The Flower פרחים",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/TheFlowerפרחים.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Titan Speaker Man",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/TitanSpeakerMan.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Upgrade FE 1K Killstreak",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/UpgradeFe1KKillstreak.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Upgrade Spy default Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/UpgradeSpydefaultScript"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto Get New Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/autoGetNewGlove.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ability",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Ability.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Brick Control",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/BrickControl.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Just Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/JustTest"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Just Test 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/JustTest3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Killerfish",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Killerfish.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test Protected Script (5830373764446798)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Protected_5830373764446798.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Something",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Something.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Test2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Test3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 4",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Test4"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test Slap Battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/TestSlapBattles.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tt",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Test/refs/heads/main/Tt.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Sisyphus Prime",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Ultrakill/refs/heads/main/SisyphusPrime.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ability 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Slap-aura/refs/heads/main/Ability%202"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap aura script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Slap-aura/refs/heads/main/Slap%20aura%20script"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Aura 1.5",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Slap-aura/refs/heads/main/SlapAura1.5"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ult",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Slap-aura/refs/heads/main/Ult"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Upgrade Spy Default",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Spy-default-script/refs/heads/main/UpgradeSpyDefault"))()
+end
+})
+
+Tab:AddButton({
+	Name = "custom glove ability",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Spy-default-script/refs/heads/main/custom%20glove%20ability.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Custom Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Custom-glove-Beta-/refs/heads/main/CustomGlove.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Custom Glove Beta",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Custom-glove-Beta-/refs/heads/main/CustomGloveBeta"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Nah (1)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Custom-glove-Beta-/refs/heads/main/Nah%20(1).txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap battles gu",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/Slap-battles-Ui/refs/heads/main/Slap%20battles%20gu"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Nexer",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "ubh version 3.8",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ubh_version-3.8/refs/heads/main/Protected_3569183483631142.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ubh v. 3.7 debug beta",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ubh-v3.7-debug-beta/refs/heads/main/Protected_7577930750591352.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer Farm Upgraded",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BoxerFarmUpgraded/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Premium Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/PremiumSlapFarm/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SFG Serverhop",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SFG_Serverhop/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ragdoll All",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/RagdollAll/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ubh v. 3.6",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ubh-v3.6/refs/heads/main/Protected_9683456133622327.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Report",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoReport/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Santa",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetSanta/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Jerry",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetJerry/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kick Gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/KickGui/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Bob",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetBob/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Admin Gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AdminGui/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "test slap",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/testslap/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "UBH V3 EARLY ACCESS TEST",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UBH-v3-EARLY-ACCESS-TEST/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "materialize",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/materialize/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Animation Pack",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AnimationPack/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Animation Pack Plus",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AnimationPackPlus/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get tag glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autogettagglove/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Clock Extended",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetClockExtended/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "brazil gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/brazilgloves/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get spin",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autogetspin/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "water",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/water/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Detect Exploiters",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Detection/DetectExploiters.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Replica + Dual",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/ReplicaDual.luau'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Admin Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/AdminGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Alchemist Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/AlchemistGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Angler Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/AnglerGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Avatar And Hunter Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/AvatarAndHunterGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Avatar And Relude Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/AvatarAndReludeGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bind Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/BindGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/BobGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/BoxerGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Buddies Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/BuddiesGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Chain Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/ChainGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Clock Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/ClockGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Counter Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/CounterGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Eggler Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/EgglerGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude And Counter Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/EludeAndCounterGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/EludeGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fan And Boxer Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FanAndBoxerGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fan Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FanGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fish And Voodoo And Trap Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FishAndVoodooAndTrapGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fish And Voodoo Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FishAndVoodooGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fish Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FishGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fourteen Gloves (lol)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FourteenGloves(Lol).luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Frostbite Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/FrostbiteGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Glovel Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/GlovelGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hexa Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/HexaGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hitman Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/HitmanGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hunter Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/HunterGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hybrid Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/HybridGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "IceSkate Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/IceSkateGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kinetic Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/KineticGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Knockoff Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/KnockoffGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Lamp Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/LampGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Link Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/LinkGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "MEGAROCK Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/MEGAROCKGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Metaverse Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/MetaverseGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mouse Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/MouseGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Plank Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/PlankGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "REDACTED Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/REDACTEDGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "RNG Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/RNGGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Relude Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/ReludeGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Snowroller Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/SnowrollerGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Spoonful Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/SpoonfulGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Swordfighter Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/SwordfighterGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tank Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/TankGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Trap Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/TrapGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "UTG Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/UTGGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Voodoo Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/VoodooGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Water Glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Gloves/WaterGlove.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm Gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/MasteryFarmGui/Source.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Clear Non Usable Gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Other/ClearNonUsableGloves.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "GodMode",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Other/GodMode.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "No Cooldown",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Other/NoCooldown.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Support Gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/Other/SupportGui.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/main/main.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (v4.1)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/SlapFarmGui/Versions/(v4.1).luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (v4.2)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/SlapFarmGui/Versions/(v4.2).luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (v4.3)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/SlapFarmGui/Versions/(v4.3).luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (v4.4)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/OpenSourceScripts/refs/heads/main/SlapFarmGui/Versions/(v4.4).luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "More UNC V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/MoreUnc/refs/heads/main/MoreUNC_V2.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG)",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/main/main.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) Early Access",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/main/ea.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (V4.0)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Versions/(V4.0).lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (V4.1)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Versions/(V4.1).lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (V4.2)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Versions/(V4.2).lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (V4.3)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Versions/(V4.3).lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) Outdated",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Outdated"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (Protected 7903570666819905)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/Protected_7903570666819905.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ea",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/ea.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm Gui (SFG) (Main)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmgui/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ultimate Badge Hub",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/main.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ultimate Badge Hub (UBH) New Launcher",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/NewLauncher.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Nothing Much Just UBH v4.4",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/NothingMuch-JustUBHv4.4"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ultimate Badge Hub (UBH) Old Launcher",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/OldLauncher.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "UBH v4.1 REBORN",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/UBHv4.1REBORN.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ultimate Badge Hub (UBH) Main",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ubh but this is v4.3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/ubh-but-this-is-v4.3.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ultimate Badge Hub (UBH) version4.2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/UltimateBadgeHub/refs/heads/main/version4.2.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "recall cheat sheet",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/recallcheatsheet/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm Gui",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/MasteryFarmGui/refs/heads/main/main.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm Gui (MFG) Main",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/MasteryFarmGui/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Mastery Farm Gui (MFG) early access",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/MasteryFarmGui/refs/heads/main/mfgearlyaccess.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Snowroller Main",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetSnowroller/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Snowroller (obf_9pL8aE2T4TOi153LuNVQQTosH6DvI8rFM01Y4AFrs2aBgNc1SD47u1txT3lO3Ux2)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetSnowroller/refs/heads/main/obf_9pL8aE2T4TOi153LuNVQQTosH6DvI8rFM01Y4AFrs2aBgNc1SD47u1txT3lO3Ux2.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bypass AntiCheat",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/BypassAntiCheat/refs/heads/main/main.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bypass AntiCheat Main",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BypassAntiCheat/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "swordfighter slap farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/swordfighterslapfarm/refs/heads/main/luau.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Metaverse",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetMetaverse/refs/heads/main/OpenSource.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Mouse",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetMouse/refs/heads/main/OpenSource.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Hexagon",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetHexagon/refs/heads/main/OpenSource.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Clock",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetClock/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Change Nametag",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/Change_Nametag/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Default Changer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/DefaultChanger/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "ubh v4 finally lol",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ubh-v4-finallylol/refs/heads/main/Protected_3213696534361476.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bro Can I Use Your UBH v.3.9",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BroCanIUseYourUBH-v3.9/refs/heads/main/Protected_2278331425323228.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob Boss Slap",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BossSlap/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Troll Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/TrollHub/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Brazil Check",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BrazilCheck/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/gloves/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Win Tournament",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoWinTournament/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "boxer main",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/boxermain/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Auto Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoFarm/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Radio FE",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/RadioFE/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Server Lagger",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ServerLagger/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Infinite Titan",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/InfiniteTitan/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "King Sbeve",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/KingSbeve/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Custom",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/Custom/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "get all badges fake",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Get Poltergeist",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoGetPoltergeist/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bypassed Slap",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BypassedSlap/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Poltergeist glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/Poltergeist-glove/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "PG",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/PG/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Gravestone Finder",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/GravestoneFinder/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "custom glove 2/3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/custom_glove3/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "portal destroyer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/destroyer1/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "skibidi",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/skibidi/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Candy Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/CandyFarm/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Halloween Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/HalloweenHub/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles TP3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SlapBattlesTP3/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "sus",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/sus/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bind Sus",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/BindSus/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles TP2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SlapBattlesTP2/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles TP",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SlapBattlesTP/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Chain Sus",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/ChainSus/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Animation Player",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AnimationPlayer/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "bind 2/3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/bind3/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "bind",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/bind/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "hook",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/hook/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "fling",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/fling/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "fish voodoo trap",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/fish-voodoo-trap/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "null",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/null/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "sussy",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/sussy/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto Tourtament",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/AutoTour/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto farm serverhop",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autofarm-serverhop/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto find orb",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autofindorb/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "serverhop",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/serverhop/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "find orb",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/findorb/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/test/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto farm small serverhop",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autofarm-smallserverhop/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get fan boxer gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/auto-get-fan-boxer-gloves/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get fan boxer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autogetfanboxer/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get boxer glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autogetboxerglove/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "barzil",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/barzil/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "auto get fan glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/autogetfanglove/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "teleport gui",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/teleportgui/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "slap farming v2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarmingv2/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "slap farming",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/slapfarming/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap League",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SlapLeague/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "The Dark Realm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/TheDarkRealm/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude Maze",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/EludeMaze/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ice Trials",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/IceTrials/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "The Staff Application",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/TheStaffApplication/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "The Null Zone",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/TheNullZone/refs/heads/main/main.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pro666Pro/SlapBattles/refs/heads/main/main.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Scrept",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "AWE Hub v1.2.1 | SR",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/screptmaster/awe-hub/main/slap-royale.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "testing version slap royale",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/screptmaster/testing/refs/heads/main/testingversion-slap-royale.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Scripter",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Auto Farm Slapples",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/AutoFarm%20Slapples"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ban Evidence",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Ban%20Evidence"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Dual Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Dual%20Slap%20Farm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Pixelation Glove (Discontinued)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Pixelation%20Glove"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SB Hub OP Script (GUI CHOOSER) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/SB%20Hub%20OP%20Script%20(GUI%20CHOOSER)"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/SF"))()
+end
+})
+
+Tab:AddButton({
+	Name = "new slap farm baby",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/newslapfarmbaby"))()
+end
+})
+
+Tab:AddButton({
+    Name = "Load Badges Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Badges%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Masteries Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Masteries%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Slap Farm Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Farm%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Helper Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Helper%20Hub.txt"))()
+  end    
+})
+
+Tab:AddButton({
+    Name = "Load Halloween Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Halloween%20Hub.txt"))()
+  end    
+})
+
+Tab:AddButton({
+    Name = "Load Christmas Hub Script (Orion) (Scripter Hub)",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Christmas%20Hub.txt"))()
+  end    
+})
+
+Tab:AddButton({
+	Name = "Load Badges Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Badges%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Load Masteries Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Masteries%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Load Slap Farm Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Farm%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Load Helper Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Helper%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Load Halloween Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Halloween%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Load Christmas Hub Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Christmas%20Hub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Hub OP Script (Orion) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Hub OP Script (Fluent) (Scripter Hub)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "TimerScripts",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "xmas jub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Sigmahub/refs/heads/main/xmasjub.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Goated Christmas Negger",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Idkbroiwu/refs/heads/main/GoatedChristmasNegger"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fixed Replica + El Gato Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/UPGRADED-Fixed/refs/heads/main/Fixed%20Replica%2BEl%20Gato%20Farm.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Cheaper Slap Farmer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/CheaperSlapFarmer/refs/heads/main/Protected_4062453832423400.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm But Better",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/SlapBlink/refs/heads/main/SlapFarmButBetter"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Slapballer/refs/heads/main/Slap%20Farm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Pillow Panel",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/PillowPanel/refs/heads/main/Protected_3962207669401083.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Death Glove V3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/DeathGloveV3/refs/heads/main/Protected_3719696550000143%20(1).txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Op Slapple Farmer",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/oP-slapple-farm/refs/heads/main/OpSlappleFarmer"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Legendary Boxer farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Legendary-Boxer-farm/refs/heads/main/Opashell"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Free Boombox",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/FreeBoombox/refs/heads/main/BoomboxByMe"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bind glove Get By donjo",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Bind-glove-Get-By-donjo/refs/heads/main/Bind"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Death",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Death/refs/heads/main/Da"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Death glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Deathglove/refs/heads/main/Death"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Death Glove V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/TheDeath/refs/heads/main/DeathGloveV2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Boxer Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Boxer/refs/heads/main/BoxerSlapFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Boxer Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/OPBoxerFarm/refs/heads/main/Boxer"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Gloves Abused",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Glovesbuser/refs/heads/main/GlovesAbused"))()
+end
+})
+
+Tab:AddButton({
+	Name = "I abuse gloves",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Glovesabuser/refs/heads/main/Iabusegloves"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Reaper",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/InjuredEap/refs/heads/main/Reaper"))()
+end
+})
+
+Tab:AddButton({
+	Name = "DEATH",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/kittyo/refs/heads/main/DEATH"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Edgelord",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/CEG/refs/heads/main/Edgelord"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Drunk Guy",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/DrunkGuy/refs/heads/main/DrunkGuyS"))()
+end
+})
+
+Tab:AddButton({
+	Name = "my script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Rakeroblox123/Rakeroblox123/refs/heads/main/my%20script"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "The Darkness Keeps Growing",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Jerry",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/SB-Christmas-/refs/heads/main/Jerry"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Glitch Typer V0.1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Modules/refs/heads/main/GlitchTyperV0.1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Clock",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/NewGloves/refs/heads/main/Clock"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Candy Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Halloween/refs/heads/main/CandyFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hallow Jack",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Halloween/refs/heads/main/HallowJack"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Poltergeist",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Halloween/refs/heads/main/Poltergeist"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bind",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Bind-G/refs/heads/main/Bind"))()
+end
+})
+
+Tab:AddButton({
+	Name = "1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "GHUB V0.2 ",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/GHUBV0.2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "GHUB_V0.2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/GHUB_V0.2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Stest",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/Stest"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Support v0.2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/Supportv0.2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test loader",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Loader/refs/heads/main/Testloader"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hybrid",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Hybrid"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Plank",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Plank"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Scythe",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Scythe"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Serverhop bob farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Serverhopbobfarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap BOT v3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Slap%20BOT%20v3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SlapBotV1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/SlapBotV1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SlapBotV2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/SlapBotV2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slapb2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Slapb2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Spoonful",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Spoonful"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Water",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Book/refs/heads/main/Water"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Guid",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Guide/refs/heads/main/Guid"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Guide",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Guide/refs/heads/main/Guide"))()
+end
+})
+
+Tab:AddButton({
+	Name = "a",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tsf/refs/heads/main/a"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Quick Equip Gui V1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/QuickEquipGui/refs/heads/main/V1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Quick Equip Gui V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/QuickEquipGui/refs/heads/main/V2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Quick Equip Gui V3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/QuickEquipGui/refs/heads/main/V3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Answer sheet",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tas/refs/heads/main/Answersheet"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI V 0.1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI%20V%200.1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI 1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI3"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES GUI 5",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/TestMain/refs/heads/main/SLAPBATTLESGUI5"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test trash slap Aura",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Task/refs/heads/main/TesttrashslapAura"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Trash Aura",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Task/refs/heads/main/TrashAura"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tasf",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tasf/refs/heads/main/Tasf"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Alchemist",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Alchemist-/refs/heads/main/Alchemist"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Idk/Udk",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tasg/refs/heads/main/Idk"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tosf",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tasg/refs/heads/main/Tosf"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tesf",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Dusty1234567890/refs/heads/main/Tesf"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Runw",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Runw/refs/heads/main/Run"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Run",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Run/refs/heads/main/Run"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Bobfarmupd/refs/heads/main/Bobfarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob farm update",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Bobfarm2/refs/heads/main/Bobfarmupdate"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tasf",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tesft/refs/heads/main/Tasf"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bob Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Tes/refs/heads/main/BobFarm"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Testf",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Testf/refs/heads/main/Tesf"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Rob",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Rob/refs/heads/main/Rob"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Test0/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Null zone 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Null-zone3/refs/heads/main/Null%20zone"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Test3/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Null zone",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Null-zone/refs/heads/main/Null"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Pan 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Pan2/refs/heads/main/Pan2"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Pan 1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Pan/refs/heads/main/Pan1"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Test2/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude and COUNTER GASTER HUB",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Elude-and-counter2-GASTER-HUB/refs/heads/main/Elude%20and%20COUNTER%20GASTER%20HUB"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test 1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Test1/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Elude and counter Gaster Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Elude-counter/refs/heads/main/Elude%20and%20counter%20Gaster%20hub"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Just a joke don't believe it",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Joke/refs/heads/main/Just%20a%20joke%20don't%20believe%20it"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ab glovr badge admin",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Ab-admin-glove-badge/refs/heads/main/Ab%20glovr%20badge%20admin"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ab9",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Slap-battles-admin-glovr-badge/refs/heads/main/Ab9"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Test/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ab admin glove 3",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Ab3/refs/heads/main/Ab%20admin%20glove%203"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Ab2 admin glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Ab2-admin-glove/refs/heads/main/Lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SB admin glove",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Slap-battles-admin-glove/refs/heads/main/SB%20admin%20glove"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "VirusSX",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "IM LOSING MY SHIT (10)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/IM-LOSING-MY-SHIT/refs/heads/main/message%20(10).txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "IM LOSING MY SHIT (8)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/IM-LOSING-MY-SHIT/refs/heads/main/message%20(8).txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Apex Destroyer Rework Release",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Apex-Destroyer-Rework-Release/refs/heads/main/obfuscated_script-1761344206322.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "obfuscated script (1759255349933) V1-0.8",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V1-0.8/refs/heads/main/obfuscated_script-1759255349933.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "obfuscated script (1759255622069) V1-0.8",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V1-0.8/refs/heads/main/obfuscated_script-1759255622069.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "obfuscated script (1759256306624) V1-0.8",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V1-0.8/refs/heads/main/obfuscated_script-1759256306624.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "V1 Go Brrrrrrrr",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V1-Go-Brrrrrrrr/refs/heads/main/obfuscated_script-1758878180806.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Updated V1 Hell Yeah",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Updated-V1-Hell-Yeah-/refs/heads/main/obfuscated_script-1758565486551.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Updated SNTS",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Updated-SNTS/refs/heads/main/obfuscated_script-1758471841807.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Simple Null Teleport Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Simple-Null-Teleport-Script-/refs/heads/main/obfuscated_script-1758418809592.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "SLAP BATTLES V1",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/SLAP-BATTLES-V1-/refs/heads/main/obfuscated_script-1758368771030.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "obfuscated script (1758338251355) V1 WIP",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V1-WIP/refs/heads/main/obfuscated_script-1758338251355.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "V I R U S",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/V-I-R-U-S/refs/heads/main/obfuscated_script-1757287028032.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test Attacker",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Test-Attacker/refs/heads/main/Protected_6857565259884539.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Attacker Slap Battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Attacker-Slap-Battles-/refs/heads/main/Test"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Test Apex",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/TestApex/refs/heads/main/Protected_1719513278043367.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Bot",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/TestBot/refs/heads/main/Bot"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Not Bot Script Trust",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/TestBot/refs/heads/main/Not%20Bot%20Script%20Trust"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kill bot",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Test/refs/heads/main/Kill%20bot"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kill bot slap battles WIP",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Kill-bot-slap-battles-WIP/refs/heads/main/KillBot"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slasher V2 slap battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Slap-battles-slasher-v2/refs/heads/main/Slasher%20V2%20slap%20battles"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Simple rhythm explosion script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Simple-rhythm-explosion-script/refs/heads/main/Rhythm%20explosion"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Get all items in Lucky Block Battlegrounds",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/Get-all-items-in-Lucky-Block-Battlegrounds/refs/heads/main/Script"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Virus Pirus Dirus Script Hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/InnocentViru/VirusPirusDirus-Script-Hub/refs/heads/main/VirusPirusDirus%20Script%20Hub"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Simple Super WalkSpeed Giver Script",
+	Callback = function()
+local players = game:GetService("Players") local player = players.LocalPlayer local playerGui = player:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui") screenGui.Name = "MeuScreenGui" screenGui.Parent = playerGui
+local textButton = Instance.new("TextButton") textButton.Name = "Meubotao"
+
+textButton.Text = "Set Super WalkSpeed" textButton.Size = UDim2.new(0.2, 0, 0.1, 0) textButton.Position = UDim2.new(0.5, -textButton.Size.X.Scale * screenGui.AbsoluteSize.X / 2, 0.5, -textButton.Size.Y.Scale * screenGui.AbsoluteSize.Y / 2) textButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) textButton.TextColor3 = Color3.fromRGB(0, 0, 0) textButton.BorderColor3 = Color3.fromRGB(0, 0, 0) textButton.BorderSizePixel = 2 textButton.Font = Enum.Font.SourceSansBold textButton.Draggable = true textButton.Active = true
+
+textButton.Parent = screenGui
+
+textButton.MouseButton1Click:Connect(function() local player = game.Players.LocalPlayer local character = player.Character local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+
+if humanoid then humanoid.WalkSpeed = 999 end
+end)
+end
+})
+
+-- SETTINGS
+Tab = Window:MakeTab({
+    Name = "Settings",
+    Icon = "rbxassetid://7734053495",
+    PremiumOnly = false
+})
+
+-- Section: Value Changer
+Section = Tab:AddSection({
+    Name = "Value Changer"
+})
+
+Tab:AddTextbox({
+    Name = "How Many Slaps? (Visual)",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        local slapNumber = tonumber(Value)
+        if slapNumber and slapNumber > 0 then
+            SlapChanger = slapNumber
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Type a correct number (greater than 0)!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Slaps (Visual)",
+    Callback = function()
+        if SlapChanger then
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter a valid number of slaps!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddTextbox({
+    Name = "How Many Null Shards? (Visual)",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        local nullshardNumber = tonumber(Value)
+        if nullshardNumber and nullshardNumber >= 0 then
+            getgenv().nullshardChanger = tostring(nullshardNumber)  -- Convert to string since it's a StringValue
+
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Type a correct number (0 or greater)!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Null Shards (Visual)",
+    Callback = function()
+        if getgenv().nullshardChanger then
+            local playerName = game.Players.LocalPlayer.Name
+            
+            -- Wait for ReplicatedStorage to load
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            
+            -- Check if PlayerData folder exists
+            local playerData = ReplicatedStorage:WaitForChild("PlayerData", 5)
+            if not playerData then
+
+                return
+            end
+            
+            -- Check if player folder exists
+            local playerFolder = playerData:WaitForChild(playerName, 5)
+            if not playerFolder then
+
+                return
+            end
+            
+            -- Check if NullShards StringValue exists
+            local nullShardsValue = playerFolder:WaitForChild("NullShards", 5)
+            if not nullShardsValue then
+
+                return
+            end
+            
+            -- Verify it's a StringValue
+            if nullShardsValue.ClassName ~= "StringValue" then
+
+                return
+            end
+            
+            -- Set the value
+            local oldValue = nullShardsValue.Value
+            nullShardsValue.Value = getgenv().nullshardChanger
+            
+            
+            print("[Null Shards] Changed from " .. oldValue .. " to " .. getgenv().nullshardChanger)
+            
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter a valid number first!",
+                Image = "rbxassetid://7733975185",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Section: Badge Giver
+Section = Tab:AddSection({
+    Name = "Badge Giver"
+})
+
+Tab:AddButton({
+    Name = "Give All Badges (Visual)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+    end
+})
+
+-- Variables
+local nametagText = ""
+local autoNametag = false
+local player = game.Players.LocalPlayer
+
+-- Textbox for nametag
+Tab:AddTextbox({
+    Name = "Type Ur Own Any Nametag",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        nametagText = Value
+    end
+})
+
+-- Button to apply nametag once
+Tab:AddButton({
+    Name = "Change Nametag",
+    Callback = function()
+        if nametagText == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please enter text in the textbox first!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Find and update nametag
+        local character = player.Character
+        if character then
+            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+            if nametag then
+                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                if topLabel then
+                    topLabel.Text = nametagText
+                    OrionLib:MakeNotification({
+                        Name = "Success",
+                        Content = "Nametag changed to: " .. nametagText,
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "TopLabel not found!",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Nametag not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Character not found!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Toggle for auto nametag
+Tab:AddToggle({
+    Name = "Auto Change Nametag",
+    Default = false,
+    Callback = function(Value)
+        autoNametag = Value
+        if Value then
+            -- Start auto nametag loop
+            task.spawn(function()
+                while autoNametag do
+                    if nametagText ~= "" then
+                        local character = player.Character
+                        if character then
+                            local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+                            if nametag then
+                                local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+                                if topLabel then
+                                    topLabel.Text = nametagText
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        end
+    end
+})
+
+-- Auto reapply nametag when character respawns
+player.CharacterAdded:Connect(function(character)
+    if autoNametag and nametagText ~= "" then
+        -- Wait for character to fully load
+        wait(2)
+        local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
+        if nametag then
+            local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
+            if topLabel then
+                topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Section = Tab:AddSection({
+    Name = "Slap Aura"
+})
+
+-- Optimized Slap Aura with built-in glove list
+do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
+    local slapAuraConnection
+    local lastHitTime = 0
+    local currentCooldown = 0.5
+    local isSlapAuraEnabled = false
+    local localPlayer = Players.LocalPlayer
+    
+    -- Built-in glove hits table (no external loading)
+    local gloveHits = {
+        -- Standard Gloves
+        ["Default"] = ReplicatedStorage.b,
+        ["Dual"] = ReplicatedStorage.GeneralHit,
+        ["Diamond"] = ReplicatedStorage.DiamondHit,
+        ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
+        ["Extended"] = ReplicatedStorage.GeneralHit,
+        ["Brick"] = ReplicatedStorage.BrickHit,
+        ["Snow"] = ReplicatedStorage.SnowHit,
+        ["Pull"] = ReplicatedStorage.PullHit,
+        ["Flash"] = ReplicatedStorage.FlashHit,
+        ["Stilts"] = ReplicatedStorage.GeneralHit,
+        ["Spring"] = ReplicatedStorage.springhit,
+        ["Pinwheel"] = ReplicatedStorage.GeneralHit,
+        ["Swapper"] = ReplicatedStorage.GeneralHit,
+        ["Screwdriver"] = ReplicatedStorage.GeneralHit,
+        ["Bull"] = ReplicatedStorage.BullHit,
+        ["Dice"] = ReplicatedStorage.DiceHit,
+        ["Ghost"] = ReplicatedStorage.GhostHit,
+        ["Thanos"] = ReplicatedStorage.GeneralHit,
+        ["Stun"] = ReplicatedStorage.HtStun,
+        ["L.O.L.B.O.M.B"] = ReplicatedStorage.GeneralHit,
+        ["Za Hando"] = ReplicatedStorage.zhramt,
+        ["Fort"] = ReplicatedStorage.Fort,
+        ["Magnet"] = ReplicatedStorage.MagnetHIT,
+        ["Pusher"] = ReplicatedStorage.PusherHit,
+        ["Anchor"] = ReplicatedStorage.hitAnchor,
+        ["Space"] = ReplicatedStorage.HtSpace,
+        ["Boomerang"] = ReplicatedStorage.BoomerangH,
+        ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mail"] = ReplicatedStorage.MailHit,
+        ["T H I C K"] = ReplicatedStorage.GeneralHit,
+        ["Golden"] = ReplicatedStorage.GoldenHit,
+        ["Squid"] = ReplicatedStorage.GeneralHit,
+        ["MR"] = ReplicatedStorage.MisterHit,
+        ["Hive"] = ReplicatedStorage.GeneralHit,
+        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Baby"] = ReplicatedStorage.GeneralHit,
+        ["Replica"] = ReplicatedStorage.ReplicaHit,
+        ["Mace"] = ReplicatedStorage.GeneralHit,
+        ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Killstreak"] = ReplicatedStorage.KSHit,
+        ["Pineslapple"] = ReplicatedStorage.GeneralHit, 
+        ["Reverse"] = ReplicatedStorage.ReverseHit,
+        ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
+        ["Duelist"] = ReplicatedStorage.DuelistHit,
+        ["woah"] = ReplicatedStorage.GeneralHit,
+        ["Ice"] = ReplicatedStorage.IceHit,
+        ["Gummy"] = ReplicatedStorage.GeneralHit,
+        ["Adios"] = ReplicatedStorage.hitAdios,
+        ["Blocked"] = ReplicatedStorage.BlockedHit,
+        ["Divert"] = ReplicatedStorage.GeneralHit,
+        ["Engineer"] = ReplicatedStorage.engiehit,
+        ["Rocky"] = ReplicatedStorage.RockyHit,
+        ["Coil"] = ReplicatedStorage.GeneralHit,
+        ["Conveyor"] = ReplicatedStorage.ConvHit,
+        ["Balloony"] = ReplicatedStorage.GeneralHit,
+        ["Phantom"] = ReplicatedStorage.PhantomHit,
+        ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
+        ["el gato"] = ReplicatedStorage.GeneralHit,
+        ["Wormhole"] = ReplicatedStorage.WormHit,
+        ["Shackle"] = ReplicatedStorage.GeneralHit,
+        ["Flick"] = ReplicatedStorage.GeneralHit,
+        ["STOP"] = ReplicatedStorage.STOP,
+        ["Equalizer"] = ReplicatedStorage.GeneralHit,
+        ["Track"] = ReplicatedStorage.GeneralHit,
+        ["Stalker"] = ReplicatedStorage.GeneralHit,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
+        ["Prop"] = ReplicatedStorage.GeneralHit,
+        ["Shield"] = ReplicatedStorage.GeneralHit,
+        ["Clover"] = ReplicatedStorage.GeneralHit,
+        ["5 More"] = ReplicatedStorage.GeneralHit,
+        ["Booster"] = ReplicatedStorage.GeneralHit,
+        ["Chainsaw"] = ReplicatedStorage.GeneralHit,
+        ["Ping Pong"] = ReplicatedStorage.GeneralHit,
+        ["Trifecta"] = ReplicatedStorage.GeneralHit,
+        ["Baller"] = ReplicatedStorage.GeneralHit,
+        ["Architect"] = ReplicatedStorage.GeneralHit,
+        ["Home Run"] = ReplicatedStorage.GeneralHit,
+        ["Friction"] = ReplicatedStorage.GeneralHit,
+        ["Whirlwind"] = ReplicatedStorage.GeneralHit,
+        ["Disc"] = ReplicatedStorage.GeneralHit,
+        ["Slicer"] = ReplicatedStorage.GeneralHit,
+        ["Excavator"] = ReplicatedStorage.GeneralHit,
+        ["Nightmare"] = ReplicatedStorage.nightmarehit,
+        ["Pylon"] = ReplicatedStorage.PylonHit,
+        ["Thor"] = ReplicatedStorage.ThorHit,
+        ["Slime"] = ReplicatedStorage.GeneralHit,
+        ["Pocket"] = ReplicatedStorage.GeneralHit,
+        ["Grapple"] = ReplicatedStorage.GeneralHit,
+        ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Gravity"] = ReplicatedStorage.GeneralHit,
+        ["Parry"] = ReplicatedStorage.GeneralHit,
+        ["Jebaited"] = ReplicatedStorage.GeneralHit,
+        ["Meteor"] = ReplicatedStorage.GeneralHit,
+        ["Oven"] = ReplicatedStorage.GeneralHit,
+        ["Guardian Angel"] = ReplicatedStorage.GeneralHit,
+        ["Sun"] = ReplicatedStorage.GeneralHit,
+        ["Ferryman"] = ReplicatedStorage.GeneralHit,
+        ["Blackhole"] = ReplicatedStorage.GeneralHit,
+        ["Walrus"] = ReplicatedStorage.GeneralHit,
+        ["Blink"] = ReplicatedStorage.GeneralHit,
+        ["Tableflip"] = ReplicatedStorage.GeneralHit,
+        ["Slapstick"] = ReplicatedStorage.GeneralHit,
+        ["Beatdown"] = ReplicatedStorage.GeneralHit,
+        ["Chicken"] = ReplicatedStorage.GeneralHit,
+        ["BONK"] = ReplicatedStorage.GeneralHit,
+        ["Grenadier"] = ReplicatedStorage.GeneralHit,
+        ["Sbeve"] = ReplicatedStorage.GeneralHit,
+        ["Golem"] = ReplicatedStorage.GeneralHit,
+        ["Doomsday"] = ReplicatedStorage.GeneralHit,
+        ["Grab"] = ReplicatedStorage.GeneralHit,
+        ["UFO"] = ReplicatedStorage.GeneralHit,
+        ["Demolition"] = ReplicatedStorage.GeneralHit,
+        ["Beachball"] = ReplicatedStorage.GeneralHit,
+        ["Shotgun"] = ReplicatedStorage.GeneralHit,
+        ["64"] = ReplicatedStorage.GeneralHit,
+        ["Roguelike"] = ReplicatedStorage.GeneralHit,
+        ["Barrel"] = ReplicatedStorage.GeneralHit,
+        ["Lawnmower"] = ReplicatedStorage.GeneralHit,
+        ["Virus"] = ReplicatedStorage.GeneralHit,
+        ["Smiler"] = ReplicatedStorage.GeneralHit,
+        ["Butcher"] = ReplicatedStorage.GeneralHit,
+        ["Infinity"] = ReplicatedStorage.GeneralHit,
+        ["Aggro"] = ReplicatedStorage.GeneralHit,
+        ["Soul"] = ReplicatedStorage.GeneralHit,
+        ["R/C"] = ReplicatedStorage.GeneralHit,
+        ["Mushroom"] = ReplicatedStorage.GeneralHit,
+        ["Scuba"] = ReplicatedStorage.GeneralHit,
+        ["Pyromania"] = ReplicatedStorage.GeneralHit,
+        ["Automaton"] = ReplicatedStorage.GeneralHit,
+        ["Command"] = ReplicatedStorage.GeneralHit,
+        ["God's Hand"] = ReplicatedStorage.Godshand,
+        ["The Flex"] = ReplicatedStorage.FlexHit,
+        
+        -- Badge Gloves
+        ["MEGAROCK"] = ReplicatedStorage.DiamondHit,
+        ["Plague"] = ReplicatedStorage.PlagueHit,
+        ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
+        ["[REDACTED]"] = ReplicatedStorage.ReHit,
+        ["bus"] = ReplicatedStorage.hitbus,
+        ["Mitten"] = ReplicatedStorage.MittenHit,
+        ["Phase"] = ReplicatedStorage.PhaseH,
+        ["Warp"] = ReplicatedStorage.WarpHt,
+        ["Bomb"] = ReplicatedStorage.BombHit,
+        ["Bubble"] = ReplicatedStorage.BubbleHit,
+        ["Jet"] = ReplicatedStorage.JetHit,
+        ["Shard"] = ReplicatedStorage.ShardHIT,
+        ["CULT"] = ReplicatedStorage.CULTHit,
+        ["bob"] = ReplicatedStorage.bobhit,
+        ["buddies"] = ReplicatedStorage.buddiesHIT,
+        ["Moon"] = ReplicatedStorage.CelestialHit,
+        ["Jupiter"] = ReplicatedStorage.GeneralHit,
+        ["Spy"] = ReplicatedStorage.SpyHit,
+        ["Detonator"] = ReplicatedStorage.DetonatorHit,
+        ["Rage"] = ReplicatedStorage.GRRRR,
+        ["Trap"] = ReplicatedStorage.traphi,
+        ["Orbit"] = ReplicatedStorage.Orbihit,
+        ["Hybrid"] = ReplicatedStorage.HybridCLAP,
+        ["Slapple"] = ReplicatedStorage.SlappleHit,
+        ["Disarm"] = ReplicatedStorage.DisarmH,
+        ["Dominance"] = ReplicatedStorage.DominanceHit,
+        ["Link"] = ReplicatedStorage.LinkHit,
+        ["Chain"] = ReplicatedStorage.GeneralHit,
+        ["Rattlebones"] = ReplicatedStorage.GeneralHit,
+        ["Charge"] = ReplicatedStorage.GeneralHit,
+        ["Tycoon"] = ReplicatedStorage.GeneralHit,
+        ["Confusion"] = ReplicatedStorage.GeneralHit,
+        ["Glitch"] = ReplicatedStorage.GeneralHit,
+        ["Snowball"] = ReplicatedStorage.GeneralHit,
+        ["Elude"] = ReplicatedStorage.GeneralHit,
+        ["RNG"] = ReplicatedStorage.GeneralHit,
+        ["fish"] = ReplicatedStorage.GeneralHit,
+        ["🗿"] = ReplicatedStorage.GeneralHit,
+        ["Obby"] = ReplicatedStorage.GeneralHit,
+        ["Voodoo"] = ReplicatedStorage.GeneralHit,
+        ["Goofy"] = ReplicatedStorage.GeneralHit,
+        ["Leash"] = ReplicatedStorage.GeneralHit,
+        ["Flamarang"] = ReplicatedStorage.GeneralHit,
+        ["Kinetic"] = ReplicatedStorage.GeneralHit,
+        ["Berserk"] = ReplicatedStorage.GeneralHit,
+        ["Sparky"] = ReplicatedStorage.GeneralHit,
+        ["Boogie"] = ReplicatedStorage.GeneralHit,
+        ["Recall"] = ReplicatedStorage.GeneralHit,
+        ["Quake"] = ReplicatedStorage.GeneralHit,
+        ["Psycho"] = ReplicatedStorage.GeneralHit,
+        ["Kraken"] = ReplicatedStorage.GeneralHit,
+        ["Counter"] = ReplicatedStorage.GeneralHit,
+        ["Hammer"] = ReplicatedStorage.GeneralHit,
+        ["rob"] = ReplicatedStorage.robhit,
+        ["Rhythm"] = ReplicatedStorage.rhythmhit,
+        ["Rojo"] = ReplicatedStorage.RojoHit,
+        ["Hitman"] = ReplicatedStorage.HitmanHit,
+        ["Retro"] = ReplicatedStorage.RetroHit,
+        ["Null"] = ReplicatedStorage.NullHit,
+        ["Lure"] = ReplicatedStorage.GeneralHit,
+        ["Tinkerer"] = ReplicatedStorage.TinkererHit,
+        ["Necromancer"] = ReplicatedStorage.GeneralHit,
+        ["Alchemist"] = ReplicatedStorage.GeneralHit,
+        ["Druid"] = ReplicatedStorage.GeneralHit,
+        ["Jester"] = ReplicatedStorage.GeneralHit,
+        ["Scythe"] = ReplicatedStorage.GeneralHit,
+        ["Santa"] = ReplicatedStorage.GeneralHit,
+        ["Iceskate"] = ReplicatedStorage.GeneralHit,
+        ["Blasphemy"] = ReplicatedStorage.GeneralHit,
+        ["Pan"] = ReplicatedStorage.GeneralHit,
+        ["Admin"] = ReplicatedStorage.GeneralHit,
+        ["Joust"] = ReplicatedStorage.GeneralHit,
+        ["Firework"] = ReplicatedStorage.GeneralHit,
+        ["Run"] = ReplicatedStorage.GeneralHit,
+        ["Glovel"] = ReplicatedStorage.GeneralHit,
+        ["Divebomb"] = ReplicatedStorage.GeneralHit,
+        ["Lamp"] = ReplicatedStorage.GeneralHit,
+        ["Knockoff"] = ReplicatedStorage.GeneralHit,
+        ["Frostbite"] = ReplicatedStorage.GeneralHit,
+        ["Plank"] = ReplicatedStorage.GeneralHit,
+        ["Spoonful"] = ReplicatedStorage.GeneralHit,
+        ["the schlob"] = ReplicatedStorage.GeneralHit,
+        ["Siphon"] = ReplicatedStorage.GeneralHit,
+        ["Wrench"] = ReplicatedStorage.GeneralHit,
+        ["Hunter"] = ReplicatedStorage.GeneralHit,
+        ["Relude"] = ReplicatedStorage.GeneralHit,
+        ["Avatar"] = ReplicatedStorage.GeneralHit,
+        ["Water"] = ReplicatedStorage.GeneralHit,
+        ["Fan"] = ReplicatedStorage.GeneralHit,
+        ["Boxer"] = ReplicatedStorage.GeneralHit,
+        ["MATERIALIZE"] = ReplicatedStorage.GeneralHit,
+        ["Bind"] = ReplicatedStorage.GeneralHit,
+        ["Poltergeist"] = ReplicatedStorage.GeneralHit,
+        ["Clock"] = ReplicatedStorage.GeneralHit,
+        ["Untitled Tag Glove"] = ReplicatedStorage.GeneralHit,
+        ["Pillow"] = ReplicatedStorage.GeneralHit,
+        ["Angler"] = ReplicatedStorage.GeneralHit,
+        ["Jerry"] = ReplicatedStorage.GeneralHit,
+        ["Snowroller"] = ReplicatedStorage.GeneralHit,
+        ["Draw4"] = ReplicatedStorage.GeneralHit,
+        ["Mouse"] = ReplicatedStorage.GeneralHit,
+        ["Swordfighter"] = ReplicatedStorage.GeneralHit,
+        ["Tank"] = ReplicatedStorage.GeneralHit,
+        ["Eggler"] = ReplicatedStorage.GeneralHit,
+        ["Slender"] = ReplicatedStorage.GeneralHit,
+        ["Swashbuckler"] = ReplicatedStorage.GeneralHit,
+        ["Silly"] = ReplicatedStorage.GeneralHit,
+        ["Slasher"] = ReplicatedStorage.GeneralHit,
+        ["Car Keys"] = ReplicatedStorage.GeneralHit,
+        ["Suction"] = ReplicatedStorage.GeneralHit,
+        ["Reflect"] = ReplicatedStorage.GeneralHit,
+        ["Dave"] = ReplicatedStorage.GeneralHit,
+        ["mortis"] = ReplicatedStorage.GeneralHit,
+        ["Bounty"] = ReplicatedStorage.GeneralHit,
+        ["Debug"] = ReplicatedStorage.GeneralHit,
+        ["Paint"] = ReplicatedStorage.GeneralHit,
+        ["Plate"] = ReplicatedStorage.GeneralHit,
+        ["Lag"] = ReplicatedStorage.GeneralHit,
+        ["Harvester"] = ReplicatedStorage.GeneralHit,
+        ["Riftshot"] = ReplicatedStorage.GeneralHit,
+        ["Conker"] = ReplicatedStorage.GeneralHit,
+        ["Wheelchair"] = ReplicatedStorage.GeneralHit,
+        ["Shopkeeper"] = ReplicatedStorage.GeneralHit,
+        ["Collector"] = ReplicatedStorage.GeneralHit,
+        ["Glaxe"] = ReplicatedStorage.GeneralHit, 
+        ["Piñata"] = ReplicatedStorage.GeneralHit, 
+        ["Penguin"] = ReplicatedStorage.GeneralHit,
+
+        -- P2W Gloves
+        ["OVERKILL"] = ReplicatedStorage.Overkillhit,
+        ["Spectator"] = ReplicatedStorage.GeneralHit,
+        ["CUSTOM"] = ReplicatedStorage.CustomHit,
+        ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
+        
+        -- Other Gloves
+        ["spin"] = ReplicatedStorage.spinhit,
+        ["Stick"] = ReplicatedStorage.GeneralHit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Error"] = ReplicatedStorage.Errorhit,
+        ["killerfish"] = ReplicatedStorage.GeneralHit,
+        ["Titan"] = ReplicatedStorage.GeneralHit,
+        ["Acrobat"] = ReplicatedStorage.AcHit,
+        
+        -- Fallback for unknown gloves
+        ["GeneralHit"] = ReplicatedStorage.GeneralHit,
+        ["b"] = ReplicatedStorage.b,
+        ["HtStun"] = ReplicatedStorage.HtStun
+    }
+    
+    -- Add metatable for dynamic glove lookups
+    setmetatable(gloveHits, {
+        __index = function(t, key)
+            -- Try to find any remote that matches the glove name
+            for _, child in pairs(ReplicatedStorage:GetChildren()) do
+                if child:IsA("RemoteEvent") then
+                    local childName = child.Name:lower()
+                    local gloveName = tostring(key):lower()
+                    
+                    if childName == gloveName or
+                       childName == gloveName .. "hit" or
+                       childName == "ht" .. gloveName or
+                       childName:find(gloveName, 1, true) then
+                        rawset(t, key, child) -- Cache for next time
+                        return child
+                    end
+                end
+            end
+            
+            -- Ultimate fallback - first available remote
+            for _, child in pairs(ReplicatedStorage:GetChildren()) do
+                if child:IsA("RemoteEvent") then
+                    rawset(t, key, child) -- Cache for next time
+                    return child
+                end
+            end
+            
+            return nil
+        end
+    })
+    
+    -- Function to get current glove
+    local function getCurrentGlove()
+        local success, result = pcall(function()
+            if localPlayer:FindFirstChild("leaderstats") then
+                local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
+                if gloveValue then
+                    return gloveValue.Value
+                end
+            end
+            return "Default"
+        end)
+        
+        if success then
+            return result
+        end
+        return "Default"
+    end
+    
+    -- Function to get the remote for a glove
+    local function getGloveRemote(gloveName)
+        -- Try direct lookup from gloveHits
+        local remote = gloveHits[gloveName]
+        
+        if remote and typeof(remote) == "Instance" and remote:IsA("RemoteEvent") then
+            return remote
+        end
+        
+        -- If we get here, the metatable will handle it
+        return gloveHits[gloveName]
+    end
+    
+    -- Create slider
+    local slapAuraSpeed = Tab:AddSlider({
+        Name = "Slap Aura Speed",
+        Min = 0.1,
+        Max = 2,
+        Default = 0.5,
+        Color = Color3.fromRGB(255, 255, 255),
+        Increment = 0.1,
+        ValueName = "seconds",
+        Callback = function(Value)
+            currentCooldown = Value
+        end
+    })
+    
+    -- Create toggle
+    Tab:AddToggle({
+        Name = "Slap Aura",
+        Default = false,
+        Callback = function(enabled)
+            -- Prevent random "Slap Aura Disabled" popups
+            if isSlapAuraEnabled == enabled then
+                return
+            end
+            
+            isSlapAuraEnabled = enabled
+            
+            if enabled then
+                -- Disconnect existing connection
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                -- Get current glove
+                local currentGlove = getCurrentGlove()
+                
+                -- Get the remote for this glove
+                local remote = getGloveRemote(currentGlove)
+                
+                if not remote then
+                    OrionLib:MakeNotification({
+                        Name = "Slap Aura Error",
+                        Content = "No remote found for glove: " .. currentGlove,
+                        Image = "rbxassetid://7733919105",
+                        Time = 3
+                    })
+                    isSlapAuraEnabled = false
+                    return
+                end
+                
+                print("Slap Aura: Enabled with glove '" .. currentGlove .. "' using remote '" .. remote.Name .. "'")
+                
+                -- Start slap aura
+                slapAuraConnection = RunService.Heartbeat:Connect(function()
+                    local currentTime = tick()
+                    
+                    -- Check cooldown
+                    if currentTime - lastHitTime < currentCooldown then
+                        return
+                    end
+                    
+                    -- Check if still enabled and has character
+                    if not isSlapAuraEnabled or not localPlayer.Character then
+                        return
+                    end
+                    
+                    -- Get local character position
+                    local localChar = localPlayer.Character
+                    local localRoot = localChar:FindFirstChild("HumanoidRootPart")
+                    if not localRoot then
+                        return
+                    end
+                    
+                    -- Find players to slap
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player ~= localPlayer and player.Character then
+                            local char = player.Character
+                            local humanoid = char:FindFirstChildOfClass("Humanoid")
+                            local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+                            
+                            -- Check if valid target
+                            if torso and humanoid and humanoid.Health > 0 then
+                                -- Optional distance check (40 studs max)
+                                local playerRoot = char:FindFirstChild("HumanoidRootPart")
+                                if playerRoot then
+                                    local distance = (playerRoot.Position - localRoot.Position).Magnitude
+                                    if distance > 40 then
+                                        continue
+                                    end
+                                end
+                                
+                                -- Fire the remote
+                                local success, errorMsg = pcall(function()
+                                    remote:FireServer(torso)
+                                end)
+                                
+                                if success then
+                                    lastHitTime = currentTime
+                                    break -- Hit one player per cycle
+                                end
+                            end
+                        end
+                    end
+                end)
+                
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Enabled",
+                    Content = "Glove: " .. currentGlove,
+                    Image = "rbxassetid://7733919105",
+                    Time = 3
+                })
+                
+            else
+                -- Disable
+                if slapAuraConnection then
+                    slapAuraConnection:Disconnect()
+                    slapAuraConnection = nil
+                end
+                
+                -- Only show notification if it was previously enabled
+                OrionLib:MakeNotification({
+                    Name = "Slap Aura Disabled",
+                    Content = "",
+                    Image = "rbxassetid://7733919105",
+                    Time = 2
+                })
+            end
+        end
+    })
+end
+    
+Section = Tab:AddSection({
+    Name = "Safespot Stuff"
+})
+
+Tab:AddButton({
+    Name = "Create Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("Safespot") == nil then
+            local Safespot = Instance.new("Model", workspace)
+            Safespot.Name = "Safespot"
+
+            local base = Instance.new("Part")
+            base.Name = "Base"
+            base.Size = Vector3.new(500, 10, 500)
+            base.Position = Vector3.new(10000, -50, 10000)
+            base.Anchored = true
+            base.CanCollide = true
+            base.Transparency = 0.5
+            base.Parent = Safespot
+
+            local partsData = {
+                {"DefendPart",  Vector3.new(500, 117, 5),   Vector3.new(10000.2, 13, 9752.45)},
+                {"DefendPart1", Vector3.new(5, 117, 496),   Vector3.new(10248.2, 13, 10002.4)},
+                {"DefendPart2", Vector3.new(497, 117, 6),   Vector3.new(9998.13, 13, 10247.2)},
+                {"DefendPart3", Vector3.new(7, 117, 490),   Vector3.new(9752.71, 13, 9999.28)},
+                {"DefendPart4", Vector3.new(491, 10, 491),  Vector3.new(10001.1, 76, 9999.66)},
+            }
+
+            for _, partInfo in pairs(partsData) do
+                local part = Instance.new("Part")
+                part.Name = partInfo[1]
+                part.Size = partInfo[2]
+                part.Position = partInfo[3]
+                part.Anchored = true
+                part.CanCollide = true
+                part.Transparency = 0.5
+                part.Parent = Safespot
+            end
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Create Tournament Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotTournament") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotTournament"
+            Safespot.Position = Vector3.new(3453, 246, -20)
+            Safespot.Size = Vector3.new(1000, 1, 1000)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Create Small Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotBobRojo") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotBobRojo"
+            Safespot.Position = Vector3.new(-268, 25, 0)
+            Safespot.Size = Vector3.new(50, 1, 50)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
+-- Add section for Ghost On/Off
+Section = Tab:AddSection({
+    Name = "Ghost On/Off"
+})
+
+Tab:AddToggle({
+    Name = "Ghost Invisibility",
+    Default = false,
+    Callback = function(Value)
+        local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
+                         game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
+                         game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
+
+        if Value == true then
+            if hasGhost then
+                game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Ghost Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            end
+        elseif Value == false and hasGhost then
+            game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+        end
+    end
+})
+
+-- Add section for Server Settings
+Section = Tab:AddSection({
+    Name = "Server Settings"
+})
+
+-- Rejoin button
+Tab:AddButton({
+    Name = "Rejoin",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
+    end
+})
+
+-- ServerHop (Regular Server)
+Tab:AddButton({
+    Name = "ServerHop (Regular Server)",
+    Callback = function()
+        local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+        local Deleted = false
+
+        local success, data = pcall(function()
+            return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+        end)
+        if success then
+            AllIDs = data
+        else
+            table.insert(AllIDs, actualHour)
+            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+        end
+
+        local function TPReturner()
+            local Site
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+
+            for i, v in pairs(Site.data) do
+                local Possible = true
+                local ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _, Existing in pairs(AllIDs) do
+                        if ID == tostring(Existing) then
+                            Possible = false
+                            break
+                        end
+                    end
+                    if Possible then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                        break
+                    end
+                end
+            end
+        end
+
+        local function Teleport()
+            while wait() do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+
+        -- Start teleporting to new servers
+        Teleport()
+    end
+})
+
+-- ServerHop (Small Server)
+Tab:AddButton({
+    Name = "ServerHop (Small Server)",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        local place = game.PlaceId
+        local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
+
+        local function ListServers(cursor)
+            local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
+            return Http:JSONDecode(Raw)
+        end
+
+        local Server, Next
+        repeat
+            local Servers = ListServers(Next)
+            Server = Servers.data[1]
+            Next = Servers.nextPageCursor
+        until Server
+
+        TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Kick/Reset If Stuck"
+})
+
+Tab:AddButton({
+    Name = "Kick (Yourself)",
+    Callback = function()
+        game.Players.LocalPlayer:Kick("Kicked By S̵͚̈c̴͔͗r̸̡̚ḯ̵̻p̴̦̀ț̶̓ĕ̸r")
+    end
+})
+
+Tab:AddButton({
+    Name = "Reset Player",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Arena Settings"
+})
+
+-- Auto Enter Arena System
+local AutoEnterActive = false
+local AutoEnterMode = "Arena" -- Default mode
+
+Tab:AddDropdown({
+    Name = "Enter",
+    Default = "Arena",
+    Options = {"Arena", "Arena Default"},
+    Callback = function(Value)
+        AutoEnterMode = Value
+    end
+})
+
+Tab:AddToggle({
+    Name = "Auto Enter",
+    Default = false,
+    Callback = function(Value)
+        AutoEnterActive = Value
+        
+        if Value then
+            
+            -- Start auto enter in separate thread
+            task.spawn(function()
+                while AutoEnterActive do
+                    local player = game.Players.LocalPlayer
+                    local character = player.Character
+                    
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        local entered = character:FindFirstChild("entered")
+                        
+                        if not entered then
+                            -- Get the correct teleport part based on mode
+                            local teleportFolder = workspace.Lobby
+                            local teleportPart = nil
+                            
+                            if AutoEnterMode == "Arena" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
+                            elseif AutoEnterMode == "Arena Default" then
+                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                            end
+                            
+                            if teleportPart then
+                                -- Find the TouchInterest parent (the actual part)
+                                local touchPart = nil
+                                
+                                -- Look for TouchTransmitter or TouchInterest
+                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or 
+                                                     teleportPart:FindFirstChild("TouchInterest")
+                                
+                                if touchInterest then
+                                    touchPart = touchInterest.Parent
+                                else
+                                    touchPart = teleportPart
+                                end
+                                
+                                if touchPart and touchPart:IsA("BasePart") then
+                                    -- Bring teleport part to player instead of player to teleport
+                                    local hrp = character:FindFirstChild("HumanoidRootPart")
+                                    if hrp then
+                                        -- Save original position
+                                        local originalPosition = touchPart.Position
+                                        local originalAnchored = touchPart.Anchored
+                                        
+                                        -- Temporarily move teleport to player
+                                        touchPart.Anchored = false
+                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
+                                        
+                                        -- Touch the part
+                                        firetouchinterest(hrp, touchPart, 0)
+                                        task.wait(0.05)
+                                        firetouchinterest(hrp, touchPart, 1)
+                                        
+                                        -- Return teleport to original position
+                                        task.wait(0.1)
+                                        touchPart.Position = originalPosition
+                                        touchPart.Anchored = originalAnchored
+                                        
+                                    end
+                                end
+                            end
+                        else
+                            -- Already entered, just wait
+                        end
+                    else
+                        -- Character not loaded yet
+                        task.wait(1)
+                        continue
+                    end
+                    
+                    -- Wait before next attempt
+                    task.wait(0.5)
+                end
+            end)
+        else
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new()
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Default Arena",
+    Callback = function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+end
+OrionLib:Init()
