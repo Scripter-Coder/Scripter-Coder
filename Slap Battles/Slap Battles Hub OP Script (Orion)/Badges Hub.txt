@@ -167,34 +167,297 @@ Tab:AddDropdown({
 })
 
 Section = Tab:AddSection({
-    Name = "Others Gloves/Badges"
+	Name = "Badges Info"
 })
 
-Tab:AddToggle({
-    Name = "Auto Bring All Orbs/Slapple/Toolbox",
-    Default = false,
-    Callback = function(Value)
-        _G.PhaseOrJetfarm = Value
+-- Complete Badge Database
+local allBadges = {
+    -- MISCELLANEOUS BADGES
+    {id = 2124743766, name = "Welcome | No Glove", category = "Miscellaneous"},
+    {id = 2124760252, name = "You met the owner | No Glove", category = "Miscellaneous"},
+    {id = 2124760875, name = "you met snow | No Glove", category = "Miscellaneous"},
+    {id = 2124760911, name = "[REDACTED] | No Glove", category = "Miscellaneous"},
+    {id = 2124760916, name = "duck | No Glove", category = "Miscellaneous"},
+    {id = 2124760917, name = "Divine punishment | No Glove", category = "Miscellaneous"},
+    {id = 2124760923, name = "really? | No Glove", category = "Miscellaneous"},
+    {id = 2124775097, name = "barzil | No Glove", category = "Miscellaneous"},
+    {id = 2124807750, name = "The one | No Glove", category = "Miscellaneous"},
+    {id = 2124807752, name = "Ascend | No Glove", category = "Miscellaneous"},
+    {id = 2124836270, name = "1 0 0 | No Glove", category = "Miscellaneous"},
+    {id = 2124912059, name = "The 'Reverse' Incident | No Glove", category = "Miscellaneous"},
+    {id = 2128220957, name = "The Lone Orange | No Glove", category = "Miscellaneous"},
+    {id = 2147535393, name = "Clipped Wings | No Glove", category = "Miscellaneous"},
+    {id = 4414399146292319, name = "Apostle of Judgement | No Glove", category = "Miscellaneous"},
+    {id = 3842447881295457, name = "Jumping Dimensions [LIVE EVENT] | No Glove", category = "Miscellaneous"},
+    {id = 2549860075363782, name = "King of the Snowhill | No Glove", category = "Miscellaneous"},
+    
+    -- LIMITED BADGES
+    {id = 2124836318, name = "Jack's will | Hallow Jack Glove", category = "Limited"},
+    {id = 2124875920, name = "Lucky Gift | Mitten Glove", category = "Limited"},
+    {id = 2128772719, name = "Candy King | Rattlebones Glove", category = "Limited"},
+    {id = 2129002959, name = "Witch Brew | Witch Glove | Slap Royale", category = "Limited"},
+    {id = 2129648848, name = "Engineer's Gift | Snowball Glove", category = "Limited"},
+    {id = 2152906832, name = "Sweeth-Tooth Sovereign | Necromancer Glove", category = "Limited"},
+    {id = 2895206704788569, name = "Yuletime Might | Santa Glove", category = "Limited"},
+    {id = 868768988664040, name = "Fetch me their Souls | Poltergeist Glove", category = "Limited"},
+    {id = 182408299845710, name = "Snow man left behind | Jerry Glove", category = "Limited"},
+    {id = 847759908824783, name = "The Cornfeared | Harvester Glove", category = "Limited"},
+    {id = 2748677045206815, name = "Snowball Synergy | Elf Glove", category = "Limited"},
+    
+    -- DOUBLE BADGES
+    {id = 2124760907, name = "court evidence | Hitman Glove", category = "Double"},
+    {id = 2124854307, name = "250 | Bubble Glove", category = "Double"},
+    {id = 2124925929, name = "Harbinger of death | Bubble Glove", category = "Double"},
+    {id = 2148934270, name = "Sharp Shooter | Hitman Glove", category = "Double"},
+    
+    -- NORMAL BADGES
+    {id = 2124760254, name = "Error glove | Link Glove", category = "Normal"},
+    {id = 2124760895, name = "ez | Moon Glove", category = "Normal"},
+    {id = 2124760928, name = "the touch of midas | buddies Glove", category = "Normal"},
+    {id = 2124807768, name = "WHY | MEGAROCK Glove", category = "Normal"},
+    {id = 2124819262, name = "Infected | Plague Glove", category = "Normal"},
+    {id = 2124847850, name = "Evaded | [REDACTED] Glove", category = "Normal"},
+    {id = 2124858899, name = "To the moon | bus Glove", category = "Normal"},
+    {id = 2124886261, name = "Unphased | Phase Glove", category = "Normal"},
+    {id = 2124914780, name = "Savior | Warp Glove", category = "Normal"},
+    {id = 2124919840, name = "Short fuse | Bomb Glove", category = "Normal"},
+    {id = 2124930374, name = "Orb of flight | Jet Glove", category = "Normal"},
+    {id = 2124938910, name = "Firefighter | Shard Glove", category = "Normal"},
+    {id = 2124989121, name = "Sorry to burst your bubble | potato Glove", category = "Normal"},
+    {id = 2125850245, name = "good job | CULT Glove", category = "Normal"},
+    {id = 2125950512, name = "bob | bob Glove", category = "Normal"},
+    {id = 2126334003, name = "Death Dodger | Jupiter Glove", category = "Normal"},
+    {id = 2126450753, name = "Predator | Spy Glove", category = "Normal"},
+    {id = 2126589561, name = "Head Hunter | Detonator Glove", category = "Normal"},
+    {id = 2127132894, name = "Anticlimactic End | Rage Glove", category = "Normal"},
+    {id = 2127567042, name = "Brick Master | Trap Glove", category = "Normal"},
+    {id = 2127703232, name = "YOU MONSTER | Orbit Glove", category = "Normal"},
+    {id = 2127816588, name = "Island Conqueror | Dominance Glove", category = "Normal"},
+    {id = 2127861437, name = "Prolonged Anger | Hybrid Glove", category = "Normal"},
+    {id = 2128012376, name = "The Golden Slapple | Slapple Glove", category = "Normal"},
+    {id = 2128233612, name = "Memento Mori | Disarm Glove", category = "Normal"},
+    {id = 2128557186, name = "THE ACCIDENT | Chain Glove", category = "Normal"},
+    {id = 2129104684, name = "Killer | Charge Glove", category = "Normal"},
+    {id = 2129212145, name = "Plate Master | Tycoon Glove", category = "Normal"},
+    {id = 2129474790, name = "what? | Confusion Glove", category = "Normal"},
+    {id = 2129568267, name = "01010010 01010101 01001110 | Glitch Glove", category = "Normal"},
+    {id = 2129871858, name = "EXPOSED | Elude Glove", category = "Normal"},
+    {id = 2130031244, name = "RNGod | RNG Glove", category = "Normal"},
+    {id = 2130032297, name = "DEEP SLUMBER | fish Glove", category = "Normal"},
+    {id = 2130155314, name = "🗿 | 🗿 Glove", category = "Normal"},
+    {id = 2130463063, name = "ULTRAROCK | Obby Glove", category = "Normal"},
+    {id = 2132544202, name = "Insanity | Voodoo Glove", category = "Normal"},
+    {id = 2133016756, name = "CHAOS | Goofy Glove", category = "Normal"},
+    {id = 2136607413, name = "Demonic Ritual | Leash Glove", category = "Normal"},
+    {id = 2140855364, name = "Underkill | Flamarang Glove", category = "Normal"},
+    {id = 2141386326, name = "Kinetically Charged | Kinetic Glove", category = "Normal"},
+    {id = 2141784233, name = "GO BERSERK | Berserk Glove", category = "Normal"},
+    {id = 2142826462, name = "Incredible Running Man | Sparkly Glove", category = "Normal"},
+    {id = 2143034526, name = "Boogie With It | Boogie Glove", category = "Normal"},
+    {id = 2143973603, name = "Repressed Memories | Recall Glove", category = "Normal"},
+    {id = 2144766764, name = "Blasting Off Again | Quake Glove", category = "Normal"},
+    {id = 2145165421, name = "Ultimate Control | Psycho Glove", category = "Normal"},
+    {id = 2145381761, name = "Escape the Abyss | Kraken Glove", category = "Normal"},
+    {id = 2146130728, name = "Da Maze Runner | Counter Glove", category = "Normal"},
+    {id = 2146540403, name = "Toolbox | Hammer Glove", category = "Normal"},
+    {id = 2147429609, name = "Emissary Of Light | rob Glove", category = "Normal"},
+    {id = 2148234934, name = "Total Rhythm | Rhythm Glove", category = "Normal"},
+    {id = 2148480065, name = "See in the dark | Rojo Glove", category = "Normal"},
+    {id = 2149637240, name = "Parkour Pwner | Retro Glove", category = "Normal"},
+    {id = 2150485950, name = "The Relic | Null Glove", category = "Normal"},
+    {id = 2151266964, name = "Catch Emm All | Lure Glove", category = "Normal"},
+    {id = 2152295593, name = "Great Escape | Tinkerer Glove", category = "Normal"},
+    {id = 2153473254, name = "Containment Breach | Alchemist Glove", category = "Normal"},
+    {id = 2153911928, name = "Gardens And Ghouls | Druid Glove", category = "Normal"},
+    {id = 2500227230783997, name = "Now You See Me | Jester Glove", category = "Normal"},
+    {id = 3318257806017965, name = "Farmland Fray | Scythe Glove", category = "Normal"},
+    {id = 2906002612987222, name = "Slap Battles: On Ice | Iceskate Glove", category = "Normal"},
+    {id = 3335299217032061, name = "G-Grandson..? | Blasphemy Glove", category = "Normal"},
+    {id = 4404799574333856, name = "Into the Crypt | Pan Glove", category = "Normal"},
+    {id = 1840188608156642, name = "CERTIFIED ADMIN | Admin Glove", category = "Normal"},
+    {id = 1662954021427606, name = "Stand your ground | Joust Glove", category = "Normal"},
+    {id = 2628581469266954, name = "Easy As Pie | Firework Glove", category = "Normal"},
+    {id = 1579276416564374, name = "It's Finally Over... | Run Glove", category = "Normal"},
+    {id = 128402905805563, name = "The Hunt | Glovel Glove", category = "Normal"},
+    {id = 342573645147372, name = "Null Piercer | Divebomb Glove", category = "Normal"},
+    {id = 490455814138437, name = "Friend of the Dark | Lamp Glove", category = "Normal"},
+    {id = 1962623816699442, name = "Code Breaker | Knockoff Glove", category = "Normal"},
+    {id = 1286358044443937, name = "Ice Essence | Frostbite Glove", category = "Normal"},
+    {id = 4031317971987872, name = "Cranking 90's | Plank Glove", category = "Normal"},
+    {id = 2236076719770808, name = "SLAP BATTLES SWEEP | Spoonful Glove", category = "Normal"},
+    {id = 1354956782555226, name = "Leap of Faith | the schlob Glove", category = "Normal"},
+    {id = 187186758930457, name = "Caution: High Voltage | Siphon Glove", category = "Normal"},
+    {id = 2240434593038483, name = "ÜberCharged | Wrench Glove", category = "Normal"},
+    {id = 4414076328730650, name = "Nah, I'd win | Avatar Glove", category = "Normal"},
+    {id = 154204790800271, name = "A Guiding Hand | Relude Glove", category = "Normal"},
+    {id = 3483144763925839, name = "Bounty Claimed | Hunter Glove", category = "Normal"},
+    {id = 2193861648156971, name = "How did we get here? | Water Glove", category = "Normal"},
+    {id = 2657379023348335, name = "FREE OOG! | Fan Glove", category = "Normal"},
+    {id = 1223765330375569, name = "The Glove | Boxer Glove", category = "Normal"},
+    {id = 4256352459948010, name = "Orb of Honor | MATERIALIZE Glove", category = "Normal"},
+    {id = 3199562682373814, name = "Garden of Erasure | Bind Glove", category = "Normal"},
+    {id = 2035627575374951, name = "Shattered Memories | Clock Glove", category = "Normal"},
+    {id = 2223110832777636, name = "Hurt me plenty | Untitled Tag Glove", category = "Normal"},
+    {id = 4390302507334168, name = "Fortress of Dreams | Pillow Glove", category = "Normal"},
+    {id = 2117833544213343, name = "You're gonna need a bigger glove | Angler Glove", category = "Normal"},
+    {id = 3726156327470282, name = "Insane Minds think Alike | Snowroller Glove", category = "Normal"},
+    {id = 2460702219299014, name = "Oh! That's a Baseball! | Draw4 Glove", category = "Normal"},
+    {id = 2146300368310575, name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "Normal"},
+    {id = 2090213992277846, name = "Enlightened | Hexa Glove", category = "Normal"},
+    {id = 1060832194529561, name = "Day in the life of a small Game Developer | Metaverse Glove", category = "Normal"},
+    {id = 1788920058870613, name = "Sword Fighter of The Heights | Swordfighter Glove", category = "Normal"},
+    {id = 99649310086892, name = "Pillow Fight | Tank Glove", category = "Normal"},
+    {id = 2286252038116816, name = "Egging Over It | Eggler Glove", category = "Normal"},
+    {id = 2442504376213257, name = "Collect My Pages | Slender Glove", category = "Normal"},
+    {id = 3096378656988806, name = "Captain's Orders | Swashbuckler Glove", category = "Normal"},
+    {id = 4342029848828580, name = "Banished | Silly Glove", category = "Normal"},
+    {id = 231810132716643, name = "Reawoken | Slasher Glove", category = "Normal"},
+    {id = 1294103285471925, name = "Slappy Wheels | Car Keys Glove", category = "Normal"},
+    {id = 3798851936234989, name = "Plungering Heights | Suction Glove", category = "Normal"},
+    {id = 1745844401258079, name = "Shattered Reality | Reflect Glove", category = "Normal"},
+    {id = 663807976473858, name = "Dodecacide | Dave Glove", category = "Normal"},
+    {id = 1605140663413534, name = "Die Hard | mortis Glove", category = "Normal"},
+    {id = 1133862849283260, name = "Dead or Alive | Bounty Glove", category = "Normal"},
+    {id = 117389283982009, name = "Out of Bounds | Debug Glove", category = "Normal"},
+    {id = 1035608345203235, name = "Color Splash | Paint Glove", category = "Normal"},
+    {id = 1198780403030188, name = "Ceramic Panic | Plate Glove", category = "Normal"},
+    {id = 3713925567966983, name = "2000 Ping | Lag Glove", category = "Normal"},
+    {id = 65341581701492, name = "Bullseye | Riftshot Glove", category = "Normal"},
+    {id = 1304426038175458, name = "Autumnal Conkerer | Conker Glove", category = "Normal"},
+    {id = 659930747853345, name = "Glass Bones | Wheelchair Glove", category = "Normal"},
+    {id = 1698466561019878, name = "Minimum Wage | Shopkeeper Glove", category = "Normal"},
+    {id = 1902849233175110, name = "Find The Gloves | Collector Glove", category = "Normal"},
+    {id = 1778876340809040, name = "Cleaved in Two | Glaxe Glove", category = "Normal"},
+    {id = 217389347032866, name = "Birthday Bash | Piñata Glove", category = "Normal"},
+    {id = 996318649761767, name = "Hibernal Snowstopper | Penguin Glove", category = "Normal"},
+    {id = 1239535438142380, name = "Untimely End | Undead Glove", category = "Normal"},
+    {id = 4207775293625676, name = "Clobbering Time! | Groundbreaker Glove", category = "Normal"},
+    {id = 2604207010521588, name = "Easter Hatchastrophe | Shellbert Glove", category = "Normal"},
+}
 
-        while _G.PhaseOrJetfarm do
-            for _, v in pairs(game.Workspace:GetChildren()) do
-                if v.Name == "JetOrb"
-                or v.Name == "PhaseOrb"
-                or v.Name == "GlitchOrb"
-                or v.Name == "SiphonOrb"
-                or v.Name == "MaterializeOrb"
-                or v.Name == "Slapple"
-                or v.Name == "GoldenSlapple"
-                or v.Name == "Toolbox" then
-                    local head = game.Players.LocalPlayer.Character:WaitForChild("Head")
-                    firetouchinterest(head, v, 0)
-                    firetouchinterest(head, v, 1)
-                end
+-- Store owned badges
+local ownedBadges = {}
+local badgeParagraph = nil
+local updateConnection = nil
+
+-- Function to fetch owned badges from Roblox API
+local function fetchOwnedBadges()
+    local player = game:GetService("Players").LocalPlayer
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            ownedBadges = {}
+            for _, badge in ipairs(data.data) do
+                ownedBadges[badge.id] = true
             end
-            task.wait()
+            return true
         end
     end
-})
+    return false
+end
+
+-- Function to get formatted badge list with checkmarks
+local function getFormattedBadgeList()
+    local categories = {
+        Miscellaneous = {},
+        Limited = {},
+        Double = {},
+        Normal = {}
+    }
+    
+    -- Group badges by category
+    for _, badge in ipairs(allBadges) do
+        if categories[badge.category] then
+            table.insert(categories[badge.category], badge)
+        else
+            table.insert(categories.Normal, badge)
+        end
+    end
+    
+    -- Build formatted output
+    local result = ""
+    
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "              🏆 MISCELLANEOUS BADGES 🏆\n"
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    for _, badge in ipairs(categories.Miscellaneous) do
+        local status = ownedBadges[badge.id] and "✅" or "❌"
+        result = result .. status .. " " .. badge.name .. "\n"
+    end
+    
+    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "              🎯 LIMITED BADGES 🎯\n"
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    for _, badge in ipairs(categories.Limited) do
+        local status = ownedBadges[badge.id] and "✅" or "❌"
+        result = result .. status .. " " .. badge.name .. "\n"
+    end
+    
+    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "              ⚡ DOUBLE BADGES ⚡\n"
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    for _, badge in ipairs(categories.Double) do
+        local status = ownedBadges[badge.id] and "✅" or "❌"
+        result = result .. status .. " " .. badge.name .. "\n"
+    end
+    
+    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "              📜 NORMAL BADGES 📜\n"
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    for _, badge in ipairs(categories.Normal) do
+        local status = ownedBadges[badge.id] and "✅" or "❌"
+        result = result .. status .. " " .. badge.name .. "\n"
+    end
+    
+    -- Add statistics
+    local ownedCount = 0
+    local totalCount = #allBadges
+    for _, badge in ipairs(allBadges) do
+        if ownedBadges[badge.id] then
+            ownedCount = ownedCount + 1
+        end
+    end
+    
+    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "              📊 STATISTICS 📊\n"
+    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    result = result .. "✅ Owned: " .. ownedCount .. "/" .. totalCount .. "\n"
+    result = result .. "❌ Missing: " .. (totalCount - ownedCount) .. "/" .. totalCount .. "\n"
+    result = result .. "📈 Progress: " .. string.format("%.1f", (ownedCount / totalCount) * 100) .. "%\n"
+    
+    return result
+end
+
+-- Update function for badge display (refetches badges and updates display)
+local function updateBadgeDisplay()
+    fetchOwnedBadges()
+    if badgeParagraph then
+        local text = getFormattedBadgeList()
+        badgeParagraph:Set(text)
+    end
+end
+
+-- Create the paragraph
+badgeParagraph = Tab:AddParagraph("Badges Owned/Unowned List:", "Loading badges...")
+
+-- Initial fetch and display
+updateBadgeDisplay()
+
+-- AUTO UPDATE - Runs every 2 seconds without toggle
+-- This will continuously check for new badges and update the display
+task.spawn(function()
+    while true do
+        task.wait(2) -- Update every 2 seconds
+        updateBadgeDisplay()
+    end
+end)
 
 Tab = Window:MakeTab({
 	Name = "MEGAROCK",
@@ -1593,29 +1856,6 @@ Tab = Window:MakeTab({
 	PremiumOnly = false
 	})
 
--- ✅ Create Tournament Safespot
-Tab:AddButton({
-    Name = "Create Tournament Safespot",
-    Callback = function()
-        if workspace:FindFirstChild("SafespotTournament") == nil then
-            local Safespot = Instance.new("Part", workspace)
-            Safespot.Name = "SafespotTournament"
-            Safespot.Position = Vector3.new(3453, 246, -20)
-            Safespot.Size = Vector3.new(1000, 1, 1000)
-            Safespot.Anchored = true
-            Safespot.CanCollide = true
-            Safespot.Transparency = 0.5
-        end
-
-        OrionLib:MakeNotification({
-            Name = "Checker",
-            Content = "Created Successfully!",
-            Image = "rbxassetid://7733919427",
-            Time = 3
-        })
-    end
-})
-
 Tab:AddButton({
 	Name = "Use Ghost Glove + Teleport To Safespot",
 	Callback = function()   
@@ -1893,23 +2133,6 @@ Tab = Window:MakeTab({
 	PremiumOnly = false
 	})
 
--- Global variable for speed
-_G.TrapGloveSpeed = 1.5
-
--- Add slider for speed control
-Tab:AddSlider({
-    Name = "Spawn Brick Speed",
-    Min = 1.5,
-    Max = 2,
-    Default = 1.5,
-    Color = Color3.fromRGB(255, 255, 255),
-    Increment = 0.1,
-    ValueName = "seconds",
-    Callback = function(value)
-        _G.TrapGloveSpeed = value
-    end
-})
-
 Tab:AddButton({
     Name = "Auto Spawn Bricks",
     Callback = function()  
@@ -1920,10 +2143,10 @@ Tab:AddButton({
             while true do 
                 game:GetService("ReplicatedStorage").lbrick:FireServer()
                 game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1
-                task.wait(_G.TrapGloveSpeed) -- Use the slider value here
+                task.wait(1.5) -- Use the slider value here
             end
         else
-            OrionLib:MakeNotification({Name = "Error", Content = "Equip Brick", Image = "rbxassetid://7743878857", Time = 3})
+            OrionLib:MakeNotification({Name = "Error", Content = "Equip Brick/Enter Arena", Image = "rbxassetid://7743878857", Time = 3})
         end
     end
 })
@@ -1933,29 +2156,6 @@ Tab = Window:MakeTab({
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
-
--- ✅ Create Small Safespot
-Tab:AddButton({
-    Name = "Create Small Safespot",
-    Callback = function()
-        if workspace:FindFirstChild("SafespotBobRojo") == nil then
-            local Safespot = Instance.new("Part", workspace)
-            Safespot.Name = "SafespotBobRojo"
-            Safespot.Position = Vector3.new(-268, 25, 0)
-            Safespot.Size = Vector3.new(50, 1, 50)
-            Safespot.Anchored = true
-            Safespot.CanCollide = true
-            Safespot.Transparency = 0.5
-        end
-
-        OrionLib:MakeNotification({
-            Name = "Checker",
-            Content = "Created Successfully!",
-            Image = "rbxassetid://7733919427",
-            Time = 3
-        })
-    end
-})
 
 Tab:AddButton({
 	Name = "Teleport To Small Safespot",
@@ -2005,13 +2205,6 @@ end
 else
 OrionLib:MakeNotification({Name = "Error",Content = "Equip Rage",Image = "rbxassetid://7743878857",Time = 3})
 end
-end
-})
-
-Tab:AddButton({
-	Name = "Get Hybrid Glove",
-	Callback = function()   
-game:GetService("ReplicatedStorage").GRRRRR:FireServer(true)
 end
 })
 
@@ -3082,52 +3275,6 @@ Tab = Window:MakeTab({
 	PremiumOnly = false
 	})
 
--- ✅ Create Safespot
-Tab:AddButton({
-    Name = "Create Safespot",
-    Callback = function()
-        if workspace:FindFirstChild("Safespot") == nil then
-            local Safespot = Instance.new("Model", workspace)
-            Safespot.Name = "Safespot"
-
-            local base = Instance.new("Part")
-            base.Name = "Base"
-            base.Size = Vector3.new(500, 10, 500)
-            base.Position = Vector3.new(10000, -50, 10000)
-            base.Anchored = true
-            base.CanCollide = true
-            base.Transparency = 0.5
-            base.Parent = Safespot
-
-            local partsData = {
-                {"DefendPart",  Vector3.new(500, 117, 5),   Vector3.new(10000.2, 13, 9752.45)},
-                {"DefendPart1", Vector3.new(5, 117, 496),   Vector3.new(10248.2, 13, 10002.4)},
-                {"DefendPart2", Vector3.new(497, 117, 6),   Vector3.new(9998.13, 13, 10247.2)},
-                {"DefendPart3", Vector3.new(7, 117, 490),   Vector3.new(9752.71, 13, 9999.28)},
-                {"DefendPart4", Vector3.new(491, 10, 491),  Vector3.new(10001.1, 76, 9999.66)},
-            }
-
-            for _, partInfo in pairs(partsData) do
-                local part = Instance.new("Part")
-                part.Name = partInfo[1]
-                part.Size = partInfo[2]
-                part.Position = partInfo[3]
-                part.Anchored = true
-                part.CanCollide = true
-                part.Transparency = 0.5
-                part.Parent = Safespot
-            end
-        end
-
-        OrionLib:MakeNotification({
-            Name = "Checker",
-            Content = "Created Successfully!",
-            Image = "rbxassetid://7733919427",
-            Time = 3
-        })
-    end
-})
-
 Tab:AddButton({
 	Name = "Auto Get fish Glove",
 	Callback = function()   
@@ -3169,52 +3316,6 @@ Tab = Window:MakeTab({
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
-
--- ✅ Create Safespot
-Tab:AddButton({
-    Name = "Create Safespot",
-    Callback = function()
-        if workspace:FindFirstChild("Safespot") == nil then
-            local Safespot = Instance.new("Model", workspace)
-            Safespot.Name = "Safespot"
-
-            local base = Instance.new("Part")
-            base.Name = "Base"
-            base.Size = Vector3.new(500, 10, 500)
-            base.Position = Vector3.new(10000, -50, 10000)
-            base.Anchored = true
-            base.CanCollide = true
-            base.Transparency = 0.5
-            base.Parent = Safespot
-
-            local partsData = {
-                {"DefendPart",  Vector3.new(500, 117, 5),   Vector3.new(10000.2, 13, 9752.45)},
-                {"DefendPart1", Vector3.new(5, 117, 496),   Vector3.new(10248.2, 13, 10002.4)},
-                {"DefendPart2", Vector3.new(497, 117, 6),   Vector3.new(9998.13, 13, 10247.2)},
-                {"DefendPart3", Vector3.new(7, 117, 490),   Vector3.new(9752.71, 13, 9999.28)},
-                {"DefendPart4", Vector3.new(491, 10, 491),  Vector3.new(10001.1, 76, 9999.66)},
-            }
-
-            for _, partInfo in pairs(partsData) do
-                local part = Instance.new("Part")
-                part.Name = partInfo[1]
-                part.Size = partInfo[2]
-                part.Position = partInfo[3]
-                part.Anchored = true
-                part.CanCollide = true
-                part.Transparency = 0.5
-                part.Parent = Safespot
-            end
-        end
-
-        OrionLib:MakeNotification({
-            Name = "Checker",
-            Content = "Created Successfully!",
-            Image = "rbxassetid://7733919427",
-            Time = 3
-        })
-    end
-})
 
 Tab:AddButton({
 	Name = "Auto Get Voodoo Glove",
@@ -4120,7 +4221,7 @@ Tab:AddSection({
 Tab:AddParagraph("When was Slap Battles first published?", "16/2/2021")
 Tab:AddParagraph("What glove costs 9750 slaps?", "Coil")
 Tab:AddParagraph("What is the chance of getting bob from Replica?", "1/7500")
-Tab:AddParagraph("How many gloves stands are in Slap Battles right now?", "263 (Last Updated: January 2th, 2026)")
+Tab:AddParagraph("How many gloves stands are in Slap Battles right now?", "276 (Last Updated: 3 April 2026 UTC, Roaring Update)")
 Tab:AddParagraph("What is the badge name for the Glitch glove?", "01010010 01010101 01001110")
 Tab:AddParagraph("If 1=3 2=3 3=5 4=4 5=4 6=?", "3")
 Tab:AddParagraph("Whom ultimately controls this realm?", "Tencelll")
@@ -5327,29 +5428,6 @@ Tab = Window:MakeTab({
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
-
--- ✅ Create Small Safespot
-Tab:AddButton({
-    Name = "Create Small Safespot",
-    Callback = function()
-        if workspace:FindFirstChild("SafespotBobRojo") == nil then
-            local Safespot = Instance.new("Part", workspace)
-            Safespot.Name = "SafespotBobRojo"
-            Safespot.Position = Vector3.new(-268, 25, 0)
-            Safespot.Size = Vector3.new(50, 1, 50)
-            Safespot.Anchored = true
-            Safespot.CanCollide = true
-            Safespot.Transparency = 0.5
-        end
-
-        OrionLib:MakeNotification({
-            Name = "Checker",
-            Content = "Created Successfully!",
-            Image = "rbxassetid://7733919427",
-            Time = 3
-        })
-    end
-})
 
 Tab:AddButton({
 	Name = "Teleport To Small Safespot",
@@ -9475,6 +9553,102 @@ Tab:AddButton({
 })
 
     Tab = Window:MakeTab({
+	Name = "Pillow",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Equip ZZZZZZZ (25+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["ZZZZZZZ"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using ZZZZZZZ?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "ZZZZZZZ" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the ZZZZZZZ glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the ZZZZZZZ glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To ZZZZZZZ Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "ZZZZZZZ" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "ZZZZZZZ Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Rainbow Cloud",
+    Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-124, -5, 121)
+        end
+})
+
+Tab:AddButton({
+	Name = "Use Sleep Ability",
+	Callback = function()   
+game:GetService("ReplicatedStorage"):WaitForChild("ZZZZZZZSleep"):FireServer()
+end
+})
+
+    Tab = Window:MakeTab({
 	Name = "Angler",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
@@ -10340,84 +10514,119 @@ Tab:AddButton({
 	})
 
 Tab:AddButton({
-	Name = "Get Tank Glove",
+	Name = "Auto Get Tank Glove",
 	Callback = function()   
-if game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 4390302507334168) and game.Players.LocalPlayer.leaderstats.Slaps.Value >= 50000 then
-if not game.IsLoaded then
-game.Loaded:Wait()
-end
+		if game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 4390302507334168) and game.Players.LocalPlayer.leaderstats.Slaps.Value >= 50000 then
+			task.wait(0.3)
+			fireclickdetector(workspace.Lobby["Pillow"].ClickDetector)
+			task.wait(0.3)
+			game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack({[1]=CFrame.new(17894.3867, -20.5577297, -3562.97974, 0.999158919, -1.34026186e-08, -0.04100601, 1.42693359e-08, 1, 2.08436735e-08, 0.04100601, -2.14112692e-08, 0.999158919);}))
+			for i = 1, 200 do
+				game:GetService("ReplicatedStorage").Events.PillowEvent:FireServer("AddPillow")
+			end
+			task.wait(0.3)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.791, -23.6096096, -3577.8042, -0.999188364, 4.7269662e-08, 0.040281646, 4.80706674e-08, 1, 1.89165021e-08, -0.040281646, 2.08375148e-08, -0.999188364)
+			fireclickdetector(workspace.Lobby["Shotgun"].ClickDetector)
+			task.wait(0.3)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1209, 328, 4)
+			task.wait(0.3)
 
-_G.EquipGloveMethod = 1
-function EquipGlove(glove, time)
-    glove = glove or "Default"
-    time = time or 0.4
-    task.wait()
-    repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("leaderstats") and game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove")
-    task.wait()
-    if _G.EquipGloveMethod == 1 then
-    if workspace.Lobby:FindFirstChild(glove) and workspace.Lobby[glove]:FindFirstChildWhichIsA("ClickDetector") then
-        if fireclickdetector or fireclickdetector() then
-            fireclickdetector(workspace.Lobby[glove].ClickDetector)
-            repeat task.wait() until game.Players.LocalPlayer.leaderstats.Glove.Value == glove
-            task.wait(time)
-        end
-    end
-    elseif _G.EquipGloveMethod == 2 then
-    if workspace.Lobby:FindFirstChild(glove) then
-        for i,v in pairs(game.ReplicatedStorage._NETWORK:GetChildren()) do
-            if v and v.Name:find("{") or v.Name:match("{") and v:IsA("RemoteEvent") then
-		            if game.Players.LocalPlayer.leaderstats.Glove.Value == glove then
-                break
-                end
-                v:FireServer(unpack({[1]=glove;}))
-                task.wait(time + .15)
-	        end
-        end
-    end
-    end
-end
-function EnterPortal(portal, time)
-    portal = portal or "Teleport1"
-    time = time or 0.8
-    task.wait()
-    repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") 
-    task.wait()
-    if workspace.Lobby:FindFirstChild(portal) and workspace.Lobby[portal]:FindFirstChildWhichIsA("Script") and game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChild("entered") == nil then
-        old = workspace.Lobby[portal].CFrame
-        workspace.Lobby[portal].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("entered")
-        workspace.Lobby[portal].CFrame = old
-        task.wait(time)
-    end
-end
-function CheckGlove(glove)
-    glove = glove or "Default"
-    task.wait()
-    repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("_unlockedGloves")
-    task.wait()
-    if game.Players.LocalPlayer._unlockedGloves:FindFirstChild(glove) then
-        return game.Players.LocalPlayer._unlockedGloves:FindFirstChild(glove).Value
-    end
-end
+			-- Equip Shotgun from inventory
+			local shotgunTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Shotgun")
+			if not shotgunTool then
+				shotgunTool = game.Players.LocalPlayer.Character:FindFirstChild("Shotgun")
+			end
+			if shotgunTool then
+				game.Players.LocalPlayer.Character.Humanoid:EquipTool(shotgunTool)
+			end
+			task.wait(0.3)
 
-if CheckGlove("Shotgun") ~= true or CheckGlove("Pillow") ~= true then return end
-if game.Players.LocalPlayer.Character:FindFirstChild("entered") == nil then
-EquipGlove("Pillow")
-game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack({[1]=CFrame.new(17894.3867, -20.5577297, -3562.97974, 0.999158919, -1.34026186e-08, -0.04100601, 1.42693359e-08, 1, 2.08436735e-08, 0.04100601, -2.14112692e-08, 0.999158919);}))
-for i = 1, 200 do
-game:GetService("ReplicatedStorage").Events.PillowEvent:FireServer("AddPillow")
-end
-task.wait(1)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.791, -23.6096096, -3577.8042, -0.999188364, 4.7269662e-08, 0.040281646, 4.80706674e-08, 1, 1.89165021e-08, -0.040281646, 2.08375148e-08, -0.999188364)
-task.wait(3)
-EquipGlove("Shotgun")
-repeat task.wait()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.5547, -20.7577286, -3547.35376, 0.999844074, 3.9351038e-09, -0.0176601317, -3.07407322e-09, 1, 4.87827485e-08, 0.0176601317, -4.87208531e-08, 0.999844074)
-game:GetService("ReplicatedStorage").GeneralAbility:FireServer("explosive")
-until workspace:FindFirstChild(game.Players.LocalPlayer.Name.."'s PillowFort") == nil
-end
+			-- Auto slap players until 30 coins
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local reachedTarget = false
+			
+			while not reachedTarget do
+				task.wait(0.1)
+				
+				-- Check coin count
+				local success, coinsText = pcall(function()
+					return game.Players.LocalPlayer.PlayerGui.shotgun_Main.shotgun_hud.coins.Text
+				end)
+				
+				if success and coinsText then
+					local coins = tonumber(coinsText:match("%d+")) or 0
+					if coins >= 30 then
+						reachedTarget = true
+						break
+					end
+				end
+				
+				-- Get all eligible players (in arena)
+				local eligiblePlayers = {}
+				for _, player in pairs(Players:GetPlayers()) do
+					if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("entered") then
+						table.insert(eligiblePlayers, player)
+					end
+				end
+				
+				-- Teleport to random player and slap
+				if #eligiblePlayers > 0 then
+					local randomPlayer = eligiblePlayers[math.random(1, #eligiblePlayers)]
+					if randomPlayer and randomPlayer.Character and randomPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						-- Teleport with 0.5 second delay
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = randomPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 5)
+						task.wait(0.5)
+						
+						-- Slap the player
+						if randomPlayer.Character and randomPlayer.Character:FindFirstChild("Right Arm") then
+							local args = { randomPlayer.Character["Right Arm"] }
+							ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+						end
+					end
+				end
+			end
+			
+			task.wait(0.3)
+
+			-- Purchase explosive upgrade
+			for i = 1, 2 do
+				local args = { "purchase", "explosive" }
+				game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("shotgun"):FireServer(unpack(args))
+			end
+			task.wait(0.3)
+			
+			-- Destroy pillow fort
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17894.791, -23.6096096, -3577.8042, -0.999188364, 4.7269662e-08, 0.040281646, 4.80706674e-08, 1, 1.89165021e-08, -0.040281646, 2.08375148e-08, -0.999188364)
+			repeat 
+				task.wait()
+				game:GetService("ReplicatedStorage").GeneralAbility:FireServer("explosive")
+			until workspace:FindFirstChild(game.Players.LocalPlayer.Name.."'s PillowFort") == nil
+			
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "You Dont Own Pillow/50k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+	end
+})
+
+Tab:AddButton({
+	Name = "Anti Void",
+	Callback = function()
+--ANTI VOID--
+if workspace:FindFirstChild("AntiVoid") == nil then
+--ANTI VOID--
+local Safespot = Instance.new("Part",workspace)
+Safespot.Name = "AntiVoid"
+Safespot.Position = Vector3.new(-51, -12, 108)
+Safespot.Size = Vector3.new(1000000, 1, 1000000)
+Safespot.Anchored = true
+Safespot.CanCollide = true
+Safespot.Transparency = .5
+--ANTI VOID--
+OrionLib:MakeNotification({Name = "Success",Content = "Created Successfully!",Image = "rbxassetid://7733715400",Time = 3})
 else
-OrionLib:MakeNotification({Name = "Error",Content = "You Dont Own Pillow/50k+ Slaps Required",Image = "rbxassetid://7743878857",Time = 3})
+game.workspace.AntiVoid:Destroy()
+OrionLib:MakeNotification({Name = "Success",Content = "Removed Successfully!",Image = "rbxassetid://7733715400",Time = 3})
 end
 end
 })
@@ -10865,74 +11074,9 @@ Tab:AddButton({
 		end)
 		code = code .. (success3 and tostring(mazeNum) or "?")
 
-		-- Path 4: DialogChoice ResponseDialog - FIXED VERSION
-		local success4, responseNum = pcall(function()
-			-- Try multiple possible locations for the Dialog
-			local possiblePaths = {
-				workspace:FindFirstChild("Rig"),
-				workspace:FindFirstChild("Debug Room"),
-				workspace:FindFirstChild("Map")
-			}
-			
-			for _, location in ipairs(possiblePaths) do
-				if location then
-					-- Search for Dialog in this location
-					local dialog = location:FindFirstChild("Dialog")
-					if not dialog then
-						-- Search for Dialog in descendants
-						dialog = location:FindFirstChildWhichIsA("Dialog")
-					end
-					
-					if dialog then
-						-- Get DialogChoices
-						local dialogChoices = dialog:GetChildren()
-						for _, choice in ipairs(dialogChoices) do
-							if choice:IsA("DialogChoice") then
-								local response = choice.ResponseDialog
-								if response then
-									-- Look for any number in the response
-									local found = string.match(response, "%d+")
-									if found then
-										return tonumber(found)
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-			return 0
-		end)
-
-		-- If Path 4 failed, try alternative method
-		if not success4 or responseNum == 0 then
-			local success5, altResponseNum = pcall(function()
-				-- Alternative: Look for any Dialog in the entire workspace
-				for _, dialog in ipairs(workspace:GetDescendants()) do
-					if dialog:IsA("Dialog") then
-						for _, choice in ipairs(dialog:GetChildren()) do
-							if choice:IsA("DialogChoice") then
-								local response = choice.ResponseDialog
-								if response then
-									local found = string.match(response, "%d+")
-									if found then
-										return tonumber(found)
-									end
-								end
-							end
-						end
-					end
-				end
-				return 0
-			end)
-			
-			if success5 and altResponseNum ~= 0 then
-				responseNum = altResponseNum
-				success4 = true
-			end
-		end
-
-		code = code .. (success4 and tostring(responseNum) or "?")
+		-- Path 4: Always 7 (game changed to make last digit always 7)
+		local responseNum = 7
+		code = code .. tostring(responseNum)
 
 		-- Store code globally
 		debugCode = code
@@ -10950,7 +11094,7 @@ Tab:AddButton({
 		print("Path 1 (Ducks): " .. (success1 and tostring(duckCount) or "FAILED"))
 		print("Path 2 (Admin): " .. (success2 and tostring(adminNum) or "FAILED"))
 		print("Path 3 (Maze): " .. (success3 and tostring(mazeNum) or "FAILED"))
-		print("Path 4 (Dialog): " .. (success4 and tostring(responseNum) or "FAILED"))
+		print("Path 4 (Fixed): 7")
 	end
 })
 
@@ -12188,6 +12332,198 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =CFrame.new(-82, -30,
     end
 })
 
+Tab = Window:MakeTab({
+	Name = "Groundbreaker",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+    Tab:AddButton({
+    Name = "Equip Quake (Blasting Off Again Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Quake"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+	Name = "Quake (Ability Start)",
+	Callback = function()   
+fireclickdetector(workspace.Lobby["Quake"].ClickDetector)
+wait(0.1)
+local args = {
+    [1] = {
+        ["start"] = true
+    }
+}
+
+game:GetService("ReplicatedStorage").QuakeQuake:FireServer(unpack(args))
+end
+})
+
+Tab:AddButton({
+	Name = "Quake (Ability Finish)",
+	Callback = function()   
+fireclickdetector(workspace.Lobby["Quake"].ClickDetector)
+wait(0.1)
+local args = {
+    [1] = {
+        ["finished"] = true
+    }
+}
+
+game:GetService("ReplicatedStorage").QuakeQuake:FireServer(unpack(args))
+end
+})
+
+Tab:AddButton({
+    Name = "Quake Slap Aura",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Quake" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Right Arm"
+        if player.Character and player.Character:FindFirstChild("Right Arm") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Right Arm"]
+            }
+
+            -- Fire the server with the "Right Arm" part as an argument
+            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Quake",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+Tab = Window:MakeTab({
+	Name = "Shellbert",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+-- Eggler Button
+Tab:AddButton({
+    Name = "Auto Teleport To Egg Place + Get Eggler Auto",
+    Callback = function()
+        local firstPlaceId = 6403373529
+        local secondPlaceId = 129665246576996
+        local currentPlaceId = game.PlaceId
+        
+        local function executeEgglerScript()
+            if not game:IsLoaded() then game.Loaded:Wait() end
+            if getgenv().AutoGetEgglerExecuted then return end
+            getgenv().AutoGetEgglerExecuted = true
+
+            if game.PlaceId == secondPlaceId then
+                -- Second place: Egg Place - Get Eggler
+                while task.wait() do
+                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
+                    end
+                    for i,v in pairs(workspace:GetDescendants()) do
+                        if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
+                            v.CanCollide = false
+                            v.CanTouch = true
+                            v.CanQuery = true
+                            v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                        end
+                    end
+                    if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
+                        fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
+                    end
+                end
+                
+            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
+                -- First place: Slap Battles - Click eggs and teleport
+                for i,v in pairs(ReplicatedStorage.EasterHuntEggs:GetChildren()) do
+                    if v and v:FindFirstChildWhichIsA("ClickDetector") then
+                        fireclickdetector(v:FindFirstChildWhichIsA("ClickDetector"))
+                    end
+                end
+                repeat task.wait() until workspace:FindFirstChild("EggTeleport")
+                task.wait()
+                if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
+                    fireclickdetector(workspace.EggTeleport.ClickDetector)
+                end
+                task.wait(2)
+                game:GetService("TeleportService"):Teleport(secondPlaceId)
+            end
+        end
+
+        -- Function to set up teleport monitoring
+        local function setupTeleportMonitor()
+            local connection
+            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
+                if state == Enum.TeleportState.InProgress then
+                    local egglerScript = [[
+                        getgenv().AutoGetEgglerExecuted = false
+                        
+                        if not game:IsLoaded() then game.Loaded:Wait() end
+                        task.wait(3)
+                        
+                        local secondPlaceId = 129665246576996
+                        
+                        if game.PlaceId == secondPlaceId then
+                            -- Auto-execute in second place
+                            while task.wait() do
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
+                                end
+                                for i,v in pairs(workspace:GetDescendants()) do
+                                    if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
+                                        v.CanCollide = false
+                                        v.CanTouch = true
+                                        v.CanQuery = true
+                                        v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                                    end
+                                end
+                                if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
+                                    fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
+                                end
+                            end
+                        end
+                    ]]
+                    if syn and syn.queue_on_teleport then 
+                        syn.queue_on_teleport(egglerScript) 
+                    else 
+                        queue_on_teleport(egglerScript) 
+                    end
+                end
+            end)
+            return connection
+        end
+
+        -- Main execution logic
+        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
+            executeEgglerScript()
+        else
+            local connection = setupTeleportMonitor()
+            
+            local TeleportService = game:GetService("TeleportService")
+            local success, errorMsg = pcall(function() 
+                TeleportService:Teleport(firstPlaceId) 
+            end)
+            
+            if not success then
+                if connection then connection:Disconnect() end
+            end
+        end
+    end
+})
+
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
@@ -12930,6 +13266,99 @@ do
     })
 end
     
+Section = Tab:AddSection({
+    Name = "Safespot Stuff"
+})
+
+Tab:AddButton({
+    Name = "Create Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("Safespot") == nil then
+            local Safespot = Instance.new("Model", workspace)
+            Safespot.Name = "Safespot"
+
+            local base = Instance.new("Part")
+            base.Name = "Base"
+            base.Size = Vector3.new(500, 10, 500)
+            base.Position = Vector3.new(10000, -50, 10000)
+            base.Anchored = true
+            base.CanCollide = true
+            base.Transparency = 0.5
+            base.Parent = Safespot
+
+            local partsData = {
+                {"DefendPart",  Vector3.new(500, 117, 5),   Vector3.new(10000.2, 13, 9752.45)},
+                {"DefendPart1", Vector3.new(5, 117, 496),   Vector3.new(10248.2, 13, 10002.4)},
+                {"DefendPart2", Vector3.new(497, 117, 6),   Vector3.new(9998.13, 13, 10247.2)},
+                {"DefendPart3", Vector3.new(7, 117, 490),   Vector3.new(9752.71, 13, 9999.28)},
+                {"DefendPart4", Vector3.new(491, 10, 491),  Vector3.new(10001.1, 76, 9999.66)},
+            }
+
+            for _, partInfo in pairs(partsData) do
+                local part = Instance.new("Part")
+                part.Name = partInfo[1]
+                part.Size = partInfo[2]
+                part.Position = partInfo[3]
+                part.Anchored = true
+                part.CanCollide = true
+                part.Transparency = 0.5
+                part.Parent = Safespot
+            end
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Create Tournament Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotTournament") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotTournament"
+            Safespot.Position = Vector3.new(3453, 246, -20)
+            Safespot.Size = Vector3.new(1000, 1, 1000)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Create Small Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotBobRojo") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotBobRojo"
+            Safespot.Position = Vector3.new(-268, 25, 0)
+            Safespot.Size = Vector3.new(50, 1, 50)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        OrionLib:MakeNotification({
+            Name = "Checker",
+            Content = "Created Successfully!",
+            Image = "rbxassetid://7733919427",
+            Time = 3
+        })
+    end
+})
+
 -- Add section for Ghost On/Off
 Section = Tab:AddSection({
     Name = "Ghost On/Off"
