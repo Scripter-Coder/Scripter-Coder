@@ -41,25 +41,86 @@ Section = Tab:AddSection({
     Name = "Give FE/Visual Free Mastery"
 })
 
-local function addMasteryButton(name)
-    Tab:AddButton({
-        Name = name,
-        Callback = function()
-            local mod = require(game.ReplicatedFirst.Dependencies.GloveMasteryClient)
-            hookfunction(mod.IsMasteredVersionEnabled, function(self, g)
-                return g == name or old(self, g)
-            end)
-        end
-    })
-end
-
+-- Create dropdown for Mastery selection
 local masteryNames = {
-    "spin", "Stick", "Brick", "Flash", "Spring", "Fort", "Space", "Hive", "Killstreak", "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Plank", "Car Keys", "Ultra Instinct", "Acrobat",
+    "spin", "Stick", "Brick", "Flash", "Spring", "Thanos", "Fort", "Space", "Hive", "Killstreak", 
+    "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", 
+    "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", 
+    "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Plank", "Eggler", "Car Keys", 
+    "Ultra Instinct", "Acrobat"
 }
 
-for _, name in ipairs(masteryNames) do
-    addMasteryButton(name)
-end
+-- Variable to store selected mastery
+local selectedMastery = masteryNames[1]
+
+-- Check if hookfunction is supported
+local hookfunctionSupported = pcall(function()
+    return hookfunction
+end)
+
+-- Add dropdown for mastery selection
+Tab:AddDropdown({
+    Name = "Select Glove for Mastery",
+    Options = masteryNames,
+    Default = selectedMastery,
+    Callback = function(Value)
+        selectedMastery = Value
+        if hookfunctionSupported then
+            OrionLib:MakeNotification({
+                Name = "Mastery Selected",
+                Content = "Selected: " .. Value,
+                Image = "rbxassetid://7734059095",
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Add button to apply mastery
+Tab:AddButton({
+    Name = "Apply Mastery",
+    Callback = function()
+        if not hookfunctionSupported then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Your executor doesn't support hookfunction",
+                Image = "rbxassetid://7743878857",
+                Time = 5
+            })
+            return
+        end
+        
+        local success, err = pcall(function()
+            local mod = require(game.ReplicatedFirst.Dependencies.GloveMasteryClient)
+            local old = mod.IsMasteredVersionEnabled
+            hookfunction(mod.IsMasteredVersionEnabled, function(self, g)
+                return g == selectedMastery or old(self, g)
+            end)
+        end)
+        
+        if success then
+            OrionLib:MakeNotification({
+                Name = "Success",
+                Content = selectedMastery .. " mastery applied!",
+                Image = "rbxassetid://7734059095",
+                Time = 2
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Failed to apply mastery: " .. tostring(err),
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+	        OrionLib:MakeNotification({
+        Name = "Warning",
+        Content = "Your executor doesn't support hookfunction",
+        Image = "rbxassetid://7743878857",
+        Time = 5
+    })
+        end
+    end
+})
 
 local Tab = Window:MakeTab({
     Name = "spin",
@@ -499,6 +560,140 @@ while true do
 end
 else
 OrionLib:MakeNotification({Name = "Error",Content = "Equip Spring",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Thanos",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({ Name = "1-2-3 Quest" })
+
+Tab:AddToggle({
+    Name = "Auto Slap/Use Ability",
+    Default = false,
+    Callback = function(AutoSlapThanos)
+        running = AutoSlapThanos
+        if not running then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local LocalPlayer = Players.LocalPlayer
+
+            local function teleportToRandomPlayer()
+                local playerList = Players:GetPlayers()
+                if #playerList > 1 then
+                    local randomPlayer
+                    repeat
+                        randomPlayer = playerList[math.random(1, #playerList)]
+                    until randomPlayer ~= LocalPlayer
+
+                    local targetChar = randomPlayer.Character
+                    if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetChar.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
+                    end
+                end
+            end
+
+            local function fireThanosHitForAllPlayers()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(player.Character.HumanoidRootPart)
+                    end
+                end
+            end
+
+            local count = 0
+            while running and count < 750 do
+                if LocalPlayer.leaderstats.Glove.Value == "Thanos" then
+                    local args = {
+    [1] = 1
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+task.wait(0.2)
+local args = {
+    [1] = 2
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+                    teleportToRandomPlayer()
+                    fireThanosHitForAllPlayers()
+                    count += 1
+                    task.wait(2.1)
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Thanos Glove",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    break
+                end
+            end
+        end)
+    end
+})
+
+Tab:AddButton({
+	Name = "Use Thanos (1) Ability",
+	Callback = function()  
+fireclickdetector(workspace.Lobby["Thanos"].ClickDetector)
+wait(0.1)
+local args = {
+    [1] = 1
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+end
+})
+
+Tab:AddButton({
+	Name = "Use Thanos (2) Ability",
+	Callback = function()   
+fireclickdetector(workspace.Lobby["Thanos"].ClickDetector)
+wait(0.1)
+local args = {
+    [1] = 2
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+end
+})
+
+Tab:AddButton({
+    Name = "Thanos Slap Aura",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Thanos" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Right Arm"
+        if player.Character and player.Character:FindFirstChild("Right Arm") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Right Arm"]
+            }
+
+            -- Fire the server with the "Right Arm" part as an argument
+            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    task.wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Thanos",Image = "rbxassetid://7743878857",Time = 3})
 end
 end
 })
@@ -2881,493 +3076,6 @@ Tab:AddToggle({
     end
 })
 
-Section = Tab:AddSection({
-    Name = "4 Quest"
-})
-
-Tab:AddButton({
-    Name = "Equip Reaper (3.5k+ Slaps Need)",
-    Callback = function()
-fireclickdetector(workspace.Lobby["Reaper"].ClickDetector)
-    end
-})
-
-Tab:AddButton({
-    Name = "Equip Killstreak (5k+ Slaps Need)",
-    Callback = function()
-fireclickdetector(workspace.Lobby["Killstreak"].ClickDetector)
-    end
-})
-
-Tab:AddButton({
-    Name = "Equip God's Hand (65k+ Slaps Need)",
-    Callback = function()
-fireclickdetector(workspace.Lobby["God's Hand"].ClickDetector)
-    end
-})
-
-Tab:AddButton({
-    Name = "Equip bob (bob Badge Need)",
-    Callback = function()
-fireclickdetector(workspace.Lobby["bob"].ClickDetector)
-    end
-})
-
-Tab:AddButton({
-    Name = "Equip Tycoon (Plate Master Badge Need)",
-    Callback = function()
-fireclickdetector(workspace.Lobby["Tycoon"].ClickDetector)
-    end
-})
-
-Tab:AddButton({
-    Name = "Someone Using Reaper?",
-    Callback = function()
-        local found = false
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local leaderstats = player:FindFirstChild("leaderstats")
-            if leaderstats then
-                local glove = leaderstats:FindFirstChild("Glove")
-                if glove and glove.Value == "Reaper" then
-                    found = true
-                    OrionLib:MakeNotification({
-                        Name = "Detected!",
-                        Content = player.Name .. " has equipped the Reaper glove.",
-                        Image = "rbxassetid://7733715400",
-                        Time = 3
-                    })
-                end
-            end
-        end
-
-        if not found then
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "No one has equipped the Reaper glove",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Someone Using Killstreak?",
-    Callback = function()
-        local found = false
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local leaderstats = player:FindFirstChild("leaderstats")
-            if leaderstats then
-                local glove = leaderstats:FindFirstChild("Glove")
-                if glove and glove.Value == "Killstreak" then
-                    found = true
-                    OrionLib:MakeNotification({
-                        Name = "Detected!",
-                        Content = player.Name .. " has equipped the Killstreak glove.",
-                        Image = "rbxassetid://7733715400",
-                        Time = 3
-                    })
-                end
-            end
-        end
-
-        if not found then
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "No one has equipped the Killstreak glove",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Someone Using God's Hand?",
-    Callback = function()
-        local found = false
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local leaderstats = player:FindFirstChild("leaderstats")
-            if leaderstats then
-                local glove = leaderstats:FindFirstChild("Glove")
-                if glove and glove.Value == "God's Hand" then
-                    found = true
-                    OrionLib:MakeNotification({
-                        Name = "Detected!",
-                        Content = player.Name .. " has equipped the God's Hand glove.",
-                        Image = "rbxassetid://7733715400",
-                        Time = 3
-                    })
-                end
-            end
-        end
-
-        if not found then
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "No one has equipped the God's Hand glove",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Someone Using bob?",
-    Callback = function()
-        local found = false
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local leaderstats = player:FindFirstChild("leaderstats")
-            if leaderstats then
-                local glove = leaderstats:FindFirstChild("Glove")
-                if glove and glove.Value == "bob" then
-                    found = true
-                    OrionLib:MakeNotification({
-                        Name = "Detected!",
-                        Content = player.Name .. " has equipped the bob glove.",
-                        Image = "rbxassetid://7733715400",
-                        Time = 3
-                    })
-                end
-            end
-        end
-
-        if not found then
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "No one has equipped the bob glove",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Someone Using Tycoon?",
-    Callback = function()
-        local found = false
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local leaderstats = player:FindFirstChild("leaderstats")
-            if leaderstats then
-                local glove = leaderstats:FindFirstChild("Glove")
-                if glove and glove.Value == "Tycoon" then
-                    found = true
-                    OrionLib:MakeNotification({
-                        Name = "Detected!",
-                        Content = player.Name .. " has equipped the Tycoon glove.",
-                        Image = "rbxassetid://7733715400",
-                        Time = 3
-                    })
-                end
-            end
-        end
-
-        if not found then
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "No one has equipped the Tycoon glove",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Teleport To Reaper Player",
-    Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local foundPlayer = nil
-
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer then
-                local stats = player:FindFirstChild("leaderstats")
-                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Reaper" then
-                    foundPlayer = player
-                    break
-                end
-            end
-        end
-
-        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = foundPlayer.Character.HumanoidRootPart
-            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
-
-            OrionLib:MakeNotification({
-                Name = "Success!",
-                Content = "Teleported To: " .. foundPlayer.Name,
-                Image = "rbxassetid://7733715400",
-                Time = 3
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Reaper Player Not Found",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Teleport To Killstreak Player",
-    Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local foundPlayer = nil
-
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer then
-                local stats = player:FindFirstChild("leaderstats")
-                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Killstreak" then
-                    foundPlayer = player
-                    break
-                end
-            end
-        end
-
-        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = foundPlayer.Character.HumanoidRootPart
-            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
-
-            OrionLib:MakeNotification({
-                Name = "Success!",
-                Content = "Teleported To: " .. foundPlayer.Name,
-                Image = "rbxassetid://7733715400",
-                Time = 3
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Killstreak Player Not Found",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Teleport To God's Hand Player",
-    Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local foundPlayer = nil
-
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer then
-                local stats = player:FindFirstChild("leaderstats")
-                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "God's Hand" then
-                    foundPlayer = player
-                    break
-                end
-            end
-        end
-
-        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = foundPlayer.Character.HumanoidRootPart
-            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
-
-            OrionLib:MakeNotification({
-                Name = "Success!",
-                Content = "Teleported To: " .. foundPlayer.Name,
-                Image = "rbxassetid://7733715400",
-                Time = 3
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "God's Hand Player Not Found",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Teleport To bob Player",
-    Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local foundPlayer = nil
-
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer then
-                local stats = player:FindFirstChild("leaderstats")
-                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "bob" then
-                    foundPlayer = player
-                    break
-                end
-            end
-        end
-
-        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = foundPlayer.Character.HumanoidRootPart
-            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
-
-            OrionLib:MakeNotification({
-                Name = "Success!",
-                Content = "Teleported To: " .. foundPlayer.Name,
-                Image = "rbxassetid://7733715400",
-                Time = 3
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "bob Player Not Found",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Teleport To Tycoon Player",
-    Callback = function()
-        local localPlayer = game.Players.LocalPlayer
-        local foundPlayer = nil
-
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= localPlayer then
-                local stats = player:FindFirstChild("leaderstats")
-                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Tycoon" then
-                    foundPlayer = player
-                    break
-                end
-            end
-        end
-
-        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = foundPlayer.Character.HumanoidRootPart
-            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
-
-            OrionLib:MakeNotification({
-                Name = "Success!",
-                Content = "Teleported To: " .. foundPlayer.Name,
-                Image = "rbxassetid://7733715400",
-                Time = 3
-            })
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Tycoon Player Not Found",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Reaper Slap Aura",
-    Callback = function()   
-        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Reaper" then
-            -- Get the ReplicatedStorage and Players service
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local Players = game:GetService("Players")
-
-            -- Loop through each player in the game and slap them once
-            for _, player in pairs(Players:GetPlayers()) do
-                -- Ensure the player has a character and it contains the "Left Arm"
-                if player.Character and player.Character:FindFirstChild("Left Arm") then
-                    -- Create the arguments table for the FireServer function
-                    local args = {
-                        [1] = player.Character["Left Arm"]
-                    }
-
-                    -- Fire the server with the "Left Arm" part as an argument
-                    ReplicatedStorage.ReaperHit:FireServer(unpack(args))
-                end
-            end
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Equip Reaper",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-    Name = "Killstreak Slap Aura",
-    Callback = function()   
-        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
-            -- Get the ReplicatedStorage and Players service
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local Players = game:GetService("Players")
-
-            -- Loop through each player in the game and slap them once
-            for _, player in pairs(Players:GetPlayers()) do
-                -- Ensure the player has a character and it contains the "Left Arm"
-                if player.Character and player.Character:FindFirstChild("Left Arm") then
-                    -- Create the arguments table for the FireServer function
-                    local args = {
-                        [1] = player.Character["Left Arm"]
-                    }
-
-                    -- Fire the server with the "Left Arm" part as an argument
-                    ReplicatedStorage.KSHit:FireServer(unpack(args))
-                end
-            end
-        else
-            OrionLib:MakeNotification({
-                Name = "Error",
-                Content = "Equip Killstreak",
-                Image = "rbxassetid://7743878857",
-                Time = 3
-            })
-        end
-    end
-})
-
-Tab:AddButton({
-	Name = "Use God's Hand Ability",
-	Callback = function()   
-game:GetService("ReplicatedStorage").TimestopJump:FireServer()
-game:GetService("ReplicatedStorage").Timestopchoir:FireServer()
-game:GetService("ReplicatedStorage").Timestop:FireServer()
-end
-})
-
-Tab:AddButton({
-	Name = "Use bob Ability",
-	Callback = function()   
-game:GetService("ReplicatedStorage").bob:FireServer()
-end
-})
-
-Tab:AddToggle({
-	Name = "Auto Click Tycoon",
-	Default = false,
-	Callback = function(Value)
-		_G.AutoTycoon = Value
-
-		while _G.AutoTycoon do
-			for _, v in pairs(workspace:GetChildren()) do
-				if string.find(v.Name, "ÅTycoon") then
-					local clickPart = v:FindFirstChild("Click")
-					if clickPart and clickPart:IsA("BasePart") then
-						local detector = clickPart:FindFirstChildOfClass("ClickDetector")
-						if detector then
-							fireclickdetector(detector)
-						end
-					end
-				end
-			end
-			task.wait()
-		end
-	end
-})
-
 local Tab = Window:MakeTab({
     Name = "Tinkerer",
     Icon = "rbxassetid://7734068321",
@@ -3497,7 +3205,155 @@ local Tab = Window:MakeTab({
 })
 
 Section = Tab:AddSection({
-    Name = "TEMPORARY DISABLED"
+    Name = "1-2 Quests"
+})
+
+Tab:AddButton({
+    Name = "Teleport To Closest Player",
+    Callback = function()
+        local LocalPlayer = game:GetService("Players").LocalPlayer
+        local localChar = LocalPlayer.Character
+        local localHRP = localChar and localChar:FindFirstChild("HumanoidRootPart")
+        
+        if not localHRP then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Your character not found!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+            return
+        end
+        
+        local closestPlayer = nil
+        local closestDistance = math.huge
+        local closestPos = nil
+        
+        for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+            if player ~= LocalPlayer then
+                local character = player.Character
+                local hrp = character and character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    local distance = (hrp.Position - localHRP.Position).Magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestPlayer = player
+                        closestPos = hrp.Position
+                    end
+                end
+            end
+        end
+        
+        if closestPlayer and closestPos then
+            localChar.HumanoidRootPart.CFrame = CFrame.new(closestPos)
+            OrionLib:MakeNotification({
+                Name = "Teleported",
+                Content = "Teleported to " .. closestPlayer.Name .. " (" .. math.floor(closestDistance) .. " studs away)",
+                Image = "rbxassetid://7734059095",
+                Time = 2
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No other players found!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Textbox for Vector3 position (format: x, y, z)
+local positionInput = Tab:AddTextbox({
+    Name = "Put Position (x, y, z)",
+    Default = "0, 0, 0",
+    TextDisappear = false,
+    Callback = function(Value)
+        local parts = {}
+        for part in string.gmatch(Value, "([^,]+)") do
+            table.insert(parts, tonumber(part))
+        end
+        
+        if #parts >= 3 and parts[1] and parts[2] and parts[3] then
+            positionValue = Vector3.new(parts[1], parts[2], parts[3])
+        else
+            positionValue = Vector3.new(0, 0, 0)
+            positionInput:Set("0, 0, 0")
+            OrionLib:MakeNotification({
+                Name = "Invalid Input",
+                Content = "Please use format: x, y, z",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Textbox for seconds delay
+local secondsInput = Tab:AddTextbox({
+    Name = "Repeat Ability Seconds Delay",
+    Default = "7",
+    TextDisappear = false,
+    Callback = function(Value)
+        local num = tonumber(Value)
+        if num and num > 0 then
+            secondsValue = num
+        else
+            secondsValue = 7
+            secondsInput:Set("7")
+        end
+    end
+})
+
+-- Default values
+local positionValue = Vector3.new(0, 0, 0)
+local secondsValue = 7
+local autoRunEnabled = false
+local autoRunConnection = nil
+
+-- Toggle for Auto Use Run Ability
+Tab:AddToggle({
+    Name = "Auto Use Run Ability",
+    Default = false,
+    Callback = function(Value)
+        autoRunEnabled = Value
+        
+        if autoRunEnabled then
+            if autoRunConnection then
+                autoRunConnection:Disconnect()
+                autoRunConnection = nil
+            end
+            
+            autoRunConnection = game:GetService("RunService").Stepped:Connect(function()
+                if autoRunEnabled then
+                    local args = {
+                        [1] = positionValue
+                    }
+                    game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args))
+                    task.wait(secondsValue)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Run",
+                Content = string.format("Enabled! Position: (%.1f, %.1f, %.1f) Every %.1f seconds", positionValue.X, positionValue.Y, positionValue.Z, secondsValue),
+                Image = "rbxassetid://7734059095",
+                Time = 3
+            })
+        else
+            if autoRunConnection then
+                autoRunConnection:Disconnect()
+                autoRunConnection = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Run",
+                Content = "Disabled!",
+                Image = "rbxassetid://7734059095",
+                Time = 2
+            })
+        end
+    end
 })
 
 local Tab = Window:MakeTab({
@@ -3558,6 +3414,60 @@ local AutoPlankToggle = Tab:AddToggle({
             end
         end
     end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Eggler",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Use Eggler (Tongue) Ability",
+	Callback = function()   
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer()
+end
+})
+
+Tab:AddButton({
+	Name = "Use Eggler (Egg Yourself) Ability",
+	Callback = function()   
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("EgglerRAbility"):FireServer()
+end
+})
+
+Tab:AddButton({
+	Name = "Eggler Slap Aura",
+	Callback = function()   
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Eggler" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Left Leg"
+        if player.Character and player.Character:FindFirstChild("Left Leg") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Left Leg"],
+                [2] = false  -- The second argument, set to false as in your original script
+            }
+
+            -- Fire the server with the "Left Leg" part as an argument
+            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Eggler",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
 })
 
 local Tab = Window:MakeTab({
