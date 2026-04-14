@@ -1815,28 +1815,28 @@ Section = Tab:AddSection("Normal Hubs")
 Tab:AddButton({
     Title = "Load Badges Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Badges%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Badges%20Hub.txt"))()
  end    
 })
 
 Tab:AddButton({
     Title = "Load Masteries Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Masteries%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Masteries%20Hub.txt"))()
  end    
 })
 
 Tab:AddButton({
     Title = "Load Slap Farm Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Farm%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Farm%20Hub.txt"))()
  end    
 })
 
 Tab:AddButton({
     Title = "Load Helper Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Helper%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Helper%20Hub.txt"))()
   end    
 })
 
@@ -1852,14 +1852,14 @@ Section = Tab:AddSection("Limited Hubs")
 Tab:AddButton({
     Title = "Load Halloween Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Halloween%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Halloween%20Hub.txt"))()
   end    
 })
 
 Tab:AddButton({
     Title = "Load Christmas Hub Script",
     Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Christmas%20Hub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Christmas%20Hub.txt"))()
   end    
 })
 
