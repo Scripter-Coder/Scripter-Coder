@@ -67,17 +67,9 @@ Section = Tab:AddSection({
 })
 
 Tab:AddParagraph("Gloves That Not Added Are:", [[
-Spy Glove
-Detonator Glove
-Dominance Glove
-Charge Glove
-Obby Glove
 Boogie Glove
-Lure Glove
-Pillow Glove
 Slender Glove
 Slasher Glove
-Car Keys Glove
 Dave Glove
 Mortis Glove
 Paint Glove
@@ -100,7 +92,7 @@ Tab:AddDropdown({
         "Rob", "Rhytnm", "Rojo", "Retro", "Null", "Lure", "Tinkerer", "Jester",
         "Blasphemy", "Admin", "Joust", "Firework", "Run", "Divebomb", "Knockoff",
         "Siphon", "Hunter", "Relude", "Avatar", "Pillow", "Angler", "Snowroller",
-        "Draw4", "Mouse", "Swashbuckler", "Silly", "CarKeys"
+        "Draw4", "Mouse", "Swashbuckler", "Silly", "CarKeys", "Debug"
     },
     Callback = function(Value)
         local messages = {
@@ -333,6 +325,7 @@ local allBadges = {
     {id = 1239535438142380, name = "Untimely End | Undead Glove", category = "Normal"},
     {id = 4207775293625676, name = "Clobbering Time! | Groundbreaker Glove", category = "Normal"},
     {id = 2604207010521588, name = "Easter Hatchastrophe | Shellbert Glove", category = "Normal"},
+    {id = 1662521369541218, name = "Genuinely how am I still alive | Lasso Glove", category = "Normal"},
 }
 
 -- Store owned badges
@@ -1970,6 +1963,62 @@ end
 })
 
 Tab = Window:MakeTab({
+	Name = "Spy",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Slap Royale (1)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game:GetService("TeleportService"):Teleport(9431156611)
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab:AddButton({
+    Name = "Slap Royale (2)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.Teleport4.CFrame
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab = Window:MakeTab({
+	Name = "Detonator",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Slap Royale (1)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game:GetService("TeleportService"):Teleport(9431156611)
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab:AddButton({
+    Name = "Slap Royale (2)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.Teleport4.CFrame
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab = Window:MakeTab({
 	Name = "Rage",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
@@ -2137,8 +2186,7 @@ Tab:AddButton({
     Name = "Auto Spawn Bricks",
     Callback = function()  
         if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-            wait(0.2)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17893, -24, -3532)
             wait(0.5)
             while true do 
                 game:GetService("ReplicatedStorage").lbrick:FireServer()
@@ -2346,6 +2394,34 @@ else
 OrionLib:MakeNotification({Name = "Error",Content = "Equip Reaper",Image = "rbxassetid://7743878857",Time = 3})
 end
 end
+})
+
+Tab = Window:MakeTab({
+	Name = "Dominance",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Slap Royale (1)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game:GetService("TeleportService"):Teleport(9431156611)
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab:AddButton({
+    Name = "Slap Royale (2)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.Teleport4.CFrame
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
 })
 
 Tab = Window:MakeTab({
@@ -2722,6 +2798,34 @@ Tab:AddToggle({
                 end)
             end
         end
+    end
+})
+
+Tab = Window:MakeTab({
+	Name = "Charge",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Slap Royale (1)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game:GetService("TeleportService"):Teleport(9431156611)
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
+    end
+})
+
+Tab:AddButton({
+    Name = "Slap Royale (2)",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.Teleport4.CFrame
+		else
+			OrionLib:MakeNotification({Name = "Error", Content = "1k+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+		end
     end
 })
 
@@ -3290,7 +3394,7 @@ end
 })
 
 Tab = Window:MakeTab({
-	Name = "🗿",
+	Name = "🗿", --Moyai/Moai/🗿
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
@@ -3309,6 +3413,80 @@ else
 OrionLib:MakeNotification({Name = "Error",Content = "Equip Trap/Enter Arena First",Image = "rbxassetid://7743878857",Time = 3})
 end
 end
+})
+
+Tab = Window:MakeTab({
+	Name = "Obby",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Section = Tab:AddSection({
+    Name = "Diamond/MEGAROCK/CUSTOM"
+})
+
+Tab:AddButton({
+    Name = "Equip Diamond (15+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Diamond"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip MEGAROCK (WHY Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["MEGAROCK"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip CUSTOM (394 Robux Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["CUSTOM"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Rock Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("Rockmode"):FireServer()
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Rocky (Diamond's Helper)"
+})
+
+Tab:AddButton({
+    Name = "Equip Rocky (9500+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Rocky"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Rocky Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("RockyShoot"):FireServer()
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Za Hando (Diamond/MEGAROCK/CUSTOM's Helper)"
+})
+
+Tab:AddButton({
+    Name = "Equip Za Hando (1000+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Za Hando"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Za Hando Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("Erase"):FireServer()
+    end
 })
 
 Tab = Window:MakeTab({
@@ -4221,7 +4399,7 @@ Tab:AddSection({
 Tab:AddParagraph("When was Slap Battles first published?", "16/2/2021")
 Tab:AddParagraph("What glove costs 9750 slaps?", "Coil")
 Tab:AddParagraph("What is the chance of getting bob from Replica?", "1/7500")
-Tab:AddParagraph("How many gloves stands are in Slap Battles right now?", "276 (Last Updated: 3 April 2026 UTC, Roaring Update)")
+Tab:AddParagraph("How many gloves stands are in Slap Battles right now?", "279 (Last Updated: 24 April 2026 UTC, Lasso Update)")
 Tab:AddParagraph("What is the badge name for the Glitch glove?", "01010010 01010101 01001110")
 Tab:AddParagraph("If 1=3 2=3 3=5 4=4 5=4 6=?", "3")
 Tab:AddParagraph("Whom ultimately controls this realm?", "Tencelll")
@@ -5600,6 +5778,316 @@ Tab:AddButton({
                     Time = 5
                 })
             end
+        end
+    end
+})
+
+Tab = Window:MakeTab({
+	Name = "Lure",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Equip Leash (Demonic Ritual Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Leash"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Squid (2750+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Squid"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip fish (DEEP SLUMBER Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["fish"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Kraken (Escape the Abyss Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Kraken"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Leash?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Leash" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Leash glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Leash glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Squid?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Squid" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Squid glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Squid glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using fish?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "fish" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the fish glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the fish glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Kraken?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Kraken" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Kraken glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Kraken glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Leash Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Leash" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Leash Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Squid Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Squid" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Squid Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To fish Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "fish" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "fish Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Kraken Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Kraken" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Kraken Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
         end
     end
 })
@@ -10898,6 +11386,95 @@ Tab:AddButton({
     end
 })
 
+Tab = Window:MakeTab({
+	Name = "Car Keys",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Equip Adios (8000+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Adios"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Car Keys?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Car Keys" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Car Keys glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Car Keys glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Car Keys Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Car Keys" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Car Keys Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Adios Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("AdiosActivated"):FireServer()
+    end
+})
+
     Tab = Window:MakeTab({
 	Name = "Suction",
 	Icon = "rbxassetid://7733673987",
@@ -12521,6 +13098,185 @@ Tab:AddButton({
                 if connection then connection:Disconnect() end
             end
         end
+    end
+})
+
+Tab = Window:MakeTab({
+	Name = "Lasso",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Equip Trap (🗿 Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Trap"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Knockoff (Code Breaker Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Knockoff"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip Beatdown (41000+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Beatdown"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Knockoff?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Knockoff" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Knockoff glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Knockoff glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Knockoff Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Knockoff" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Knockoff Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Someone Using Beatdown?",
+    Callback = function()
+        local found = false
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Beatdown" then
+                    found = true
+                    OrionLib:MakeNotification({
+                        Name = "Detected!",
+                        Content = player.Name .. " has equipped the Beatdown glove.",
+                        Image = "rbxassetid://7733715400",
+                        Time = 3
+                    })
+                end
+            end
+        end
+
+        if not found then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No one has equipped the Beatdown glove",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Beatdown Player",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Beatdown" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0)) -- Teleport above
+
+            OrionLib:MakeNotification({
+                Name = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Image = "rbxassetid://7733715400",
+                Time = 3
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Beatdown Player Not Found",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Use Trap Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("funnyhilariousbeartrap"):FireServer()
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Trap",
+    Callback = function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.BearTrap.CFrame
     end
 })
 
