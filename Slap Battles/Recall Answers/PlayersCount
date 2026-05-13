@@ -1,0 +1,50 @@
+-- Variables
+local player = game.Players.LocalPlayer
+local savedCount = nil
+local countLocked = false
+
+-- Function to get current player count
+local function getPlayerCount()
+    return #game.Players:GetPlayers()
+end
+
+-- Function to check if in RepressedMemories map
+local function isInRepressedMemories()
+    local character = player.Character
+    if not character then return false end
+    
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return false end
+    
+    -- Check for RepressedMemories model
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") and string.find(obj.Name, "RepressedMemories") then
+            local distance = (hrp.Position - obj.Position).Magnitude
+            if distance < 100 then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- Create the paragraph
+local playerCountParagraph = Tab:AddParagraph("How many players were present in this server when you were sent here?", "Loading...")
+
+-- Monitor and update
+task.spawn(function()
+    while true do
+        if not countLocked then
+            if isInRepressedMemories() then
+                -- Just entered, save current count
+                savedCount = getPlayerCount()
+                countLocked = true
+                playerCountParagraph:Set(tostring(savedCount))
+            else
+                -- Update live count
+                playerCountParagraph:Set(tostring(getPlayerCount()))
+            end
+        end
+        task.wait(0.5)
+    end
+end)
