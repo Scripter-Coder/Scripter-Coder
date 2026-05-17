@@ -686,20 +686,23 @@ function OrionLib:MakeNotification(NotificationConfig)
 
 		TweenService:Create(NotificationFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play()
 
-		-- Timer countdown
+		-- Fixed timer countdown - goes to 0 and updates every 0.01 seconds
 		local remainingTime = NotificationConfig.Time
+		local startTime = tick()
 		local timerConnection
-		timerConnection = RunService.Heartbeat:Connect(function()
+		timerConnection = RunService.Heartbeat:Connect(function(deltaTime)
+			local elapsed = tick() - startTime
+			remainingTime = math.max(0, NotificationConfig.Time - elapsed)
+			TimerText.Text = string.format("%.2f", remainingTime)
+			TimerImage.Rotation = TimerImage.Rotation + 3.6 -- 360 degrees / 100 steps over 10 seconds, adjusted dynamically
+			
 			if remainingTime <= 0 then
 				timerConnection:Disconnect()
-				return
 			end
-			remainingTime = remainingTime - 0.01
-			TimerText.Text = string.format("%.2f", remainingTime)
-			TimerImage.Rotation = TimerImage.Rotation - 3.6 -- 360 degrees / 100 frames
 		end)
 
-		wait(NotificationConfig.Time - 0.88)
+		-- Wait for full time before closing
+		wait(NotificationConfig.Time)
 		timerConnection:Disconnect()
 		TweenService:Create(NotificationFrame.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 		TweenService:Create(NotificationFrame, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.6}):Play()
@@ -924,7 +927,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text at bottom
+	-- Version text at bottom center (fixed)
 	local VersionLine = AddThemeObject(SetProps(MakeElement("Frame"), {
 		Size = UDim2.new(1, 0, 0, 1),
 		Position = UDim2.new(0, 0, 1, -26)
@@ -933,7 +936,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(1, -10, 0, 20),
 		Position = UDim2.new(0, 5, 1, -24),
-		TextXAlignment = Enum.TextXAlignment.Left
+		TextXAlignment = Enum.TextXAlignment.Center
 	}), "TextDark")
 
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
@@ -1133,8 +1136,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		end	
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 5), {
-			Size = UDim2.new(1, -150, 1, -50),
-			Position = UDim2.new(0, 150, 0, 50),
+			Size = UDim2.new(1, -180, 1, -50), -- Increased from 150 to 180 to prevent overflow
+			Position = UDim2.new(0, 160, 0, 50), -- Increased from 150 to 160
 			Parent = MainWindow,
 			Visible = false,
 			Name = "ItemContainer"
