@@ -123,8 +123,8 @@ local OrionLib = {
 	SaveCfg = false,
 	FileOpsAllowed = true,
 	Version = "1.0.0",
-	WindowSize = nil, -- Store window size for restore
-	WindowPosition = nil -- Store window position
+	WindowSize = nil,
+	WindowPosition = nil
 }
 
 -- Check if file operations should be disabled for this game
@@ -144,7 +144,7 @@ end
 
 OrionLib.FileOpsAllowed = not IsFileOpsDisabled()
 
---Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
+--Feather Icons
 local Icons = {}
 
 local Success, Response = pcall(function()
@@ -240,7 +240,6 @@ local ResizingInfo = {Resizing = false, StartSize = nil, StartMousePos = nil, St
 
 local function AddDraggingFunctionality(DragPoint, Main)
 	pcall(function()
-		-- Dragging
 		DragPoint.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				DraggingInfo.Dragging = true
@@ -255,7 +254,6 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			end
 		end)
 		
-		-- Resize handle at bottom-right corner
 		local ResizeHandle = Instance.new("Frame")
 		ResizeHandle.Name = "ResizeHandle"
 		ResizeHandle.Size = UDim2.new(0, 15, 0, 15)
@@ -280,7 +278,6 @@ local function AddDraggingFunctionality(DragPoint, Main)
 		ResizeHandle.InputEnded:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				ResizingInfo.Resizing = false
-				-- Store the new size
 				OrionLib.WindowSize = Main.Size
 			end
 		end)
@@ -388,7 +385,6 @@ local function SetTheme()
 		end    
 	end    
 	
-	-- Apply transparency to main window
 	for _, frame in pairs(Orion:GetDescendants()) do
 		if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 then
 			frame.BackgroundTransparency = OrionLib.ThemeTransparency
@@ -445,12 +441,9 @@ local function SaveCfg(Name)
 	end)
 end
 
--- Switch-style toggle colors
 local SwitchColors = {
-	Disabled = Color3.fromRGB(180, 60, 60),  -- Red
-	Enabled = Color3.fromRGB(60, 180, 60),   -- Green
-	Missing = Color3.fromRGB(220, 180, 60),  -- Yellow
-	Error = Color3.fromRGB(160, 60, 200)     -- Purple
+	Disabled = Color3.fromRGB(180, 60, 60),
+	Enabled = Color3.fromRGB(60, 180, 60),
 }
 
 local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3}
@@ -614,22 +607,15 @@ function OrionLib:MakeNotification(NotificationConfig)
 			Parent = NotificationHolder
 		})
 
-		-- Timer image
-		local TimerImage = Instance.new("ImageLabel")
-		TimerImage.Image = "rbxassetid://7743873443"
-		TimerImage.Size = UDim2.new(0, 16, 0, 16)
-		TimerImage.Position = UDim2.new(1, -25, 1, -20)
-		TimerImage.BackgroundTransparency = 1
-		TimerImage.ImageColor3 = Color3.fromRGB(200, 200, 200)
-
+		-- Timer text below the notification content
 		local TimerText = Instance.new("TextLabel")
 		TimerText.Text = tostring(NotificationConfig.Time)
-		TimerText.Size = UDim2.new(0, 30, 0, 16)
-		TimerText.Position = UDim2.new(1, -45, 1, -20)
+		TimerText.Size = UDim2.new(1, -20, 0, 16)
+		TimerText.Position = UDim2.new(0, 10, 1, -20)
 		TimerText.BackgroundTransparency = 1
-		TimerText.TextColor3 = Color3.fromRGB(200, 200, 200)
-		TimerText.TextSize = 12
-		TimerText.Font = Enum.Font.GothamBold
+		TimerText.TextColor3 = Color3.fromRGB(150, 150, 150)
+		TimerText.TextSize = 11
+		TimerText.Font = Enum.Font.Gotham
 		TimerText.TextXAlignment = Enum.TextXAlignment.Right
 
 		local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 10), {
@@ -661,7 +647,6 @@ function OrionLib:MakeNotification(NotificationConfig)
 				TextColor3 = Color3.fromRGB(200, 200, 200),
 				TextWrapped = true
 			}),
-			TimerImage,
 			TimerText
 		})
 
@@ -673,8 +658,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 		timerConnection = RunService.Heartbeat:Connect(function()
 			local elapsed = tick() - startTime
 			remainingTime = math.max(0, NotificationConfig.Time - elapsed)
-			TimerText.Text = string.format("%.2f", remainingTime)
-			TimerImage.Rotation = (remainingTime / NotificationConfig.Time) * 360
+			TimerText.Text = string.format("%.1f", remainingTime) .. "s"
 			
 			if remainingTime <= 0 then
 				timerConnection:Disconnect()
@@ -760,9 +744,38 @@ function OrionLib:MakeWindow(WindowConfig)
 		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolder.UIListLayout.AbsoluteContentSize.Y + 16)
 	end)
 
-	local SearchBox = AddThemeObject(Create("TextBox", {
+	-- Tab Search Box
+	local TabSearchBox = AddThemeObject(Create("TextBox", {
 		Size = UDim2.new(1, -20, 0, 30),
 		Position = UDim2.new(0, 10, 0, 5),
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
+		PlaceholderText = "Search Tabs...",
+		Font = Enum.Font.GothamSemibold,
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false,
+		Text = ""
+	}), "Text")
+
+	local TabSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
+		Size = UDim2.new(1, 0, 0, 40),
+		Position = UDim2.new(0, 0, 0, 0)
+	}), {
+		TabSearchBox,
+		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
+			Size = UDim2.new(0, 16, 0, 16),
+			Position = UDim2.new(1, -25, 0, 12),
+			ImageColor3 = Color3.fromRGB(160, 160, 160)
+		}), "TextDark"),
+		AddThemeObject(MakeElement("Stroke"), "Stroke")
+	}), "Second")
+
+	-- Element Search Box
+	local ElementSearchBox = AddThemeObject(Create("TextBox", {
+		Size = UDim2.new(1, -20, 0, 30),
+		Position = UDim2.new(0, 10, 0, 55),
 		BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
@@ -774,11 +787,11 @@ function OrionLib:MakeWindow(WindowConfig)
 		Text = ""
 	}), "Text")
 
-	local SearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
+	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
 		Size = UDim2.new(1, 0, 0, 40),
-		Position = UDim2.new(0, 0, 0, 0)
+		Position = UDim2.new(0, 0, 0, 50)
 	}), {
-		SearchBox,
+		ElementSearchBox,
 		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
 			Size = UDim2.new(0, 16, 0, 16),
 			Position = UDim2.new(1, -25, 0, 12),
@@ -787,11 +800,32 @@ function OrionLib:MakeWindow(WindowConfig)
 		AddThemeObject(MakeElement("Stroke"), "Stroke")
 	}), "Second")
 
-	local AllElements = {} -- Store all elements for searching
-	local CurrentFilter = ""
+	local AllElements = {}
+	local AllTabs = {}
+	local CurrentElementFilter = ""
+	local CurrentTabFilter = ""
+
+	local function FilterTabs(searchText)
+		CurrentTabFilter = searchText:lower()
+		
+		for _, tabData in pairs(AllTabs) do
+			local tabFrame = tabData.Frame
+			local tabName = tabData.Name
+			
+			if searchText == "" then
+				tabFrame.Visible = true
+			else
+				if string.find(tabName:lower(), CurrentTabFilter) then
+					tabFrame.Visible = true
+				else
+					tabFrame.Visible = false
+				end
+			end
+		end
+	end
 
 	local function FilterElements(searchText)
-		CurrentFilter = searchText:lower()
+		CurrentElementFilter = searchText:lower()
 		
 		for _, elementData in pairs(AllElements) do
 			local elementFrame = elementData.Frame
@@ -800,7 +834,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			if searchText == "" then
 				elementFrame.Visible = true
 			else
-				if string.find(elementName:lower(), CurrentFilter) then
+				if string.find(elementName:lower(), CurrentElementFilter) then
 					elementFrame.Visible = true
 				else
 					elementFrame.Visible = false
@@ -809,16 +843,28 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end
 
-	AddConnection(SearchBox:GetPropertyChangedSignal("Text"), function()
-		FilterElements(SearchBox.Text)
+	AddConnection(TabSearchBox:GetPropertyChangedSignal("Text"), function()
+		FilterTabs(TabSearchBox.Text)
 	end)
 
-	AddConnection(SearchBox.Focused, function()
-		TweenService:Create(SearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
+	AddConnection(ElementSearchBox:GetPropertyChangedSignal("Text"), function()
+		FilterElements(ElementSearchBox.Text)
 	end)
 
-	AddConnection(SearchBox.FocusLost, function()
-		TweenService:Create(SearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+	AddConnection(TabSearchBox.Focused, function()
+		TweenService:Create(TabSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
+	end)
+
+	AddConnection(TabSearchBox.FocusLost, function()
+		TweenService:Create(TabSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+	end)
+
+	AddConnection(ElementSearchBox.Focused, function()
+		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
+	end)
+
+	AddConnection(ElementSearchBox.FocusLost, function()
+		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
 	end)
 
 	local CloseBtn = SetChildren(SetProps(MakeElement("Button"), {
@@ -863,7 +909,8 @@ function OrionLib:MakeWindow(WindowConfig)
 			Size = UDim2.new(0, 1, 1, 0),
 			Position = UDim2.new(1, -1, 0, 0)
 		}), "Stroke"), 
-		SearchContainer,
+		TabSearchContainer,
+		ElementSearchContainer,
 		TabHolder,
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
@@ -908,7 +955,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text at bottom center
 	local VersionLine = AddThemeObject(SetProps(MakeElement("Frame"), {
 		Size = UDim2.new(1, 0, 0, 1),
 		Position = UDim2.new(0, 0, 1, -30)
@@ -1005,7 +1051,6 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if Minimized then
-			-- Restore to saved size/position
 			local restoreSize = OrionLib.WindowSize or UDim2.new(0, 700, 0, 400)
 			local restorePos = OrionLib.WindowPosition or UDim2.new(0.5, -350, 0.5, -200)
 			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos}):Play()
@@ -1017,7 +1062,6 @@ function OrionLib:MakeWindow(WindowConfig)
 			VersionLine.Visible = true
 			VersionText.Visible = true
 		else
-			-- Save current size before minimizing
 			OrionLib.WindowSize = MainWindow.Size
 			OrionLib.WindowPosition = MainWindow.Position
 			MainWindow.ClipsDescendants = true
@@ -1115,6 +1159,9 @@ function OrionLib:MakeWindow(WindowConfig)
 				AutomaticSize = Enum.AutomaticSize.Y
 			}), "Text")
 		})
+
+		-- Store tab for search
+		table.insert(AllTabs, {Frame = TabFrame, Name = TabConfig.Name})
 
 		if GetIcon(TabConfig.Icon) ~= nil then
 			TabFrame.Ico.Image = GetIcon(TabConfig.Icon)
@@ -1313,7 +1360,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					Size = UDim2.new(1, 0, 1, 0)
 				})
 
-				-- Fixed switch toggle with proper circle positioning
 				local SwitchBox = SetChildren(SetProps(MakeElement("RoundFrame", ToggleConfig.Value and SwitchColors.Enabled or SwitchColors.Disabled, 1, 0), {
 					Size = UDim2.new(0, 44, 0, 22),
 					Position = UDim2.new(1, -55, 0.5, 0),
@@ -1650,6 +1696,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Dropdown
 			end
 			
+			-- MULTI DROPDOWN - Can select multiple options
 			function ElementFunction:AddMultiDropdown(MultiDropdownConfig)
 				MultiDropdownConfig = MultiDropdownConfig or {}
 				MultiDropdownConfig.Name = MultiDropdownConfig.Name or "MultiDropdown"
@@ -1868,6 +1915,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			end
 			
 			function ElementFunction:AddBind(BindConfig)
+				BindConfig = BindConfig or {}
 				BindConfig.Name = BindConfig.Name or "Bind"
 				BindConfig.Default = BindConfig.Default or Enum.KeyCode.Unknown
 				BindConfig.Hold = BindConfig.Hold or false
@@ -2272,6 +2320,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Colorpicker
 			end
 			
+			-- THEME DROPDOWN with transparency slider
 			function ElementFunction:AddThemeDropdown(ThemeDropdownConfig)
 				ThemeDropdownConfig = ThemeDropdownConfig or {}
 				ThemeDropdownConfig.Name = ThemeDropdownConfig.Name or "Theme"
