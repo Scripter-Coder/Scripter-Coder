@@ -285,7 +285,6 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			end
 		end)
 		
-		-- Optimized InputChanged with throttle
 		local lastProcessTime = 0
 		UserInputService.InputChanged:Connect(function(Input)
 			if DraggingInfo.Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -302,7 +301,7 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			
 			if ResizingInfo.Resizing and Input.UserInputType == Enum.UserInputType.MouseMovement then
 				local now = tick()
-				if now - lastProcessTime >= 0.016 then -- ~60 FPS throttle
+				if now - lastProcessTime >= 0.016 then
 					lastProcessTime = now
 					local Delta = Input.Position - ResizingInfo.StartMousePos
 					local NewWidth = math.max(500, ResizingInfo.StartSize.X.Offset + Delta.X)
@@ -380,7 +379,7 @@ local function AddThemeObject(Object, Type)
 	end    
 	table.insert(OrionLib.ThemeObjects[Type], Object)
 	local prop = ReturnProperty(Object)
-	if prop then
+	if prop and OrionLib.Themes[OrionLib.SelectedTheme] and OrionLib.Themes[OrionLib.SelectedTheme][Type] then
 		Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Type]
 	end
 	return Object
@@ -391,27 +390,31 @@ local function SetTheme()
 		for _, Object in pairs(Type) do
 			local prop = ReturnProperty(Object)
 			if prop then
-				if OrionLib.CustomThemeImage and Name == "Main" and OrionLib.SelectedTheme == "Custom" then
-					if prop ~= "ScrollBarImageColor3" then
+				-- Handle Custom Theme
+				if OrionLib.CustomThemeImage and OrionLib.SelectedTheme == "Custom" then
+					-- Skip ScrollBarImageColor3 as it expects Color3, not string
+					if prop == "ScrollBarImageColor3" then
+						Object[prop] = Color3.fromRGB(255, 255, 255)
+					elseif prop == "BackgroundColor3" or prop == "ImageColor3" then
 						Object[prop] = OrionLib.CustomThemeImage
-					end
-				elseif OrionLib.SelectedTheme == "Custom" and OrionLib.CustomThemeImage then
-					if Name == "Main" or Name == "Second" or Name == "Divider" then
-						if prop ~= "ScrollBarImageColor3" then
-							Object[prop] = OrionLib.CustomThemeImage
-						end
 					else
-						Object[prop] = OrionLib.Themes["Black"][Name]
+						if OrionLib.Themes["Black"] and OrionLib.Themes["Black"][Name] then
+							Object[prop] = OrionLib.Themes["Black"][Name]
+						end
 					end
 				else
-					Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
+					-- Normal theme
+					if OrionLib.Themes[OrionLib.SelectedTheme] and OrionLib.Themes[OrionLib.SelectedTheme][Name] then
+						Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
+					end
 				end
 			end
 		end    
 	end    
 	
+	-- Apply transparency to main window frames only
 	for _, frame in pairs(Orion:GetDescendants()) do
-		if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 then
+		if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 and not frame:IsA("ScrollingFrame") then
 			frame.BackgroundTransparency = OrionLib.ThemeTransparency
 		end
 	end
@@ -939,10 +942,11 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text at BOTTOM of the ENTIRE GUI (outside the sidebar)
+	-- Version text at the VERY BOTTOM of the ENTIRE GUI window
+	-- Position Y = 1 means at the bottom, with -30 offset to give spacing
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(1, -10, 0, 20),
-		Position = UDim2.new(0, 5, 1, -28),
+		Position = UDim2.new(0, 5, 1, -30),
 		TextXAlignment = Enum.TextXAlignment.Center,
 		BackgroundTransparency = 1,
 		ZIndex = 10
@@ -990,7 +994,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
-	-- Element Search Box (inside content area, below top bar)
+	-- Element Search Box (inside content area, with spacing from search tabs)
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
 		Size = UDim2.new(1, -20, 0, 30),
 		Position = UDim2.new(0, 10, 0, 5),
@@ -1007,7 +1011,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
 		Size = UDim2.new(1, -220, 0, 40),
-		Position = UDim2.new(0, 200, 0, 55),
+		Position = UDim2.new(0, 200, 0, 60),
 		BackgroundTransparency = 0
 	}), {
 		ElementSearchBox,
@@ -1073,7 +1077,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end)
 
-	-- Optimized minimize with cancellation
+	-- Optimized minimize
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if MinimizeTween and MinimizeTween.PlaybackState == Enum.PlaybackState.Playing then
 			MinimizeTween:Cancel()
@@ -1198,8 +1202,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		end	
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 6), {
-			Size = UDim2.new(1, -220, 1, -110),
-			Position = UDim2.new(0, 200, 0, 105),
+			Size = UDim2.new(1, -220, 1, -115),
+			Position = UDim2.new(0, 200, 0, 110),
 			Parent = MainWindow,
 			Visible = false,
 			Name = "ItemContainer"
@@ -1567,7 +1571,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				DropdownConfig.Save = DropdownConfig.Save or false
 
 				local Dropdown = {Value = DropdownConfig.Default, Options = DropdownConfig.Options, Buttons = {}, Toggled = false, Type = "Dropdown", Save = DropdownConfig.Save}
-				local MaxElements = 6
+				local MaxElements = 5
 
 				if not table.find(Dropdown.Options, Dropdown.Value) then
 					Dropdown.Value = "..."
@@ -1711,7 +1715,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					DropdownFrame.F.Line.Visible = Dropdown.Toggled
 					TweenService:Create(DropdownFrame.F.Ico,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Rotation = Dropdown.Toggled and 180 or 0}):Play()
 					if #Dropdown.Options > MaxElements then
-						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, 42 + (MaxElements * 34)) or UDim2.new(1, 0, 0, 42)}):Play()
+						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, 42 + (MaxElements * 36)) or UDim2.new(1, 0, 0, 42)}):Play()
 					else
 						local newHeight = 42 + DropdownList.AbsoluteContentSize.Y
 						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, newHeight) or UDim2.new(1, 0, 0, 42)}):Play()
@@ -1726,7 +1730,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Dropdown
 			end
 			
-			-- MULTI DROPDOWN
+			-- MULTI DROPDOWN - Bigger options
 			function ElementFunction:AddMultiDropdown(MultiDropdownConfig)
 				MultiDropdownConfig = MultiDropdownConfig or {}
 				MultiDropdownConfig.Name = MultiDropdownConfig.Name or "MultiDropdown"
@@ -1737,7 +1741,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				MultiDropdownConfig.Save = MultiDropdownConfig.Save or false
 
 				local MultiDropdown = {Values = MultiDropdownConfig.Default, Options = MultiDropdownConfig.Options, Buttons = {}, Toggled = false, Type = "MultiDropdown", Save = MultiDropdownConfig.Save}
-				local MaxElements = 6
+				local MaxElements = 5
 				
 				if type(MultiDropdown.Values) ~= "table" then
 					MultiDropdown.Values = {}
@@ -1929,7 +1933,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					DropdownFrame.F.Line.Visible = MultiDropdown.Toggled
 					TweenService:Create(DropdownFrame.F.Ico,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Rotation = MultiDropdown.Toggled and 180 or 0}):Play()
 					if #MultiDropdown.Options > MaxElements then
-						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = MultiDropdown.Toggled and UDim2.new(1, 0, 0, 42 + (MaxElements * 34)) or UDim2.new(1, 0, 0, 42)}):Play()
+						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = MultiDropdown.Toggled and UDim2.new(1, 0, 0, 42 + (MaxElements * 36)) or UDim2.new(1, 0, 0, 42)}):Play()
 					else
 						local newHeight = 42 + DropdownList.AbsoluteContentSize.Y
 						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = MultiDropdown.Toggled and UDim2.new(1, 0, 0, newHeight) or UDim2.new(1, 0, 0, 42)}):Play()
@@ -2378,11 +2382,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Default = OrionLib.SelectedTheme,
 					Callback = function(Value)
 						if Value == "Custom" then
-							OrionLib:MakeNotification({
-								Name = "Custom Theme",
-								Content = "Enter rbxassetid:// in the textbox below",
-								Time = 3
-							})
+							-- Don't show notification, just let user use the textbox
 						else
 							OrionLib.SelectedTheme = Value
 							OrionLib.CustomThemeImage = nil
@@ -2427,7 +2427,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Callback = function(Value)
 						OrionLib.ThemeTransparency = Value
 						for _, frame in pairs(Orion:GetDescendants()) do
-							if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 then
+							if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 and not frame:IsA("ScrollingFrame") then
 								frame.BackgroundTransparency = Value
 							end
 						end
