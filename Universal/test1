@@ -125,7 +125,9 @@ local OrionLib = {
 	FileOpsAllowed = true,
 	Version = "1.0.0",
 	WindowSize = nil,
-	WindowPosition = nil
+	WindowPosition = nil,
+	IsResizing = false,
+	ResizeConnection = nil
 }
 
 -- Check if file operations should be disabled for this game
@@ -187,7 +189,7 @@ else
 	end
 end
 
--- Create circle button for reopening UI
+-- Create circle button for reopening UI - Position at top center
 local CircleButton = Instance.new("ImageButton")
 CircleButton.Name = "ReopenUIButton"
 CircleButton.Image = "rbxassetid://7072719338"
@@ -195,8 +197,8 @@ CircleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 CircleButton.BackgroundTransparency = 0.2
 CircleButton.BorderSizePixel = 0
 CircleButton.Size = UDim2.new(0, 40, 0, 40)
-CircleButton.Position = UDim2.new(1, -50, 1, -50)
-CircleButton.AnchorPoint = Vector2.new(1, 1)
+CircleButton.Position = UDim2.new(0.5, -20, 0, 10)
+CircleButton.AnchorPoint = Vector2.new(0.5, 0)
 CircleButton.Visible = false
 CircleButton.Parent = Orion
 
@@ -283,6 +285,8 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			end
 		end)
 		
+		-- Optimized InputChanged with throttle
+		local lastProcessTime = 0
 		UserInputService.InputChanged:Connect(function(Input)
 			if DraggingInfo.Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
 				local Delta = Input.Position - DraggingInfo.MousePos
@@ -297,10 +301,14 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			end
 			
 			if ResizingInfo.Resizing and Input.UserInputType == Enum.UserInputType.MouseMovement then
-				local Delta = Input.Position - ResizingInfo.StartMousePos
-				local NewWidth = math.max(500, ResizingInfo.StartSize.X.Offset + Delta.X)
-				local NewHeight = math.max(350, ResizingInfo.StartSize.Y.Offset + Delta.Y)
-				Main.Size = UDim2.new(0, NewWidth, 0, NewHeight)
+				local now = tick()
+				if now - lastProcessTime >= 0.016 then -- ~60 FPS throttle
+					lastProcessTime = now
+					local Delta = Input.Position - ResizingInfo.StartMousePos
+					local NewWidth = math.max(500, ResizingInfo.StartSize.X.Offset + Delta.X)
+					local NewHeight = math.max(350, ResizingInfo.StartSize.Y.Offset + Delta.Y)
+					Main.Size = UDim2.new(0, NewWidth, 0, NewHeight)
+				end
 			end
 		end)
 	end)
@@ -371,23 +379,33 @@ local function AddThemeObject(Object, Type)
 		OrionLib.ThemeObjects[Type] = {}
 	end    
 	table.insert(OrionLib.ThemeObjects[Type], Object)
-	Object[ReturnProperty(Object)] = OrionLib.Themes[OrionLib.SelectedTheme][Type]
+	local prop = ReturnProperty(Object)
+	if prop then
+		Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Type]
+	end
 	return Object
 end    
 
 local function SetTheme()
 	for Name, Type in pairs(OrionLib.ThemeObjects) do
 		for _, Object in pairs(Type) do
-			if OrionLib.CustomThemeImage and Name == "Main" and OrionLib.SelectedTheme == "Custom" then
-				Object[ReturnProperty(Object)] = OrionLib.CustomThemeImage
-			elseif OrionLib.SelectedTheme == "Custom" and OrionLib.CustomThemeImage then
-				if Name == "Main" or Name == "Second" or Name == "Divider" then
-					Object[ReturnProperty(Object)] = OrionLib.CustomThemeImage
+			local prop = ReturnProperty(Object)
+			if prop then
+				if OrionLib.CustomThemeImage and Name == "Main" and OrionLib.SelectedTheme == "Custom" then
+					if prop ~= "ScrollBarImageColor3" then
+						Object[prop] = OrionLib.CustomThemeImage
+					end
+				elseif OrionLib.SelectedTheme == "Custom" and OrionLib.CustomThemeImage then
+					if Name == "Main" or Name == "Second" or Name == "Divider" then
+						if prop ~= "ScrollBarImageColor3" then
+							Object[prop] = OrionLib.CustomThemeImage
+						end
+					else
+						Object[prop] = OrionLib.Themes["Black"][Name]
+					end
 				else
-					Object[ReturnProperty(Object)] = OrionLib.Themes["Black"][Name]
+					Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
 				end
-			else
-				Object[ReturnProperty(Object)] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
 			end
 		end    
 	end    
@@ -709,6 +727,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	local UIHidden = false
 	local OriginalSize = nil
 	local OriginalPosition = nil
+	local MinimizeTween = nil
 
 	WindowConfig = WindowConfig or {}
 	WindowConfig.Name = WindowConfig.Name or "Orion Library"
@@ -739,8 +758,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 
 	local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
-		Size = UDim2.new(1, 0, 1, -50),
-		Position = UDim2.new(0, 0, 0, 0)
+		Size = UDim2.new(1, 0, 1, -90),
+		Position = UDim2.new(0, 0, 0, 40)
 	}), {
 		MakeElement("List"),
 		MakeElement("Padding", 8, 0, 0, 8)
@@ -750,7 +769,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolder.UIListLayout.AbsoluteContentSize.Y + 16)
 	end)
 
-	-- Tab Search Box (for tabs)
+	-- Search Box for Tabs (inside sidebar, above tabs)
 	local TabSearchBox = AddThemeObject(Create("TextBox", {
 		Size = UDim2.new(1, -20, 0, 30),
 		Position = UDim2.new(0, 10, 0, 5),
@@ -920,12 +939,13 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text at bottom center
+	-- Version text at BOTTOM of the ENTIRE GUI (outside the sidebar)
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(1, -10, 0, 20),
-		Position = UDim2.new(0, 5, 1, -26),
+		Position = UDim2.new(0, 5, 1, -28),
 		TextXAlignment = Enum.TextXAlignment.Center,
-		BackgroundTransparency = 1
+		BackgroundTransparency = 1,
+		ZIndex = 10
 	}), "TextDark")
 
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
@@ -970,14 +990,14 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
-	-- Element Search Box (BELOW window name, in the content area)
+	-- Element Search Box (inside content area, below top bar)
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
-		Size = UDim2.new(1, -220, 0, 32),
-		Position = UDim2.new(0, 200, 0, 55),
+		Size = UDim2.new(1, -20, 0, 30),
+		Position = UDim2.new(0, 10, 0, 5),
 		BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
-		PlaceholderText = "🔍 Search Elements...",
+		PlaceholderText = "Search Elements...",
 		Font = Enum.Font.GothamSemibold,
 		TextSize = 14,
 		TextXAlignment = Enum.TextXAlignment.Left,
@@ -985,16 +1005,15 @@ function OrionLib:MakeWindow(WindowConfig)
 		Text = ""
 	}), "Text")
 
-	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 8), {
-		Size = UDim2.new(1, -220, 0, 42),
+	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
+		Size = UDim2.new(1, -220, 0, 40),
 		Position = UDim2.new(0, 200, 0, 55),
 		BackgroundTransparency = 0
 	}), {
 		ElementSearchBox,
 		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
-			Size = UDim2.new(0, 18, 0, 18),
-			Position = UDim2.new(1, -30, 0.5, 0),
-			AnchorPoint = Vector2.new(0, 0.5),
+			Size = UDim2.new(0, 16, 0, 16),
+			Position = UDim2.new(1, -25, 0, 12),
 			ImageColor3 = Color3.fromRGB(160, 160, 160)
 		}), "TextDark"),
 		AddThemeObject(MakeElement("Stroke"), "Stroke")
@@ -1032,7 +1051,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		CircleButton.Image = "rbxassetid://7072720870"
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
-			Content = "Click the circle button in the bottom-right to reopen the interface",
+			Content = "Click the circle button in the top center to reopen the interface",
 			Time = 5
 		})
 		WindowConfig.CloseCallback()
@@ -1054,13 +1073,19 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end)
 
+	-- Optimized minimize with cancellation
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
+		if MinimizeTween and MinimizeTween.PlaybackState == Enum.PlaybackState.Playing then
+			MinimizeTween:Cancel()
+		end
+		
 		if Minimized then
 			local restoreSize = OrionLib.WindowSize or UDim2.new(0, 700, 0, 400)
 			local restorePos = OrionLib.WindowPosition or UDim2.new(0.5, -350, 0.5, -200)
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos}):Play()
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos})
+			MinimizeTween:Play()
 			MinimizeBtn.Ico.Image = "rbxassetid://7072719338"
-			wait(.02)
+			task.wait(0.05)
 			MainWindow.ClipsDescendants = false
 			WindowStuff.Visible = true
 			WindowTopBarLine.Visible = true
@@ -1075,8 +1100,9 @@ function OrionLib:MakeWindow(WindowConfig)
 			ElementSearchContainer.Visible = false
 			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
 
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)}):Play()
-			wait(0.1)
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)})
+			MinimizeTween:Play()
+			task.wait(0.05)
 			WindowStuff.Visible = false	
 		end
 		Minimized = not Minimized    
@@ -1172,7 +1198,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		end	
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 6), {
-			Size = UDim2.new(1, -220, 1, -115),
+			Size = UDim2.new(1, -220, 1, -110),
 			Position = UDim2.new(0, 200, 0, 105),
 			Parent = MainWindow,
 			Visible = false,
@@ -2053,6 +2079,8 @@ function OrionLib:MakeWindow(WindowConfig)
 				TextboxConfig.Default = TextboxConfig.Default or ""
 				TextboxConfig.TextDisappear = TextboxConfig.TextDisappear or false
 				TextboxConfig.Callback = TextboxConfig.Callback or function() end
+				
+				local TextboxValue = TextboxConfig.Default
 
 				local Click = SetProps(MakeElement("Button"), {
 					Size = UDim2.new(1, 0, 1, 0)
@@ -2067,7 +2095,8 @@ function OrionLib:MakeWindow(WindowConfig)
 					Font = Enum.Font.GothamSemibold,
 					TextXAlignment = Enum.TextXAlignment.Center,
 					TextSize = 14,
-					ClearTextOnFocus = false
+					ClearTextOnFocus = false,
+					Text = TextboxConfig.Default
 				}), "Text")
 
 				local TextContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
@@ -2100,18 +2129,17 @@ function OrionLib:MakeWindow(WindowConfig)
 
 				table.insert(AllElements, {Frame = TextboxFrame, Name = TextboxConfig.Name})
 
-				AddConnection(TextboxActual:GetPropertyChangedSignal("Text"), function()
+				AddConnection(TextboxActual:GetPropertyChangedSignal("TextBounds"), function()
 					TweenService:Create(TextContainer, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, TextboxActual.TextBounds.X + 20, 0, 28)}):Play()
 				end)
 
 				AddConnection(TextboxActual.FocusLost, function()
+					TextboxValue = TextboxActual.Text
 					TextboxConfig.Callback(TextboxActual.Text)
 					if TextboxConfig.TextDisappear then
 						TextboxActual.Text = ""
 					end	
 				end)
-
-				TextboxActual.Text = TextboxConfig.Default
 
 				AddConnection(Click.MouseEnter, function()
 					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 5, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 5, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 5)}):Play()
@@ -2129,6 +2157,19 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddConnection(Click.MouseButton1Down, function()
 					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 10, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 10, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 10)}):Play()
 				end)
+				
+				-- Return the textbox object with a TextBox property to access the actual TextBox
+				local TextboxObject = {
+					TextBox = TextboxActual,
+					Set = function(self, Value)
+						TextboxActual.Text = Value
+						TextboxValue = Value
+					end,
+					Get = function(self)
+						return TextboxValue
+					end
+				}
+				return TextboxObject
 			end 
 			
 			function ElementFunction:AddColorpicker(ColorpickerConfig)
@@ -2337,7 +2378,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					Default = OrionLib.SelectedTheme,
 					Callback = function(Value)
 						if Value == "Custom" then
-							-- Show notification to enter custom theme ID
 							OrionLib:MakeNotification({
 								Name = "Custom Theme",
 								Content = "Enter rbxassetid:// in the textbox below",
