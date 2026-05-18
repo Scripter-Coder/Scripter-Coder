@@ -973,20 +973,20 @@ function OrionLib:MakeWindow(WindowConfig)
 				Size = UDim2.new(1, 0, 0, 1)
 			}), "Stroke"), 
 			SetChildren(SetProps(MakeElement("Frame"), {
-				AnchorPoint = Vector2.new(0, 0.5),
-				Size = UDim2.new(0, 32, 0, 32),
-				Position = UDim2.new(0, 10, 0.5, 0)
-			}), {
-				SetProps(MakeElement("Image", "rbxassetid://2781888353"), {
-					Size = UDim2.new(1, 0, 1, 0),
-					ImageColor3 = Color3.fromRGB(200, 200, 200),
-					Name = "AvatarImage"
-				}),
-				AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://4031889928"), {
-					Size = UDim2.new(1, 0, 1, 0),
-				}), "Second"),
-				MakeElement("Corner", 1)
-			}),
+    AnchorPoint = Vector2.new(0, 0.5),
+    Size = UDim2.new(0, 32, 0, 32),
+    Position = UDim2.new(0, 10, 0.5, 0)
+}), {
+    SetProps(MakeElement("Image", "rbxassetid://2781888353"), {
+        Size = UDim2.new(1, 0, 1, 0),
+        ImageColor3 = Color3.fromRGB(200, 200, 200),
+        Name = "AvatarImage"  -- Make sure this has Name = "AvatarImage"
+    }),
+    AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://4031889928"), {
+        Size = UDim2.new(1, 0, 1, 0),
+    }), "Second"),
+    MakeElement("Corner", 1)
+}),
 			SetChildren(SetProps(MakeElement("TFrame"), {
 				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0, 32, 0, 32),
@@ -996,12 +996,12 @@ function OrionLib:MakeWindow(WindowConfig)
 				MakeElement("Corner", 1)
 			}),
 			AddThemeObject(SetProps(MakeElement("Label", "", WindowConfig.HidePremium and 14 or 13), {
-				Size = UDim2.new(1, -60, 0, 13),
-				Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
-				Font = Enum.Font.GothamBold,
-				ClipsDescendants = true,
-				Name = "UserNameLabel"
-			}), "Text"),
+    Size = UDim2.new(1, -60, 0, 13),
+    Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
+    Font = Enum.Font.GothamBold,
+    ClipsDescendants = true,
+    Name = "UserNameLabel"  -- Make sure this has Name = "UserNameLabel"
+}), "Text"),
 			AddThemeObject(SetProps(MakeElement("Label", "", 12), {
 				Size = UDim2.new(1, -60, 0, 12),
 				Position = UDim2.new(0, 50, 1, -25),
@@ -1062,46 +1062,68 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
-	-- Get player avatar thumbnail using Roblox API
-	local function UpdatePlayerAvatar()
-		local userId = LocalPlayer.UserId
-		local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150"
-		
-		local avatarFrame = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("Frame")
-		if avatarFrame then
-			local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
-			if avatarImg then
-				avatarImg.Image = avatarImage
+-- Replace the UpdatePlayerAvatar function (around line 1050-1080) with this:
+
+-- Get player avatar thumbnail using Roblox API
+local function UpdatePlayerAvatar()
+	local userId = LocalPlayer.UserId
+	local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150"
+	
+	-- Safely check if WindowStuff exists before accessing
+	local windowStuff = MainWindow:FindFirstChild("WindowStuff")
+	if windowStuff then
+		local tFrame = windowStuff:FindFirstChild("TFrame")
+		if tFrame then
+			local avatarFrame = tFrame:FindFirstChild("Frame")
+			if avatarFrame then
+				local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
+				if avatarImg then
+					avatarImg.Image = avatarImage
+				end
+			end
+			
+			-- Update username
+			local userNameLabel = tFrame:FindFirstChild("UserNameLabel")
+			if userNameLabel then
+				userNameLabel.Text = LocalPlayer.Name
 			end
 		end
-		
-		-- Update username
-		local userNameLabel = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("UserNameLabel")
-		if userNameLabel then
-			userNameLabel.Text = LocalPlayer.Name
-		end
 	end
-	
-	-- Update avatar
-	UpdatePlayerAvatar()
-	
-	-- Also try to get face from character if available
-	task.spawn(function()
-		repeat wait(0.5) until LocalPlayer.Character
+end
+
+-- Then after MainWindow is fully created, call UpdatePlayerAvatar with a small delay
+task.spawn(function()
+	wait(0.1) -- Give time for UI to fully render
+	pcall(function()
+		UpdatePlayerAvatar()
+	end)
+end)
+
+-- Also try to get face from character if available
+task.spawn(function()
+	repeat task.wait(0.5) until LocalPlayer.Character
+	pcall(function()
 		local head = LocalPlayer.Character:FindFirstChild("Head")
 		if head then
 			local face = head:FindFirstChild("Face")
 			if face and face:IsA("Decal") then
-				local avatarFrame = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("Frame")
-				if avatarFrame then
-					local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
-					if avatarImg then
-						avatarImg.Image = face.Texture
+				local windowStuff = MainWindow:FindFirstChild("WindowStuff")
+				if windowStuff then
+					local tFrame = windowStuff:FindFirstChild("TFrame")
+					if tFrame then
+						local avatarFrame = tFrame:FindFirstChild("Frame")
+						if avatarFrame then
+							local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
+							if avatarImg then
+								avatarImg.Image = face.Texture
+							end
+						end
 					end
 				end
 			end
 		end
 	end)
+end)
 
 	-- Element Search Box
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
