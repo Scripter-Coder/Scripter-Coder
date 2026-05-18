@@ -270,10 +270,6 @@ UIStroke.Color = Color3.fromRGB(40, 40, 40)
 UIStroke.Thickness = 2
 UIStroke.Parent = CircleButton
 
--- Add CircleButton to theme objects so it updates with theme
-AddThemeObject(CircleButton, "Main")
-AddThemeObject(UIStroke, "Stroke")
-
 function OrionLib:IsRunning()
 	if gethui then
 		return Orion.Parent == gethui()
@@ -448,6 +444,10 @@ local function AddThemeObject(Object, Type)
 	end
 	return Object
 end    
+
+-- Add CircleButton to theme objects so it updates with theme
+AddThemeObject(CircleButton, "Main")
+AddThemeObject(UIStroke, "Stroke")
 
 local function SetTheme()
 	for Name, Type in pairs(OrionLib.ThemeObjects) do
