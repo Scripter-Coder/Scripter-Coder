@@ -119,6 +119,7 @@ local OrionLib = {
 	SelectedTheme = "Black",
 	ThemeTransparency = 0,
 	CustomThemeImage = nil,
+	CustomThemeId = nil,
 	Folder = nil,
 	SaveCfg = false,
 	FileOpsAllowed = true,
@@ -130,8 +131,8 @@ local OrionLib = {
 -- Check if file operations should be disabled for this game
 local function IsFileOpsDisabled()
 	local disabledGameIds = {
-		110258689672367, -- Doors: Before Hotel+
-		10549820578,    -- Doors: April Fools 2023
+		110258689672367,
+		10549820578,
 	}
 	
 	for _, id in ipairs(disabledGameIds) do
@@ -144,7 +145,7 @@ end
 
 OrionLib.FileOpsAllowed = not IsFileOpsDisabled()
 
---Feather Icons
+-- Feather Icons
 local Icons = {}
 
 local Success, Response = pcall(function()
@@ -377,8 +378,14 @@ end
 local function SetTheme()
 	for Name, Type in pairs(OrionLib.ThemeObjects) do
 		for _, Object in pairs(Type) do
-			if OrionLib.CustomThemeImage and Name == "Main" then
+			if OrionLib.CustomThemeImage and Name == "Main" and OrionLib.SelectedTheme == "Custom" then
 				Object[ReturnProperty(Object)] = OrionLib.CustomThemeImage
+			elseif OrionLib.SelectedTheme == "Custom" and OrionLib.CustomThemeImage then
+				if Name == "Main" or Name == "Second" or Name == "Divider" then
+					Object[ReturnProperty(Object)] = OrionLib.CustomThemeImage
+				else
+					Object[ReturnProperty(Object)] = OrionLib.Themes["Black"][Name]
+				end
 			else
 				Object[ReturnProperty(Object)] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
 			end
@@ -607,7 +614,6 @@ function OrionLib:MakeNotification(NotificationConfig)
 			Parent = NotificationHolder
 		})
 
-		-- Timer text below the notification content
 		local TimerText = Instance.new("TextLabel")
 		TimerText.Text = tostring(NotificationConfig.Time)
 		TimerText.Size = UDim2.new(1, -20, 0, 16)
@@ -733,8 +739,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 
 	local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
-		Size = UDim2.new(1, 0, 1, -90),
-		Position = UDim2.new(0, 0, 0, 40)
+		Size = UDim2.new(1, 0, 1, -50),
+		Position = UDim2.new(0, 0, 0, 0)
 	}), {
 		MakeElement("List"),
 		MakeElement("Padding", 8, 0, 0, 8)
@@ -744,7 +750,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolder.UIListLayout.AbsoluteContentSize.Y + 16)
 	end)
 
-	-- Tab Search Box
+	-- Tab Search Box (for tabs)
 	local TabSearchBox = AddThemeObject(Create("TextBox", {
 		Size = UDim2.new(1, -20, 0, 30),
 		Position = UDim2.new(0, 10, 0, 5),
@@ -764,34 +770,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		Position = UDim2.new(0, 0, 0, 0)
 	}), {
 		TabSearchBox,
-		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
-			Size = UDim2.new(0, 16, 0, 16),
-			Position = UDim2.new(1, -25, 0, 12),
-			ImageColor3 = Color3.fromRGB(160, 160, 160)
-		}), "TextDark"),
-		AddThemeObject(MakeElement("Stroke"), "Stroke")
-	}), "Second")
-
-	-- Element Search Box
-	local ElementSearchBox = AddThemeObject(Create("TextBox", {
-		Size = UDim2.new(1, -20, 0, 30),
-		Position = UDim2.new(0, 10, 0, 55),
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
-		PlaceholderText = "Search Elements...",
-		Font = Enum.Font.GothamSemibold,
-		TextSize = 14,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		ClearTextOnFocus = false,
-		Text = ""
-	}), "Text")
-
-	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
-		Size = UDim2.new(1, 0, 0, 40),
-		Position = UDim2.new(0, 0, 0, 50)
-	}), {
-		ElementSearchBox,
 		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
 			Size = UDim2.new(0, 16, 0, 16),
 			Position = UDim2.new(1, -25, 0, 12),
@@ -847,24 +825,12 @@ function OrionLib:MakeWindow(WindowConfig)
 		FilterTabs(TabSearchBox.Text)
 	end)
 
-	AddConnection(ElementSearchBox:GetPropertyChangedSignal("Text"), function()
-		FilterElements(ElementSearchBox.Text)
-	end)
-
 	AddConnection(TabSearchBox.Focused, function()
 		TweenService:Create(TabSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 	end)
 
 	AddConnection(TabSearchBox.FocusLost, function()
 		TweenService:Create(TabSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
-	end)
-
-	AddConnection(ElementSearchBox.Focused, function()
-		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
-	end)
-
-	AddConnection(ElementSearchBox.FocusLost, function()
-		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
 	end)
 
 	local CloseBtn = SetChildren(SetProps(MakeElement("Button"), {
@@ -910,7 +876,6 @@ function OrionLib:MakeWindow(WindowConfig)
 			Position = UDim2.new(1, -1, 0, 0)
 		}), "Stroke"), 
 		TabSearchContainer,
-		ElementSearchContainer,
 		TabHolder,
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
@@ -955,15 +920,12 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	local VersionLine = AddThemeObject(SetProps(MakeElement("Frame"), {
-		Size = UDim2.new(2, 0, 0, 2),
-		Position = UDim2.new(0, 0, 1, -80)
-	}), "Stroke")
-	
+	-- Version text at bottom center
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(1, -10, 0, 20),
-		Position = UDim2.new(0, 5, 1, -28),
-		TextXAlignment = Enum.TextXAlignment.Center
+		Position = UDim2.new(0, 5, 1, -26),
+		TextXAlignment = Enum.TextXAlignment.Center,
+		BackgroundTransparency = 1
 	}), "TextDark")
 
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
@@ -990,7 +952,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		}), {
 			WindowName,
 			WindowTopBarLine,
-			VersionLine,
 			VersionText,
 			AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 7), {
 				Size = UDim2.new(0, 70, 0, 30),
@@ -1008,6 +969,50 @@ function OrionLib:MakeWindow(WindowConfig)
 		DragPoint,
 		WindowStuff
 	}), "Main")
+
+	-- Element Search Box (BELOW window name, in the content area)
+	local ElementSearchBox = AddThemeObject(Create("TextBox", {
+		Size = UDim2.new(1, -220, 0, 32),
+		Position = UDim2.new(0, 200, 0, 55),
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
+		PlaceholderText = "🔍 Search Elements...",
+		Font = Enum.Font.GothamSemibold,
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false,
+		Text = ""
+	}), "Text")
+
+	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 8), {
+		Size = UDim2.new(1, -220, 0, 42),
+		Position = UDim2.new(0, 200, 0, 55),
+		BackgroundTransparency = 0
+	}), {
+		ElementSearchBox,
+		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
+			Size = UDim2.new(0, 18, 0, 18),
+			Position = UDim2.new(1, -30, 0.5, 0),
+			AnchorPoint = Vector2.new(0, 0.5),
+			ImageColor3 = Color3.fromRGB(160, 160, 160)
+		}), "TextDark"),
+		AddThemeObject(MakeElement("Stroke"), "Stroke")
+	}), "Second")
+
+	ElementSearchContainer.Parent = MainWindow
+
+	AddConnection(ElementSearchBox:GetPropertyChangedSignal("Text"), function()
+		FilterElements(ElementSearchBox.Text)
+	end)
+
+	AddConnection(ElementSearchBox.Focused, function()
+		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
+	end)
+
+	AddConnection(ElementSearchBox.FocusLost, function()
+		TweenService:Create(ElementSearchContainer, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+	end)
 
 	if WindowConfig.ShowIcon then
 		WindowName.Position = UDim2.new(0, 50, 0, -24)
@@ -1059,15 +1064,15 @@ function OrionLib:MakeWindow(WindowConfig)
 			MainWindow.ClipsDescendants = false
 			WindowStuff.Visible = true
 			WindowTopBarLine.Visible = true
-			VersionLine.Visible = true
 			VersionText.Visible = true
+			ElementSearchContainer.Visible = true
 		else
 			OrionLib.WindowSize = MainWindow.Size
 			OrionLib.WindowPosition = MainWindow.Position
 			MainWindow.ClipsDescendants = true
 			WindowTopBarLine.Visible = false
-			VersionLine.Visible = false
 			VersionText.Visible = false
+			ElementSearchContainer.Visible = false
 			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
 
 			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)}):Play()
@@ -1160,7 +1165,6 @@ function OrionLib:MakeWindow(WindowConfig)
 			}), "Text")
 		})
 
-		-- Store tab for search
 		table.insert(AllTabs, {Frame = TabFrame, Name = TabConfig.Name})
 
 		if GetIcon(TabConfig.Icon) ~= nil then
@@ -1168,8 +1172,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		end	
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 6), {
-			Size = UDim2.new(1, -220, 1, -50),
-			Position = UDim2.new(0, 200, 0, 50),
+			Size = UDim2.new(1, -220, 1, -115),
+			Position = UDim2.new(0, 200, 0, 105),
 			Parent = MainWindow,
 			Visible = false,
 			Name = "ItemContainer"
@@ -1696,7 +1700,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Dropdown
 			end
 			
-			-- MULTI DROPDOWN - Can select multiple options
+			-- MULTI DROPDOWN
 			function ElementFunction:AddMultiDropdown(MultiDropdownConfig)
 				MultiDropdownConfig = MultiDropdownConfig or {}
 				MultiDropdownConfig.Name = MultiDropdownConfig.Name or "MultiDropdown"
@@ -2320,20 +2324,56 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Colorpicker
 			end
 			
-			-- THEME DROPDOWN with transparency slider
+			-- THEME DROPDOWN with Custom Theme support
 			function ElementFunction:AddThemeDropdown(ThemeDropdownConfig)
 				ThemeDropdownConfig = ThemeDropdownConfig or {}
 				ThemeDropdownConfig.Name = ThemeDropdownConfig.Name or "Theme"
 				
-				local themeOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White"}
+				local themeOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White", "Custom"}
 				
 				local themeDropdown = ElementFunction:AddDropdown({
 					Name = ThemeDropdownConfig.Name,
 					Options = themeOptions,
 					Default = OrionLib.SelectedTheme,
 					Callback = function(Value)
-						OrionLib.SelectedTheme = Value
-						SetTheme()
+						if Value == "Custom" then
+							-- Show notification to enter custom theme ID
+							OrionLib:MakeNotification({
+								Name = "Custom Theme",
+								Content = "Enter rbxassetid:// in the textbox below",
+								Time = 3
+							})
+						else
+							OrionLib.SelectedTheme = Value
+							OrionLib.CustomThemeImage = nil
+							SetTheme()
+						end
+					end
+				})
+				
+				-- Custom Theme ID Textbox
+				local customThemeBox = ElementFunction:AddTextbox({
+					Name = "Custom Theme ID",
+					Default = "",
+					TextDisappear = false,
+					Callback = function(Value)
+						if Value ~= "" and string.find(Value, "rbxassetid://") then
+							OrionLib.CustomThemeImage = Value
+							OrionLib.SelectedTheme = "Custom"
+							themeDropdown:Set("Custom")
+							SetTheme()
+							OrionLib:MakeNotification({
+								Name = "Theme Applied",
+								Content = "Custom theme loaded successfully!",
+								Time = 3
+							})
+						elseif Value ~= "" then
+							OrionLib:MakeNotification({
+								Name = "Invalid Theme ID",
+								Content = "Please use format: rbxassetid://[ID]",
+								Time = 3
+							})
+						end
 					end
 				})
 				
