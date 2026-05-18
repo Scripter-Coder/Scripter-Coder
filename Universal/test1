@@ -946,7 +946,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	-- Position Y = 1 means at the bottom, with -30 offset to give spacing
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(1, -10, 0, 20),
-		Position = UDim2.new(0, 5, 1, -100),
+		Position = UDim2.new(0, 5, 1, 30),
 		TextXAlignment = Enum.TextXAlignment.Center,
 		BackgroundTransparency = 1,
 		ZIndex = 10
@@ -996,14 +996,14 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	-- Element Search Box (inside content area, with spacing from search tabs)
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
-		Size = UDim2.new(1, -20, 0, 30),
+		Size = UDim2.new(1, -10, 0, 30),
 		Position = UDim2.new(0, 40, 0, 5),
 		BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
 		PlaceholderText = "Search Elements...",
 		Font = Enum.Font.GothamSemibold,
-		TextSize = 14,
+		TextSize = 15,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ClearTextOnFocus = false,
 		Text = ""
