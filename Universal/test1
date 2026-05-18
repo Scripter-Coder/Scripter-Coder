@@ -5,6 +5,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
 
 local OrionLib = {
 	Elements = {},
@@ -152,10 +153,15 @@ OrionLib.FileOpsAllowed = not IsFileOpsDisabled()
 -- Setup custom theme folder
 local function SetupCustomThemeFolder()
 	local success, result = pcall(function()
-		local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or game.PlaceId
-		-- Sanitize game name for folder
-		gameName = gameName:gsub("[^%w%s]", ""):gsub("%s+", "_")
-		local scripterHubFolder = gameName .. " (ScripterHub)"
+		local gameName = tostring(game.PlaceId)
+		pcall(function()
+			local productInfo = MarketplaceService:GetProductInfo(game.PlaceId)
+			if productInfo and productInfo.Name then
+				gameName = productInfo.Name:gsub("[^%w%s]", ""):gsub("%s+", "_")
+			end
+		end)
+		
+		local scripterHubFolder = gameName .. "_ScripterHub"
 		
 		if not isfolder(scripterHubFolder) then
 			makefolder(scripterHubFolder)
@@ -184,8 +190,8 @@ local function ScanForCustomThemes()
 		pcall(function()
 			local files = listfiles(customThemeFolder)
 			for _, file in pairs(files) do
-				local fileName = file:match("([^/]+)$")
-				if fileName and (fileName:lower():match("%.png$") or fileName:lower():match("%.jpg$") or fileName:lower():match("%.jpeg$") or fileName:lower():match("%.gif$")) then
+				local fileName = file:match("([^/\\]+)$")
+				if fileName and (fileName:lower():match("%.png$") or fileName:lower():match("%.jpg$") or fileName:lower():match("%.jpeg$") or fileName:lower():match("%.gif$") or fileName:lower():match("%.bmp$")) then
 					local themeName = fileName:gsub("%.[^.]*$", "")
 					table.insert(OrionLib.AvailableCustomThemes, {
 						Name = themeName,
@@ -198,19 +204,6 @@ local function ScanForCustomThemes()
 	end
 	
 	return OrionLib.AvailableCustomThemes
-end
-
--- Load custom theme image from file
-local function LoadCustomThemeImage(themeName)
-	for _, theme in pairs(OrionLib.AvailableCustomThemes) do
-		if theme.Name == themeName then
-			local imageData = readfile(theme.Path)
-			if imageData then
-				return "rbxasset://" .. theme.Path
-			end
-		end
-	end
-	return nil
 end
 
 -- Feather Icons
@@ -276,6 +269,10 @@ local UIStroke = Instance.new("UIStroke")
 UIStroke.Color = Color3.fromRGB(40, 40, 40)
 UIStroke.Thickness = 2
 UIStroke.Parent = CircleButton
+
+-- Add CircleButton to theme objects so it updates with theme
+AddThemeObject(CircleButton, "Main")
+AddThemeObject(UIStroke, "Stroke")
 
 function OrionLib:IsRunning()
 	if gethui then
@@ -368,7 +365,7 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			
 			if ResizingInfo.Resizing and Input.UserInputType == Enum.UserInputType.MouseMovement then
 				local now = tick()
-				if now - ResizeThrottle >= 0.033 then -- 30 FPS throttle for smooth resizing
+				if now - ResizeThrottle >= 0.033 then
 					ResizeThrottle = now
 					local Delta = Input.Position - ResizingInfo.StartMousePos
 					local NewWidth = math.max(500, ResizingInfo.StartSize.X.Offset + Delta.X)
@@ -457,7 +454,8 @@ local function SetTheme()
 		for _, Object in pairs(Type) do
 			local prop = ReturnProperty(Object)
 			if prop then
-				if OrionLib.CustomThemeImage and OrionLib.SelectedTheme == OrionLib.CustomThemeName then
+				-- Handle Custom Theme
+				if OrionLib.CustomThemeImage and OrionLib.SelectedTheme and string.find(OrionLib.SelectedTheme, "[Custom]") then
 					if prop == "ScrollBarImageColor3" then
 						Object[prop] = Color3.fromRGB(255, 255, 255)
 					elseif prop == "BackgroundColor3" or prop == "ImageColor3" then
@@ -683,6 +681,9 @@ local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 	Parent = Orion
 })
 
+-- Add NotificationHolder to theme objects
+AddThemeObject(NotificationHolder.Parent, "Second")
+
 function OrionLib:MakeNotification(NotificationConfig)
 	spawn(function()
 		NotificationConfig.Name = NotificationConfig.Name or "Notification"
@@ -737,6 +738,10 @@ function OrionLib:MakeNotification(NotificationConfig)
 			}),
 			TimerText
 		})
+		
+		-- Add notification frame to theme objects
+		AddThemeObject(NotificationFrame, "Second")
+		AddThemeObject(NotificationFrame.UIStroke, "Stroke")
 
 		TweenService:Create(NotificationFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play()
 
@@ -967,20 +972,21 @@ function OrionLib:MakeWindow(WindowConfig)
 			AddThemeObject(SetProps(MakeElement("Frame"), {
 				Size = UDim2.new(1, 0, 0, 1)
 			}), "Stroke"), 
-			AddThemeObject(SetChildren(SetProps(MakeElement("Frame"), {
+			SetChildren(SetProps(MakeElement("Frame"), {
 				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0, 32, 0, 32),
 				Position = UDim2.new(0, 10, 0.5, 0)
 			}), {
 				SetProps(MakeElement("Image", "rbxassetid://2781888353"), {
 					Size = UDim2.new(1, 0, 1, 0),
-					ImageColor3 = Color3.fromRGB(200, 200, 200)
+					ImageColor3 = Color3.fromRGB(200, 200, 200),
+					Name = "AvatarImage"
 				}),
 				AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://4031889928"), {
 					Size = UDim2.new(1, 0, 1, 0),
 				}), "Second"),
 				MakeElement("Corner", 1)
-			}), "Divider"),
+			}),
 			SetChildren(SetProps(MakeElement("TFrame"), {
 				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0, 32, 0, 32),
@@ -989,16 +995,18 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddThemeObject(MakeElement("Stroke"), "Stroke"),
 				MakeElement("Corner", 1)
 			}),
-			AddThemeObject(SetProps(MakeElement("Label", "User", WindowConfig.HidePremium and 14 or 13), {
+			AddThemeObject(SetProps(MakeElement("Label", "", WindowConfig.HidePremium and 14 or 13), {
 				Size = UDim2.new(1, -60, 0, 13),
 				Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
 				Font = Enum.Font.GothamBold,
-				ClipsDescendants = true
+				ClipsDescendants = true,
+				Name = "UserNameLabel"
 			}), "Text"),
 			AddThemeObject(SetProps(MakeElement("Label", "", 12), {
 				Size = UDim2.new(1, -60, 0, 12),
 				Position = UDim2.new(0, 50, 1, -25),
-				Visible = not WindowConfig.HidePremium
+				Visible = not WindowConfig.HidePremium,
+				Name = "UserStatusLabel"
 			}), "TextDark")
 		}),
 	}), "Second")
@@ -1054,27 +1062,46 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
-	-- Get player avatar for the circle
-	local PlayerAvatar = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") and LocalPlayer.Character.Head:FindFirstChild("Face")
-	local AvatarImage = "rbxassetid://2781888353" -- Default
-	if PlayerAvatar then
-		AvatarImage = "rbxasset://" .. PlayerAvatar.Texture
-	end
-	
-	-- Update the circle with player face
-	local UserCircle = MainWindow:FindFirstChild("WindowStuff") and MainWindow.WindowStuff:FindFirstChild("TFrame") and MainWindow.WindowStuff.TFrame:FindFirstChild("Frame")
-	if UserCircle then
-		local PlayerImage = UserCircle:FindFirstChild("ImageLabel")
-		if PlayerImage then
-			PlayerImage.Image = AvatarImage
+	-- Get player avatar thumbnail using Roblox API
+	local function UpdatePlayerAvatar()
+		local userId = LocalPlayer.UserId
+		local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150"
+		
+		local avatarFrame = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("Frame")
+		if avatarFrame then
+			local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
+			if avatarImg then
+				avatarImg.Image = avatarImage
+			end
+		end
+		
+		-- Update username
+		local userNameLabel = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("UserNameLabel")
+		if userNameLabel then
+			userNameLabel.Text = LocalPlayer.Name
 		end
 	end
 	
-	-- Update the User label to show player name
-	local UserLabel = MainWindow:FindFirstChild("WindowStuff") and MainWindow.WindowStuff:FindFirstChild("TFrame") and MainWindow.WindowStuff.TFrame:FindFirstChild("TextLabel")
-	if UserLabel and UserLabel:IsA("TextLabel") then
-		UserLabel.Text = LocalPlayer.Name
-	end
+	-- Update avatar
+	UpdatePlayerAvatar()
+	
+	-- Also try to get face from character if available
+	task.spawn(function()
+		repeat wait(0.5) until LocalPlayer.Character
+		local head = LocalPlayer.Character:FindFirstChild("Head")
+		if head then
+			local face = head:FindFirstChild("Face")
+			if face and face:IsA("Decal") then
+				local avatarFrame = MainWindow:FindFirstChild("WindowStuff"):FindFirstChild("TFrame"):FindFirstChild("Frame")
+				if avatarFrame then
+					local avatarImg = avatarFrame:FindFirstChild("AvatarImage")
+					if avatarImg then
+						avatarImg.Image = face.Texture
+					end
+				end
+			end
+		end
+	end)
 
 	-- Element Search Box
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
@@ -2463,8 +2490,11 @@ function OrionLib:MakeWindow(WindowConfig)
 				local themeOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White"}
 				
 				-- Add custom theme names to options
+				local customThemeNames = {}
 				for _, theme in pairs(customThemes) do
-					table.insert(themeOptions, "[Custom] " .. theme.Name)
+					local optionName = "[Custom] " .. theme.Name
+					table.insert(themeOptions, optionName)
+					customThemeNames[optionName] = theme
 				end
 				
 				local themeDropdown = ElementFunction:AddDropdown({
@@ -2477,18 +2507,20 @@ function OrionLib:MakeWindow(WindowConfig)
 							local themeName = string.sub(Value, 10)
 							for _, theme in pairs(customThemes) do
 								if theme.Name == themeName then
-									local imageData = readfile(theme.Path)
-									if imageData then
-										OrionLib.CustomThemeImage = "rbxasset://" .. theme.Path
-										OrionLib.CustomThemeName = themeName
-										OrionLib.SelectedTheme = Value
-										SetTheme()
-										OrionLib:MakeNotification({
-											Name = "Theme Applied",
-											Content = "Custom theme '" .. themeName .. "' loaded!",
-											Time = 3
-										})
-									end
+									-- Load the image file as a texture
+									local imagePath = theme.Path
+									-- Use rbxasset:// protocol to load from file system
+									local imageUrl = "rbxasset://" .. imagePath
+									
+									OrionLib.CustomThemeImage = imageUrl
+									OrionLib.CustomThemeName = themeName
+									OrionLib.SelectedTheme = Value
+									SetTheme()
+									OrionLib:MakeNotification({
+										Name = "Theme Applied",
+										Content = "Custom theme '" .. themeName .. "' loaded!",
+										Time = 3
+									})
 									break
 								end
 							end
@@ -2522,7 +2554,8 @@ function OrionLib:MakeWindow(WindowConfig)
 				})
 				
 				-- Info label about custom themes folder
-				local infoLabel = ElementFunction:AddLabel("Place images in: [GameName] (ScripterHub)/CustomTheme/")
+				local customFolder = SetupCustomThemeFolder()
+				local infoLabel = ElementFunction:AddLabel("Place images in: " .. (customFolder or "CustomTheme folder"))
 				
 				local transparencySlider = ElementFunction:AddSlider({
 					Name = "Theme Transparency",
