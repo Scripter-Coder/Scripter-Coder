@@ -1,7 +1,8 @@
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
-local LocalPlayer = game:GetService("Players").LocalPlayer
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
 
@@ -119,7 +120,8 @@ local OrionLib = {
 	SelectedTheme = "Black",
 	ThemeTransparency = 0,
 	CustomThemeImage = nil,
-	CustomThemeId = nil,
+	CustomThemeName = nil,
+	AvailableCustomThemes = {},
 	Folder = nil,
 	SaveCfg = false,
 	FileOpsAllowed = true,
@@ -146,6 +148,70 @@ local function IsFileOpsDisabled()
 end
 
 OrionLib.FileOpsAllowed = not IsFileOpsDisabled()
+
+-- Setup custom theme folder
+local function SetupCustomThemeFolder()
+	local success, result = pcall(function()
+		local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or game.PlaceId
+		-- Sanitize game name for folder
+		gameName = gameName:gsub("[^%w%s]", ""):gsub("%s+", "_")
+		local scripterHubFolder = gameName .. " (ScripterHub)"
+		
+		if not isfolder(scripterHubFolder) then
+			makefolder(scripterHubFolder)
+		end
+		
+		local customThemeFolder = scripterHubFolder .. "/CustomTheme"
+		if not isfolder(customThemeFolder) then
+			makefolder(customThemeFolder)
+		end
+		
+		return customThemeFolder
+	end)
+	
+	if success then
+		return result
+	end
+	return nil
+end
+
+-- Scan for custom themes in folder
+local function ScanForCustomThemes()
+	OrionLib.AvailableCustomThemes = {}
+	local customThemeFolder = SetupCustomThemeFolder()
+	
+	if customThemeFolder and isfolder(customThemeFolder) then
+		pcall(function()
+			local files = listfiles(customThemeFolder)
+			for _, file in pairs(files) do
+				local fileName = file:match("([^/]+)$")
+				if fileName and (fileName:lower():match("%.png$") or fileName:lower():match("%.jpg$") or fileName:lower():match("%.jpeg$") or fileName:lower():match("%.gif$")) then
+					local themeName = fileName:gsub("%.[^.]*$", "")
+					table.insert(OrionLib.AvailableCustomThemes, {
+						Name = themeName,
+						Path = file,
+						FileName = fileName
+					})
+				end
+			end
+		end)
+	end
+	
+	return OrionLib.AvailableCustomThemes
+end
+
+-- Load custom theme image from file
+local function LoadCustomThemeImage(themeName)
+	for _, theme in pairs(OrionLib.AvailableCustomThemes) do
+		if theme.Name == themeName then
+			local imageData = readfile(theme.Path)
+			if imageData then
+				return "rbxasset://" .. theme.Path
+			end
+		end
+	end
+	return nil
+end
 
 -- Feather Icons
 local Icons = {}
@@ -240,6 +306,7 @@ end)
 
 local DraggingInfo = {Dragging = false, DragInput = nil, MousePos = nil, FramePos = nil}
 local ResizingInfo = {Resizing = false, StartSize = nil, StartMousePos = nil, StartPosition = nil}
+local ResizeThrottle = 0
 
 local function AddDraggingFunctionality(DragPoint, Main)
 	pcall(function()
@@ -282,10 +349,10 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				ResizingInfo.Resizing = false
 				OrionLib.WindowSize = Main.Size
+				ResizeThrottle = 0
 			end
 		end)
 		
-		local lastProcessTime = 0
 		UserInputService.InputChanged:Connect(function(Input)
 			if DraggingInfo.Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
 				local Delta = Input.Position - DraggingInfo.MousePos
@@ -301,8 +368,8 @@ local function AddDraggingFunctionality(DragPoint, Main)
 			
 			if ResizingInfo.Resizing and Input.UserInputType == Enum.UserInputType.MouseMovement then
 				local now = tick()
-				if now - lastProcessTime >= 0.016 then
-					lastProcessTime = now
+				if now - ResizeThrottle >= 0.033 then -- 30 FPS throttle for smooth resizing
+					ResizeThrottle = now
 					local Delta = Input.Position - ResizingInfo.StartMousePos
 					local NewWidth = math.max(500, ResizingInfo.StartSize.X.Offset + Delta.X)
 					local NewHeight = math.max(350, ResizingInfo.StartSize.Y.Offset + Delta.Y)
@@ -390,9 +457,7 @@ local function SetTheme()
 		for _, Object in pairs(Type) do
 			local prop = ReturnProperty(Object)
 			if prop then
-				-- Handle Custom Theme
-				if OrionLib.CustomThemeImage and OrionLib.SelectedTheme == "Custom" then
-					-- Skip ScrollBarImageColor3 as it expects Color3, not string
+				if OrionLib.CustomThemeImage and OrionLib.SelectedTheme == OrionLib.CustomThemeName then
 					if prop == "ScrollBarImageColor3" then
 						Object[prop] = Color3.fromRGB(255, 255, 255)
 					elseif prop == "BackgroundColor3" or prop == "ImageColor3" then
@@ -402,17 +467,13 @@ local function SetTheme()
 							Object[prop] = OrionLib.Themes["Black"][Name]
 						end
 					end
-				else
-					-- Normal theme
-					if OrionLib.Themes[OrionLib.SelectedTheme] and OrionLib.Themes[OrionLib.SelectedTheme][Name] then
-						Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
-					end
+				elseif OrionLib.Themes[OrionLib.SelectedTheme] and OrionLib.Themes[OrionLib.SelectedTheme][Name] then
+					Object[prop] = OrionLib.Themes[OrionLib.SelectedTheme][Name]
 				end
 			end
 		end    
 	end    
 	
-	-- Apply transparency to main window frames only
 	for _, frame in pairs(Orion:GetDescendants()) do
 		if frame:IsA("Frame") and frame.BackgroundTransparency ~= 1 and not frame:IsA("ScrollingFrame") then
 			frame.BackgroundTransparency = OrionLib.ThemeTransparency
@@ -942,12 +1003,11 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text at the VERY BOTTOM of the ENTIRE GUI window
-	-- Position Y = 1 means at the bottom, with -30 offset to give spacing
+	-- Version text at bottom aligned with User text
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
-		Size = UDim2.new(1, -10, 0, 20),
-		Position = UDim2.new(0, 5, 1, 1000),
-		TextXAlignment = Enum.TextXAlignment.Center,
+		Size = UDim2.new(0, 120, 0, 20),
+		Position = UDim2.new(1, -130, 1, -28),
+		TextXAlignment = Enum.TextXAlignment.Right,
 		BackgroundTransparency = 1,
 		ZIndex = 10
 	}), "TextDark")
@@ -994,30 +1054,52 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
-	-- Element Search Box (inside content area, with spacing from search tabs)
+	-- Get player avatar for the circle
+	local PlayerAvatar = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") and LocalPlayer.Character.Head:FindFirstChild("Face")
+	local AvatarImage = "rbxassetid://2781888353" -- Default
+	if PlayerAvatar then
+		AvatarImage = "rbxasset://" .. PlayerAvatar.Texture
+	end
+	
+	-- Update the circle with player face
+	local UserCircle = MainWindow:FindFirstChild("WindowStuff") and MainWindow.WindowStuff:FindFirstChild("TFrame") and MainWindow.WindowStuff.TFrame:FindFirstChild("Frame")
+	if UserCircle then
+		local PlayerImage = UserCircle:FindFirstChild("ImageLabel")
+		if PlayerImage then
+			PlayerImage.Image = AvatarImage
+		end
+	end
+	
+	-- Update the User label to show player name
+	local UserLabel = MainWindow:FindFirstChild("WindowStuff") and MainWindow.WindowStuff:FindFirstChild("TFrame") and MainWindow.WindowStuff.TFrame:FindFirstChild("TextLabel")
+	if UserLabel and UserLabel:IsA("TextLabel") then
+		UserLabel.Text = LocalPlayer.Name
+	end
+
+	-- Element Search Box
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
-		Size = UDim2.new(1, -20, 0, 30),
+		Size = UDim2.new(1, -20, 0, 32),
 		Position = UDim2.new(0, 10, 0, 5),
 		BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
 		PlaceholderText = "Search Elements...",
 		Font = Enum.Font.GothamSemibold,
-		TextSize = 15,
+		TextSize = 14,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ClearTextOnFocus = false,
 		Text = ""
 	}), "Text")
 
 	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
-		Size = UDim2.new(1, -200, 0, 40),
+		Size = UDim2.new(1, -220, 0, 42),
 		Position = UDim2.new(0, 200, 0, 60),
 		BackgroundTransparency = 0
 	}), {
 		ElementSearchBox,
 		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734052925"), {
 			Size = UDim2.new(0, 16, 0, 16),
-			Position = UDim2.new(1, -25, 0, 12),
+			Position = UDim2.new(1, -25, 0, 13),
 			ImageColor3 = Color3.fromRGB(160, 160, 160)
 		}), "TextDark"),
 		AddThemeObject(MakeElement("Stroke"), "Stroke")
@@ -1077,7 +1159,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end)
 
-	-- Optimized minimize
+	-- Optimized minimize with better performance
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if MinimizeTween and MinimizeTween.PlaybackState == Enum.PlaybackState.Playing then
 			MinimizeTween:Cancel()
@@ -1086,7 +1168,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		if Minimized then
 			local restoreSize = OrionLib.WindowSize or UDim2.new(0, 700, 0, 400)
 			local restorePos = OrionLib.WindowPosition or UDim2.new(0.5, -350, 0.5, -200)
-			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos})
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos})
 			MinimizeTween:Play()
 			MinimizeBtn.Ico.Image = "rbxassetid://7072719338"
 			task.wait(0.05)
@@ -1104,7 +1186,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			ElementSearchContainer.Visible = false
 			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
 
-			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)})
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)})
 			MinimizeTween:Play()
 			task.wait(0.05)
 			WindowStuff.Visible = false	
@@ -1164,6 +1246,9 @@ function OrionLib:MakeWindow(WindowConfig)
 	if WindowConfig.IntroEnabled then
 		LoadSequence()
 	end	
+
+	-- Scan for custom themes
+	ScanForCustomThemes()
 
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)
@@ -2162,7 +2247,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 10, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 10, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 10)}):Play()
 				end)
 				
-				-- Return the textbox object with a TextBox property to access the actual TextBox
 				local TextboxObject = {
 					TextBox = TextboxActual,
 					Set = function(self, Value)
@@ -2369,53 +2453,76 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Colorpicker
 			end
 			
-			-- THEME DROPDOWN with Custom Theme support
+			-- THEME DROPDOWN with File System Custom Theme support
 			function ElementFunction:AddThemeDropdown(ThemeDropdownConfig)
 				ThemeDropdownConfig = ThemeDropdownConfig or {}
 				ThemeDropdownConfig.Name = ThemeDropdownConfig.Name or "Theme"
 				
-				local themeOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White", "Custom"}
+				-- Scan for custom themes
+				local customThemes = ScanForCustomThemes()
+				local themeOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White"}
+				
+				-- Add custom theme names to options
+				for _, theme in pairs(customThemes) do
+					table.insert(themeOptions, "[Custom] " .. theme.Name)
+				end
 				
 				local themeDropdown = ElementFunction:AddDropdown({
 					Name = ThemeDropdownConfig.Name,
 					Options = themeOptions,
 					Default = OrionLib.SelectedTheme,
 					Callback = function(Value)
-						if Value == "Custom" then
-							-- Don't show notification, just let user use the textbox
+						if string.sub(Value, 1, 9) == "[Custom] " then
+							-- Custom theme selected
+							local themeName = string.sub(Value, 10)
+							for _, theme in pairs(customThemes) do
+								if theme.Name == themeName then
+									local imageData = readfile(theme.Path)
+									if imageData then
+										OrionLib.CustomThemeImage = "rbxasset://" .. theme.Path
+										OrionLib.CustomThemeName = themeName
+										OrionLib.SelectedTheme = Value
+										SetTheme()
+										OrionLib:MakeNotification({
+											Name = "Theme Applied",
+											Content = "Custom theme '" .. themeName .. "' loaded!",
+											Time = 3
+										})
+									end
+									break
+								end
+							end
 						else
+							-- Normal theme
 							OrionLib.SelectedTheme = Value
 							OrionLib.CustomThemeImage = nil
+							OrionLib.CustomThemeName = nil
 							SetTheme()
 						end
 					end
 				})
 				
-				-- Custom Theme ID Textbox
-				local customThemeBox = ElementFunction:AddTextbox({
-					Name = "Custom Theme ID",
-					Default = "",
-					TextDisappear = false,
-					Callback = function(Value)
-						if Value ~= "" and string.find(Value, "rbxassetid://") then
-							OrionLib.CustomThemeImage = Value
-							OrionLib.SelectedTheme = "Custom"
-							themeDropdown:Set("Custom")
-							SetTheme()
-							OrionLib:MakeNotification({
-								Name = "Theme Applied",
-								Content = "Custom theme loaded successfully!",
-								Time = 3
-							})
-						elseif Value ~= "" then
-							OrionLib:MakeNotification({
-								Name = "Invalid Theme ID",
-								Content = "Please use format: rbxassetid://[ID]",
-								Time = 3
-							})
+				-- Refresh button to scan for new themes
+				local refreshButton = ElementFunction:AddButton({
+					Name = "Refresh Custom Themes",
+					Icon = "refresh-cw",
+					Callback = function()
+						local newThemes = ScanForCustomThemes()
+						local newOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White"}
+						for _, theme in pairs(newThemes) do
+							table.insert(newOptions, "[Custom] " .. theme.Name)
 						end
+						themeDropdown:Refresh(newOptions, true)
+						OrionLib:MakeNotification({
+							Name = "Themes Refreshed",
+							Content = "Found " .. #newThemes .. " custom theme(s)",
+							Time = 3
+						})
 					end
 				})
+				
+				-- Info label about custom themes folder
+				local infoLabel = ElementFunction:AddLabel("Place images in: [GameName] (ScripterHub)/CustomTheme/")
 				
 				local transparencySlider = ElementFunction:AddSlider({
 					Name = "Theme Transparency",
