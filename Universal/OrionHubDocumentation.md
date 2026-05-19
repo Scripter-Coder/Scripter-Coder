@@ -394,9 +394,16 @@ Config files are made for every game the library is launched in.
 OrionLib:Destroy()
 ```
 
+## 3 Things Not Added Yet Are
+```lua
+Custom Animation Gui (When Script Loads)
+Icon of face is white (Where The White Circle Is)
+User is a fallback of your name incase if this code cant get your username properly it refers as User/Anonymous (Simple but its bug)
+```
 
 # Finishing your script (REQUIRED)
 The below function needs to be added at the end of your code.
 ```lua
+
 OrionLib:Init()
 ```
