@@ -3,7 +3,7 @@ This documentation is for the enhanced version of Orion Library with additional 
 
 ## Booting the Library
 ```lua
-local OrionLib = loadstring(game:HttpGet("")))()
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library"))()
 ```
 
 
