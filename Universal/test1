@@ -1015,7 +1015,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	-- Version text at bottom aligned with User text
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
-		Size = UDim2.new(0, 120, 0, 20),
+		Size = UDim2.new(0, 200, 0, 20), --120
 		Position = UDim2.new(1, -300, 1, -28), --130
 		TextXAlignment = Enum.TextXAlignment.Right,
 		BackgroundTransparency = 1,
@@ -1073,7 +1073,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
 		PlaceholderText = "Search Buttons/Toggles/ETC...",
 		Font = Enum.Font.GothamSemibold,
-		TextSize = 20,
+		TextSize = 10,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ClearTextOnFocus = false,
 		Text = ""
