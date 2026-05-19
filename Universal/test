@@ -1073,7 +1073,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		PlaceholderColor3 = Color3.fromRGB(160, 160, 160),
 		PlaceholderText = "Search Elements...",
 		Font = Enum.Font.GothamSemibold,
-		TextSize = 14,
+		TextSize = 15,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ClearTextOnFocus = false,
 		Text = ""
@@ -1081,7 +1081,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local ElementSearchContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(30, 30, 30), 0, 5), {
 		Size = UDim2.new(1, -220, 0, 42),
-		Position = UDim2.new(0, 200, 0, 60),
+		Position = UDim2.new(0, 400, 0, 60),
 		BackgroundTransparency = 0
 	}), {
 		ElementSearchBox,
