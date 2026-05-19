@@ -1016,7 +1016,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	-- Version text at bottom aligned with User text
 	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 11), {
 		Size = UDim2.new(0, 120, 0, 20),
-		Position = UDim2.new(1, -130, 1, -28),
+		Position = UDim2.new(1, -100, 1, -28), --130
 		TextXAlignment = Enum.TextXAlignment.Right,
 		BackgroundTransparency = 1,
 		ZIndex = 10
