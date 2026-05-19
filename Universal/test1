@@ -1022,12 +1022,12 @@ function OrionLib:MakeWindow(WindowConfig)
 		ZIndex = 10
 	}), "TextDark")
 
-	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 10), { --14
-		Size = UDim2.new(1, -30, 2, 0),
+	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
+		Size = UDim2.new(1, 350, 2, 0),
 		Position = UDim2.new(0, 25, 0, -24),
 		Font = Enum.Font.GothamBlack,
-		TextSize = 20,
-		TextScaled = true -- Added TextScaled to prevent overflow
+		TextSize = 16,
+		TextScaled = false -- Added TextScaled to prevent overflow
 	}), "Text")
 
 	local WindowTopBarLine = AddThemeObject(SetProps(MakeElement("Frame"), {
