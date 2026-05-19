@@ -1014,7 +1014,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	}), "Second")
 
 	-- Version text - Fixed position and size
-	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 12), {
+	local VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 16), {
 		Size = UDim2.new(0, 120, 0, 20),
 		Position = UDim2.new(1, -290, 1, -28),
 		TextXAlignment = Enum.TextXAlignment.Right,
@@ -1026,7 +1026,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		Size = UDim2.new(1, -30, 2, 0),
 		Position = UDim2.new(0, 25, 0, -24),
 		Font = Enum.Font.GothamBlack,
-		TextSize = 50,
+		TextSize = 20,
 		TextScaled = true -- Added TextScaled to prevent overflow
 	}), "Text")
 
@@ -1725,7 +1725,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					for _, Option in pairs(Options) do
 						local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(40, 40, 40)), {
 							MakeElement("Corner", 0, 8),
-							AddThemeObject(SetProps(MakeElement("Label", Option, 15, 0.4), {
+							AddThemeObject(SetProps(MakeElement("Label", Option, 20, 0.4), {
 								Position = UDim2.new(0, 16, 0, 0),
 								Size = UDim2.new(1, -16, 0, 0),
 								Name = "Title",
@@ -1925,7 +1925,7 @@ function OrionLib:MakeWindow(WindowConfig)
 								ImageTransparency = isSelected and 0 or 1,
 								Name = "Checkmark"
 							}),
-							AddThemeObject(SetProps(MakeElement("Label", Option, 15, isSelected and 0 or 0.4), {
+							AddThemeObject(SetProps(MakeElement("Label", Option, 20, isSelected and 0 or 0.4), {
 								Position = UDim2.new(0, 46, 0, 12), -- Adjusted position
 								Size = UDim2.new(1, -56, 0, 0),
 								Name = "Title",
