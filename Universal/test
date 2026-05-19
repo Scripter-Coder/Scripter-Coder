@@ -1651,7 +1651,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Dropdown.Value = "..."
 				end
 
-				local DropdownList = MakeElement("List", 0, 8) -- Increased spacing
+				local DropdownList = MakeElement("List", 0, 2) -- Increased spacing
 
 				local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(40, 40, 40), 5), {
 					DropdownList
@@ -1734,7 +1734,7 @@ function OrionLib:MakeWindow(WindowConfig)
 							}), "Text")
 						}), {
 							Parent = DropdownContainer,
-							Size = UDim2.new(1, 0, 0, 40), -- Increased height for options
+							Size = UDim2.new(1, 0, 0, 30), -- Increased height for options
 							BackgroundTransparency = 1,
 							ClipsDescendants = true,
 							AutomaticSize = Enum.AutomaticSize.Y
@@ -1926,7 +1926,7 @@ function OrionLib:MakeWindow(WindowConfig)
 								Name = "Checkmark"
 							}),
 							AddThemeObject(SetProps(MakeElement("Label", Option, 20, isSelected and 0 or 0.4), {
-								Position = UDim2.new(0, 46, 0, 12), -- Adjusted position
+								Position = UDim2.new(0, 16, 0, 6), -- Adjusted position
 								Size = UDim2.new(1, -56, 0, 0),
 								Name = "Title",
 								TextWrapped = true,
