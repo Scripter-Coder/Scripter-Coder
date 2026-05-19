@@ -2494,29 +2494,6 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				})
 				
-				-- Refresh button to scan for new themes
-				local refreshButton = ElementFunction:AddButton({
-					Name = "Refresh Custom Themes",
-					Icon = "refresh-cw",
-					Callback = function()
-						local newThemes = ScanForCustomThemes()
-						local newOptions = {"Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink", "Brown", "Gray", "Black", "White"}
-						for _, theme in pairs(newThemes) do
-							table.insert(newOptions, "[Custom] " .. theme.Name)
-						end
-						themeDropdown:Refresh(newOptions, true)
-						OrionLib:MakeNotification({
-							Name = "Themes Refreshed",
-							Content = "Found " .. #newThemes .. " custom theme(s)",
-							Time = 3
-						})
-					end
-				})
-				
-				-- Info label about custom themes folder
-				local customFolder = SetupCustomThemeFolder()
-				local infoLabel = ElementFunction:AddLabel("Place images in: " .. (customFolder or "CustomTheme folder"))
-				
 				local transparencySlider = ElementFunction:AddSlider({
 					Name = "Theme Transparency",
 					Min = 0,
