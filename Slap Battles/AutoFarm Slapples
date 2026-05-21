@@ -1,100 +1,194 @@
 --hello, buddy are you here to skid?
 --ok idc its easy as fuck 😭
-local button = script.Parent
-local teleportPosition = Vector3.new(-420, 92, -30)
 
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-372, 51, -29)
+-- Auto Slapple Collector + Server Hopper (Standalone)
+-- Teleports to arena, collects slapples, server hops when done
 
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-385, 51, 18)
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local player = Players.LocalPlayer
 
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-412, 51, -44)
+-- Configuration
+local COLLECTION_DELAY = 0.05
+local SERVERHOP_DELAY = 3
+local serverHopCount = 0
+local isCollecting = false
 
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-432, 51, -25)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-366, 51, -28)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-370, 58, 15)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-407, 51, 13)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-398, 57, 20)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local button = script.Parent
-local teleportPosition = Vector3.new(-415, 51, 15)
-
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
-    end
-wait(0.1)
-local Http = game:GetService("HttpService")
-local TPS = game:GetService("TeleportService")
-local Api = "https://games.roblox.com/v1/games/"
-
-local _place = game.PlaceId
-local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
+-- Function to send Roblox notification
+local function notify(title, text, duration)
+    duration = duration or 3
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = title,
+            Text = text,
+            Duration = duration
+        })
+    end)
 end
 
-local Server, Next; repeat
-   local Servers = ListServers(Next)
-   Server = Servers.data[1]
-   Next = Servers.nextPageCursor
-until Server
+-- Function to check if Slapple is collected (transparent)
+local function isSlappleCollected(glove)
+    if not glove then return true end
+    return glove.Transparency >= 0.9 or glove.Transparency == 1
+end
 
-TPS:TeleportToPlaceInstance(_place,Server.id,game:GetService('Players').LocalPlayer)
+-- Function to collect all available Slapples (BRING METHOD)
+local function collectAllSlapples()
+    local collected = 0
+    local character = player.Character
+    local hrp = character and character:FindFirstChild("HumanoidRootPart")
+    
+    if not character or not hrp then return 0 end
+    
+    local island5 = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("island5")
+    if not island5 then return 0 end
+    
+    local slapplesFolder = island5:FindFirstChild("Slapples")
+    if not slapplesFolder then return 0 end
+    
+    for _, slappleModel in pairs(slapplesFolder:GetChildren()) do
+        if slappleModel:IsA("Model") and (slappleModel.Name == "Slapple" or slappleModel.Name == "GoldenSlapple") then
+            pcall(function()
+                local glove = slappleModel:FindFirstChild("Glove")
+                if glove and glove:IsA("BasePart") and not isSlappleCollected(glove) then
+                    -- Bring Slapple DIRECTLY to player (0 studs away)
+                    glove.CFrame = hrp.CFrame
+                    collected = collected + 1
+                    task.wait(COLLECTION_DELAY)
+                end
+            end)
+        end
+    end
+    
+    return collected
+end
+
+-- Function to check if ALL Slapples are collected
+local function areAllSlapplesCollected()
+    local island5 = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("island5")
+    if not island5 then return false end
+    
+    local slapplesFolder = island5:FindFirstChild("Slapples")
+    if not slapplesFolder then return false end
+    
+    local totalSlapples = 0
+    local collectedSlapples = 0
+    
+    for _, slappleModel in pairs(slapplesFolder:GetChildren()) do
+        if slappleModel:IsA("Model") and (slappleModel.Name == "Slapple" or slappleModel.Name == "GoldenSlapple") then
+            totalSlapples = totalSlapples + 1
+            local glove = slappleModel:FindFirstChild("Glove")
+            if glove and isSlappleCollected(glove) then
+                collectedSlapples = collectedSlapples + 1
+            end
+        end
+    end
+    
+    return totalSlapples > 0 and collectedSlapples >= totalSlapples
+end
+
+-- Function to check if player is in arena
+local function isInArena()
+    local character = player.Character
+    if not character then return false end
+    return character:FindFirstChild("entered") ~= nil
+end
+
+-- Function to teleport to arena (direct teleport, no walking)
+local function teleportToArena()
+    local lobby = workspace:FindFirstChild("Lobby")
+    if not lobby then
+        notify("Error", "Lobby not found!", 2)
+        return false
+    end
+    
+    local teleport1 = lobby:FindFirstChild("Teleport1")
+    if not teleport1 or not teleport1:IsA("BasePart") then
+        notify("Error", "Teleport1 not found!", 2)
+        return false
+    end
+    
+    local character = player.Character
+    local hrp = character and character:FindFirstChild("HumanoidRootPart")
+    
+    if hrp then
+        -- Direct teleport to Teleport1
+        hrp.CFrame = teleport1.CFrame * CFrame.new(0, 3, 0)
+        notify("Teleporting", "Entering arena...", 2)
+        return true
+    end
+    
+    return false
+end
+
+-- Function to server hop
+local function serverHop()
+    serverHopCount = serverHopCount + 1
+    notify("Server Hop #" .. serverHopCount, "All Slapples collected! Hopping to new server...", 3)
+    task.wait(SERVERHOP_DELAY)
+    TeleportService:Teleport(game.PlaceId)
+end
+
+-- Main collection loop
+local function startCollecting()
+    if isCollecting then return end
+    isCollecting = true
+    
+    notify("Slapple Collector", "Waiting for you to enter arena...", 3)
+    
+    -- Wait for player to be in arena
+    repeat
+        task.wait(1)
+        -- If not in arena, try to teleport
+        if not isInArena() then
+            teleportToArena()
+        end
+    until isInArena()
+    
+    notify("Slapple Collector", "Started! Collecting Slapples...", 2)
+    
+    while true do
+        -- Check if still in arena
+        if not isInArena() then
+            notify("Left Arena", "Teleporting back...", 2)
+            teleportToArena()
+            task.wait(2)
+        end
+        
+        -- Collect slapples
+        local collected = collectAllSlapples()
+        
+        if collected > 0 then
+            notify("Collected", collected .. " Slapple(s)!", 1)
+        end
+        
+        -- Check if all slapples are collected
+        if areAllSlapplesCollected() then
+            serverHop()
+            break -- Script ends here, will need re-run after hop
+        end
+        
+        task.wait(0.1)
+    end
+end
+
+-- Auto-start when script runs
+task.spawn(function()
+    -- Wait for character to load
+    repeat
+        task.wait(0.5)
+    until player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    
+    -- Start collecting
+    startCollecting()
+end)
+
+-- Re-run after respawn
+player.CharacterAdded:Connect(function()
+    task.wait(2)
+    if isCollecting then
+        isCollecting = false
+        task.wait(1)
+        startCollecting()
+    end
+end)
