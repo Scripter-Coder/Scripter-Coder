@@ -43,10 +43,10 @@ local Tab = Window:MakeTab({
     PremiumOnly = false
 })
 
-Tab:AddParagraph("Article Hub", "Total Scripts: 2")
+Tab:AddParagraph("Article Hub", "Total Scripts: 6")
 Tab:AddParagraph("AstroSX", "Total Scripts: 14")
 Tab:AddParagraph("BaconScripter", "Total Scripts: 18")
-Tab:AddParagraph("DonjoSx", "Total Scripts: 30")
+Tab:AddParagraph("DonjoSx", "Total Scripts: 33")
 Tab:AddParagraph("Ekanite", "Total Scripts: 12")
 Tab:AddParagraph("Herkle", "Total Scripts: 1")
 Tab:AddParagraph("Incognito Scripts", "Total Scripts: 49")
@@ -55,10 +55,10 @@ Tab:AddParagraph("Nexer", "Total Scripts: 177")
 Tab:AddParagraph("Scrept", "Total Scripts: 2")
 Tab:AddParagraph("Scripter", "Total Scripts: 21")
 Tab:AddParagraph("TimerScripts", "Total Scripts: 24")
-Tab:AddParagraph("The Darkness Keeps Growing", "Total Scripts: 71")
-Tab:AddParagraph("Virus_SX", "Total Scripts: 25")
+Tab:AddParagraph("(TDKG) = The Darkness Keeps Growing", "Total Scripts: 71")
+Tab:AddParagraph("Virus_SX", "Total Scripts: 30")
 
-Tab:AddParagraph("All Scripters", "Total Scripts: 508")
+Tab:AddParagraph("All Scripters", "Total Scripts: 520")
 
 local Tab = Window:MakeTab({
 	Name = "Article Hub",
@@ -77,6 +77,34 @@ Tab:AddButton({
 	Name = "Farm Bob 1",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File/FarmBob1.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "AutoFarm Candy",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/AutoFarm%20Candy.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "AutoFarm Slapple",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/AutoFarm%20Slapple.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Farm Bob",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/Farm%20Bob.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "AutoFarm Candy Slapple",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/AutoFarm%20Candy%20Slapple.lua"))()
 end
 })
 
@@ -529,6 +557,27 @@ Tab:AddButton({
 	Name = "SB Nuker",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Premium-Scripts/refs/heads/main/SBNuker.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto get clock and undead",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/UZVcVxf4/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto get shellbert and eggler for free in 1 min",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/Fi5D2Me6/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Instant Lotus 🪷 glove and its badge",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/Ds8bqkE9/raw"))()
 end
 })
 
@@ -3017,7 +3066,7 @@ end
 })
 
 local Tab = Window:MakeTab({
-	Name = "The Darkness Keeps Growing",
+	Name = "TDKG",
 	Icon = "rbxassetid://7733960981",
 	PremiumOnly = false
 	})
@@ -3520,7 +3569,7 @@ end
 })
 
 local Tab = Window:MakeTab({
-	Name = "VirusSX",
+	Name = "Virus_SX",
 	Icon = "rbxassetid://7733960981",
 	PremiumOnly = false
 	})
@@ -3711,6 +3760,41 @@ end)
 end
 })
 
+Tab:AddButton({
+	Name = "Katana man script",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/DGpgJnN8/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Whistle Occurrence Script",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/8nc50Cwm/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Lord Default Moveset!",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/UcNWI5DT/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Funner hub",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/3ehrlBbl/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "L.O.L.B.O.M.B Mastery!",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/B1GxTxcV/raw"))()
+end
+})
+
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
@@ -3834,7 +3918,7 @@ Tab:AddButton({
 
 -- Section: Badge Giver
 Section = Tab:AddSection({
-    Name = "Badge Giver"
+    Name = "Stuff Giver"
 })
 
 Tab:AddButton({
@@ -3843,6 +3927,192 @@ Tab:AddButton({
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
     end
 })
+
+Tab:AddButton({
+    Name = "Give All Emotes (Free + Fe)",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+    end
+})
+
+-- Variables
+local deathSoundEnabled = false
+local currentSoundId = ""
+local monitorConnection = nil
+local childAddedConnections = {}
+
+-- Function to clean up old connections
+local function cleanupConnections()
+    if monitorConnection then
+        monitorConnection:Disconnect()
+        monitorConnection = nil
+    end
+    
+    for _, conn in pairs(childAddedConnections) do
+        pcall(function()
+            conn:Disconnect()
+        end)
+    end
+    childAddedConnections = {}
+end
+
+-- Function to modify death sounds in a character
+local function modifyDeathSounds(character)
+    if not deathSoundEnabled then return end
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    for _, sound in pairs(torso:GetChildren()) do
+        if sound:IsA("Sound") then
+            local soundName = sound.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                pcall(function()
+                    if sound.SoundId ~= currentSoundId then
+                        sound.SoundId = currentSoundId
+                    end
+                end)
+            end
+        end
+    end
+end
+
+-- Function to setup listener for new sounds
+local function setupSoundListener(character)
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    local connection = torso.ChildAdded:Connect(function(child)
+        if child:IsA("Sound") and deathSoundEnabled then
+            local soundName = child.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                task.wait(0.1)
+                pcall(function()
+                    child.SoundId = currentSoundId
+                end)
+            end
+        end
+    end)
+    
+    table.insert(childAddedConnections, connection)
+end
+
+-- Function to start monitoring
+local function startMonitoring()
+    if monitorConnection then return end
+    
+    monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if deathSoundEnabled then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                modifyDeathSounds(character)
+            end
+        end
+    end)
+    
+    -- Setup listener for current character
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        setupSoundListener(character)
+    end
+end
+
+-- Function to stop monitoring
+local function stopMonitoring()
+    cleanupConnections()
+end
+
+-- Function to update all existing death sounds
+local function updateAllDeathSounds()
+    if not deathSoundEnabled then return end
+    
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+        if torso then
+            for _, sound in pairs(torso:GetChildren()) do
+                if sound:IsA("Sound") then
+                    local soundName = sound.Name:lower()
+                    if soundName:find("death") or soundName:find("die") then
+                        pcall(function()
+                            sound.SoundId = currentSoundId
+                        end)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Add Sound ID TextBox
+Tab:AddParagraph("Custom Sound ID:", "Enter your sound ID below (format: rbxassetid://1234567890)")
+
+local soundIdBox = Tab:AddTextbox({
+    Name = "Put Custom Sound ID",
+    Default = currentSoundId,
+    TextDisappear = false,
+    Callback = function(value)
+        if value and value ~= "" then
+            -- Ensure it has rbxassetid:// prefix if not present
+            if not value:find("rbxassetid://") then
+                currentSoundId = "rbxassetid://" .. value
+            else
+                currentSoundId = value
+            end
+            
+            -- Update existing sounds if enabled
+            if deathSoundEnabled then
+                updateAllDeathSounds()
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Sound ID Updated",
+                Content = "New sound ID: " .. currentSoundId,
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Add Toggle for auto apply
+Tab:AddToggle({
+    Name = "Auto Apply Death Sound",
+    Default = false,
+    Callback = function(value)
+        deathSoundEnabled = value
+        
+        if value then
+            startMonitoring()
+            updateAllDeathSounds()
+            
+            OrionLib:MakeNotification({
+                Name = "Death Sound Modifier",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
+                Time = 3
+            })
+        else
+            stopMonitoring()
+            
+        end
+    end
+})
+
+-- Handle character respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    
+    if deathSoundEnabled then
+        setupSoundListener(character)
+        task.wait(0.2)
+        modifyDeathSounds(character)
+    end
+end)
+
+-- Initial setup
+startMonitoring()
 
 -- Variables
 local nametagText = ""
@@ -4829,6 +5099,28 @@ Tab:AddButton({
             character.HumanoidRootPart.CFrame = CFrame.new(122, 360, -3)
         end
     end
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+-- OTHER SETTINGS
+local Tab = Window:MakeTab({
+    Name = "Other Settings",
+    Icon = "rbxassetid://8997386997",
+    PremiumOnly = false
+})
+
+local ThemePicker = Tab:AddThemeDropdown({
+    Name = "UI Theme"
 })
 
 Section = Tab:AddSection({
