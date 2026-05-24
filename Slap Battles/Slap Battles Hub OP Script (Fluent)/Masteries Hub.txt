@@ -35,10 +35,10 @@ Section = Tab:AddSection("Give FE/Visual Free Mastery")
 
 -- Create dropdown for Mastery selection
 local masteryNames = {
-    "spin", "Stick", "Brick", "Flash", "Spring", "Thanos", "Fort", "Space", "Hive", "Killstreak", 
+    "spin", "Stick", "Brick", "Flash", "Spring", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak", 
     "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", 
     "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", 
-    "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Plank", "Eggler", "Car Keys", 
+    "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Frostbite", "Plank", "Hexa", "Eggler", "Car Keys", 
     "Ultra Instinct", "Acrobat"
 }
 
@@ -974,6 +974,134 @@ Tab:AddToggle("Toggle_12", {
                 AutoAbiltySlapDefenseRunning = false
                 Fluent:Notify({Title = "Error", Content = "Equip Defense Glove", Duration = 3})
             end
+        end
+    end
+})
+
+local Tab = Window:AddTab({Title = "Mace", Icon = ""})
+
+Section = Tab:AddSection("2-3 Quest")
+
+-- ===== MACE SLAP AURA BUTTON =====
+Tab:AddButton({
+    Title = "Mace Slap Aura",
+    Description = "Continuously slaps all players using Mace glove (infinite loop)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Mace" then
+            -- Get the ReplicatedStorage and Players service
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            -- Start the infinite loop to fire for all players
+            task.spawn(function()
+                local isRunning = true
+                local slappedCount = 0
+                
+                Fluent:Notify({
+                    Title = "Mace Slap Aura",
+                    Content = "Started! Slapping all players every 0.5 seconds.",
+                    Duration = 3
+                })
+                
+                while isRunning do
+                    -- Loop through each player in the game
+                    for _, targetPlayer in pairs(Players:GetPlayers()) do
+                        -- Ensure the player has a character and it contains the "Right Arm"
+                        if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Right Arm") then
+                            pcall(function()
+                                -- Create the arguments table for the FireServer function
+                                local args = {
+                                    [1] = targetPlayer.Character["Right Arm"]
+                                }
+                                
+                                -- Fire the server with the "Right Arm" part as an argument
+                                ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                                slappedCount = slappedCount + 1
+                            end)
+                        end
+                    end
+                    
+                    -- Optional: Show progress notification every 10 slaps
+                    if slappedCount >= 10 then
+                        Fluent:Notify({
+                            Title = "Mace Slap Aura",
+                            Content = "Slapped players " .. slappedCount .. " times total",
+                            Duration = 1
+                        })
+                        slappedCount = 0
+                    end
+                    
+                    -- Wait before running the loop again
+                    task.wait(0.5)
+                end
+            end)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please equip Mace glove first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- Optional: Add a safer version with stop functionality
+local maceSlapRunning = false
+local maceSlapLoop = nil
+
+Tab:AddButton({
+    Title = "Mace Slap Aura (Toggleable)",
+    Description = "Toggleable version - click again to stop",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value ~= "Mace" then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please equip Mace glove first!",
+                Duration = 3
+            })
+            return
+        end
+        
+        if not maceSlapRunning then
+            -- Start the aura
+            maceSlapRunning = true
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            Fluent:Notify({
+                Title = "Mace Slap Aura",
+                Content = "Started! Click button again to stop.",
+                Duration = 3
+            })
+            
+            maceSlapLoop = task.spawn(function()
+                while maceSlapRunning do
+                    for _, targetPlayer in pairs(Players:GetPlayers()) do
+                        if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Right Arm") then
+                            pcall(function()
+                                local args = {
+                                    [1] = targetPlayer.Character["Right Arm"]
+                                }
+                                ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                            end)
+                        end
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        else
+            -- Stop the aura
+            maceSlapRunning = false
+            if maceSlapLoop then
+                task.cancel(maceSlapLoop)
+                maceSlapLoop = nil
+            end
+            
+            Fluent:Notify({
+                Title = "Mace Slap Aura",
+                Content = "Stopped!",
+                Duration = 2
+            })
         end
     end
 })
@@ -2913,6 +3041,310 @@ local AutoPlankToggle = Tab:AddToggle("Toggle_41", {
     end
 })
 
+local Tab = Window:AddTab({Title = "Frosbite", Icon = ""})
+
+Section = Tab:AddSection("1-2-3-4 Quests")
+
+-- ===== FROSTBITE SLAP AURA BUTTON =====
+Tab:AddButton({
+    Title = "Frostbite Slap Aura",
+    Description = "Continuously slaps all players using Frostbite glove (infinite loop, 1 second delay)",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Frostbite" then
+            -- Get the ReplicatedStorage and Players service
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            -- Start the infinite loop to fire for all players
+            task.spawn(function()
+                local isRunning = true
+                local slappedCount = 0
+                
+                Fluent:Notify({
+                    Title = "Frostbite Slap Aura",
+                    Content = "Started! Slapping all players every 1 second.",
+                    Duration = 3
+                })
+                
+                while isRunning do
+                    -- Loop through each player in the game
+                    for _, targetPlayer in pairs(Players:GetPlayers()) do
+                        -- Ensure the player has a character and it contains the "Right Arm"
+                        if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Right Arm") then
+                            pcall(function()
+                                -- Create the arguments table for the FireServer function
+                                local args = {
+                                    [1] = targetPlayer.Character["Right Arm"]
+                                }
+                                
+                                -- Fire the server with the "Right Arm" part as an argument
+                                ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                                slappedCount = slappedCount + 1
+                            end)
+                        end
+                    end
+                    
+                    -- Optional: Show progress notification every 10 slaps
+                    if slappedCount >= 10 then
+                        Fluent:Notify({
+                            Title = "Frostbite Slap Aura",
+                            Content = "Slapped players " .. slappedCount .. " times total",
+                            Duration = 1
+                        })
+                        slappedCount = 0
+                    end
+                    
+                    -- Wait before running the loop again
+                    task.wait(1)
+                end
+            end)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please equip Frostbite glove first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- ===== AUTO USE FROSTBITE ABILITY TOGGLE =====
+local frostbiteEnabled = false
+local frostbiteLoop = nil
+
+local FrostbiteToggle = Tab:AddToggle("FrostbiteAbility", {
+    Title = "Auto Use Frostbite Ability",
+    Description = "Automatically uses Frostbite ability every 4 seconds",
+    Default = false,
+    Callback = function(Value)
+        frostbiteEnabled = Value
+        
+        if Value then
+            -- Check if player has Frostbite glove
+            if game.Players.LocalPlayer.leaderstats.Glove.Value ~= "Frostbite" then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Please equip Frostbite glove first!",
+                    Duration = 3
+                })
+                FrostbiteToggle:SetValue(false)
+                frostbiteEnabled = false
+                return
+            end
+            
+            -- Start the loop
+            if frostbiteLoop then
+                task.cancel(frostbiteLoop)
+                frostbiteLoop = nil
+            end
+            
+            frostbiteLoop = task.spawn(function()
+                local abilityCount = 0
+                
+                Fluent:Notify({
+                    Title = "Frostbite Ability",
+                    Content = "Enabled! Using ability every 4 seconds.",
+                    Duration = 2
+                })
+                
+                while frostbiteEnabled do
+                    pcall(function()
+                        local args = {
+                            [1] = 0.012500000651925802
+                        }
+                        game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args))
+                        abilityCount = abilityCount + 1
+                    end)
+                    
+                    -- Optional: Show progress every 10 abilities
+                    if abilityCount >= 10 then
+                        Fluent:Notify({
+                            Title = "Frostbite Ability",
+                            Content = "Used ability " .. abilityCount .. " times",
+                            Duration = 1
+                        })
+                        abilityCount = 0
+                    end
+                    
+                    task.wait(4) -- Wait 4 seconds between fires
+                end
+            end)
+        else
+            -- Stop the loop
+            if frostbiteLoop then
+                task.cancel(frostbiteLoop)
+                frostbiteLoop = nil
+            end
+            
+            Fluent:Notify({
+                Title = "Frostbite Ability",
+                Content = "Disabled!",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- ===== TELEPORT TO FROSTBITE LOCATION (Optional) =====
+Tab:AddButton({
+    Title = "Teleport to Frostbite Spot",
+    Description = "Teleports to a good location for Frostbite ability",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
+            Fluent:Notify({
+                Title = "Teleport",
+                Content = "Teleported to Frostbite farming spot!",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- ===== SAFER TOGGLEABLE SLAP AURA (Optional) =====
+local frostbiteSlapEnabled = false
+local frostbiteSlapLoop = nil
+
+local FrostbiteSlapToggle = Tab:AddToggle("FrostbiteSlapAura", {
+    Title = "Frostbite Slap Aura (Toggleable)",
+    Description = "Toggleable slap aura - click again to stop (safer than button)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            if game.Players.LocalPlayer.leaderstats.Glove.Value ~= "Frostbite" then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Please equip Frostbite glove first!",
+                    Duration = 3
+                })
+                FrostbiteSlapToggle:SetValue(false)
+                return
+            end
+            
+            frostbiteSlapEnabled = true
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            Fluent:Notify({
+                Title = "Frostbite Slap Aura",
+                Content = "Started! Click toggle again to stop.",
+                Duration = 3
+            })
+            
+            frostbiteSlapLoop = task.spawn(function()
+                while frostbiteSlapEnabled do
+                    for _, targetPlayer in pairs(Players:GetPlayers()) do
+                        if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Right Arm") then
+                            pcall(function()
+                                local args = {
+                                    [1] = targetPlayer.Character["Right Arm"]
+                                }
+                                ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                            end)
+                        end
+                    end
+                    task.wait(1)
+                end
+            end)
+        else
+            frostbiteSlapEnabled = false
+            if frostbiteSlapLoop then
+                task.cancel(frostbiteSlapLoop)
+                frostbiteSlapLoop = nil
+            end
+            
+            Fluent:Notify({
+                Title = "Frostbite Slap Aura",
+                Content = "Stopped!",
+                Duration = 2
+            })
+        end
+    end
+})
+
+local Tab = Window:AddTab({Title = "Hexa", Icon = ""})
+
+Tab:AddParagraph({
+    Title = "1-2-3-4 Quest",
+    Content = "Hexa Glove utilities. Make sure you have the Hexa Glove equipped before using any features."
+})
+
+-- Auto Use Ability Toggle
+local AbilityToggle = Tab:AddToggle("HexaAutoAbility", {
+    Title = "Auto Use Ability",
+    Description = "Automatically fires the Hexa ability every 10 seconds.",
+    Default = false
+})
+
+AbilityToggle:OnChanged(function(Value)
+    if Value then
+        -- START
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Hexa"
+            and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+
+            getgenv().HexaAbilityLoop = true
+            task.spawn(function()
+                while getgenv().HexaAbilityLoop do
+                    game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+                    task.wait(10)
+                end
+            end)
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Hexa Glove before enabling this!",
+                Duration = 3
+            })
+            -- Turn toggle back off
+            Options.HexaAutoAbility:SetValue(false)
+        end
+    else
+        -- STOP
+        getgenv().HexaAbilityLoop = false
+    end
+end)
+
+-- Hexa Slap Aura Button
+Tab:AddButton({
+    Title = "Hexa Slap Aura",
+    Description = "Fires GeneralHit for all players in the server repeatedly.",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Hexa" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            getgenv().HexaSlapAura = true
+            task.spawn(function()
+                while getgenv().HexaSlapAura do
+                    for _, player in pairs(Players:GetPlayers()) do
+                        if player.Character and player.Character:FindFirstChild("Left Leg") then
+                            local args = {
+                                [1] = player.Character["Left Leg"],
+                                [2] = false
+                            }
+                            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                        end
+                    end
+                    task.wait(0.7)
+                end
+            end)
+
+            Fluent:Notify({
+                Title = "Hexa Slap Aura",
+                Content = "Slap Aura is now active!",
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Hexa Glove first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
 local Tab = Window:AddTab({Title = "Eggler", Icon = ""})
 
 Tab:AddButton({
@@ -3329,15 +3761,229 @@ Tab:AddButton({
     end
 })
 
--- Section: Badge Giver
-Section = Tab:AddSection("Badge Giver")
+local StuffGiverSection = Tab:AddSection("Stuff Giver")
 
 Tab:AddButton({
     Title = "Give All Badges (Visual)",
+    Description = "Gives you all badges (visual only)",
     Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+        pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+            Fluent:Notify({
+                Title = "Badge Giver",
+                Content = "Attempting to give all badges!",
+                Duration = 3
+            })
+        end)
     end
 })
+
+Tab:AddButton({
+    Title = "Give All Emotes (Free + FE)",
+    Description = "Gives you all free and FE emotes",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+            Fluent:Notify({
+                Title = "Emotes",
+                Content = "Attempting to give all emotes!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ============================================================
+-- SECTION: DEATH SOUND MODIFIER
+-- ============================================================
+
+-- Variables
+local deathSoundEnabled = false
+local currentSoundId = "rbxassetid://9126695500" -- Default funny sound
+local monitorConnection = nil
+local childAddedConnections = {}
+
+-- Function to clean up old connections
+local function cleanupConnections()
+    if monitorConnection then
+        monitorConnection:Disconnect()
+        monitorConnection = nil
+    end
+    
+    for _, conn in pairs(childAddedConnections) do
+        pcall(function()
+            conn:Disconnect()
+        end)
+    end
+    childAddedConnections = {}
+end
+
+-- Function to modify death sounds in a character
+local function modifyDeathSounds(character)
+    if not deathSoundEnabled then return end
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    for _, sound in pairs(torso:GetChildren()) do
+        if sound:IsA("Sound") then
+            local soundName = sound.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                pcall(function()
+                    if sound.SoundId ~= currentSoundId then
+                        sound.SoundId = currentSoundId
+                    end
+                end)
+            end
+        end
+    end
+end
+
+-- Function to setup listener for new sounds
+local function setupSoundListener(character)
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    local connection = torso.ChildAdded:Connect(function(child)
+        if child:IsA("Sound") and deathSoundEnabled then
+            local soundName = child.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                task.wait(0.1)
+                pcall(function()
+                    child.SoundId = currentSoundId
+                end)
+            end
+        end
+    end)
+    
+    table.insert(childAddedConnections, connection)
+end
+
+-- Function to start monitoring
+local function startMonitoring()
+    if monitorConnection then return end
+    
+    monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if deathSoundEnabled then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                modifyDeathSounds(character)
+            end
+        end
+    end)
+    
+    -- Setup listener for current character
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        setupSoundListener(character)
+    end
+end
+
+-- Function to stop monitoring
+local function stopMonitoring()
+    cleanupConnections()
+end
+
+-- Function to update all existing death sounds
+local function updateAllDeathSounds()
+    if not deathSoundEnabled then return end
+    
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+        if torso then
+            for _, sound in pairs(torso:GetChildren()) do
+                if sound:IsA("Sound") then
+                    local soundName = sound.Name:lower()
+                    if soundName:find("death") or soundName:find("die") then
+                        pcall(function()
+                            sound.SoundId = currentSoundId
+                        end)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Add Sound ID information paragraph
+Tab:AddParagraph({
+    Title = "Custom Sound ID",
+    Content = "Enter your sound ID below (format: rbxassetid://1234567890)\nDefault: rbxassetid://9126695500 (Funny sound)"
+})
+
+-- Sound ID Input (using Fluent's AddInput instead of AddTextbox)
+local soundIdInput = Tab:AddInput("SoundID", {
+    Title = "Custom Sound ID",
+    Description = "Enter a sound ID (rbxassetid://... or just the ID number)",
+    Default = "9126695500",
+    Placeholder = "Enter sound ID here...",
+    Numeric = false,
+    Finished = true,
+    Callback = function(value)
+        if value and value ~= "" then
+            -- Ensure it has rbxassetid:// prefix if not present
+            if not value:find("rbxassetid://") then
+                currentSoundId = "rbxassetid://" .. value
+            else
+                currentSoundId = value
+            end
+            
+            -- Update existing sounds if enabled
+            if deathSoundEnabled then
+                updateAllDeathSounds()
+            end
+            
+            Fluent:Notify({
+                Title = "Sound ID Updated",
+                Content = "New sound ID: " .. currentSoundId,
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Auto Apply Death Sound Toggle
+local DeathSoundToggle = Tab:AddToggle("DeathSoundModifier", {
+    Title = "Auto Apply Death Sound",
+    Description = "Automatically changes death sounds to your custom sound ID",
+    Default = false,
+    Callback = function(value)
+        deathSoundEnabled = value
+        
+        if value then
+            startMonitoring()
+            updateAllDeathSounds()
+            
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
+                Duration = 3
+            })
+        else
+            stopMonitoring()
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Disabled! Death sounds restored to normal.",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Handle character respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    
+    if deathSoundEnabled then
+        setupSoundListener(character)
+        task.wait(0.2)
+        modifyDeathSounds(character)
+    end
+end)
 
 -- Variables
 local nametagText = ""
