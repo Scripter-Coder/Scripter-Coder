@@ -33,7 +33,7 @@ end
 
 local Tab = Window:AddTab({Title = "Info", Icon = ""})
 
-Tab:AddParagraph({Title = "Article Hub", Content = "Total Scripts: 2"})
+Tab:AddParagraph({Title = "Article Hub", Content = "Total Scripts: 6"})
 Tab:AddParagraph({Title = "AstroSX", Content = "Total Scripts: 14"})
 Tab:AddParagraph({Title = "BaconScripter", Content = "Total Scripts: 18"})
 Tab:AddParagraph({Title = "DonjoSx", Content = "Total Scripts: 30"})
