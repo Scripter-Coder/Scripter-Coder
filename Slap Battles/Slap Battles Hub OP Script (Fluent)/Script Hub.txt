@@ -1,4 +1,3 @@
-
 --skid if u want idc just dont forget about credits or smt
 --Webhook
 local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
@@ -53,18 +52,95 @@ Tab:AddParagraph({Title = "All Scripters", Content = "Total Scripts: 508"})
 
 local Tab = Window:AddTab({Title = "Article Hub", Icon = ""})
 
+-- ===== ARTICLE HUB BUTTONS =====
 Tab:AddButton({
-	Title = "Article Hub",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File-Script/Slap_Battles.lua"))()
-end
+    Title = "Article Hub",
+    Description = "Loads the Article Hub Slap Battles script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File-Script/Slap_Battles.lua"))()
+            Fluent:Notify({
+                Title = "Article Hub",
+                Content = "Loading Slap Battles script...",
+                Duration = 3
+            })
+        end)
+    end
 })
 
 Tab:AddButton({
-	Title = "Farm Bob 1",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File/FarmBob1.lua"))()
-end
+    Title = "Farm Bob 1",
+    Description = "Loads the Farm Bob 1 script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/ROBLOXScript/refs/heads/main/File/FarmBob1.lua"))()
+            Fluent:Notify({
+                Title = "Farm Bob 1",
+                Content = "Loading Farm Bob 1 script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+Tab:AddButton({
+    Title = "AutoFarm Candy",
+    Description = "Loads the AutoFarm Candy script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/AutoFarm%20Candy.lua"))()
+            Fluent:Notify({
+                Title = "AutoFarm Candy",
+                Content = "Loading AutoFarm Candy script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+Tab:AddButton({
+    Title = "AutoFarm Slapple",
+    Description = "Loads the AutoFarm Slapple script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/AutoFarm%20Slapple.lua"))()
+            Fluent:Notify({
+                Title = "AutoFarm Slapple",
+                Content = "Loading AutoFarm Slapple script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+Tab:AddButton({
+    Title = "Farm Bob",
+    Description = "Loads the Farm Bob script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/File/Farm%20Bob.lua"))()
+            Fluent:Notify({
+                Title = "Farm Bob",
+                Content = "Loading Farm Bob script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+Tab:AddButton({
+    Title = "AutoFarm Candy Slapple",
+    Description = "Loads the AutoFarm Candy Slapple script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Articles-Hub/Slap_Battles/refs/heads/main/AutoFarm%20Candy%20Slapple.lua"))()
+            Fluent:Notify({
+                Title = "AutoFarm Candy Slapple",
+                Content = "Loading AutoFarm Candy Slapple script...",
+                Duration = 3
+            })
+        end)
+    end
 })
 
 local Tab = Window:AddTab({Title = "AstroSX", Icon = ""})
@@ -505,6 +581,54 @@ Tab:AddButton({
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/DonjoScripts/Premium-Scripts/refs/heads/main/SBNuker.lua"))()
 end
+})
+
+-- ===== AUTO GET CLOCK AND UNDEAD BUTTON =====
+Tab:AddButton({
+    Title = "Auto get clock and undead",
+    Description = "Automatically obtains Clock and Undead badges/gloves",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/UZVcVxf4/raw"))()
+            Fluent:Notify({
+                Title = "Auto Get",
+                Content = "Loading Clock and Undead script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== AUTO GET SHELLBERT AND EGGLER BUTTON =====
+Tab:AddButton({
+    Title = "Auto get shellbert and eggler for free in 1 min",
+    Description = "Automatically obtains Shellbert and Eggler gloves/badges in about 1 minute",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/Fi5D2Me6/raw"))()
+            Fluent:Notify({
+                Title = "Auto Get",
+                Content = "Loading Shellbert and Eggler script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== INSTANT LOTUS GLOVE BUTTON =====
+Tab:AddButton({
+    Title = "Instant Lotus 🪷 glove and its badge",
+    Description = "Instantly obtains the Lotus glove and its associated badge",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/Ds8bqkE9/raw"))()
+            Fluent:Notify({
+                Title = "Instant Lotus",
+                Content = "Loading Lotus glove script...",
+                Duration = 3
+            })
+        end)
+    end
 })
 
 local Tab = Window:AddTab({Title = "Ekanite", Icon = ""})
@@ -3458,7 +3582,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Dusty1234567890/Slap-
 end
 })
 
-local Tab = Window:AddTab({Title = "VirusSX", Icon = ""})
+local Tab = Window:AddTab({Title = "Virus_SX", Icon = ""})
 
 Tab:AddButton({
 	Title = "IM LOSING MY SHIT (10)",
@@ -3646,6 +3770,86 @@ end)
 end
 })
 
+-- ===== KATANA MAN SCRIPT BUTTON =====
+Tab:AddButton({
+    Title = "Katana man script",
+    Description = "Loads the Katana Man script for Slap Battles",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/DGpgJnN8/raw"))()
+            Fluent:Notify({
+                Title = "Katana Man",
+                Content = "Loading Katana Man script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== WHISTLE OCCURRENCE SCRIPT BUTTON =====
+Tab:AddButton({
+    Title = "Whistle Occurrence Script",
+    Description = "Loads the Whistle Occurrence script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/8nc50Cwm/raw"))()
+            Fluent:Notify({
+                Title = "Whistle Occurrence",
+                Content = "Loading Whistle Occurrence script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== LORD DEFAULT MOVESET BUTTON =====
+Tab:AddButton({
+    Title = "Lord Default Moveset!",
+    Description = "Loads the Lord Default Moveset script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/UcNWI5DT/raw"))()
+            Fluent:Notify({
+                Title = "Lord Default Moveset",
+                Content = "Loading Lord Default Moveset script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== FUNNER HUB BUTTON =====
+Tab:AddButton({
+    Title = "Funner hub",
+    Description = "Loads the Funner Hub script (redirects to another paste)",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/3ehrlBbl/raw"))()
+            Fluent:Notify({
+                Title = "Funner Hub",
+                Content = "Loading Funner Hub script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ===== L.O.L.B.O.M.B MASTERY BUTTON =====
+Tab:AddButton({
+    Title = "L.O.L.B.O.M.B Mastery!",
+    Description = "Loads the L.O.L.B.O.M.B Mastery script",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://pastefy.app/B1GxTxcV/raw"))()
+            Fluent:Notify({
+                Title = "L.O.L.B.O.M.B Mastery",
+                Content = "Loading L.O.L.B.O.M.B Mastery script...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
 -- SETTINGS
 Tab = Window:AddTab({Title = "Settings", Icon = ""})
 
@@ -3741,15 +3945,229 @@ Tab:AddButton({
     end
 })
 
--- Section: Badge Giver
-Section = Tab:AddSection("Badge Giver")
+local StuffGiverSection = Tab:AddSection("Stuff Giver")
 
 Tab:AddButton({
     Title = "Give All Badges (Visual)",
+    Description = "Gives you all badges (visual only)",
     Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+        pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+            Fluent:Notify({
+                Title = "Badge Giver",
+                Content = "Attempting to give all badges!",
+                Duration = 3
+            })
+        end)
     end
 })
+
+Tab:AddButton({
+    Title = "Give All Emotes (Free + FE)",
+    Description = "Gives you all free and FE emotes",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+            Fluent:Notify({
+                Title = "Emotes",
+                Content = "Attempting to give all emotes!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ============================================================
+-- SECTION: DEATH SOUND MODIFIER
+-- ============================================================
+
+-- Variables
+local deathSoundEnabled = false
+local currentSoundId = "rbxassetid://9126695500" -- Default funny sound
+local monitorConnection = nil
+local childAddedConnections = {}
+
+-- Function to clean up old connections
+local function cleanupConnections()
+    if monitorConnection then
+        monitorConnection:Disconnect()
+        monitorConnection = nil
+    end
+    
+    for _, conn in pairs(childAddedConnections) do
+        pcall(function()
+            conn:Disconnect()
+        end)
+    end
+    childAddedConnections = {}
+end
+
+-- Function to modify death sounds in a character
+local function modifyDeathSounds(character)
+    if not deathSoundEnabled then return end
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    for _, sound in pairs(torso:GetChildren()) do
+        if sound:IsA("Sound") then
+            local soundName = sound.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                pcall(function()
+                    if sound.SoundId ~= currentSoundId then
+                        sound.SoundId = currentSoundId
+                    end
+                end)
+            end
+        end
+    end
+end
+
+-- Function to setup listener for new sounds
+local function setupSoundListener(character)
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    local connection = torso.ChildAdded:Connect(function(child)
+        if child:IsA("Sound") and deathSoundEnabled then
+            local soundName = child.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                task.wait(0.1)
+                pcall(function()
+                    child.SoundId = currentSoundId
+                end)
+            end
+        end
+    end)
+    
+    table.insert(childAddedConnections, connection)
+end
+
+-- Function to start monitoring
+local function startMonitoring()
+    if monitorConnection then return end
+    
+    monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if deathSoundEnabled then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                modifyDeathSounds(character)
+            end
+        end
+    end)
+    
+    -- Setup listener for current character
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        setupSoundListener(character)
+    end
+end
+
+-- Function to stop monitoring
+local function stopMonitoring()
+    cleanupConnections()
+end
+
+-- Function to update all existing death sounds
+local function updateAllDeathSounds()
+    if not deathSoundEnabled then return end
+    
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+        if torso then
+            for _, sound in pairs(torso:GetChildren()) do
+                if sound:IsA("Sound") then
+                    local soundName = sound.Name:lower()
+                    if soundName:find("death") or soundName:find("die") then
+                        pcall(function()
+                            sound.SoundId = currentSoundId
+                        end)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Add Sound ID information paragraph
+Tab:AddParagraph({
+    Title = "Custom Sound ID",
+    Content = "Enter your sound ID below (format: rbxassetid://1234567890)\nDefault: rbxassetid://9126695500 (Funny sound)"
+})
+
+-- Sound ID Input (using Fluent's AddInput instead of AddTextbox)
+local soundIdInput = Tab:AddInput("SoundID", {
+    Title = "Custom Sound ID",
+    Description = "Enter a sound ID (rbxassetid://... or just the ID number)",
+    Default = "9126695500",
+    Placeholder = "Enter sound ID here...",
+    Numeric = false,
+    Finished = true,
+    Callback = function(value)
+        if value and value ~= "" then
+            -- Ensure it has rbxassetid:// prefix if not present
+            if not value:find("rbxassetid://") then
+                currentSoundId = "rbxassetid://" .. value
+            else
+                currentSoundId = value
+            end
+            
+            -- Update existing sounds if enabled
+            if deathSoundEnabled then
+                updateAllDeathSounds()
+            end
+            
+            Fluent:Notify({
+                Title = "Sound ID Updated",
+                Content = "New sound ID: " .. currentSoundId,
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Auto Apply Death Sound Toggle
+local DeathSoundToggle = Tab:AddToggle("DeathSoundModifier", {
+    Title = "Auto Apply Death Sound",
+    Description = "Automatically changes death sounds to your custom sound ID",
+    Default = false,
+    Callback = function(value)
+        deathSoundEnabled = value
+        
+        if value then
+            startMonitoring()
+            updateAllDeathSounds()
+            
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
+                Duration = 3
+            })
+        else
+            stopMonitoring()
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Disabled! Death sounds restored to normal.",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Handle character respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    
+    if deathSoundEnabled then
+        setupSoundListener(character)
+        task.wait(0.2)
+        modifyDeathSounds(character)
+    end
+end)
 
 -- Variables
 local nametagText = ""
