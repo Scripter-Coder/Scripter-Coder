@@ -15,6 +15,7 @@ local Window = OrionLib:MakeWindow({Name = "Badges Hub (Scripter Hub)",HidePremi
 
 OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
 
+do
 Tab = Window:MakeTab({
     Name = "Welcome",
     Icon = "rbxassetid://7734059095",
@@ -162,180 +163,371 @@ Section = Tab:AddSection({
 	Name = "Badges Info"
 })
 
--- Complete Badge Database
 local allBadges = {
-    -- MISCELLANEOUS BADGES
-    {id = 2124743766, name = "Welcome | No Glove", category = "Miscellaneous"},
-    {id = 2124760252, name = "You met the owner | No Glove", category = "Miscellaneous"},
-    {id = 2124760875, name = "you met snow | No Glove", category = "Miscellaneous"},
-    {id = 2124760911, name = "[REDACTED] | No Glove", category = "Miscellaneous"},
-    {id = 2124760916, name = "duck | No Glove", category = "Miscellaneous"},
-    {id = 2124760917, name = "Divine punishment | No Glove", category = "Miscellaneous"},
-    {id = 2124760923, name = "really? | No Glove", category = "Miscellaneous"},
-    {id = 2124775097, name = "barzil | No Glove", category = "Miscellaneous"},
-    {id = 2124807750, name = "The one | No Glove", category = "Miscellaneous"},
-    {id = 2124807752, name = "Ascend | No Glove", category = "Miscellaneous"},
-    {id = 2124836270, name = "1 0 0 | No Glove", category = "Miscellaneous"},
-    {id = 2124912059, name = "The 'Reverse' Incident | No Glove", category = "Miscellaneous"},
-    {id = 2128220957, name = "The Lone Orange | No Glove", category = "Miscellaneous"},
-    {id = 2147535393, name = "Clipped Wings | No Glove", category = "Miscellaneous"},
-    {id = 4414399146292319, name = "Apostle of Judgement | No Glove", category = "Miscellaneous"},
-    {id = 3842447881295457, name = "Jumping Dimensions [LIVE EVENT] | No Glove", category = "Miscellaneous"},
-    {id = 2549860075363782, name = "King of the Snowhill | No Glove", category = "Miscellaneous"},
-    
-    -- LIMITED BADGES
-    {id = 2124836318, name = "Jack's will | Hallow Jack Glove", category = "Limited"},
-    {id = 2124875920, name = "Lucky Gift | Mitten Glove", category = "Limited"},
-    {id = 2128772719, name = "Candy King | Rattlebones Glove", category = "Limited"},
-    {id = 2129002959, name = "Witch Brew | Witch Glove | Slap Royale", category = "Limited"},
-    {id = 2129648848, name = "Engineer's Gift | Snowball Glove", category = "Limited"},
-    {id = 2152906832, name = "Sweeth-Tooth Sovereign | Necromancer Glove", category = "Limited"},
-    {id = 2895206704788569, name = "Yuletime Might | Santa Glove", category = "Limited"},
-    {id = 868768988664040, name = "Fetch me their Souls | Poltergeist Glove", category = "Limited"},
-    {id = 182408299845710, name = "Snow man left behind | Jerry Glove", category = "Limited"},
-    {id = 847759908824783, name = "The Cornfeared | Harvester Glove", category = "Limited"},
-    {id = 2748677045206815, name = "Snowball Synergy | Elf Glove", category = "Limited"},
-    
-    -- DOUBLE BADGES
-    {id = 2124760907, name = "court evidence | Hitman Glove", category = "Double"},
-    {id = 2124854307, name = "250 | Bubble Glove", category = "Double"},
-    {id = 2124925929, name = "Harbinger of death | Bubble Glove", category = "Double"},
-    {id = 2148934270, name = "Sharp Shooter | Hitman Glove", category = "Double"},
-    
-    -- NORMAL BADGES
-    {id = 2124760254, name = "Error glove | Link Glove", category = "Normal"},
-    {id = 2124760895, name = "ez | Moon Glove", category = "Normal"},
-    {id = 2124760928, name = "the touch of midas | buddies Glove", category = "Normal"},
-    {id = 2124807768, name = "WHY | MEGAROCK Glove", category = "Normal"},
-    {id = 2124819262, name = "Infected | Plague Glove", category = "Normal"},
-    {id = 2124847850, name = "Evaded | [REDACTED] Glove", category = "Normal"},
-    {id = 2124858899, name = "To the moon | bus Glove", category = "Normal"},
-    {id = 2124886261, name = "Unphased | Phase Glove", category = "Normal"},
-    {id = 2124914780, name = "Savior | Warp Glove", category = "Normal"},
-    {id = 2124919840, name = "Short fuse | Bomb Glove", category = "Normal"},
-    {id = 2124930374, name = "Orb of flight | Jet Glove", category = "Normal"},
-    {id = 2124938910, name = "Firefighter | Shard Glove", category = "Normal"},
-    {id = 2124989121, name = "Sorry to burst your bubble | potato Glove", category = "Normal"},
-    {id = 2125850245, name = "good job | CULT Glove", category = "Normal"},
-    {id = 2125950512, name = "bob | bob Glove", category = "Normal"},
-    {id = 2126334003, name = "Death Dodger | Jupiter Glove", category = "Normal"},
-    {id = 2126450753, name = "Predator | Spy Glove", category = "Normal"},
-    {id = 2126589561, name = "Head Hunter | Detonator Glove", category = "Normal"},
-    {id = 2127132894, name = "Anticlimactic End | Rage Glove", category = "Normal"},
-    {id = 2127567042, name = "Brick Master | Trap Glove", category = "Normal"},
-    {id = 2127703232, name = "YOU MONSTER | Orbit Glove", category = "Normal"},
-    {id = 2127816588, name = "Island Conqueror | Dominance Glove", category = "Normal"},
-    {id = 2127861437, name = "Prolonged Anger | Hybrid Glove", category = "Normal"},
-    {id = 2128012376, name = "The Golden Slapple | Slapple Glove", category = "Normal"},
-    {id = 2128233612, name = "Memento Mori | Disarm Glove", category = "Normal"},
-    {id = 2128557186, name = "THE ACCIDENT | Chain Glove", category = "Normal"},
-    {id = 2129104684, name = "Killer | Charge Glove", category = "Normal"},
-    {id = 2129212145, name = "Plate Master | Tycoon Glove", category = "Normal"},
-    {id = 2129474790, name = "what? | Confusion Glove", category = "Normal"},
-    {id = 2129568267, name = "01010010 01010101 01001110 | Glitch Glove", category = "Normal"},
-    {id = 2129871858, name = "EXPOSED | Elude Glove", category = "Normal"},
-    {id = 2130031244, name = "RNGod | RNG Glove", category = "Normal"},
-    {id = 2130032297, name = "DEEP SLUMBER | fish Glove", category = "Normal"},
-    {id = 2130155314, name = "🗿 | 🗿 Glove", category = "Normal"},
-    {id = 2130463063, name = "ULTRAROCK | Obby Glove", category = "Normal"},
-    {id = 2132544202, name = "Insanity | Voodoo Glove", category = "Normal"},
-    {id = 2133016756, name = "CHAOS | Goofy Glove", category = "Normal"},
-    {id = 2136607413, name = "Demonic Ritual | Leash Glove", category = "Normal"},
-    {id = 2140855364, name = "Underkill | Flamarang Glove", category = "Normal"},
-    {id = 2141386326, name = "Kinetically Charged | Kinetic Glove", category = "Normal"},
-    {id = 2141784233, name = "GO BERSERK | Berserk Glove", category = "Normal"},
-    {id = 2142826462, name = "Incredible Running Man | Sparkly Glove", category = "Normal"},
-    {id = 2143034526, name = "Boogie With It | Boogie Glove", category = "Normal"},
-    {id = 2143973603, name = "Repressed Memories | Recall Glove", category = "Normal"},
-    {id = 2144766764, name = "Blasting Off Again | Quake Glove", category = "Normal"},
-    {id = 2145165421, name = "Ultimate Control | Psycho Glove", category = "Normal"},
-    {id = 2145381761, name = "Escape the Abyss | Kraken Glove", category = "Normal"},
-    {id = 2146130728, name = "Da Maze Runner | Counter Glove", category = "Normal"},
-    {id = 2146540403, name = "Toolbox | Hammer Glove", category = "Normal"},
-    {id = 2147429609, name = "Emissary Of Light | rob Glove", category = "Normal"},
-    {id = 2148234934, name = "Total Rhythm | Rhythm Glove", category = "Normal"},
-    {id = 2148480065, name = "See in the dark | Rojo Glove", category = "Normal"},
-    {id = 2149637240, name = "Parkour Pwner | Retro Glove", category = "Normal"},
-    {id = 2150485950, name = "The Relic | Null Glove", category = "Normal"},
-    {id = 2151266964, name = "Catch Emm All | Lure Glove", category = "Normal"},
-    {id = 2152295593, name = "Great Escape | Tinkerer Glove", category = "Normal"},
-    {id = 2153473254, name = "Containment Breach | Alchemist Glove", category = "Normal"},
-    {id = 2153911928, name = "Gardens And Ghouls | Druid Glove", category = "Normal"},
-    {id = 2500227230783997, name = "Now You See Me | Jester Glove", category = "Normal"},
-    {id = 3318257806017965, name = "Farmland Fray | Scythe Glove", category = "Normal"},
-    {id = 2906002612987222, name = "Slap Battles: On Ice | Iceskate Glove", category = "Normal"},
-    {id = 3335299217032061, name = "G-Grandson..? | Blasphemy Glove", category = "Normal"},
-    {id = 4404799574333856, name = "Into the Crypt | Pan Glove", category = "Normal"},
-    {id = 1840188608156642, name = "CERTIFIED ADMIN | Admin Glove", category = "Normal"},
-    {id = 1662954021427606, name = "Stand your ground | Joust Glove", category = "Normal"},
-    {id = 2628581469266954, name = "Easy As Pie | Firework Glove", category = "Normal"},
-    {id = 1579276416564374, name = "It's Finally Over... | Run Glove", category = "Normal"},
-    {id = 128402905805563, name = "The Hunt | Glovel Glove", category = "Normal"},
-    {id = 342573645147372, name = "Null Piercer | Divebomb Glove", category = "Normal"},
-    {id = 490455814138437, name = "Friend of the Dark | Lamp Glove", category = "Normal"},
-    {id = 1962623816699442, name = "Code Breaker | Knockoff Glove", category = "Normal"},
-    {id = 1286358044443937, name = "Ice Essence | Frostbite Glove", category = "Normal"},
-    {id = 4031317971987872, name = "Cranking 90's | Plank Glove", category = "Normal"},
-    {id = 2236076719770808, name = "SLAP BATTLES SWEEP | Spoonful Glove", category = "Normal"},
-    {id = 1354956782555226, name = "Leap of Faith | the schlob Glove", category = "Normal"},
-    {id = 187186758930457, name = "Caution: High Voltage | Siphon Glove", category = "Normal"},
-    {id = 2240434593038483, name = "ÜberCharged | Wrench Glove", category = "Normal"},
-    {id = 4414076328730650, name = "Nah, I'd win | Avatar Glove", category = "Normal"},
-    {id = 154204790800271, name = "A Guiding Hand | Relude Glove", category = "Normal"},
-    {id = 3483144763925839, name = "Bounty Claimed | Hunter Glove", category = "Normal"},
-    {id = 2193861648156971, name = "How did we get here? | Water Glove", category = "Normal"},
-    {id = 2657379023348335, name = "FREE OOG! | Fan Glove", category = "Normal"},
-    {id = 1223765330375569, name = "The Glove | Boxer Glove", category = "Normal"},
-    {id = 4256352459948010, name = "Orb of Honor | MATERIALIZE Glove", category = "Normal"},
-    {id = 3199562682373814, name = "Garden of Erasure | Bind Glove", category = "Normal"},
-    {id = 2035627575374951, name = "Shattered Memories | Clock Glove", category = "Normal"},
-    {id = 2223110832777636, name = "Hurt me plenty | Untitled Tag Glove", category = "Normal"},
-    {id = 4390302507334168, name = "Fortress of Dreams | Pillow Glove", category = "Normal"},
-    {id = 2117833544213343, name = "You're gonna need a bigger glove | Angler Glove", category = "Normal"},
-    {id = 3726156327470282, name = "Insane Minds think Alike | Snowroller Glove", category = "Normal"},
-    {id = 2460702219299014, name = "Oh! That's a Baseball! | Draw4 Glove", category = "Normal"},
-    {id = 2146300368310575, name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "Normal"},
-    {id = 2090213992277846, name = "Enlightened | Hexa Glove", category = "Normal"},
-    {id = 1060832194529561, name = "Day in the life of a small Game Developer | Metaverse Glove", category = "Normal"},
-    {id = 1788920058870613, name = "Sword Fighter of The Heights | Swordfighter Glove", category = "Normal"},
-    {id = 99649310086892, name = "Pillow Fight | Tank Glove", category = "Normal"},
-    {id = 2286252038116816, name = "Egging Over It | Eggler Glove", category = "Normal"},
-    {id = 2442504376213257, name = "Collect My Pages | Slender Glove", category = "Normal"},
-    {id = 3096378656988806, name = "Captain's Orders | Swashbuckler Glove", category = "Normal"},
-    {id = 4342029848828580, name = "Banished | Silly Glove", category = "Normal"},
-    {id = 231810132716643, name = "Reawoken | Slasher Glove", category = "Normal"},
-    {id = 1294103285471925, name = "Slappy Wheels | Car Keys Glove", category = "Normal"},
-    {id = 3798851936234989, name = "Plungering Heights | Suction Glove", category = "Normal"},
-    {id = 1745844401258079, name = "Shattered Reality | Reflect Glove", category = "Normal"},
-    {id = 663807976473858, name = "Dodecacide | Dave Glove", category = "Normal"},
-    {id = 1605140663413534, name = "Die Hard | mortis Glove", category = "Normal"},
-    {id = 1133862849283260, name = "Dead or Alive | Bounty Glove", category = "Normal"},
-    {id = 117389283982009, name = "Out of Bounds | Debug Glove", category = "Normal"},
-    {id = 1035608345203235, name = "Color Splash | Paint Glove", category = "Normal"},
-    {id = 1198780403030188, name = "Ceramic Panic | Plate Glove", category = "Normal"},
-    {id = 3713925567966983, name = "2000 Ping | Lag Glove", category = "Normal"},
-    {id = 65341581701492, name = "Bullseye | Riftshot Glove", category = "Normal"},
-    {id = 1304426038175458, name = "Autumnal Conkerer | Conker Glove", category = "Normal"},
-    {id = 659930747853345, name = "Glass Bones | Wheelchair Glove", category = "Normal"},
-    {id = 1698466561019878, name = "Minimum Wage | Shopkeeper Glove", category = "Normal"},
-    {id = 1902849233175110, name = "Find The Gloves | Collector Glove", category = "Normal"},
-    {id = 1778876340809040, name = "Cleaved in Two | Glaxe Glove", category = "Normal"},
-    {id = 217389347032866, name = "Birthday Bash | Piñata Glove", category = "Normal"},
-    {id = 996318649761767, name = "Hibernal Snowstopper | Penguin Glove", category = "Normal"},
-    {id = 1239535438142380, name = "Untimely End | Undead Glove", category = "Normal"},
-    {id = 4207775293625676, name = "Clobbering Time! | Groundbreaker Glove", category = "Normal"},
-    {id = 2604207010521588, name = "Easter Hatchastrophe | Shellbert Glove", category = "Normal"},
-    {id = 1662521369541218, name = "Genuinely how am I still alive | Lasso Glove", category = "Normal"},
+  -- MISCELLANEOUS BADGES
+  {id = "2124743766", name = "Welcome | No Glove", category = "Miscellaneous"},
+  {id = "2124760252", name = "You met the owner | No Glove",  category = "Miscellaneous"},
+  {id = "2124760875", name = "you met snow | No Glove", category = "Miscellaneous"},
+  {id = "2124760911", name = "[REDACTED] | No Glove", category = "Miscellaneous"},
+  {id = "2124760916", name = "duck | No Glove",  category = "Miscellaneous"},
+  {id = "2124760917", name = "Divine punishment | No Glove",  category = "Miscellaneous"},
+  {id = "2124760923", name = "really? | No Glove", category = "Miscellaneous"},
+  {id = "2124775097", name = "barzil | No Glove", category = "Miscellaneous"},
+  {id = "2124807750", name = "The one | No Glove", category = "Miscellaneous"},
+  {id = "2124807752", name = "Ascend | No Glove", category = "Miscellaneous"},
+  {id = "2124836270", name = "1 0 0 | No Glove", category = "Miscellaneous"},
+  {id = "2124912059", name = "The 'Reverse' Incident | No Glove",  category = "Miscellaneous"},
+  {id = "2128220957", name = "The Lone Orange | No Glove",  category = "Miscellaneous"},
+  {id = "2147535393", name = "Clipped Wings | No Glove", category = "Miscellaneous"},
+  {id = "4414399146292319",  name = "Apostle of Judgement | No Glove", category = "Miscellaneous"},
+  {id = "3842447881295457",  name = "Jumping Dimensions [LIVE EVENT] | No Glove",  category = "Miscellaneous"},
+  {id = "2549860075363782",  name = "King of the Snowhill | No Glove", category = "Miscellaneous"},
+ 
+  -- LIMITED BADGES
+  {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "Limited"},
+  {id = "2124875920", name = "Lucky Gift | Mitten Glove", category = "Limited"},
+  {id = "2128772719", name = "Candy King | Rattlebones Glove", category = "Limited"},
+  {id = "2129002959", name = "Witch Brew | Witch Glove | Slap Royale", category = "Limited"},
+  {id = "2129648848", name = "Engineer's Gift | Snowball Glove", category = "Limited"},
+  {id = "2152906832", name = "Sweeth-Tooth Sovereign | Necromancer Glove",  category = "Limited"},
+  {id = "2895206704788569",  name = "Yuletime Might | Santa Glove",  category = "Limited"},
+  {id = "868768988664040", name = "Fetch me their Souls | Poltergeist Glove",  category = "Limited"},
+  {id = "182408299845710", name = "Snow man left behind | Jerry Glove", category = "Limited"},
+  {id = "847759908824783", name = "The Cornfeared | Harvester Glove", category = "Limited"},
+  {id = "2748677045206815",  name = "Snowball Synergy | Elf Glove",  category = "Limited"},
+ 
+  -- DOUBLE BADGES
+  {id = "2124760907", name = "court evidence | Hitman Glove",  category = "Double"},
+  {id = "2124854307", name = "250 | Bubble Glove", category = "Double"},
+  {id = "2124925929", name = "Harbinger of death | Bubble Glove",  category = "Double"},
+  {id = "2148934270", name = "Sharp Shooter | Hitman Glove",  category = "Double"},
+ 
+  -- NORMAL BADGES
+  {id = "2124760254", name = "Error glove | Link Glove", category = "Normal"},
+  {id = "2124760895", name = "ez | Moon Glove",  category = "Normal"},
+  {id = "2124760928", name = "the touch of midas | buddies Glove", category = "Normal"},
+  {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "Normal"},
+  {id = "2124819262", name = "Infected | Plague Glove", category = "Normal"},
+  {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "Normal"},
+  {id = "2124858899", name = "To the moon | bus Glove", category = "Normal"},
+  {id = "2124886261", name = "Unphased | Phase Glove",  category = "Normal"},
+  {id = "2124914780", name = "Savior | Warp Glove",  category = "Normal"},
+  {id = "2124919840", name = "Short fuse | Bomb Glove", category = "Normal"},
+  {id = "2124930374", name = "Orb of flight | Jet Glove", category = "Normal"},
+  {id = "2124938910", name = "Firefighter | Shard Glove", category = "Normal"},
+  {id = "2124989121", name = "Sorry to burst your bubble | potato Glove", category = "Normal"},
+  {id = "2125850245", name = "good job | CULT Glove", category = "Normal"},
+  {id = "2125950512", name = "bob | bob Glove",  category = "Normal"},
+  {id = "2126334003", name = "Death Dodger | Jupiter Glove",  category = "Normal"},
+  {id = "2126450753", name = "Predator | Spy Glove", category = "Normal"},
+  {id = "2126589561", name = "Head Hunter | Detonator Glove",  category = "Normal"},
+  {id = "2127132894", name = "Anticlimactic End | Rage Glove", category = "Normal"},
+  {id = "2127567042", name = "Brick Master | Trap Glove", category = "Normal"},
+  {id = "2127703232", name = "YOU MONSTER | Orbit Glove", category = "Normal"},
+  {id = "2127816588", name = "Island Conqueror | Dominance Glove", category = "Normal"},
+  {id = "2127861437", name = "Prolonged Anger | Hybrid Glove", category = "Normal"},
+  {id = "2128012376", name = "The Golden Slapple | Slapple Glove", category = "Normal"},
+  {id = "2128233612", name = "Memento Mori | Disarm Glove", category = "Normal"},
+  {id = "2128557186", name = "THE ACCIDENT | Chain Glove",  category = "Normal"},
+  {id = "2129104684", name = "Killer | Charge Glove", category = "Normal"},
+  {id = "2129212145", name = "Plate Master | Tycoon Glove", category = "Normal"},
+  {id = "2129474790", name = "what? | Confusion Glove", category = "Normal"},
+  {id = "2129568267", name = "01010010 01010101 01001110 | Glitch Glove", category = "Normal"},
+  {id = "2129871858", name = "EXPOSED | Elude Glove", category = "Normal"},
+  {id = "2130031244", name = "RNGod | RNG Glove", category = "Normal"},
+  {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "Normal"},
+  {id = "2130155314", name = "🗿 | 🗿 Glove",  category = "Normal"},
+  {id = "2130463063", name = "ULTRAROCK | Obby Glove",  category = "Normal"},
+  {id = "2132544202", name = "Insanity | Voodoo Glove", category = "Normal"},
+  {id = "2133016756", name = "CHAOS | Goofy Glove",  category = "Normal"},
+  {id = "2136607413", name = "Demonic Ritual | Leash Glove",  category = "Normal"},
+  {id = "2140855364", name = "Underkill | Flamarang Glove", category = "Normal"},
+  {id = "2141386326", name = "Kinetically Charged | Kinetic Glove",  category = "Normal"},
+  {id = "2141784233", name = "GO BERSERK | Berserk Glove",  category = "Normal"},
+  {id = "2142826462", name = "Incredible Running Man | Sparkly Glove", category = "Normal"},
+  {id = "2143034526", name = "Boogie With It | Boogie Glove",  category = "Normal"},
+  {id = "2143973603", name = "Repressed Memories | Recall Glove",  category = "Normal"},
+  {id = "2144766764", name = "Blasting Off Again | Quake Glove", category = "Normal"},
+  {id = "2145165421", name = "Ultimate Control | Psycho Glove", category = "Normal"},
+  {id = "2145381761", name = "Escape the Abyss | Kraken Glove", category = "Normal"},
+  {id = "2146130728", name = "Da Maze Runner | Counter Glove", category = "Normal"},
+  {id = "2146540403", name = "Toolbox | Hammer Glove",  category = "Normal"},
+  {id = "2147429609", name = "Emissary Of Light | rob Glove",  category = "Normal"},
+  {id = "2148234934", name = "Total Rhythm | Rhythm Glove", category = "Normal"},
+  {id = "2148480065", name = "See in the dark | Rojo Glove",  category = "Normal"},
+  {id = "2149637240", name = "Parkour Pwner | Retro Glove", category = "Normal"},
+  {id = "2150485950", name = "The Relic | Null Glove",  category = "Normal"},
+  {id = "2151266964", name = "Catch Emm All | Lure Glove",  category = "Normal"},
+  {id = "2152295593", name = "Great Escape | Tinkerer Glove",  category = "Normal"},
+  {id = "2153473254", name = "Containment Breach | Alchemist Glove", category = "Normal"},
+  {id = "2153911928", name = "Gardens And Ghouls | Druid Glove", category = "Normal"},
+  {id = "2500227230783997",  name = "Now You See Me | Jester Glove",  category = "Normal"},
+  {id = "3318257806017965",  name = "Farmland Fray | Scythe Glove",  category = "Normal"},
+  {id = "2906002612987222",  name = "Slap Battles: On Ice | Iceskate Glove", category = "Normal"},
+  {id = "3335299217032061",  name = "G-Grandson..? | Blasphemy Glove", category = "Normal"},
+  {id = "4404799574333856",  name = "Into the Crypt | Pan Glove",  category = "Normal"},
+  {id = "1840188608156642",  name = "CERTIFIED ADMIN | Admin Glove",  category = "Normal"},
+  {id = "1662954021427606",  name = "Stand your ground | Joust Glove", category = "Normal"},
+  {id = "2628581469266954",  name = "Easy As Pie | Firework Glove",  category = "Normal"},
+  {id = "1579276416564374",  name = "It's Finally Over... | Run Glove", category = "Normal"},
+  {id = "128402905805563", name = "The Hunt | Glovel Glove", category = "Normal"},
+  {id = "342573645147372", name = "Null Piercer | Divebomb Glove",  category = "Normal"},
+  {id = "490455814138437", name = "Friend of the Dark | Lamp Glove", category = "Normal"},
+  {id = "1962623816699442",  name = "Code Breaker | Knockoff Glove",  category = "Normal"},
+  {id = "1286358044443937",  name = "Ice Essence | Frostbite Glove",  category = "Normal"},
+  {id = "4031317971987872",  name = "Cranking 90's | Plank Glove", category = "Normal"},
+  {id = "2236076719770808",  name = "SLAP BATTLES SWEEP | Spoonful Glove",  category = "Normal"},
+  {id = "1354956782555226",  name = "Leap of Faith | the schlob Glove", category = "Normal"},
+  {id = "187186758930457", name = "Caution: High Voltage | Siphon Glove", category = "Normal"},
+  {id = "2240434593038483",  name = "UberCharged | Wrench Glove",  category = "Normal"},
+  {id = "4414076328730650",  name = "Nah, I'd win | Avatar Glove", category = "Normal"},
+  {id = "154204790800271", name = "A Guiding Hand | Relude Glove",  category = "Normal"},
+  {id = "3483144763925839",  name = "Bounty Claimed | Hunter Glove",  category = "Normal"},
+  {id = "2193861648156971",  name = "How did we get here? | Water Glove", category = "Normal"},
+  {id = "2657379023348335",  name = "FREE OOG! | Fan Glove", category = "Normal"},
+  {id = "1223765330375569",  name = "The Glove | Boxer Glove", category = "Normal"},
+  {id = "4256352459948010",  name = "Orb of Honor | MATERIALIZE Glove", category = "Normal"},
+  {id = "3199562682373814",  name = "Garden of Erasure | Bind Glove", category = "Normal"},
+  {id = "2035627575374951",  name = "Shattered Memories | Clock Glove", category = "Normal"},
+  {id = "2223110832777636",  name = "Hurt me plenty | Untitled Tag Glove",  category = "Normal"},
+  {id = "4390302507334168",  name = "Fortress of Dreams | Pillow Glove",  category = "Normal"},
+  {id = "2117833544213343",  name = "You're gonna need a bigger glove | Angler Glove", category = "Normal"},
+  {id = "3726156327470282",  name = "Insane Minds think Alike | Snowroller Glove", category = "Normal"},
+  {id = "2460702219299014",  name = "Oh! That's a Baseball! | Draw4 Glove", category = "Normal"},
+  {id = "2146300368310575",  name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "Normal"},
+  {id = "2090213992277846",  name = "Enlightened | Hexa Glove", category = "Normal"},
+  {id = "1060832194529561",  name = "Day in the life of a small Game Developer | Metaverse Glove", category = "Normal"},
+  {id = "1788920058870613",  name = "Sword Fighter of The Heights | Swordfighter Glove", category = "Normal"},
+  {id = "99649310086892",  name = "Pillow Fight | Tank Glove", category = "Normal"},
+  {id = "2286252038116816",  name = "Egging Over It | Eggler Glove",  category = "Normal"},
+  {id = "2442504376213257",  name = "Collect My Pages | Slender Glove", category = "Normal"},
+  {id = "3096378656988806",  name = "Captain's Orders | Swashbuckler Glove", category = "Normal"},
+  {id = "4342029848828580",  name = "Banished | Silly Glove",  category = "Normal"},
+  {id = "231810132716643", name = "Reawoken | Slasher Glove", category = "Normal"},
+  {id = "1294103285471925",  name = "Slappy Wheels | Car Keys Glove", category = "Normal"},
+  {id = "3798851936234989",  name = "Plungering Heights | Suction Glove", category = "Normal"},
+  {id = "1745844401258079",  name = "Shattered Reality | Reflect Glove",  category = "Normal"},
+  {id = "663807976473858", name = "Dodecacide | Dave Glove", category = "Normal"},
+  {id = "1605140663413534",  name = "Die Hard | mortis Glove", category = "Normal"},
+  {id = "1133862849283260",  name = "Dead or Alive | Bounty Glove",  category = "Normal"},
+  {id = "117389283982009", name = "Out of Bounds | Debug Glove", category = "Normal"},
+  {id = "1035608345203235",  name = "Color Splash | Paint Glove",  category = "Normal"},
+  {id = "1198780403030188",  name = "Ceramic Panic | Plate Glove", category = "Normal"},
+  {id = "3713925567966983",  name = "2000 Ping | Lag Glove", category = "Normal"},
+  {id = "65341581701492",  name = "Bullseye | Riftshot Glove", category = "Normal"},
+  {id = "1304426038175458",  name = "Autumnal Conkerer | Conker Glove", category = "Normal"},
+  {id = "659930747853345", name = "Glass Bones | Wheelchair Glove", category = "Normal"},
+  {id = "1698466561019878",  name = "Minimum Wage | Shopkeeper Glove", category = "Normal"},
+  {id = "1902849233175110",  name = "Find The Gloves | Collector Glove",  category = "Normal"},
+  {id = "1778876340809040",  name = "Cleaved in Two | Glaxe Glove",  category = "Normal"},
+  {id = "217389347032866", name = "Birthday Bash | Pinata Glove",  category = "Normal"},
+  {id = "996318649761767", name = "Hibernal Snowstopper | Penguin Glove", category = "Normal"},
+  {id = "1239535438142380",  name = "Untimely End | Undead Glove", category = "Normal"},
+  {id = "4207775293625676",  name = "Clobbering Time! | Groundbreaker Glove", category = "Normal"},
+  {id = "2604207010521588",  name = "Easter Hatchastrophe | Shellbert Glove", category = "Normal"},
+  {id = "1662521369541218",  name = "Genuinely how am I still alive | Lasso Glove", category = "Normal"},
+  {id = "3964935687406576", name = "Vernal Floralscence | Lotus Glove", category = "Normal"},
+  {id = "3344995751929220", name = "Gum, Gummy, Gone | Elastic Glove", category = "Normal"},
 }
+
+-- ============================================================
+-- 2. Setup services and variables
+-- ============================================================
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
+local playerName = player.Name
 
 -- Store owned badges
 local ownedBadges = {}
-local badgeParagraph = nil
-local updateConnection = nil
 
--- Function to fetch owned badges from Roblox API
+-- ============================================================
+-- 3. Fetch owned badges from ReplicatedStorage (PARSE ARRAY FORMAT)
+-- ============================================================
 local function fetchOwnedBadges()
-    local player = game:GetService("Players").LocalPlayer
+    ownedBadges = {}
+    
+    -- Build the path to the player's UnlockedBadges folder
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then
+        warn("PlayerData not found in ReplicatedStorage")
+        return false
+    end
+    
+    local playerFolder = playerData:FindFirstChild(playerName)
+    if not playerFolder then
+        warn("Player folder not found for: " .. playerName)
+        return false
+    end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then
+        warn("UnlockedBadges not found for: " .. playerName)
+        return false
+    end
+    
+    -- Get the value (format: [2124743766,3713925567966983,2124760923,...])
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        
+        if badgeIdsString and badgeIdsString ~= "" then
+            -- Parse the array format [id1, id2, id3]
+            -- Remove the brackets [ and ]
+            local trimmed = badgeIdsString:sub(2, -2) -- Remove first and last character
+            
+            -- Split by commas
+            local badgeIds = {}
+            for id in string.gmatch(trimmed, "[^,]+") do
+                -- Remove any whitespace and convert to string for consistent comparison
+                local cleanId = id:match("^%s*(.-)%s*$")
+                table.insert(badgeIds, cleanId)
+            end
+            
+            -- Mark all owned badges as true
+            for _, id in ipairs(badgeIds) do
+                ownedBadges[id] = true
+            end
+            
+        else
+        end
+        return true
+    else
+        return false
+    end
+end
+
+-- ============================================================
+-- 4. Build the formatted display text
+-- ============================================================
+local function getFormattedBadgeList()
+    local categories = {
+        Miscellaneous = {},
+        Limited = {},
+        Double = {},
+        Normal = {},
+    }
+
+    for _, badge in ipairs(allBadges) do
+        local cat = categories[badge.category] or categories.Normal
+        table.insert(cat, badge)
+    end
+
+    local totalCount = #allBadges
+    local ownedCount = 0
+    for _, badge in ipairs(allBadges) do
+        if ownedBadges[badge.id] then
+            ownedCount = ownedCount + 1
+        end
+    end
+
+    local lines = {}
+    local function push(s) table.insert(lines, s) end
+
+    local function section(title, icon, list)
+        push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        push("              " .. icon .. " " .. title .. " " .. icon)
+        push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        for _, badge in ipairs(list) do
+            local status = ownedBadges[badge.id] and "✅" or "❌"
+            push(status .. " " .. badge.name)
+        end
+        push("")
+    end
+
+    section("MISCELLANEOUS BADGES", "🏆", categories.Miscellaneous)
+    section("LIMITED BADGES", "🎯", categories.Limited)
+    section("DOUBLE BADGES", "⚡", categories.Double)
+    section("NORMAL BADGES", "📜", categories.Normal)
+
+    push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    push("              📊 STATISTICS 📊")
+    push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    push("✅ Owned: " .. ownedCount .. "/" .. totalCount)
+    push("❌ Missing: " .. (totalCount - ownedCount) .. "/" .. totalCount)
+    push(string.format("📈 Progress: %.1f%%", (ownedCount / totalCount) * 100))
+
+    return table.concat(lines, "\n")
+end
+
+-- ============================================================
+-- 5. Create UI elements
+-- ============================================================
+local badgeParagraph = Tab:AddParagraph("🏅 Badges Owned / Unowned List", "Loading...")
+
+-- Refresh button
+Tab:AddButton({
+    Name = "🔄 Refresh Badges",
+    Callback = function()
+        task.spawn(function()
+            fetchOwnedBadges()
+            badgeParagraph:Set(getFormattedBadgeList())
+        end)
+    end
+})
+
+-- Initial load + auto-refresh
+task.spawn(function()
+    -- Wait a bit for the game to load player data
+    task.wait(1)
+    fetchOwnedBadges()
+    badgeParagraph:Set(getFormattedBadgeList())
+    
+    while true do
+        task.wait(0.01) -- Update every 10 seconds
+        fetchOwnedBadges()
+        badgeParagraph:Set(getFormattedBadgeList())
+    end
+end)
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "MEGAROCK",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+})
+
+-- Variables for tracking
+local timeStarted = nil
+local timeStopped = nil
+local isCounting = false
+local isRockActive = false
+local totalTimeNeeded = 10 * 60 * 60 -- 10 hours in seconds (36000 Seconds)
+local rockStartTime = nil
+local isTimerFinished = false
+local updateConnection = nil
+local currentTimeWaiting = "Waiting for Rock..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "N/A"
+local currentTimeFinished = "Not Finished"
+local savedStoppedTime = nil
+local isAntiAfkEnabled = false
+local autoMegarockEnabled = false
+local autoMegarockLoop = nil
+local isProcessing = false -- Prevents double firing
+
+-- Badge tracking variables
+local ownsReallyBadge = false
+local ownsWHYBadge = false
+local reallyBadgeAward = "No Glove"
+local whyBadgeAward = "MEGAROCK Glove"
+
+-- Badge IDs
+local REALLY_BADGE_ID = 2124760923 -- "really?" badge
+local WHY_BADGE_ID = 2124807768 -- "WHY" badge (MEGAROCK Glove)
+
+-- Function to format time (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to check if a badge is owned
+local function checkBadge(badgeId)
+    local player = game.Players.LocalPlayer
     local userId = player.UserId
     local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
     
@@ -346,151 +538,334 @@ local function fetchOwnedBadges()
     if success then
         local data = game:GetService("HttpService"):JSONDecode(response)
         if data and data.data then
-            ownedBadges = {}
             for _, badge in ipairs(data.data) do
-                ownedBadges[badge.id] = true
+                if badge.id == badgeId then
+                    return true
+                end
             end
+        end
+    end
+    return false
+end
+
+-- Function to update badge statuses
+local function updateBadgeStatuses()
+    -- Check "really?" badge (ID: 2124760923)
+    ownsReallyBadge = checkBadge(REALLY_BADGE_ID)
+    
+    -- Check "WHY" badge (ID: 2124807768)
+    ownsWHYBadge = checkBadge(WHY_BADGE_ID)
+end
+
+-- Function to get formatted badge status text
+local function getFormattedBadgeStatus()
+    local statusText = string.format([[
+Owns really? Badge: %s
+Owns WHY Badge: %s
+really? Badge Awards Glove: %s
+WHY Badge Awards Glove: %s
+]],
+    ownsReallyBadge and "✅ Yes" or "❌ No",
+    ownsWHYBadge and "✅ Yes" or "❌ No",
+    reallyBadgeAward,
+    whyBadgeAward
+)
+    return statusText
+end
+
+-- Optimized function to check for rock
+local function hasRock()
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    if character then
+        return character:FindFirstChild("rock") ~= nil
+    end
+    return false
+end
+
+-- Function to check if diamond glove is EQUIPPED
+local function isDiamondEquipped()
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    if character then
+        local diamondTool = character:FindFirstChild("Diamond")
+        if diamondTool then
             return true
         end
     end
     return false
 end
 
--- Function to get formatted badge list with checkmarks
-local function getFormattedBadgeList()
-    local categories = {
-        Miscellaneous = {},
-        Limited = {},
-        Double = {},
-        Normal = {}
-    }
+-- Timer update function (FAST - updates every 0.1 seconds)
+local function updateTimerDisplay(paragraph)
+    local currentTime = tick()
+    local hasRockNow = hasRock()
+    local diamondEquipped = isDiamondEquipped()
     
-    -- Group badges by category
-    for _, badge in ipairs(allBadges) do
-        if categories[badge.category] then
-            table.insert(categories[badge.category], badge)
-        else
-            table.insert(categories.Normal, badge)
+    -- Time Waiting logic (just waits, doesn't start timer)
+    if not hasRockNow then
+        currentTimeWaiting = "Waiting for Rock..."
+    else
+        currentTimeWaiting = "Rock Found!"
+    end
+    
+    -- Time Started / Time Stopped / Time Finished logic
+    if hasRockNow then
+        if not isRockActive then
+            -- Rock just appeared - START the timer
+            isRockActive = true
+            rockStartTime = currentTime
+            isCounting = true
+            isTimerFinished = false
+            timeStarted = rockStartTime
+            savedStoppedTime = nil
+            currentTimeStopped = "N/A"
+            -- Show the start time as 0
+            currentTimeStarted = formatTime(0, 0)
+        end
+        
+        if isCounting and not isTimerFinished then
+            local elapsed = currentTime - rockStartTime
+            local milliseconds = (elapsed - math.floor(elapsed)) * 1000
+            currentTimeStarted = formatTime(elapsed, milliseconds)
+            
+            -- Check if reached 10 hours
+            if elapsed >= totalTimeNeeded then
+                isTimerFinished = true
+                isCounting = false
+                currentTimeFinished = formatTime(totalTimeNeeded, 0)
+            end
+        elseif isTimerFinished then
+            currentTimeFinished = formatTime(totalTimeNeeded, 0)
+            currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        end
+    else
+        -- Rock disappeared
+        if isRockActive then
+            -- Save the time when rock disappeared
+            isRockActive = false
+            isCounting = false
+            savedStoppedTime = currentTimeStarted
+            currentTimeStopped = savedStoppedTime
+        end
+        -- Keep showing the saved stopped time, don't reset to N/A
+        if savedStoppedTime then
+            currentTimeStopped = savedStoppedTime
+        end
+        -- Reset timer variables so next rock starts fresh
+        if not isRockActive and not hasRockNow then
+            -- Only reset if we're not going to immediately start again
+            isCounting = false
         end
     end
     
-    -- Build formatted output
-    local result = ""
+    -- Format the paragraph content (ONLY timer info, no badge stuff)
+    local paragraphContent = string.format([[
+Auto Rock Time Waiting: %s
+Auto Rock Time Started: %s
+Auto Rock Time Stopped: %s
+Auto Rock Time Finished: %s
+Total Time Need: %s
+Diamond Glove Equipped: %s
+Anti AFK: %s
+]], 
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    diamondEquipped and "Yes" or "No",
+    isAntiAfkEnabled and "Yes" or "No"
+)
     
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              🏆 MISCELLANEOUS BADGES 🏆\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Miscellaneous) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              🎯 LIMITED BADGES 🎯\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Limited) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              ⚡ DOUBLE BADGES ⚡\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Double) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              📜 NORMAL BADGES 📜\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Normal) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    -- Add statistics
-    local ownedCount = 0
-    local totalCount = #allBadges
-    for _, badge in ipairs(allBadges) do
-        if ownedBadges[badge.id] then
-            ownedCount = ownedCount + 1
-        end
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              📊 STATISTICS 📊\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "✅ Owned: " .. ownedCount .. "/" .. totalCount .. "\n"
-    result = result .. "❌ Missing: " .. (totalCount - ownedCount) .. "/" .. totalCount .. "\n"
-    result = result .. "📈 Progress: " .. string.format("%.1f", (ownedCount / totalCount) * 100) .. "%\n"
-    
-    return result
+    -- Update paragraph
+    pcall(function()
+        paragraph:Set(paragraphContent)
+    end)
 end
 
--- Update function for badge display (refetches badges and updates display)
-local function updateBadgeDisplay()
-    fetchOwnedBadges()
-    if badgeParagraph then
-        local text = getFormattedBadgeList()
-        badgeParagraph:Set(text)
-    end
-end
+-- Create the paragraphs
+local RestStatusParagraph = Tab:AddParagraph("MEGAROCK Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
 
--- Create the paragraph
-badgeParagraph = Tab:AddParagraph("Badges Owned/Unowned List:", "Loading badges...")
-
--- Initial fetch and display
-updateBadgeDisplay()
-
--- AUTO UPDATE - Runs every 2 seconds without toggle
--- This will continuously check for new badges and update the display
+-- FAST update loop for timer (every 0.1 seconds)
+local isUpdating = true
 task.spawn(function()
-    while true do
-        task.wait(2) -- Update every 2 seconds
-        updateBadgeDisplay()
+    while isUpdating do
+        local startTime = tick()
+        updateTimerDisplay(RestStatusParagraph)
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.01, 0.01 - elapsed)
+        task.wait(waitTime)
     end
 end)
 
-Tab = Window:MakeTab({
-	Name = "MEGAROCK",
-	Icon = "rbxassetid://7733673987",
-	PremiumOnly = false
-	})
+-- SLOW update loop for badges (every 5 seconds - saves performance)
+task.spawn(function()
+    -- Initial badge check
+    updateBadgeStatuses()
+    BadgeStatusParagraph:Set(getFormattedBadgeStatus())
+    
+    -- Update every 5 seconds (badges don't change often)
+    while isUpdating do
+        task.wait(2)
+        updateBadgeStatuses()
+        BadgeStatusParagraph:Set(getFormattedBadgeStatus())
+    end
+end)
+
+-- Function to fire rock remote (with cooldown to prevent double firing)
+local function fireRockRemote()
+    if isProcessing then
+        return false -- Already processing
+    end
+    
+    isProcessing = true
+    
+    pcall(function()
+        local replicatedStorage = game:GetService("ReplicatedStorage")
+        local rockmode = replicatedStorage:FindFirstChild("Rockmode")
+        if rockmode then
+            rockmode:FireServer()
+            task.wait(0.5)
+        end
+    end)
+    
+    task.wait(1) -- Cooldown to prevent double firing
+    isProcessing = false
+    return true
+end
+
+-- Auto Megarock Loop
+local function startAutoMegarockLoop()
+    autoMegarockLoop = task.spawn(function()
+        while autoMegarockEnabled do
+            pcall(function()
+                local player = game.Players.LocalPlayer
+                local hasRockNow = hasRock()
+                
+                if not hasRockNow then
+                    -- No rock, teleport and fire remote (with cooldown)
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                        task.wait(0.5)
+                        fireRockRemote()
+                        task.wait(0.5)
+                    end
+                end
+            end)
+            task.wait(3) -- Check every 3 seconds (reduces double firing)
+        end
+    end)
+end
 
 AutoMegarock = Tab:AddToggle({
     Name = "Auto Get MEGAROCK Glove",
     Default = false,
     Callback = function(Value)
+        -- Prevent running if already in this state
+        if autoMegarockEnabled == Value then
+            return
+        end
+        
+        autoMegarockEnabled = Value
+        
         if Value then
             local player = game.Players.LocalPlayer
-            if player.leaderstats.Glove.Value == "Diamond" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
-task.wait(0.5)
-                game:GetService("ReplicatedStorage").Rockmode:FireServer()
+            
+            -- Check if player already has rock
+            if hasRock() then
+                -- Has rock, disable toggle (don't auto-disable, just notify)
+                OrionLib:MakeNotification({
+                    Name = "MEGAROCK",
+                    Content = "You already have Rock! Disable the toggle when you want to remove it.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                -- Don't auto-disable, let user manually disable
             else
-OrionLib:MakeNotification({Name = "Error",Content = "Equip Diamond Glove/Use In Arena",Image = "rbxassetid://7743878857",Time = 3})
-task.wait(0.05)
-AutoMegarock:Set(false)
+                -- No rock, start the process
+                OrionLib:MakeNotification({
+                    Name = "MEGAROCK",
+                    Content = "Auto Get MEGAROCK Enabled! Teleporting to position...",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                
+                -- Teleport and fire remote once immediately (with cooldown)
+                if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                    task.wait(0.5)
+                    fireRockRemote()
+                end
+                
+                -- Stop existing loop if any
+                if autoMegarockLoop then
+                    task.cancel(autoMegarockLoop)
+                    autoMegarockLoop = nil
+                end
+                
+                -- Start the loop to keep trying (only if still enabled)
+                if autoMegarockEnabled then
+                    startAutoMegarockLoop()
+                end
+            end
+        else
+            -- Disable toggle - ONLY fire remote if user has rock
+            if hasRock() then
+                OrionLib:MakeNotification({
+                    Name = "MEGAROCK",
+                    Content = "Disabling MEGAROCK...",
+                    Image = "rbxassetid://7743878857",
+                    Time = 2
+                })
+                
+                -- Run remote to disable MEGAROCK
+                fireRockRemote()
+            else
+                OrionLib:MakeNotification({
+                    Name = "MEGAROCK",
+                    Content = "MEGAROCK Disabled.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 2
+                })
+            end
+            
+            -- Stop the loop
+            if autoMegarockLoop then
+                task.cancel(autoMegarockLoop)
+                autoMegarockLoop = nil
             end
         end
     end
 })
 
 AntiAfk = Tab:AddToggle({
-	Name = "Anti Afk",
-	Default = false,
-	Callback = function(Value)
-	_G.AntiAfk = Value
-local VirtualUser = game:GetService('VirtualUser')
-
-game:GetService('Players').LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new())
-end)
-	end    
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
 })
 
+-- Cleanup when script stops
+game.Players.LocalPlayer.OnTeleport:Connect(function()
+    isUpdating = false
+    if autoMegarockLoop then
+        task.cancel(autoMegarockLoop)
+    end
+end)
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "Plague",
 	Icon = "rbxassetid://7733673987",
@@ -566,6 +941,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Hallow Jack",
 	Icon = "rbxassetid://7733673987",
@@ -714,6 +1091,8 @@ Tab:AddToggle({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "[REDACTED]",
 	Icon = "rbxassetid://7733673987",
@@ -741,6 +1120,8 @@ end
   	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "bus",
 	Icon = "rbxassetid://7733673987",
@@ -840,6 +1221,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Mitten",
 	Icon = "rbxassetid://7733673987",
@@ -863,6 +1246,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Phase",
 	Icon = "rbxassetid://7733673987",
@@ -886,6 +1271,8 @@ end
 	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Warp",
 	Icon = "rbxassetid://7733673987",
@@ -940,6 +1327,8 @@ end
   	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Bomb",
 	Icon = "rbxassetid://7733673987",
@@ -973,6 +1362,8 @@ end
   	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Bubble",
 	Icon = "rbxassetid://7733673987",
@@ -1189,6 +1580,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Jet",
 	Icon = "rbxassetid://7733673987",
@@ -1212,6 +1605,8 @@ end
 	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Shard",
 	Icon = "rbxassetid://7733673987",
@@ -1412,6 +1807,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "potato",
 	Icon = "rbxassetid://7733673987",
@@ -1456,6 +1853,8 @@ OrionLib:MakeNotification({Name = "Error",Content = "Equip Reverse/Use Ability",
 	end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "CULT",
 	Icon = "rbxassetid://7733673987",
@@ -1495,14 +1894,536 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "bob",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
 
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local cloneCount = 0
+local isSpawning = false
+local spawnStarted = false
+local spawnStopped = false
+local spawnFinished = false
+local legitCloneCount = 0
+local legitSpawning = false
+local legitSpawnStarted = false
+local legitSpawnStopped = false
+local legitSpawnFinished = false
+local totalClonesNeeded = 7500
+local ownBobBadge = false
+local isAntiAfkEnabled = false
+local isReplicaEquipped = false
+
+-- Bob Badge ID
+local BOB_BADGE_ID = 2125950512
+
+-- Function to check if Replica glove is equipped
+local function checkReplicaGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        isReplicaEquipped = (player.leaderstats.Glove.Value == "Replica")
+        return isReplicaEquipped
+    end
+    isReplicaEquipped = false
+    return false
+end
+
+-- Function to check if Bob badge is owned
+local function checkBobBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == BOB_BADGE_ID then
+                    ownBobBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownBobBadge = false
+    return false
+end
+
+-- Function to format status text for Exploit Mode
+local function getExploitStatusText()
+    local waitingStatus = "Waiting to start..."
+    local startedStatus = "Not Started"
+    local stoppedStatus = "Not Stopped"
+    local finishedStatus = "Not Finished"
+    
+    if spawnFinished then
+        waitingStatus = "Finished!"
+        startedStatus = "7500/7500"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "7500/7500"
+    elseif spawnStopped then
+        waitingStatus = "Stopped"
+        startedStatus = cloneCount .. "/" .. totalClonesNeeded
+        stoppedStatus = cloneCount .. "/" .. totalClonesNeeded
+        finishedStatus = "Not Finished"
+    elseif spawnStarted then
+        waitingStatus = "Running..."
+        startedStatus = cloneCount .. "/" .. totalClonesNeeded
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    elseif not isSpawning then
+        waitingStatus = "Ready to start"
+        startedStatus = "Not Started"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    end
+    
+    local replicaStatus = isReplicaEquipped and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local percentage = 0.013
+    
+    local statusText = string.format([[
+Clone Auto Spawn Waiting: %s
+Clone Auto Spawn Started: %s
+Clone Auto Spawn Stopped: %s
+Clone Auto Spawn Finished: %s
+Total Clones Need To Be Spawned: %d
+Total Percentage For Bob To Spawn: %.3f%%
+Replica Glove Equipped: %s
+Anti AFK: %s
+]],
+    waitingStatus,
+    startedStatus,
+    stoppedStatus,
+    finishedStatus,
+    totalClonesNeeded,
+    percentage,
+    replicaStatus,
+    antiAfkStatus
+)
+    return statusText
+end
+
+-- Function to format status text for Legit Mode
+local function getLegitStatusText()
+    local waitingStatus = "Waiting to start..."
+    local startedStatus = "Not Started"
+    local stoppedStatus = "Not Stopped"
+    local finishedStatus = "Not Finished"
+    
+    if legitSpawnFinished then
+        waitingStatus = "Finished!"
+        startedStatus = "7500/7500"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "7500/7500"
+    elseif legitSpawnStopped then
+        waitingStatus = "Stopped"
+        startedStatus = legitCloneCount .. "/" .. totalClonesNeeded
+        stoppedStatus = legitCloneCount .. "/" .. totalClonesNeeded
+        finishedStatus = "Not Finished"
+    elseif legitSpawnStarted then
+        waitingStatus = "Running..."
+        startedStatus = legitCloneCount .. "/" .. totalClonesNeeded
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    elseif not legitSpawning then
+        waitingStatus = "Ready to start"
+        startedStatus = "Not Started"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    end
+    
+    local replicaStatus = isReplicaEquipped and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local percentage = 0.013
+    local badgeStatus = ownBobBadge and "✅ Yes" or "❌ No"
+    
+    local statusText = string.format([[
+Clone Auto Spawn Waiting: %s
+Clone Auto Spawn Started: %s
+Clone Auto Spawn Stopped: %s
+Clone Auto Spawn Finished: %s
+Total Clones Need To Be Spawned: %d
+Total Percentage For Bob To Spawn: %.3f%%
+Replica Glove Equipped: %s
+Anti AFK: %s
+Owns bob Badge: %s
+bob Badge Awards Glove: bob Glove
+]],
+    waitingStatus,
+    startedStatus,
+    stoppedStatus,
+    finishedStatus,
+    totalClonesNeeded,
+    percentage,
+    replicaStatus,
+    antiAfkStatus,
+    badgeStatus
+)
+    return statusText
+end
+
+-- Create paragraphs
+local ExploitStatusParagraph = Tab:AddParagraph("Exploit Mode Status:", "Loading...")
+local LegitStatusParagraph = Tab:AddParagraph("Legit Mode Status:", "Loading...")
+
+-- Function to spawn clone (Exploit Mode - kills character)
+local function spawnCloneExploit()
+    if not isSpawning then return end
+    
+    pcall(function()
+        if checkReplicaGlove() then
+            local char = player.Character
+            if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("Humanoid") then
+                
+                local teleport1 = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("Teleport1")
+                if teleport1 then
+                    char.HumanoidRootPart.CFrame = teleport1.CFrame
+                    task.wait(0.2)
+                end
+                
+                local duplicate = replicatedStorage:FindFirstChild("Duplicate")
+                if duplicate then
+                    duplicate:FireServer(true)
+                    task.wait(0.2)
+                end
+                
+                if char:FindFirstChild("Humanoid") then
+                    char.Humanoid.Health = 0
+                end
+                
+                if not spawnFinished then
+                    cloneCount = cloneCount + 1
+                end
+                
+                if cloneCount >= totalClonesNeeded then
+                    spawnFinished = true
+                    isSpawning = false
+                    spawnStarted = false
+                end
+            end
+        end
+    end)
+end
+
+-- Function to spawn clone (Legit Mode - spawns clone then waits)
+local legitSpawningInProgress = false
+
+local function spawnCloneLegit()
+    if not legitSpawning then return end
+    if legitSpawningInProgress then return end
+    legitSpawningInProgress = true
+    
+    pcall(function()
+        if checkReplicaGlove() then
+            local char = player.Character
+            if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("Humanoid") then
+                
+                local teleport1 = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("Teleport1")
+                if teleport1 then
+                    local hrp = char.HumanoidRootPart
+                    local humanoid = char:FindFirstChild("Humanoid")
+                    local distance = (hrp.Position - teleport1.Position).Magnitude
+                    
+                    if distance > 5 then
+                        -- Walk to teleport
+                        humanoid:MoveTo(teleport1.Position)
+                        
+                        -- Wait until close enough
+                        local attempts = 0
+                        while (hrp.Position - teleport1.Position).Magnitude > 5 and attempts < 50 do
+                            task.wait(0.1)
+                            attempts = attempts + 1
+                            char = player.Character
+                            if not char then break end
+                            hrp = char:FindFirstChild("HumanoidRootPart")
+                            humanoid = char:FindFirstChild("Humanoid")
+                            if not hrp or not humanoid then break end
+                            humanoid:MoveTo(teleport1.Position)
+                        end
+                        task.wait(0.2)
+                    end
+                    
+                    -- Teleport to exact position
+                    hrp.CFrame = teleport1.CFrame
+                    task.wait(0.3)
+                end
+                
+                -- Fire duplicate remote to spawn clone
+                local duplicate = replicatedStorage:FindFirstChild("Duplicate")
+                if duplicate then
+                    duplicate:FireServer(true)
+                    task.wait(1)
+                end
+                
+                -- Update clone count
+                if not legitSpawnFinished then
+                    legitCloneCount = legitCloneCount + 1
+                end
+                
+                -- Check if finished
+                if legitCloneCount >= totalClonesNeeded then
+                    legitSpawnFinished = true
+                    legitSpawning = false
+                    legitSpawnStarted = false
+                end
+                
+                -- CRITICAL FIX: Wait for clone to be created before next spawn
+                task.wait(2)
+            end
+        end
+    end)
+    
+    legitSpawningInProgress = false
+end
+
+-- Function to wait for respawn (Exploit Mode)
+local function waitForRespawn()
+    if player.Character then
+        local humanoid = player.Character:FindFirstChild("Humanoid")
+        if humanoid and humanoid.Health <= 0 then
+            player.CharacterAdded:Wait()
+            task.wait(1)
+            return true
+        end
+    end
+    return false
+end
+
+-- Reset functions
+local function resetExploitMode()
+    cloneCount = 0
+    isSpawning = false
+    spawnStarted = false
+    spawnStopped = false
+    spawnFinished = false
+end
+
+local function resetLegitMode()
+    legitCloneCount = 0
+    legitSpawning = false
+    legitSpawnStarted = false
+    legitSpawnStopped = false
+    legitSpawnFinished = false
+    legitSpawningInProgress = false
+end
+
+-- ===== EXPLOIT MODE TOGGLE =====
+local exploitModeEnabled = false
+local exploitLoop = nil
+
+local function startExploitMode()
+    exploitLoop = task.spawn(function()
+        while exploitModeEnabled and not spawnFinished do
+            pcall(function()
+                if not player.Character then
+                    player.CharacterAdded:Wait()
+                    task.wait(1)
+                end
+                
+                local char = player.Character
+                local humanoid = char and char:FindFirstChild("Humanoid")
+                
+                if humanoid and humanoid.Health <= 0 then
+                    waitForRespawn()
+                    return
+                end
+                
+                if checkReplicaGlove() then
+                    spawnCloneExploit()
+                end
+            end)
+            task.wait(0.5)
+        end
+    end)
+end
+
+local exploitToggle = Tab:AddToggle({
+    Name = "Auto Get Bob Glove (Exploit Mode)",
+    Default = false,
+    Callback = function(Value)
+        exploitModeEnabled = Value
+        
+        if Value then
+            if checkReplicaGlove() then
+                resetExploitMode()
+                isSpawning = true
+                spawnStarted = true
+                spawnStopped = false
+                spawnFinished = false
+                
+                if exploitLoop then
+                    task.cancel(exploitLoop)
+                end
+                startExploitMode()
+                
+                OrionLib:MakeNotification({
+                    Name = "Exploit Mode",
+                    Content = "Started! Will spawn " .. totalClonesNeeded .. " clones",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Replica Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                exploitToggle:Set(false)
+                exploitModeEnabled = false
+            end
+        else
+            if exploitLoop then
+                task.cancel(exploitLoop)
+                exploitLoop = nil
+            end
+            isSpawning = false
+            spawnStopped = true
+            spawnStarted = false
+            
+        end
+    end
+})
+
+-- ===== LEGIT MODE TOGGLE =====
+local legitModeEnabled = false
+local legitLoop = nil
+local legitKillEnabled = true  -- Optional: set to true if you want to kill character
+
+local function startLegitMode()
+    legitLoop = task.spawn(function()
+        while legitModeEnabled and not legitSpawnFinished do
+            pcall(function()
+                if not player.Character then
+                    player.CharacterAdded:Wait()
+                    task.wait(2)
+                end
+                
+                local char = player.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    if checkReplicaGlove() then
+                        if not legitSpawningInProgress then
+                            spawnCloneLegit()
+                            
+                            -- OPTIONAL: Kill character to reset position (makes it like exploit mode but without remote kill)
+                            -- Set legitKillEnabled = true at the top if you want this behavior
+                            if legitKillEnabled then
+                                local humanoid = char:FindFirstChild("Humanoid")
+                                if humanoid then
+                                    humanoid.Health = 0
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+            task.wait(0.5)
+        end
+    end)
+end
+
+local legitToggle = Tab:AddToggle({
+    Name = "Auto Get Bob Glove (Legit Mode) [Buggy]",
+    Default = false,
+    Callback = function(Value)
+        legitModeEnabled = Value
+        
+        if Value then
+            if checkReplicaGlove() then
+                resetLegitMode()
+                legitSpawning = true
+                legitSpawnStarted = true
+                legitSpawnStopped = false
+                legitSpawnFinished = false
+                
+                if legitLoop then
+                    task.cancel(legitLoop)
+                end
+                startLegitMode()
+
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Replica Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                legitToggle:Set(false)
+                legitModeEnabled = false
+            end
+        else
+            if legitLoop then
+                task.cancel(legitLoop)
+                legitLoop = nil
+            end
+            legitSpawning = false
+            legitSpawnStopped = true
+            legitSpawnStarted = false
+            legitSpawningInProgress = false
+            
+        end
+    end
+})
+
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti AFK",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- ===== CONSTANT UPDATE LOOP =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        checkReplicaGlove()
+        checkBobBadge()
+        
+        ExploitStatusParagraph:Set(getExploitStatusText())
+        LegitStatusParagraph:Set(getLegitStatusText())
+        
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.01, 0.05 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+Tab:AddButton({
+    Name = "Equip Replica (4k+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Replica"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Equip God's Hand (70k+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["God's Hand"].ClickDetector)
+    end
+})
+
 AutoGetBobGlove = Tab:AddButton({
-    Name = "Instant Spawn 75000 Clones (Need God Hand)",
+    Name = "Instant Spawn 75k Clones (Need God Hand)",
     Callback = function()
 if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 65000 then
 fireclickdetector(workspace.Lobby["God's Hand"].ClickDetector)
@@ -1623,7 +2544,7 @@ end
 })
 
 Tab:AddButton({
-    Name = "Instant Spawn 75000 Clones (God Hand Uses Your Friend/Alt)",
+    Name = "Instant Spawn 75k Clones (God Hand Uses Your Friend/Alt)",
     Callback = function()
 if game.Players.LocalPlayer.leaderstats.Glove.Value == "Replica" then
 wait(0.1)
@@ -1730,6 +2651,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "buddies",
 	Icon = "rbxassetid://7733673987",
@@ -1843,6 +2766,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Moon",
 	Icon = "rbxassetid://7733673987",
@@ -1864,6 +2789,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Jupiter",
 	Icon = "rbxassetid://7733673987",
@@ -1962,6 +2889,8 @@ end
 	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Spy",
 	Icon = "rbxassetid://7733673987",
@@ -1990,6 +2919,8 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Detonator",
 	Icon = "rbxassetid://7733673987",
@@ -2018,6 +2949,8 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Rage",
 	Icon = "rbxassetid://7733673987",
@@ -2171,34 +3104,397 @@ Tab:AddToggle({
             end
         else
             _G.AutoSlapRunning = false
-            print("Auto Slap stopped")
+
         end
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Trap",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
 
-Tab:AddButton({
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Timer variables
+local isSpawningBricks = false
+local brickSpawnStarted = false
+local brickSpawnStopped = false
+local brickSpawnFinished = false
+local brickStartTime = nil
+local brickElapsedTime = 0
+local totalTimeNeeded = 25 * 60 -- 25 minutes in seconds (1500 seconds)
+local savedStoppedTime = nil
+
+-- Display variables for Trap Status
+local currentTimeWaiting = "Waiting for auto brick..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "Not Stopped"
+local currentTimeFinished = "Not Finished"
+
+-- Brick counting variables
+local totalBricksDropped = 0
+local isAntiAfkEnabled = false
+local ownBrickMasterBadge = false
+local isBrickGloveEquipped = false
+local brickSpawnLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- Brick Master Badge ID
+local BRICK_MASTER_BADGE_ID = 2127567042
+
+-- Function to check if Brick glove is equipped
+local function checkBrickGlove()
+    local character = player.Character
+    if character then
+        local brickTool = character:FindFirstChild("Brick")
+        if brickTool then
+            isBrickGloveEquipped = true
+            return true
+        end
+    end
+    isBrickGloveEquipped = false
+    return false
+end
+
+-- Function to check if Brick Master badge is owned
+local function checkBrickMasterBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == BRICK_MASTER_BADGE_ID then
+                    ownBrickMasterBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownBrickMasterBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownBrickMasterBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns Brick Master Badge: %s
+Brick Master Badge Awards Glove: Trap Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to format time EXACTLY LIKE MEGAROCK (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to get brick count from UI
+local function getBrickCountFromUI()
+    local success, result = pcall(function()
+        local playerGui = player.PlayerGui
+        local brickCount = playerGui:FindFirstChild("BRICKCOUNT")
+        if brickCount then
+            local imageLabel = brickCount:FindFirstChild("ImageLabel")
+            if imageLabel then
+                local textLabel = imageLabel:FindFirstChild("TextLabel")
+                if textLabel then
+                    return tonumber(textLabel.Text) or 0
+                end
+            end
+        end
+        return 0
+    end)
+    if not success then
+        return 0
+    end
+    return result
+end
+
+-- Function to update trap status display
+local function updateTrapDisplay()
+    -- Update status texts based on current state (SAME LOGIC AS MEGAROCK)
+    if brickSpawnFinished then
+        currentTimeWaiting = "Finished!"
+        currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        currentTimeStopped = "N/A"
+        currentTimeFinished = formatTime(totalTimeNeeded, 0)
+    elseif brickSpawnStopped then
+        currentTimeWaiting = "Stopped"
+        local elapsedMs = (brickElapsedTime - math.floor(brickElapsedTime)) * 1000
+        currentTimeStarted = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeStopped = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeFinished = "Not Finished"
+    elseif brickSpawnStarted then
+        currentTimeWaiting = "Auto bricks started..."
+        local elapsedMs = (brickElapsedTime - math.floor(brickElapsedTime)) * 1000
+        currentTimeStarted = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    elseif not isSpawningBricks then
+        currentTimeWaiting = "Waiting for auto brick..."
+        currentTimeStarted = "Not Started"
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    end
+    
+    -- Get current values
+    local uiBrickCount = getBrickCountFromUI()
+    local brickGloveStatus = isBrickGloveEquipped and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    
+    -- Build status text (SAME FORMAT AS MEGAROCK)
+    local statusText = string.format([[
+Auto Spawn Bricks Time Waiting: %s
+Auto Spawn Bricks Time Started: %s
+Auto Spawn Bricks Time Stopped: %s
+Auto Spawn Bricks Time Finished: %s
+Total Time Need: %s
+Total Bricks Dropped At Top: %d
+Total Dropped Bricks: %d
+Brick Glove Equipped: %s
+Anti AFK: %s
+]],
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    uiBrickCount,
+    totalBricksDropped,
+    brickGloveStatus,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local TrapStatusParagraph = Tab:AddParagraph("Trap Farm Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP 1: TRAP STATUS UPDATE (0.01 SECONDS - LIKE MEGAROCK) =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        -- Update timer if running
+        if brickSpawnStarted and not brickSpawnFinished and not brickSpawnStopped then
+            local currentTime = tick()
+            brickElapsedTime = currentTime - brickStartTime
+        end
+        
+        -- Update glove status
+        checkBrickGlove()
+        
+        -- Update the trap status paragraph
+        local statusText = updateTrapDisplay()
+        pcall(function()
+            TrapStatusParagraph:Set(statusText)
+        end)
+        
+        -- Maintain exactly 0.01 seconds like MEGAROCK
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.005, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- ===== LOOP 2: TIMER UPDATE (every frame for accuracy - LIKE MEGAROCK) =====
+task.spawn(function()
+    while true do
+        if brickSpawnStarted and not brickSpawnFinished and not brickSpawnStopped then
+            local currentTime = tick()
+            brickElapsedTime = currentTime - brickStartTime
+        end
+        task.wait() -- Every frame for precise timing
+    end
+end)
+
+-- ===== LOOP 3: BADGE STATUS UPDATE (5 SECONDS - SLOW) =====
+task.spawn(function()
+    while true do
+        -- Check badge status
+        checkBrickMasterBadge()
+        
+        -- Update badge status text
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        
+        task.wait(5) -- Update every 5 seconds (badges don't change often)
+    end
+end)
+
+-- Function to spawn bricks
+local function startBrickSpawning()
+    if brickSpawnLoop then
+        task.cancel(brickSpawnLoop)
+    end
+    
+    brickSpawnLoop = task.spawn(function()
+        while isSpawningBricks and not brickSpawnFinished do
+            pcall(function()
+                -- Check if Brick glove is equipped and player has entered
+                if player.leaderstats and player.leaderstats:FindFirstChild("Glove") and player.leaderstats.Glove.Value == "Brick" then
+                    local char = player.Character
+                    if char and char:FindFirstChild("entered") then
+                        
+                        -- Teleport to position
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            hrp.CFrame = CFrame.new(17895, -24, -3533)
+                            task.wait(0.1)
+                        end
+                        
+                        -- Fire remote to spawn brick
+                        local lbrick = replicatedStorage:FindFirstChild("lbrick")
+                        if lbrick then
+                            lbrick:FireServer()
+                            task.wait(0.1)
+                        end
+                        
+                        -- Update UI brick count
+                        pcall(function()
+                            local playerGui = player.PlayerGui
+                            local brickCount = playerGui:FindFirstChild("BRICKCOUNT")
+                            if brickCount then
+                                local imageLabel = brickCount:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel then
+                                        local currentCount = tonumber(textLabel.Text) or 0
+                                        textLabel.Text = tostring(currentCount + 1)
+                                    end
+                                end
+                            end
+                        end)
+                        
+                        -- Add to dropped bricks counter
+                        totalBricksDropped = totalBricksDropped + 1
+                    end
+                end
+            end)
+            task.wait(1.5) -- Wait between spawns
+        end
+    end)
+end
+
+-- ===== AUTO SPAWN BRICKS TOGGLE =====
+local autoSpawnEnabled = false
+
+local autoSpawnToggle = Tab:AddToggle({
     Name = "Auto Spawn Bricks",
-    Callback = function()  
-        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17893, -24, -3532)
-            wait(0.5)
-            while true do 
-                game:GetService("ReplicatedStorage").lbrick:FireServer()
-                game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game:GetService("Players").LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1
-                task.wait(1.5) -- Use the slider value here
+    Default = false,
+    Callback = function(Value)
+        autoSpawnEnabled = Value
+        
+        if Value then
+            -- Check if Brick glove is equipped and player has entered
+            if player.leaderstats and player.leaderstats:FindFirstChild("Glove") and player.leaderstats.Glove.Value == "Brick" then
+                local char = player.Character
+                if char and char:FindFirstChild("entered") then
+                    
+                    -- Reset and start timer (LIKE MEGAROCK)
+                    isSpawningBricks = true
+                    brickSpawnStarted = true
+                    brickSpawnStopped = false
+                    brickSpawnFinished = false
+                    brickStartTime = tick()
+                    brickElapsedTime = 0
+                    savedStoppedTime = nil
+                    totalBricksDropped = 0
+                    
+                    -- Start spawning
+                    startBrickSpawning()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Auto Spawn Bricks",
+                        Content = "Started! Will run for 25 minutes",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                else
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Equip Brick/Enter Arena",
+                        Image = "rbxassetid://7743878857",
+                        Time = 3
+                    })
+                    autoSpawnToggle:Set(false)
+                    autoSpawnEnabled = false
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Brick/Enter Arena",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                autoSpawnToggle:Set(false)
+                autoSpawnEnabled = false
             end
         else
-            OrionLib:MakeNotification({Name = "Error", Content = "Equip Brick/Enter Arena", Image = "rbxassetid://7743878857", Time = 3})
+            -- Stop spawning (LIKE MEGAROCK)
+            if brickSpawnLoop then
+                task.cancel(brickSpawnLoop)
+                brickSpawnLoop = nil
+            end
+            isSpawningBricks = false
+            brickSpawnStopped = true
+            brickSpawnStarted = false
+            savedStoppedTime = brickElapsedTime
+            
         end
     end
 })
 
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkBrickGlove()
+checkBrickMasterBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+TrapStatusParagraph:Set(updateTrapDisplay())
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "Orbit",
 	Icon = "rbxassetid://7733673987",
@@ -2216,6 +3512,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Hybrid",
 	Icon = "rbxassetid://7733673987",
@@ -2256,6 +3554,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Slapple",
 	Icon = "rbxassetid://7733673987",
@@ -2263,27 +3563,66 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddToggle({
-    Name = "Auto Bring Slapples",
+    Name = "Auto Collect Slapples",
     Default = false,
     Callback = function(Value)
-        SlappleFarm = Value
-        while SlappleFarm do
-            if game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-                for _, v in pairs(workspace.Arena.island5.Slapples:GetChildren()) do
-                    local plrChar = game.Players.LocalPlayer.Character
-                    if plrChar and plrChar:FindFirstChild("HumanoidRootPart") and plrChar:FindFirstChild("entered") then
-                        if (v.Name == "Slapple" or v.Name == "GoldenSlapple") and v:FindFirstChild("Glove") and v.Glove:FindFirstChildWhichIsA("TouchTransmitter") then
-                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 0)
-                            firetouchinterest(plrChar.HumanoidRootPart, v.Glove, 1)
-                        end
+        BringSlapples = Value
+        
+        task.spawn(function()
+            while BringSlapples do
+                local player = game.Players.LocalPlayer
+                if not player then task.wait(0.1) continue end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                if not character:FindFirstChild("entered") then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local slapplesFolder = workspace:FindFirstChild("Arena")
+                    and workspace.Arena:FindFirstChild("island5")
+                    and workspace.Arena.island5:FindFirstChild("Slapples")
+                
+                if not slapplesFolder then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                for _, slapple in pairs(slapplesFolder:GetChildren()) do
+                    if slapple:IsA("Model") and (slapple.Name == "Slapple" or slapple.Name == "GoldenSlapple") then
+                        pcall(function()
+                            -- Get the Glove part
+                            local glove = slapple:FindFirstChild("Glove")
+                            if glove then
+                                -- Move the Glove DIRECTLY into the player's HRP (0 studs away)
+                                glove.CFrame = hrp.CFrame
+                            else
+                                -- If no Glove, move the whole model into the player
+                                slapple:SetPrimaryPartCFrame(hrp.CFrame)
+                            end
+                        end)
                     end
                 end
+                
+                task.wait(0.01) -- Run every 0.1 seconds
             end
-            task.wait()
-        end
+        end)
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Disarm",
 	Icon = "rbxassetid://7733673987",
@@ -2396,6 +3735,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Dominance",
 	Icon = "rbxassetid://7733673987",
@@ -2424,6 +3765,8 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Link",
 	Icon = "rbxassetid://7733673987",
@@ -2437,6 +3780,8 @@ fireclickdetector(workspace.Lobby["Error"].ClickDetector)
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Chain",
 	Icon = "rbxassetid://7733673987",
@@ -2685,6 +4030,8 @@ local targetPlaceId = 9431156611
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Rattlebones",
 	Icon = "rbxassetid://7733673987",
@@ -2801,6 +4148,8 @@ Tab:AddToggle({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Charge",
 	Icon = "rbxassetid://7733673987",
@@ -2829,32 +4178,368 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Tycoon",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
 
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Timer variables
+local isAutoPlating = false
+local plateStarted = false
+local plateStopped = false
+local plateFinished = false
+local plateStartTime = nil
+local plateElapsedTime = 0
+local totalTimeNeeded = 600 -- 600 seconds (10 minutes)
+local savedStoppedTime = nil
+
+-- Display variables for Plate Status
+local currentTimeWaiting = "Waiting for auto plate..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "Not Stopped"
+local currentTimeFinished = "Not Finished"
+
+-- Counting variables
+local isAntiAfkEnabled = false
+local ownPlateMasterBadge = false
+local autoPlateLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- Plate Master Badge ID
+local PLATE_MASTER_BADGE_ID = 2129212145
+
+-- Function to check total players in server
+local function getTotalPlayers()
+    return #game.Players:GetPlayers()
+end
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("entered") ~= nil
+    end
+    return false
+end
+
+-- Function to get total time shows at top (from PlateIndicator)
+local function getTotalTimeShowsAtTop()
+    local success, result = pcall(function()
+        local playerGui = player.PlayerGui
+        local plateIndicator = playerGui:FindFirstChild("PlateIndicator")
+        if plateIndicator then
+            local textLabel = plateIndicator:FindFirstChild("TextLabel")
+            if textLabel and textLabel:IsA("TextLabel") then
+                local text = textLabel.Text
+                -- Extract only the number from text like "Plate Counter: 5"
+                local number = tonumber(text:match("%d+"))
+                return number or 0
+            end
+        end
+        return 0
+    end)
+    if not success then
+        return 0
+    end
+    return result
+end
+
+-- Function to check if Plate Master badge is owned
+local function checkPlateMasterBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == PLATE_MASTER_BADGE_ID then
+                    ownPlateMasterBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownPlateMasterBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownPlateMasterBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns Plate Master Badge: %s
+Plate Master Badge Awards Glove: Tycoon Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to format time EXACTLY LIKE MEGAROCK (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to update plate status display
+local function updatePlateDisplay()
+    local totalPlayers = getTotalPlayers()
+    local requiredPlayers = 7
+    local playerCountStatus = (totalPlayers >= requiredPlayers) and totalPlayers .. "/" .. requiredPlayers or totalPlayers .. "/" .. requiredPlayers
+    
+    if plateFinished then
+        currentTimeWaiting = "Finished!"
+        currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        currentTimeStopped = "N/A"
+        currentTimeFinished = formatTime(totalTimeNeeded, 0)
+    elseif plateStopped then
+        currentTimeWaiting = "Stopped"
+        local elapsedMs = (plateElapsedTime - math.floor(plateElapsedTime)) * 1000
+        currentTimeStarted = formatTime(plateElapsedTime, elapsedMs)
+        currentTimeStopped = formatTime(plateElapsedTime, elapsedMs)
+        currentTimeFinished = "Not Finished"
+    elseif plateStarted then
+        currentTimeWaiting = "Auto plate started..."
+        local elapsedMs = (plateElapsedTime - math.floor(plateElapsedTime)) * 1000
+        currentTimeStarted = formatTime(plateElapsedTime, elapsedMs)
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    elseif not isAutoPlating then
+        currentTimeWaiting = "Waiting for auto plate..."
+        currentTimeStarted = "Not Started"
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    end
+    
+    local totalTimeShowsAtTop = getTotalTimeShowsAtTop()
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    
+    local statusText = string.format([[
+Auto Plate Time Waiting: %s
+Auto Plate Time Started: %s
+Auto Plate Time Stopped: %s
+Auto Plate Time Finished: %s
+Total Time Need: %s
+Total Time Shows At Top: %d
+Total Players In Server: %s
+Total Required Players In Server: 7
+Anti AFK: %s
+]],
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    totalTimeShowsAtTop,
+    playerCountStatus,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local PlateStatusParagraph = Tab:AddParagraph("Auto Plate Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP 1: PLATE STATUS UPDATE (0.01 SECONDS) =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        if plateStarted and not plateFinished and not plateStopped then
+            local currentTime = tick()
+            plateElapsedTime = currentTime - plateStartTime
+        end
+        
+        local statusText = updatePlateDisplay()
+        pcall(function()
+            PlateStatusParagraph:Set(statusText)
+        end)
+        
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.005, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- ===== LOOP 2: TIMER UPDATE (every frame for accuracy) =====
+task.spawn(function()
+    while true do
+        if plateStarted and not plateFinished and not plateStopped then
+            local currentTime = tick()
+            plateElapsedTime = currentTime - plateStartTime
+            
+            if plateElapsedTime >= totalTimeNeeded then
+                plateFinished = true
+                isAutoPlating = false
+                plateStarted = false
+                
+                pcall(function()
+                    AutoTycoon:Set(false)
+                end)
+            end
+        end
+        task.wait()
+    end
+end)
+
+-- ===== LOOP 3: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkPlateMasterBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(2)
+    end
+end)
+
+-- ===== AUTO TELEPORT TO PLATE TOGGLE =====
+_G.AutoTpPlate = false
+
 AutoTycoon = Tab:AddToggle({
-	Name = "Auto Teleport To Plate",
-	Default = false,
-	Callback = function(Value)
-	   _G.AutoTpPlate = Value
-if game.Players.LocalPlayer.Character:FindFirstChild("entered") and #game.Players:GetPlayers() >= 7 then
-while _G.AutoTpPlate do
-if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("entered") and #game.Players:GetPlayers() >= 7 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Arena.Plate.CFrame
-end
-task.wait()
-end
-elseif _G.AutoTpPlate == true then
-OrionLib:MakeNotification({Name = "Error",Content = "You Need Enter Arena/7 People In Server Required",Image = "rbxassetid://7743878857",Time = 3})
-wait(0.05)
-AutoTycoon:Set(false)
-end
-	end    
+    Name = "Auto Teleport To Plate",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoTpPlate = Value
+        
+        if Value then
+            if hasEntered() and getTotalPlayers() >= 7 then
+                isAutoPlating = true
+                plateStarted = true
+                plateStopped = false
+                plateFinished = false
+                plateStartTime = tick()
+                plateElapsedTime = 0
+                savedStoppedTime = nil
+                
+                if autoPlateLoop then
+                    task.cancel(autoPlateLoop)
+                end
+                
+                autoPlateLoop = task.spawn(function()
+                    while _G.AutoTpPlate and isAutoPlating and not plateFinished do
+                        -- Check conditions
+                        if not hasEntered() or getTotalPlayers() < 7 then
+                            -- Conditions failed - stop the toggle
+                            if getTotalPlayers() < 7 then
+                                OrionLib:MakeNotification({
+                                    Name = "Auto Plate",
+                                    Content = "Not enough players! Need 7+ players.",
+                                    Image = "rbxassetid://7743878857",
+                                    Time = 3
+                                })
+                            elseif not hasEntered() then
+                                OrionLib:MakeNotification({
+                                    Name = "Auto Plate",
+                                    Content = "You need to enter the arena!",
+                                    Image = "rbxassetid://7743878857",
+                                    Time = 3
+                                })
+                            end
+                            _G.AutoTpPlate = false
+                            AutoTycoon:Set(false)
+                            isAutoPlating = false
+                            plateStopped = true
+                            plateStarted = false
+                            break
+                        end
+                        
+                        -- Teleport to plate
+                        pcall(function()
+                            local char = player.Character
+                            if char and char:FindFirstChild("HumanoidRootPart") then
+                                local plate = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("Plate")
+                                if plate and plate:IsA("BasePart") then
+                                    char.HumanoidRootPart.CFrame = plate.CFrame
+                                end
+                            end
+                        end)
+                        task.wait()
+                    end
+                end)
+                
+                OrionLib:MakeNotification({
+                    Name = "Auto Plate",
+                    Content = "Started! Will run for 10 minutes",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+            else
+                local errorMsg = ""
+                if not hasEntered() then
+                    errorMsg = "You Need Enter Arena"
+                elseif getTotalPlayers() < 7 then
+                    errorMsg = "7+ People In Server Required (Current: " .. getTotalPlayers() .. ")"
+                end
+                
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = errorMsg,
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                task.wait(0.05)
+                AutoTycoon:Set(false)
+                _G.AutoTpPlate = false
+            end
+        else
+            if autoPlateLoop then
+                task.cancel(autoPlateLoop)
+                autoPlateLoop = nil
+            end
+            isAutoPlating = false
+            plateStopped = true
+            plateStarted = false
+            savedStoppedTime = plateElapsedTime
+            
+        end
+    end    
 })
 
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkPlateMasterBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+PlateStatusParagraph:Set(updatePlateDisplay())
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "Confusion",
 	Icon = "rbxassetid://7733673987",
@@ -3109,6 +4794,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Glitch",
 	Icon = "rbxassetid://7733673987",
@@ -3151,6 +4838,8 @@ OrionLib:MakeNotification({Name = "Error",Content = "Equip Error",Image = "rbxas
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Snowball",
 	Icon = "rbxassetid://7733673987",
@@ -3174,6 +4863,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Elude",
 	Icon = "rbxassetid://7733673987",
@@ -3261,6 +4952,8 @@ end
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "RNG",
 	Icon = "rbxassetid://7733673987",
@@ -3373,26 +5066,355 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "fish",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
 
-Tab:AddButton({
-	Name = "Auto Get fish Glove",
-	Callback = function()   
-if game.Players.LocalPlayer.leaderstats.Glove.Value == "ZZZZZZZ" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-wait(0.5)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
-wait(1)
-game:GetService("ReplicatedStorage"):WaitForChild("ZZZZZZZSleep"):FireServer()
-else
-OrionLib:MakeNotification({Name = "Error",Content = "Equip ZZZZZZZ",Image = "rbxassetid://7743878857",Time = 3})
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Timer variables
+local isAutoFishing = false
+local fishStarted = false
+local fishStopped = false
+local fishFinished = false
+local fishStartTime = nil
+local fishElapsedTime = 0
+local totalTimeNeeded = 60 * 60 -- 1 hour in seconds (3600 seconds)
+local savedStoppedTime = nil
+
+-- Display variables for Fish Status
+local currentTimeWaiting = "Waiting for auto fish..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "Not Stopped"
+local currentTimeFinished = "Not Finished"
+
+-- Variables
+local isAntiAfkEnabled = false
+local ownDeepSlumberBadge = false
+local autoFishLoop = nil
+local autoFishEnabled = false
+local remoteFired = false
+local isFirstLoad = true -- Prevent initial trigger
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- DEEP SLUMBER Badge ID
+local DEEP_SLUMBER_BADGE_ID = 2130032297
+
+-- Function to check if player's model has "zzz" attribute (exists when sleeping)
+local function hasZZZAttribute()
+    local char = player.Character
+    if char then
+        local zzzValue = char:GetAttribute("zzz")
+        return zzzValue ~= nil
+    end
+    return false
 end
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("entered") ~= nil
+    end
+    return false
 end
+
+-- Function to check if ZZZZZZZ glove is equipped
+local function hasZZZZZZZGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        return player.leaderstats.Glove.Value == "ZZZZZZZ"
+    end
+    return false
+end
+
+-- Function to check if DEEP SLUMBER badge is owned
+local function checkDeepSlumberBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == DEEP_SLUMBER_BADGE_ID then
+                    ownDeepSlumberBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownDeepSlumberBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownDeepSlumberBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns DEEP SLUMBER Badge: %s
+DEEP SLUMBER Badge Awards Glove: fish Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to format time (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to update fish status display
+local function updateFishDisplay()
+    if fishFinished then
+        currentTimeWaiting = "Finished!"
+        currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        currentTimeStopped = "N/A"
+        currentTimeFinished = formatTime(totalTimeNeeded, 0)
+    elseif fishStopped then
+        currentTimeWaiting = "Stopped"
+        local elapsedMs = (fishElapsedTime - math.floor(fishElapsedTime)) * 1000
+        currentTimeStarted = formatTime(fishElapsedTime, elapsedMs)
+        currentTimeStopped = formatTime(fishElapsedTime, elapsedMs)
+        currentTimeFinished = "Not Finished"
+    elseif fishStarted then
+        currentTimeWaiting = "Auto fish started..."
+        local elapsedMs = (fishElapsedTime - math.floor(fishElapsedTime)) * 1000
+        currentTimeStarted = formatTime(fishElapsedTime, elapsedMs)
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    elseif not isAutoFishing then
+        currentTimeWaiting = "Waiting for auto fish..."
+        currentTimeStarted = "Not Started"
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    end
+    
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    
+    local statusText = string.format([[
+Auto fish Farm Time Waiting: %s
+Auto fish Farm Time Started: %s
+Auto fish Farm Time Stopped: %s
+Auto fish Farm Time Finished: %s
+Total Time Need: %s
+Anti AFK: %s
+]],
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local FishStatusParagraph = Tab:AddParagraph("Auto Fish Farm Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP 1: FISH STATUS UPDATE (0.01 SECONDS) =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        if fishStarted and not fishFinished and not fishStopped then
+            local currentTime = tick()
+            fishElapsedTime = currentTime - fishStartTime
+        end
+        
+        local statusText = updateFishDisplay()
+        pcall(function()
+            FishStatusParagraph:Set(statusText)
+        end)
+        
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.005, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- ===== LOOP 2: TIMER UPDATE (every frame for accuracy) =====
+task.spawn(function()
+    while true do
+        if fishStarted and not fishFinished and not fishStopped then
+            local currentTime = tick()
+            fishElapsedTime = currentTime - fishStartTime
+            
+            if fishElapsedTime >= totalTimeNeeded then
+                fishFinished = true
+                isAutoFishing = false
+                fishStarted = false
+                
+                pcall(function()
+                    AutoFish:Set(false)
+                end)
+            end
+        end
+        task.wait()
+    end
+end)
+
+-- ===== LOOP 3: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkDeepSlumberBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- Function to fire ZZZZZZZSleep remote
+local function fireSleepRemote()
+    pcall(function()
+        local sleepRemote = replicatedStorage:FindFirstChild("ZZZZZZZSleep")
+        if sleepRemote then
+            sleepRemote:FireServer()
+            print("🔥 Sleep remote fired!")
+        end
+    end)
+end
+
+-- ===== AUTO GET FISH GLOVE TOGGLE =====
+AutoFish = Tab:AddToggle({
+    Name = "Auto Get fish Glove",
+    Default = false,
+    Callback = function(Value)
+        -- Skip if this is the first load/initial trigger
+        if isFirstLoad then
+            isFirstLoad = false
+            return
+        end
+        
+        if Value then
+            -- Check conditions before starting
+            if not hasZZZZZZZGlove() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip ZZZZZZZ Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoFish:Set(false)
+                return
+            end
+            
+            if not hasEntered() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You need to enter the arena!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoFish:Set(false)
+                return
+            end
+            
+            -- Reset remote fired flag
+            remoteFired = false
+            
+            -- Reset and start timer
+            isAutoFishing = true
+            fishStarted = true
+            fishStopped = false
+            fishFinished = false
+            fishStartTime = tick()
+            fishElapsedTime = 0
+            savedStoppedTime = nil
+            autoFishEnabled = true
+            
+            -- DO TELEPORT ONCE
+            local char = player.Character
+            if char and char:FindFirstChild("HumanoidRootPart") then
+                char.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                task.wait(0.5)
+            end
+            
+            -- USE REMOTE ONCE (if awake / no zzz attribute)
+            if not hasZZZAttribute() then
+                fireSleepRemote()
+                remoteFired = true
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Fish",
+                Content = "Started! Teleported and used remote.",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        else
+            -- DISABLE TOGGLE
+            autoFishEnabled = false
+            
+            -- Stop the loop if any
+            if autoFishLoop then
+                task.cancel(autoFishLoop)
+                autoFishLoop = nil
+            end
+            
+            -- Fire remote to WAKE UP (toggle off)
+            fireSleepRemote()
+            
+            -- Reset timer states
+            isAutoFishing = false
+            fishStopped = true
+            fishStarted = false
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Fish",
+                Content = "Stopped! Time elapsed: " .. formatTime(fishElapsedTime, 0),
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        end
+    end    
 })
 
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkDeepSlumberBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+FishStatusParagraph:Set(updateFishDisplay())
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "🗿", --Moyai/Moai/🗿
 	Icon = "rbxassetid://7733673987",
@@ -3415,11 +5437,318 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Obby",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
+
+Section = Tab:AddSection({
+    Name = "Obby's Status Counter"
+})
+
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+
+-- Touch counting variables
+local touchedPlayers = {} -- Table to track which players have touched
+local totalPeopleTouched = 0
+local totalPeopleNeeded = 10
+local isTracking = false
+
+-- Variables
+local isAntiAfkEnabled = false
+local ownUltrarockBadge = false
+local isTrackingActive = false
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- ULTRAROCK Badge ID
+local ULTRAROCK_BADGE_ID = 2130463063
+
+-- Valid gloves for tracking
+local validGloves = {
+    "Diamond",
+    "MEGAROCK",
+    "CUSTOM"
+}
+
+-- Function to check if player has valid glove
+local function hasValidGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        local currentGlove = player.leaderstats.Glove.Value
+        for _, glove in ipairs(validGloves) do
+            if currentGlove == glove then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("entered") ~= nil
+    end
+    return false
+end
+
+-- Function to check if player has rock
+local function hasRock()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("rock") ~= nil
+    end
+    return false
+end
+
+-- Function to check if ULTRAROCK badge is owned
+local function checkUltrarockBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == ULTRAROCK_BADGE_ID then
+                    ownUltrarockBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownUltrarockBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownUltrarockBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns ULTRAROCK Badge: %s
+ULTRAROCK Badge Awards Glove: Obby Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to update tracking display
+local function updateTrackingDisplay()
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    
+    local statusText = string.format([[
+Total People Touched You: %d/%d
+Total People Need To Touch You: %d
+Anti AFK: %s
+]],
+    totalPeopleTouched,
+    totalPeopleNeeded,
+    totalPeopleNeeded,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Function to check for players touching the rock
+local function startTouchTracking()
+    isTrackingActive = true
+    
+    -- Track when players touch the rock
+    local function onPartTouched(otherPart)
+        if not isTracking then return end
+        
+        local character = otherPart.Parent
+        if not character then return end
+        
+        local humanoid = character:FindFirstChild("Humanoid")
+        if not humanoid then return end
+        
+        local otherPlayer = game.Players:GetPlayerFromCharacter(character)
+        if not otherPlayer then return end
+        
+        -- Don't count yourself
+        if otherPlayer == player then return end
+        
+        local playerName = otherPlayer.Name
+        
+        -- Check if this player hasn't touched before
+        if not touchedPlayers[playerName] then
+            touchedPlayers[playerName] = true
+            totalPeopleTouched = totalPeopleTouched + 1
+            
+            OrionLib:MakeNotification({
+                Name = "ULTRAROCK",
+                Content = playerName .. " touched your rock! (" .. totalPeopleTouched .. "/" .. totalPeopleNeeded .. ")",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+            
+            -- Update display
+            UltrarockStatusParagraph:Set(updateTrackingDisplay())
+            
+            -- Check if reached goal
+            if totalPeopleTouched >= totalPeopleNeeded then
+                isTracking = false
+                
+                OrionLib:MakeNotification({
+                    Name = "ULTRAROCK",
+                    Content = "Goal reached! " .. totalPeopleTouched .. "/" .. totalPeopleNeeded .. " players touched you!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 5
+                })
+                
+                -- Disable the toggle
+                pcall(function()
+                    UltrarockToggle:Set(false)
+                end)
+            end
+        end
+    end
+    
+    -- Wait for rock to appear
+    local function waitForRock()
+        while isTracking do
+            local char = player.Character
+            if char then
+                local rock = char:FindFirstChild("rock")
+                if rock and rock:IsA("BasePart") then
+                    -- Connect touch event
+                    rock.Touched:Connect(onPartTouched)
+                    break
+                end
+            end
+            task.wait(0.5)
+        end
+    end
+    
+    task.spawn(waitForRock)
+end
+
+-- Create the TWO paragraphs
+local UltrarockStatusParagraph = Tab:AddParagraph("ULTRAROCK Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP: STATUS UPDATE (every 0.5 seconds) =====
+task.spawn(function()
+    while true do
+        local statusText = updateTrackingDisplay()
+        pcall(function()
+            UltrarockStatusParagraph:Set(statusText)
+        end)
+        task.wait(0.5)
+    end
+end)
+
+-- ===== LOOP: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkUltrarockBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- ===== ULTRAROCK TRACKING TOGGLE =====
+local toggleEnabled = false
+
+UltrarockToggle = Tab:AddToggle({
+    Name = "ULTRAROCK Badge Tracker",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Check conditions
+            if not hasValidGlove() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Diamond, MEGAROCK or CUSTOM Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                UltrarockToggle:Set(false)
+                return
+            end
+            
+            if not hasEntered() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You need to enter the arena!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                UltrarockToggle:Set(false)
+                return
+            end
+            
+            if not hasRock() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You need to have rock form! Use MEGAROCK ability first.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                UltrarockToggle:Set(false)
+                return
+            end
+            
+            -- Reset tracking
+            touchedPlayers = {}
+            totalPeopleTouched = 0
+            isTracking = true
+            
+            -- Start touch tracking
+            startTouchTracking()
+            
+            OrionLib:MakeNotification({
+                Name = "ULTRAROCK",
+                Content = "Tracking started! Need " .. totalPeopleNeeded .. " different players to touch your rock.",
+                Image = "rbxassetid://7743878857",
+                Time = 4
+            })
+        else
+            -- Stop tracking
+            isTracking = false
+            isTrackingActive = false
+            
+        end
+    end
+})
+
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkUltrarockBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+UltrarockStatusParagraph:Set(updateTrackingDisplay())
 
 Section = Tab:AddSection({
     Name = "Diamond/MEGAROCK/CUSTOM"
@@ -3489,26 +5818,365 @@ game:GetService("ReplicatedStorage"):WaitForChild("Erase"):FireServer()
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Voodoo",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
 
-Tab:AddButton({
-	Name = "Auto Get Voodoo Glove",
-	Callback = function()  
-if game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-wait(0.5)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
-wait(1)
-game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
-else
-OrionLib:MakeNotification({Name = "Error",Content = "Equip Ghost",Image = "rbxassetid://7743878857",Time = 3})
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Timer variables
+local isAutoVoodoo = false
+local voodooStarted = false
+local voodooStopped = false
+local voodooFinished = false
+local voodooStartTime = nil
+local voodooElapsedTime = 0
+local totalTimeNeeded = 60 * 60 -- 1 hour in seconds (3600 seconds)
+local savedStoppedTime = nil
+
+-- Display variables for Voodoo Status
+local currentTimeWaiting = "Waiting for auto voodoo..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "Not Stopped"
+local currentTimeFinished = "Not Finished"
+
+-- Variables
+local isAntiAfkEnabled = false
+local ownInsanityBadge = false
+local autoVoodooLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- Insanity Badge ID
+local INSANITY_BADGE_ID = 2132544202
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("entered") ~= nil
+    end
+    return false
 end
+
+-- Function to check if Ghost glove is equipped
+local function hasGhostGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        return player.leaderstats.Glove.Value == "Ghost"
+    end
+    return false
 end
+
+-- Function to check if Insanity badge is owned
+local function checkInsanityBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == INSANITY_BADGE_ID then
+                    ownInsanityBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownInsanityBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownInsanityBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns Insanity Badge: %s
+Insanity Badge Awards Glove: Voodoo Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to format time (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to fire Ghost invisibility remote
+local function fireGhostRemote()
+    pcall(function()
+        local ghostRemote = replicatedStorage:FindFirstChild("Ghostinvisibilityactivated")
+        if ghostRemote then
+            ghostRemote:FireServer()
+            print("👻 Ghost remote fired!")
+        end
+    end)
+end
+
+-- Function to update voodoo status display
+local function updateVoodooDisplay()
+    if voodooFinished then
+        currentTimeWaiting = "Finished!"
+        currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        currentTimeStopped = "N/A"
+        currentTimeFinished = formatTime(totalTimeNeeded, 0)
+    elseif voodooStopped then
+        currentTimeWaiting = "Stopped"
+        local elapsedMs = (voodooElapsedTime - math.floor(voodooElapsedTime)) * 1000
+        currentTimeStarted = formatTime(voodooElapsedTime, elapsedMs)
+        currentTimeStopped = formatTime(voodooElapsedTime, elapsedMs)
+        currentTimeFinished = "Not Finished"
+    elseif voodooStarted then
+        currentTimeWaiting = "Auto voodoo started..."
+        local elapsedMs = (voodooElapsedTime - math.floor(voodooElapsedTime)) * 1000
+        currentTimeStarted = formatTime(voodooElapsedTime, elapsedMs)
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    elseif not isAutoVoodoo then
+        currentTimeWaiting = "Waiting for auto voodoo..."
+        currentTimeStarted = "Not Started"
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    end
+    
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    
+    local statusText = string.format([[
+Auto Voodoo Farm Time Waiting: %s
+Auto Voodoo Farm Time Started: %s
+Auto Voodoo Farm Time Stopped: %s
+Auto Voodoo Farm Time Finished: %s
+Total Time Need: %s
+Anti AFK: %s
+]],
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local VoodooStatusParagraph = Tab:AddParagraph("Auto Voodoo Farm Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP 1: VOODOO STATUS UPDATE (0.01 SECONDS) =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        if voodooStarted and not voodooFinished and not voodooStopped then
+            local currentTime = tick()
+            voodooElapsedTime = currentTime - voodooStartTime
+        end
+        
+        local statusText = updateVoodooDisplay()
+        pcall(function()
+            VoodooStatusParagraph:Set(statusText)
+        end)
+        
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.005, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- ===== LOOP 2: TIMER UPDATE (every frame for accuracy) =====
+task.spawn(function()
+    while true do
+        if voodooStarted and not voodooFinished and not voodooStopped then
+            local currentTime = tick()
+            voodooElapsedTime = currentTime - voodooStartTime
+            
+            if voodooElapsedTime >= totalTimeNeeded then
+                voodooFinished = true
+                isAutoVoodoo = false
+                voodooStarted = false
+                
+                pcall(function()
+                    AutoVoodoo:Set(false)
+                end)
+            end
+        end
+        task.wait()
+    end
+end)
+
+-- ===== LOOP 3: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkInsanityBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- ===== AUTO GET VOODOO GLOVE TOGGLE =====
+AutoVoodoo = Tab:AddToggle({
+    Name = "Auto Get Voodoo Glove",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Check conditions before starting
+            if not hasGhostGlove() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Ghost Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoVoodoo:Set(false)
+                return
+            end
+            
+            if not hasEntered() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You need to enter the arena!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoVoodoo:Set(false)
+                return
+            end
+            
+            -- Reset and start timer
+            isAutoVoodoo = true
+            voodooStarted = true
+            voodooStopped = false
+            voodooFinished = false
+            voodooStartTime = tick()
+            voodooElapsedTime = 0
+            savedStoppedTime = nil
+            
+            -- Start the voodoo loop
+            if autoVoodooLoop then
+                task.cancel(autoVoodooLoop)
+                autoVoodooLoop = nil
+            end
+            
+            autoVoodooLoop = task.spawn(function()
+                while AutoVoodoo and isAutoVoodoo and not voodooFinished do
+                    -- Check conditions every iteration
+                    if not hasGhostGlove() then
+                        OrionLib:MakeNotification({
+                            Name = "Auto Voodoo",
+                            Content = "Ghost Glove unequipped! Stopping...",
+                            Image = "rbxassetid://7743878857",
+                            Time = 3
+                        })
+                        AutoVoodoo:Set(false)
+                        break
+                    end
+                    
+                    if not hasEntered() then
+                        OrionLib:MakeNotification({
+                            Name = "Auto Voodoo",
+                            Content = "Left arena! Stopping...",
+                            Image = "rbxassetid://7743878857",
+                            Time = 3
+                        })
+                        AutoVoodoo:Set(false)
+                        break
+                    end
+                    
+                    -- Teleport to position
+                    local char = player.Character
+                    if char and char:FindFirstChild("HumanoidRootPart") then
+                        char.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
+                        task.wait(1)
+                    end
+                    
+                    -- Fire remote
+                    fireGhostRemote()
+                    
+                    -- Update timer
+                    if voodooStarted and not voodooFinished then
+                        local currentTime = tick()
+                        voodooElapsedTime = currentTime - voodooStartTime
+                        
+                        if voodooElapsedTime >= totalTimeNeeded then
+                            voodooFinished = true
+                            isAutoVoodoo = false
+                            voodooStarted = false
+                            AutoVoodoo:Set(false)
+                            break
+                        end
+                    end
+                    
+                    task.wait(1.5) -- Wait between attempts
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Voodoo",
+                Content = "Started! Will run for 1 hour",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        else
+            -- DISABLE TOGGLE
+            if autoVoodooLoop then
+                task.cancel(autoVoodooLoop)
+                autoVoodooLoop = nil
+            end
+            isAutoVoodoo = false
+            voodooStopped = true
+            voodooStarted = false
+            savedStoppedTime = voodooElapsedTime
+            
+        end
+    end    
 })
 
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkInsanityBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+VoodooStatusParagraph:Set(updateVoodooDisplay())
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "Goofy",
 	Icon = "rbxassetid://7733673987",
@@ -3653,6 +6321,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Leash",
 	Icon = "rbxassetid://7733673987",
@@ -3735,6 +6405,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Flamarang",
 	Icon = "rbxassetid://7733673987",
@@ -3942,6 +6614,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Kinetic",
 	Icon = "rbxassetid://7733673987",
@@ -3955,40 +6629,355 @@ fireclickdetector(workspace.Lobby["Stun"].ClickDetector)
     end
 })
 
-Tab:AddButton({
-	Name = "Auto Get Kinetic Glove",
-	Callback = function()   
-wait(0.2)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
-wait(0.2)
-if game.Players.LocalPlayer.leaderstats.Glove.Value == "Stun" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-OGL = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-for i = 1,150 do
-game.ReplicatedStorage.SelfKnockback:FireServer({["Force"] = 0,["Direction"] = Vector3.new(0,0.01,0)})
-wait(0.05)
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Counter variables
+local usedSelfKnockbackTimes = 0
+local usedStunAbilityTimes = 0
+local requiredSelfKnockback = 100
+local requiredStunAbility = 50
+local isAutoKinetic = false
+
+-- Variables
+local isAntiAfkEnabled = false
+local ownKineticallyChargedBadge = false
+local autoKineticLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- Kinetically Charged Badge ID
+local KINETICALLY_CHARGED_BADGE_ID = 2141386326
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("entered") ~= nil
+    end
+    return false
 end
-wait(1.5)
-repeat
-local players = game.Players:GetChildren()
-local RandomPlayer = players[math.random(1, #players)]
-repeat RandomPlayer = players[math.random(1, #players)] until RandomPlayer ~= game.Players.LocalPlayer and RandomPlayer.Character:FindFirstChild("entered") and RandomPlayer.Character:FindFirstChild("rock") == nil and RandomPlayer.Character.Head:FindFirstChild("UnoReverseCard") == nil and RandomPlayer.Character.Humanoid.Health ~= 0
-Target = RandomPlayer
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
-wait(0.25)
-game.ReplicatedStorage.StunR:FireServer(game.Players.LocalPlayer.Character.Stun)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OGL
-wait(0.5)
-if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("EMPStunBadgeCounter") then
-OrionLib:MakeNotification({Name = "Tip",Content = "Counter Stun [ "..game.Players.LocalPlayer.Character.EMPStunBadgeCounter.Value.." ]",Image = "rbxassetid://7733975185",Time = 5})
+
+-- Function to check if Stun glove is equipped
+local function hasStunGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        return player.leaderstats.Glove.Value == "Stun"
+    end
+    return false
 end
-wait(12.3)
-until game.Players.LocalPlayer.Character:FindFirstChild("EMPStunBadgeCounter") and game.Players.LocalPlayer.Character.EMPStunBadgeCounter.Value >= 50
-else
-OrionLib:MakeNotification({Name = "Error",Content = "Equip Stun",Image = "rbxassetid://7743878857",Time = 3})
+
+-- Function to check if Kinetically Charged badge is owned
+local function checkKineticallyChargedBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == KINETICALLY_CHARGED_BADGE_ID then
+                    ownKineticallyChargedBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownKineticallyChargedBadge = false
+    return false
 end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownKineticallyChargedBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns Kinetically Charged Badge: %s
+Kinetically Charged Badge Awards Glove: Kinetic Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
 end
+
+-- Function to update kinetic status display
+local function updateKineticDisplay()
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local selfKnockbackStatus = usedSelfKnockbackTimes .. "/" .. requiredSelfKnockback
+    local stunAbilityStatus = usedStunAbilityTimes .. "/" .. requiredStunAbility
+    
+    local statusText = string.format([[
+Used Self Knockback Times: %s
+Used Stun Ability Times: %s
+Required Self Knockback Times: %d
+Required Stun Ability Times: %d
+Anti AFK: %s
+]],
+    selfKnockbackStatus,
+    stunAbilityStatus,
+    requiredSelfKnockback,
+    requiredStunAbility,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local KineticStatusParagraph = Tab:AddParagraph("Auto Kinetic Farm Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP: STATUS UPDATE =====
+task.spawn(function()
+    while true do
+        local statusText = updateKineticDisplay()
+        pcall(function()
+            KineticStatusParagraph:Set(statusText)
+        end)
+        task.wait(0.5)
+    end
+end)
+
+-- ===== LOOP: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkKineticallyChargedBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- Function to fire SelfKnockback remote
+local function fireSelfKnockback()
+    pcall(function()
+        local selfKnockback = replicatedStorage:FindFirstChild("SelfKnockback")
+        if selfKnockback then
+            selfKnockback:FireServer({["Force"] = 0, ["Direction"] = Vector3.new(0, 0.01, 0)})
+            usedSelfKnockbackTimes = usedSelfKnockbackTimes + 1
+        end
+    end)
+end
+
+-- Function to fire StunR remote
+local function fireStunR(stun)
+    pcall(function()
+        local stunR = replicatedStorage:FindFirstChild("StunR")
+        if stunR and stun then
+            stunR:FireServer(stun)
+            usedStunAbilityTimes = usedStunAbilityTimes + 1
+        end
+    end)
+end
+
+-- ===== AUTO GET KINETIC GLOVE TOGGLE =====
+AutoKinetic = Tab:AddToggle({
+    Name = "Auto Get Kinetic Glove",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Check conditions before starting
+            if not hasStunGlove() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Stun Glove",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoKinetic:Set(false)
+                return
+            end
+            
+            if not hasEntered() then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You need to enter the arena!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                AutoKinetic:Set(false)
+                return
+            end
+            
+            -- Reset counters
+            usedSelfKnockbackTimes = 0
+            usedStunAbilityTimes = 0
+            
+            -- Start the kinetic loop
+            if autoKineticLoop then
+                task.cancel(autoKineticLoop)
+                autoKineticLoop = nil
+            end
+            
+            autoKineticLoop = task.spawn(function()
+                local char = player.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                
+                if not hrp then return end
+                
+                -- Save original position
+                local OGL = hrp.CFrame
+                
+                -- Teleport to position
+                hrp.CFrame = CFrame.new(10001, -42, 10000)
+                task.wait(0.2)
+                
+                -- Fire self knockback 100 times
+                for i = 1, requiredSelfKnockback do
+                    if not AutoKinetic then break end
+                    fireSelfKnockback()
+                    task.wait(0.05)
+                end
+                
+                task.wait(1.5)
+                
+                -- Main stun loop
+                while AutoKinetic and isAutoKinetic do
+                    -- Check conditions
+                    if not hasStunGlove() then
+                        OrionLib:MakeNotification({
+                            Name = "Auto Kinetic",
+                            Content = "Stun Glove unequipped! Stopping...",
+                            Image = "rbxassetid://7743878857",
+                            Time = 3
+                        })
+                        AutoKinetic:Set(false)
+                        break
+                    end
+                    
+                    if not hasEntered() then
+                        OrionLib:MakeNotification({
+                            Name = "Auto Kinetic",
+                            Content = "Left arena! Stopping...",
+                            Image = "rbxassetid://7743878857",
+                            Time = 3
+                        })
+                        AutoKinetic:Set(false)
+                        break
+                    end
+                    
+                    -- Check if reached stun goal
+                    if usedStunAbilityTimes >= requiredStunAbility then
+                        AutoKinetic:Set(false)
+                        OrionLib:MakeNotification({
+                            Name = "Success",
+                            Content = "Kinetic Glove unlocked!",
+                            Image = "rbxassetid://7733975185",
+                            Time = 5
+                        })
+                        break
+                    end
+                    
+                    -- Find valid random player
+                    local players = game.Players:GetPlayers()
+                    if #players >= 2 then
+                        local targetPlayer = nil
+                        local findAttempts = 0
+                        
+                        while not targetPlayer and findAttempts < 30 do
+                            findAttempts = findAttempts + 1
+                            local randomPlayer = players[math.random(1, #players)]
+                            
+                            if randomPlayer ~= player then
+                                local targetChar = randomPlayer.Character
+                                if targetChar and targetChar:FindFirstChild("entered") then
+                                    local targetHumanoid = targetChar:FindFirstChild("Humanoid")
+                                    if targetHumanoid and targetHumanoid.Health > 0 then
+                                        targetPlayer = randomPlayer
+                                        break
+                                    end
+                                end
+                            end
+                            task.wait(0.1)
+                        end
+                        
+                        if targetPlayer then
+                            char = player.Character
+                            hrp = char and char:FindFirstChild("HumanoidRootPart")
+                            if not hrp then break end
+                            
+                            -- Teleport to target
+                            local targetChar = targetPlayer.Character
+                            if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+                                hrp.CFrame = targetChar.HumanoidRootPart.CFrame * CFrame.new(0, -20, 0)
+                                task.wait(0.25)
+                            end
+                            
+                            -- Fire stun remote
+                            local stun = char:FindFirstChild("Stun")
+                            if stun then
+                                fireStunR(stun)
+                                
+                                -- Show progress
+                                OrionLib:MakeNotification({
+                                    Name = "Progress",
+                                    Content = "Stun Ability [ " .. usedStunAbilityTimes .. " / " .. requiredStunAbility .. " ]",
+                                    Image = "rbxassetid://7733975185",
+                                    Time = 3
+                                })
+                            end
+                            
+                            -- Teleport back to position (10001, -42, 10000)
+                            hrp.CFrame = CFrame.new(10001, -42, 10000)
+                            task.wait(0.5)
+                            
+                            task.wait(12.3)
+                        else
+                            task.wait(2)
+                        end
+                    else
+                        task.wait(2)
+                    end
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Kinetic",
+                Content = "Started! Need " .. requiredSelfKnockback .. " self knockbacks and " .. requiredStunAbility .. " stuns",
+                Image = "rbxassetid://7743878857",
+                Time = 4
+            })
+        else
+            -- DISABLE TOGGLE
+            if autoKineticLoop then
+                task.cancel(autoKineticLoop)
+                autoKineticLoop = nil
+            end
+            
+        end
+    end    
 })
 
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkKineticallyChargedBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+KineticStatusParagraph:Set(updateKineticDisplay())
+
+end
+do
 Tab = Window:MakeTab({
 	Name = "Berserk",
 	Icon = "rbxassetid://7733673987",
@@ -4087,6 +7076,8 @@ end
 	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Sparky",
 	Icon = "rbxassetid://7733673987",
@@ -4270,6 +7261,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Recall",
 	Icon = "rbxassetid://7733673987",
@@ -4471,6 +7464,8 @@ Tab:AddToggle({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Quake",
 	Icon = "rbxassetid://7733673987",
@@ -4645,11 +7640,13 @@ Tab:AddToggle({
                 end
             end)
         else
-            print("Auto General Ability stopped")
+
         end
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Psycho",
 	Icon = "rbxassetid://7733673987",
@@ -4791,6 +7788,8 @@ end
   	end 
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Kraken",
 	Icon = "rbxassetid://7733673987",
@@ -4873,6 +7872,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Counter",
 	Icon = "rbxassetid://7733673987",
@@ -5014,6 +8015,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Hammer",
 	Icon = "rbxassetid://7733673987",
@@ -5039,6 +8042,8 @@ end
 	end    
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "rob",
 	Icon = "rbxassetid://7733673987",
@@ -5544,6 +8549,8 @@ Tab:AddToggle({
 	end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Rhythm",
 	Icon = "rbxassetid://7733673987",
@@ -5601,6 +8608,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Rojo",
 	Icon = "rbxassetid://7733673987",
@@ -5618,6 +8627,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Hitman",
 	Icon = "rbxassetid://7733673987",
@@ -5663,6 +8674,8 @@ Tab:AddToggle({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Retro",
 	Icon = "rbxassetid://7733673987",
@@ -5680,6 +8693,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Null",
 	Icon = "rbxassetid://7733673987",
@@ -5782,6 +8797,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Lure",
 	Icon = "rbxassetid://7733673987",
@@ -6092,6 +9109,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Tinkerer",
 	Icon = "rbxassetid://7733673987",
@@ -6200,6 +9219,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Necromancer",
 	Icon = "rbxassetid://7733673987",
@@ -6316,6 +9337,8 @@ Tab:AddToggle({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Alchemist",
 	Icon = "rbxassetid://7733673987",
@@ -6428,6 +9451,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Druid",
 	Icon = "rbxassetid://7733673987",
@@ -6473,6 +9498,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Jester",
 	Icon = "rbxassetid://7733673987",
@@ -6510,6 +9537,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Scythe",
 	Icon = "rbxassetid://7733673987",
@@ -6552,6 +9581,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Santa",
 	Icon = "rbxassetid://7733673987",
@@ -6662,6 +9693,8 @@ end)
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Iceskate",
 	Icon = "rbxassetid://7733673987",
@@ -6677,6 +9710,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Blasphemy",
 	Icon = "rbxassetid://7733673987",
@@ -6700,6 +9735,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Pan",
 	Icon = "rbxassetid://7733673987",
@@ -6956,6 +9993,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Admin",
 	Icon = "rbxassetid://7733673987",
@@ -7090,6 +10129,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Joust",
 	Icon = "rbxassetid://7733673987",
@@ -7195,11 +10236,13 @@ Tab:AddToggle({
                 end
             end)
         else
-            print("Auto General Ability stopped")
+
         end
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Firework",
 	Icon = "rbxassetid://7733673987",
@@ -7284,6 +10327,8 @@ game:GetService("ReplicatedStorage").AlchemistEvent:FireServer("EquipItem", "Cak
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Run",
 	Icon = "rbxassetid://7733673987",
@@ -7392,6 +10437,8 @@ Tab:AddToggle({
 	end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Glovel",
 	Icon = "rbxassetid://7733673987",
@@ -7418,6 +10465,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Divebomb",
 	Icon = "rbxassetid://7733673987",
@@ -7599,7 +10648,7 @@ Tab:AddToggle({
                 end
             end)
         else
-            print("GeneralAbility Stop")
+
         end
     end
 })
@@ -7627,7 +10676,7 @@ Tab:AddToggle({
                 end
             end)
         else
-            print("Auto General Ability stopped")
+
         end
     end
 })
@@ -7671,6 +10720,8 @@ player.Character.HumanoidRootPart.CFrame = CFrame.new(227, 48, 168)
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Lamp",
 	Icon = "rbxassetid://7733673987",
@@ -7690,6 +10741,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Knockoff",
 	Icon = "rbxassetid://7733673987",
@@ -7816,6 +10869,8 @@ Tab:AddButton({
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Frostbite",
 	Icon = "rbxassetid://7733673987",
@@ -7955,6 +11010,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Plank",
 	Icon = "rbxassetid://7733673987",
@@ -7990,11 +11047,325 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Spoonful",
 	Icon = "rbxassetid://7733673987",
 	PremiumOnly = false
 	})
+
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+
+-- Variables
+local isAutoClicking = false
+local pointsWaiting = false
+local pointsStarted = false
+local pointsStopped = false
+local pointsFinished = false
+local selfDestructClicks = 0
+local requiredSelfDestructClicks = 100
+local requiredPoints = 5000
+local isAntiAfkEnabled = false
+local ownSlapBattlesSweepBadge = false
+local autoClickLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- SLAP BATTLES SWEEP Badge ID
+local SLAP_BATTLES_SWEEP_BADGE_ID = 2236076719770808
+
+-- Get player's tycoon model name (supports both encodings)
+local function getTycoonModelNames()
+    local username = player.Name
+    -- Return both possibilities - will check both when searching
+    return {"\195\133Tycoon" .. username, "\195\129Tycoon" .. username}
+end
+
+-- Function to find tycoon (checks both name variations)
+local function findTycoon()
+    local names = getTycoonModelNames()
+    for _, name in ipairs(names) do
+        local tycoon = workspace:FindFirstChild(name)
+        if tycoon then
+            return tycoon, name
+        end
+    end
+    return nil, nil
+end
+
+-- Function to get current points from Counter
+local function getCurrentPoints()
+    local tycoon = findTycoon()
+    if tycoon then
+        local counter = tycoon:FindFirstChild("Counter")
+        if counter then
+            local part = counter:FindFirstChild("Part")
+            if part then
+                local surfaceGui = part:FindFirstChild("SurfaceGui")
+                if surfaceGui then
+                    local textLabel = surfaceGui:FindFirstChild("TextLabel")
+                    if textLabel and textLabel:IsA("TextLabel") then
+                        local text = textLabel.Text
+                        local number = tonumber(text:match("%d+")) or 0
+                        return number
+                    end
+                end
+            end
+        end
+    end
+    return 0
+end
+
+-- Function to get self destruct clicks from SDCounter
+local function getSelfDestructClicks()
+    local tycoon = findTycoon()
+    if tycoon then
+        local sdCounter = tycoon:FindFirstChild("SDCounter")
+        if sdCounter then
+            local counter = sdCounter:FindFirstChild("Counter")
+            if counter then
+                local part = counter:FindFirstChild("Part")
+                if part then
+                    local surfaceGui = part:FindFirstChild("SurfaceGui")
+                    if surfaceGui then
+                        local textLabel = surfaceGui:FindFirstChild("TextLabel")
+                        if textLabel and textLabel:IsA("TextLabel") then
+                            local text = textLabel.Text
+                            local number = tonumber(text:match("%d+")) or 0
+                            return number
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nil
+end
+
+-- Function to check if SLAP BATTLES SWEEP badge is owned
+local function checkSlapBattlesSweepBadge()
+    local userId = player.UserId
+    local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
+    
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, badge in ipairs(data.data) do
+                if badge.id == SLAP_BATTLES_SWEEP_BADGE_ID then
+                    ownSlapBattlesSweepBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    ownSlapBattlesSweepBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownSlapBattlesSweepBadge and "✅ Yes" or "❌ No"
+    badgeStatusText = string.format([[
+Owns SLAP BATTLES SWEEP Badge: %s
+SLAP BATTLES SWEEP Badge Awards Glove: Spoonful Glove
+]],
+    badgeStatus
+)
+    return badgeStatusText
+end
+
+-- Function to update points status display
+local function updatePointsDisplay()
+    local currentPoints = getCurrentPoints()
+    local autoClickStatus = isAutoClicking and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local selfDestructDisplay = "Not Found"
+    
+    local sdValue = getSelfDestructClicks()
+    if sdValue ~= nil then
+        selfDestructDisplay = sdValue .. "/" .. requiredSelfDestructClicks
+    end
+    
+    -- Points Show status logic
+    local waitingStatus = "Waiting to start..."
+    local startedStatus = "Not Started"
+    local stoppedStatus = "Not Stopped"
+    local finishedStatus = "Not Finished"
+    
+    if pointsFinished then
+        waitingStatus = "Finished!"
+        startedStatus = requiredPoints .. "/" .. requiredPoints
+        stoppedStatus = "N/A"
+        finishedStatus = requiredPoints .. "/" .. requiredPoints
+    elseif pointsStopped then
+        waitingStatus = "Stopped"
+        startedStatus = currentPoints .. "/" .. requiredPoints
+        stoppedStatus = currentPoints .. "/" .. requiredPoints
+        finishedStatus = "Not Finished"
+    elseif pointsStarted then
+        waitingStatus = "Running..."
+        startedStatus = currentPoints .. "/" .. requiredPoints
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    elseif not isAutoClicking then
+        waitingStatus = "Ready to start"
+        startedStatus = "Not Started"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    end
+    
+    local statusText = string.format([[
+Points Show Waiting: %s
+Points Show Started: %s
+Points Show Stopped: %s
+Points Show Finished: %s
+AutoClick: %s
+Self Destruct Button Clicked Times: %s
+Anti AFK: %s
+]],
+    waitingStatus,
+    startedStatus,
+    stoppedStatus,
+    finishedStatus,
+    autoClickStatus,
+    selfDestructDisplay,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local TycoonStatusParagraph = Tab:AddParagraph("Tycoon Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP: TYCOON STATUS UPDATE =====
+task.spawn(function()
+    while true do
+        local statusText = updatePointsDisplay()
+        pcall(function()
+            TycoonStatusParagraph:Set(statusText)
+        end)
+        task.wait(0.5)
+    end
+end)
+
+-- ===== LOOP: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkSlapBattlesSweepBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- ===== AUTO CLICK TYCOON TOGGLE =====
+_G.AutoTycoon = false
+
+AutoClickTycoon = Tab:AddToggle({
+    Name = "Auto Click Tycoon",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoTycoon = Value
+        isAutoClicking = Value
+        
+        if Value then
+            pointsStarted = true
+            pointsStopped = false
+            pointsFinished = false
+            pointsWaiting = false
+            
+            if autoClickLoop then
+                task.cancel(autoClickLoop)
+                autoClickLoop = nil
+            end
+            
+            autoClickLoop = task.spawn(function()
+                while _G.AutoTycoon do
+                    -- Check if points reached required amount
+                    local currentPoints = getCurrentPoints()
+                    if currentPoints >= requiredPoints then
+                        pointsFinished = true
+                        pointsStarted = false
+                        _G.AutoTycoon = false
+                        AutoClickTycoon:Set(false)
+                        
+                        OrionLib:MakeNotification({
+                            Name = "Tycoon",
+                            Content = "Goal reached! " .. currentPoints .. "/" .. requiredPoints .. " points!",
+                            Image = "rbxassetid://7743878857",
+                            Time = 5
+                        })
+                        break
+                    end
+                    
+                    pcall(function()
+                        local tycoon = findTycoon()
+                        if tycoon then
+                            local clickPart = tycoon:FindFirstChild("Click")
+                            if clickPart and clickPart:IsA("BasePart") then
+                                local detector = clickPart:FindFirstChildOfClass("ClickDetector")
+                                if detector then
+                                    fireclickdetector(detector)
+                                end
+                            end
+                        end
+                    end)
+                    task.wait()
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Click Tycoon",
+                Content = "Started! Need " .. requiredPoints .. " points",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        else
+            if autoClickLoop then
+                task.cancel(autoClickLoop)
+                autoClickLoop = nil
+            end
+            pointsStopped = true
+            pointsStarted = false
+            
+            local currentPoints = getCurrentPoints()
+
+        end
+    end
+})
+
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkSlapBattlesSweepBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+TycoonStatusParagraph:Set(updatePointsDisplay())
 
     Tab:AddButton({
     Name = "Equip Tycoon (Plate Master Badge Need)",
@@ -8065,29 +11436,8 @@ end
 end
 })
 
-Tab:AddToggle({
-	Name = "Auto Click Tycoon",
-	Default = false,
-	Callback = function(Value)
-		_G.AutoTycoon = Value
-
-		while _G.AutoTycoon do
-			for _, v in pairs(workspace:GetChildren()) do
-				if string.find(v.Name, "ÅTycoon") then
-					local clickPart = v:FindFirstChild("Click")
-					if clickPart and clickPart:IsA("BasePart") then
-						local detector = clickPart:FindFirstChildOfClass("ClickDetector")
-						if detector then
-							fireclickdetector(detector)
-						end
-					end
-				end
-			end
-			task.wait()
-		end
-	end
-})
-
+end
+do
 Tab = Window:MakeTab({
 	Name = "the schlob",
 	Icon = "rbxassetid://7733673987",
@@ -8119,6 +11469,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Siphon",
 	Icon = "rbxassetid://7733673987",
@@ -8159,6 +11511,8 @@ OrionLib:MakeNotification({Name = "Error",Content = "0+ Slaps Required",Image = 
 	end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Wrench",
 	Icon = "rbxassetid://7733673987",
@@ -8262,6 +11616,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Hunter",
 	Icon = "rbxassetid://7733673987",
@@ -8583,6 +11939,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Relude",
 	Icon = "rbxassetid://7733673987",
@@ -8904,6 +12262,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Avatar",
 	Icon = "rbxassetid://7733673987",
@@ -9225,6 +12585,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Water",
 	Icon = "rbxassetid://7733673987",
@@ -9586,6 +12948,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Fan",
 	Icon = "rbxassetid://7733673987",
@@ -9669,6 +13033,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Boxer",
 	Icon = "rbxassetid://7733673987",
@@ -9721,6 +13087,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "MATERIALIZE",
 	Icon = "rbxassetid://7733673987",
@@ -9744,6 +13112,8 @@ end
 	end    
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Bind",
 	Icon = "rbxassetid://7733673987",
@@ -9794,6 +13164,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Poltergeist",
 	Icon = "rbxassetid://7733673987",
@@ -9844,6 +13216,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Clock",
 	Icon = "rbxassetid://7733673987",
@@ -9990,6 +13364,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Untitled Tag Glove",
 	Icon = "rbxassetid://7733673987",
@@ -10040,6 +13416,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Pillow",
 	Icon = "rbxassetid://7733673987",
@@ -10136,6 +13514,8 @@ game:GetService("ReplicatedStorage"):WaitForChild("ZZZZZZZSleep"):FireServer()
 end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Angler",
 	Icon = "rbxassetid://7733673987",
@@ -10183,6 +13563,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Jerry",
 	Icon = "rbxassetid://7733673987",
@@ -10329,6 +13711,8 @@ end)
 end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Snowroller",
 	Icon = "rbxassetid://7733673987",
@@ -10405,6 +13789,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Mouse",
 	Icon = "rbxassetid://7733673987",
@@ -10514,6 +13900,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Hexa",
 	Icon = "rbxassetid://7733673987",
@@ -10655,6 +14043,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Metaverse",
 	Icon = "rbxassetid://7733673987",
@@ -10867,6 +14257,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Swordfighter",
 	Icon = "rbxassetid://7733673987",
@@ -10995,6 +14387,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Tank",
 	Icon = "rbxassetid://7733673987",
@@ -11119,6 +14513,8 @@ end
 end
 })
 
+end
+do
         Tab = Window:MakeTab({
 	Name = "Eggler",
 	Icon = "rbxassetid://7733673987",
@@ -11235,6 +14631,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Silly",
 	Icon = "rbxassetid://7733673987",
@@ -11386,6 +14784,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Car Keys",
 	Icon = "rbxassetid://7733673987",
@@ -11475,6 +14875,8 @@ game:GetService("ReplicatedStorage"):WaitForChild("AdiosActivated"):FireServer()
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Suction",
 	Icon = "rbxassetid://7733673987",
@@ -11562,6 +14964,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Bounty",
 	Icon = "rbxassetid://7733673987",
@@ -11609,6 +15013,8 @@ end
 end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Debug",
 	Icon = "rbxassetid://7733673987",
@@ -11721,6 +15127,8 @@ Tab:AddButton({
 	end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Plate",
 	Icon = "rbxassetid://7733673987",
@@ -11799,6 +15207,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Lag",
 	Icon = "rbxassetid://7733673987",
@@ -11822,6 +15232,8 @@ end
 end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Harvester",
 	Icon = "rbxassetid://7733673987",
@@ -11900,6 +15312,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Riftshot",
 	Icon = "rbxassetid://7733673987",
@@ -11978,6 +15392,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Conker",
 	Icon = "rbxassetid://7733673987",
@@ -12132,6 +15548,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Wheelchair",
 	Icon = "rbxassetid://7733673987",
@@ -12597,6 +16015,8 @@ end
 end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Elf",
 	Icon = "rbxassetid://7733673987",
@@ -12610,6 +16030,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Shopkeeper",
 	Icon = "rbxassetid://7733673987",
@@ -12644,6 +16066,8 @@ fireclickdetector(workspace.JobApplication.paper.ClickDetector)
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Collector",
 	Icon = "rbxassetid://7733673987",
@@ -12657,6 +16081,8 @@ fireclickdetector(workspace.FindTheGlovesTeleport.ClickDetector)
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Glaxe",
 	Icon = "rbxassetid://7733673987",
@@ -12670,6 +16096,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Piñata",
 	Icon = "rbxassetid://7733673987",
@@ -12866,6 +16294,8 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pinata.CF
     end
 })
 
+end
+do
     Tab = Window:MakeTab({
 	Name = "Penguin",
 	Icon = "rbxassetid://7733673987",
@@ -12879,6 +16309,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Undead",
 	Icon = "rbxassetid://7733673987",
@@ -12909,6 +16341,8 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =CFrame.new(-82, -30,
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Groundbreaker",
 	Icon = "rbxassetid://7733673987",
@@ -12985,6 +16419,8 @@ end
 end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Shellbert",
 	Icon = "rbxassetid://7733673987",
@@ -13101,6 +16537,8 @@ Tab:AddButton({
     end
 })
 
+end
+do
 Tab = Window:MakeTab({
 	Name = "Lasso",
 	Icon = "rbxassetid://7733673987",
@@ -13280,6 +16718,162 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Bear
     end
 })
 
+end
+do
+Tab = Window:MakeTab({
+	Name = "Lotus",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Lotus Obtainment",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(93981091811742)
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Elastic",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Equip Gummy (7750+ Slaps Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Gummy"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Slap Player",
+    Callback = function()
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Gummy" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Right Arm"
+        if player.Character and player.Character:FindFirstChild("Right Arm") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character["Right Arm"]
+            }
+
+            -- Fire the server with the "Right Arm" part as an argument
+            ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+        end
+    end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Gummy",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+local WalkFlingActive = false
+local WalkFlingConnection = nil
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- Get HumanoidRootPart
+local function getRoot(char)
+    return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+-- Enable noclip
+local function setNoclip(enabled)
+    local character = player.Character
+    if character then
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = not enabled
+            end
+        end
+    end
+end
+
+-- WalkFling loop
+local function startWalkFling()
+    if WalkFlingConnection then return end
+    
+    WalkFlingConnection = RunService.Heartbeat:Connect(function()
+        if not WalkFlingActive then return end
+        
+        local character = player.Character
+        local root = getRoot(character)
+        local vel = nil
+        local movel = 0.1
+        
+        -- Wait for valid character
+        while not (character and character.Parent and root and root.Parent) do
+            RunService.Heartbeat:Wait()
+            character = player.Character
+            root = getRoot(character)
+        end
+        
+        -- Store velocity and apply fling
+        vel = root.Velocity
+        root.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+        
+        -- Enable noclip while flinging
+        setNoclip(true)
+        
+        -- Restore velocity after a tick
+        RunService.RenderStepped:Wait()
+        if character and character.Parent and root and root.Parent then
+            root.Velocity = vel
+        end
+        
+        -- Add oscillating force
+        RunService.Stepped:Wait()
+        if character and character.Parent and root and root.Parent then
+            root.Velocity = vel + Vector3.new(0, movel, 0)
+            movel = movel * -1
+        end
+    end)
+end
+
+local function stopWalkFling()
+    WalkFlingActive = false
+    if WalkFlingConnection then
+        WalkFlingConnection:Disconnect()
+        WalkFlingConnection = nil
+    end
+    setNoclip(false)
+end
+
+-- Auto-disable on death
+player.CharacterAdded:Connect(function()
+    task.wait(0.1)
+    if WalkFlingActive then
+        stopWalkFling()
+        task.wait(0.1)
+        WalkFlingActive = true
+        startWalkFling()
+    end
+end)
+
+-- Orion Hub Toggle
+Tab:AddToggle({
+    Name = "WalkFling",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            WalkFlingActive = true
+            startWalkFling()
+        else
+            stopWalkFling()
+        end
+    end
+})
+
+end
+do
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
@@ -13403,7 +16997,7 @@ Tab:AddButton({
 
 -- Section: Badge Giver
 Section = Tab:AddSection({
-    Name = "Badge Giver"
+    Name = "Stuff Giver"
 })
 
 Tab:AddButton({
@@ -13412,6 +17006,192 @@ Tab:AddButton({
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
     end
 })
+
+Tab:AddButton({
+    Name = "Give All Emotes (Free + Fe)",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+    end
+})
+
+-- Variables
+local deathSoundEnabled = false
+local currentSoundId = ""
+local monitorConnection = nil
+local childAddedConnections = {}
+
+-- Function to clean up old connections
+local function cleanupConnections()
+    if monitorConnection then
+        monitorConnection:Disconnect()
+        monitorConnection = nil
+    end
+    
+    for _, conn in pairs(childAddedConnections) do
+        pcall(function()
+            conn:Disconnect()
+        end)
+    end
+    childAddedConnections = {}
+end
+
+-- Function to modify death sounds in a character
+local function modifyDeathSounds(character)
+    if not deathSoundEnabled then return end
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    for _, sound in pairs(torso:GetChildren()) do
+        if sound:IsA("Sound") then
+            local soundName = sound.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                pcall(function()
+                    if sound.SoundId ~= currentSoundId then
+                        sound.SoundId = currentSoundId
+                    end
+                end)
+            end
+        end
+    end
+end
+
+-- Function to setup listener for new sounds
+local function setupSoundListener(character)
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    local connection = torso.ChildAdded:Connect(function(child)
+        if child:IsA("Sound") and deathSoundEnabled then
+            local soundName = child.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                task.wait(0.1)
+                pcall(function()
+                    child.SoundId = currentSoundId
+                end)
+            end
+        end
+    end)
+    
+    table.insert(childAddedConnections, connection)
+end
+
+-- Function to start monitoring
+local function startMonitoring()
+    if monitorConnection then return end
+    
+    monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if deathSoundEnabled then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                modifyDeathSounds(character)
+            end
+        end
+    end)
+    
+    -- Setup listener for current character
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        setupSoundListener(character)
+    end
+end
+
+-- Function to stop monitoring
+local function stopMonitoring()
+    cleanupConnections()
+end
+
+-- Function to update all existing death sounds
+local function updateAllDeathSounds()
+    if not deathSoundEnabled then return end
+    
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+        if torso then
+            for _, sound in pairs(torso:GetChildren()) do
+                if sound:IsA("Sound") then
+                    local soundName = sound.Name:lower()
+                    if soundName:find("death") or soundName:find("die") then
+                        pcall(function()
+                            sound.SoundId = currentSoundId
+                        end)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Add Sound ID TextBox
+Tab:AddParagraph("Custom Sound ID:", "Enter your sound ID below (format: rbxassetid://1234567890)")
+
+local soundIdBox = Tab:AddTextbox({
+    Name = "Put Custom Sound ID",
+    Default = currentSoundId,
+    TextDisappear = false,
+    Callback = function(value)
+        if value and value ~= "" then
+            -- Ensure it has rbxassetid:// prefix if not present
+            if not value:find("rbxassetid://") then
+                currentSoundId = "rbxassetid://" .. value
+            else
+                currentSoundId = value
+            end
+            
+            -- Update existing sounds if enabled
+            if deathSoundEnabled then
+                updateAllDeathSounds()
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Sound ID Updated",
+                Content = "New sound ID: " .. currentSoundId,
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Add Toggle for auto apply
+Tab:AddToggle({
+    Name = "Auto Apply Death Sound",
+    Default = false,
+    Callback = function(value)
+        deathSoundEnabled = value
+        
+        if value then
+            startMonitoring()
+            updateAllDeathSounds()
+            
+            OrionLib:MakeNotification({
+                Name = "Death Sound Modifier",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
+                Time = 3
+            })
+        else
+            stopMonitoring()
+            
+        end
+    end
+})
+
+-- Handle character respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    
+    if deathSoundEnabled then
+        setupSoundListener(character)
+        task.wait(0.2)
+        modifyDeathSounds(character)
+    end
+end)
+
+-- Initial setup
+startMonitoring()
 
 -- Variables
 local nametagText = ""
@@ -14411,5 +18191,28 @@ Tab:AddButton({
     end
 })
 
+-- OTHER SETTINGS
+local Tab = Window:MakeTab({
+    Name = "Other Settings",
+    Icon = "rbxassetid://8997386997",
+    PremiumOnly = false
+})
+
+local ThemePicker = Tab:AddThemeDropdown({
+    Name = "UI Theme"
+})
+
+Section = Tab:AddSection({
+    Name = "Destroy Script"
+})
+
+Tab:AddButton({
+    Name = "Destroy Gui",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+end
 end
 OrionLib:Init()
