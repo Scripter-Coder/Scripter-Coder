@@ -18,61 +18,72 @@ Fluent:Notify({Title = "From Scripter", Content = "GoodLuck!", Duration = 3})
 Tab = Window:AddTab({Title = "Welcome", Icon = "rbxassetid://7733673987"})
 
 local player = game.Players.LocalPlayer
-Tab:AddParagraph({Title = "Hello " .. player.Name .. "!"})
 
-Section = Tab:AddSection("Before u will start using mine script would u like to bypass anticheat?")
+-- Create section
+local MainSection = Tab:AddSection("Before u will start using mine script would u like to bypass anticheat?")
 
+-- Bypass Anticheat Button
 Tab:AddButton({
-	Title = "Bypass All Anticheat",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
-task.wait(1.5)
-Fluent:Notify({Title = "Success", Content = "Bypassed All Anticheat", Duration = 3})
-end
+    Title = "Bypass All Anticheat",
+    Description = "Bypasses all anticheat systems",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
+        task.wait(1.5)
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Bypassed All Anticheat",
+            SubContent = "Anticheat bypassed successfully",
+            Duration = 3
+        })
+    end
 })
 
-Section = Tab:AddSection("Miscellaneous Instant Badges")
+-- Miscellaneous Instant Badges Section
+local BadgesSection = Tab:AddSection("Miscellaneous Instant Badges")
 
+-- Get Duck Button
 Tab:AddButton({
-	Title = "Get Duck",
-	Callback = function()
-fireclickdetector(workspace.Arena["default island"]["Rubber Ducky"])
-end
+    Title = "Get Duck",
+    Description = "Click the rubber ducky",
+    Callback = function()
+        fireclickdetector(workspace.Arena["default island"]["Rubber Ducky"])
+    end
 })
 
+-- Get Orange Button
 Tab:AddButton({
-	Title = "Get Orange",
-	Callback = function()
-fireclickdetector(game.Workspace.Arena.island5.Orange.ClickDetector)
-end
+    Title = "Get Orange",
+    Description = "Get the orange badge",
+    Callback = function()
+        fireclickdetector(game.Workspace.Arena.island5.Orange.ClickDetector)
+    end
 })
 
+-- Get Court Evidence Button
 Tab:AddButton({
-	Title = "Get Court Evidence",
-	Callback = function()
-fireclickdetector(game.Workspace.Lobby.Scene.knofe.ClickDetector)
-end
+    Title = "Get Court Evidence",
+    Description = "Get court evidence badge",
+    Callback = function()
+        fireclickdetector(game.Workspace.Lobby.Scene.knofe.ClickDetector)
+    end
 })
 
-Section = Tab:AddSection("Not Added Gloves List")
+-- Not Added Gloves Section
+local NotAddedSection = Tab:AddSection("Not Added Gloves List")
 
-Tab:AddParagraph({Title = "Gloves That Not Added Are:", Content = [[
-Boogie Glove
-Slender Glove
-Slasher Glove
-Dave Glove
-Mortis Glove
-Paint Glove
-Reflect Glove
-Draw4 Glove
-Swashbuckler Glove
-]]})
+-- Paragraph for missing gloves
+Tab:AddParagraph({
+    Title = "Gloves That Not Added Are:",
+    Content = "Boogie Glove\nSlender Glove\nSlasher Glove\nDave Glove\nMortis Glove\nPaint Glove\nReflect Glove\nDraw4 Glove\nSwashbuckler Glove"
+})
 
-Section = Tab:AddSection("Messages For Badges")
+-- Messages For Badges Section
+local MessagesSection = Tab:AddSection("Messages For Badges")
 
-Tab:AddDropdown("Dropdown_1", {
+-- Dropdown for glove help messages
+local GloveDropdown = Tab:AddDropdown("GloveHelp", {
     Title = "Select Glove Help To Send Message",
-    Default = "",
+    Description = "Choose a glove to request help for",
     Values = {
         "Plague", "Bus", "Shard", "Potato", "Moon", "Jupiter", "Rage", "Orbit",
         "Confusion", "Glitch", "Obby", "Goofy", "Leash", "Flamarang", "Berserk",
@@ -82,6 +93,8 @@ Tab:AddDropdown("Dropdown_1", {
         "Siphon", "Hunter", "Relude", "Avatar", "Pillow", "Angler", "Snowroller",
         "Draw4", "Mouse", "Swashbuckler", "Silly", "CarKeys", "Debug"
     },
+    Multi = false,
+    Default = 1,
     Callback = function(Value)
         local messages = {
             Plague = "can anyone use plague on me?",
@@ -135,193 +148,65 @@ Tab:AddDropdown("Dropdown_1", {
             CarKeys = "can anyone help me to get car keys?",
             Debug = "can anyone help me with code to get debug glove?"
         }
-
+        
         local TextChatService = game:GetService("TextChatService")
         local channel = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
         local message = messages[Value]
-
+        
         if message then
             channel:SendAsync(message)
+            Fluent:Notify({
+                Title = "Message Sent",
+                Content = "Sent: " .. message,
+                Duration = 2
+            })
         end
     end
 })
 
-Section = Tab:AddSection("Badges Info")
+Tab = Window:AddTab({Title = "MEGAROCK", Icon = ""})
 
--- Complete Badge Database
-local allBadges = {
-    -- MISCELLANEOUS BADGES
-    {id = 2124743766, name = "Welcome | No Glove", category = "Miscellaneous"},
-    {id = 2124760252, name = "You met the owner | No Glove", category = "Miscellaneous"},
-    {id = 2124760875, name = "you met snow | No Glove", category = "Miscellaneous"},
-    {id = 2124760911, name = "[REDACTED] | No Glove", category = "Miscellaneous"},
-    {id = 2124760916, name = "duck | No Glove", category = "Miscellaneous"},
-    {id = 2124760917, name = "Divine punishment | No Glove", category = "Miscellaneous"},
-    {id = 2124760923, name = "really? | No Glove", category = "Miscellaneous"},
-    {id = 2124775097, name = "barzil | No Glove", category = "Miscellaneous"},
-    {id = 2124807750, name = "The one | No Glove", category = "Miscellaneous"},
-    {id = 2124807752, name = "Ascend | No Glove", category = "Miscellaneous"},
-    {id = 2124836270, name = "1 0 0 | No Glove", category = "Miscellaneous"},
-    {id = 2124912059, name = "The 'Reverse' Incident | No Glove", category = "Miscellaneous"},
-    {id = 2128220957, name = "The Lone Orange | No Glove", category = "Miscellaneous"},
-    {id = 2147535393, name = "Clipped Wings | No Glove", category = "Miscellaneous"},
-    {id = 4414399146292319, name = "Apostle of Judgement | No Glove", category = "Miscellaneous"},
-    {id = 3842447881295457, name = "Jumping Dimensions [LIVE EVENT] | No Glove", category = "Miscellaneous"},
-    {id = 2549860075363782, name = "King of the Snowhill | No Glove", category = "Miscellaneous"},
-    
-    -- LIMITED BADGES
-    {id = 2124836318, name = "Jack's will | Hallow Jack Glove", category = "Limited"},
-    {id = 2124875920, name = "Lucky Gift | Mitten Glove", category = "Limited"},
-    {id = 2128772719, name = "Candy King | Rattlebones Glove", category = "Limited"},
-    {id = 2129002959, name = "Witch Brew | Witch Glove | Slap Royale", category = "Limited"},
-    {id = 2129648848, name = "Engineer's Gift | Snowball Glove", category = "Limited"},
-    {id = 2152906832, name = "Sweeth-Tooth Sovereign | Necromancer Glove", category = "Limited"},
-    {id = 2895206704788569, name = "Yuletime Might | Santa Glove", category = "Limited"},
-    {id = 868768988664040, name = "Fetch me their Souls | Poltergeist Glove", category = "Limited"},
-    {id = 182408299845710, name = "Snow man left behind | Jerry Glove", category = "Limited"},
-    {id = 847759908824783, name = "The Cornfeared | Harvester Glove", category = "Limited"},
-    {id = 2748677045206815, name = "Snowball Synergy | Elf Glove", category = "Limited"},
-    
-    -- DOUBLE BADGES
-    {id = 2124760907, name = "court evidence | Hitman Glove", category = "Double"},
-    {id = 2124854307, name = "250 | Bubble Glove", category = "Double"},
-    {id = 2124925929, name = "Harbinger of death | Bubble Glove", category = "Double"},
-    {id = 2148934270, name = "Sharp Shooter | Hitman Glove", category = "Double"},
-    
-    -- NORMAL BADGES
-    {id = 2124760254, name = "Error glove | Link Glove", category = "Normal"},
-    {id = 2124760895, name = "ez | Moon Glove", category = "Normal"},
-    {id = 2124760928, name = "the touch of midas | buddies Glove", category = "Normal"},
-    {id = 2124807768, name = "WHY | MEGAROCK Glove", category = "Normal"},
-    {id = 2124819262, name = "Infected | Plague Glove", category = "Normal"},
-    {id = 2124847850, name = "Evaded | [REDACTED] Glove", category = "Normal"},
-    {id = 2124858899, name = "To the moon | bus Glove", category = "Normal"},
-    {id = 2124886261, name = "Unphased | Phase Glove", category = "Normal"},
-    {id = 2124914780, name = "Savior | Warp Glove", category = "Normal"},
-    {id = 2124919840, name = "Short fuse | Bomb Glove", category = "Normal"},
-    {id = 2124930374, name = "Orb of flight | Jet Glove", category = "Normal"},
-    {id = 2124938910, name = "Firefighter | Shard Glove", category = "Normal"},
-    {id = 2124989121, name = "Sorry to burst your bubble | potato Glove", category = "Normal"},
-    {id = 2125850245, name = "good job | CULT Glove", category = "Normal"},
-    {id = 2125950512, name = "bob | bob Glove", category = "Normal"},
-    {id = 2126334003, name = "Death Dodger | Jupiter Glove", category = "Normal"},
-    {id = 2126450753, name = "Predator | Spy Glove", category = "Normal"},
-    {id = 2126589561, name = "Head Hunter | Detonator Glove", category = "Normal"},
-    {id = 2127132894, name = "Anticlimactic End | Rage Glove", category = "Normal"},
-    {id = 2127567042, name = "Brick Master | Trap Glove", category = "Normal"},
-    {id = 2127703232, name = "YOU MONSTER | Orbit Glove", category = "Normal"},
-    {id = 2127816588, name = "Island Conqueror | Dominance Glove", category = "Normal"},
-    {id = 2127861437, name = "Prolonged Anger | Hybrid Glove", category = "Normal"},
-    {id = 2128012376, name = "The Golden Slapple | Slapple Glove", category = "Normal"},
-    {id = 2128233612, name = "Memento Mori | Disarm Glove", category = "Normal"},
-    {id = 2128557186, name = "THE ACCIDENT | Chain Glove", category = "Normal"},
-    {id = 2129104684, name = "Killer | Charge Glove", category = "Normal"},
-    {id = 2129212145, name = "Plate Master | Tycoon Glove", category = "Normal"},
-    {id = 2129474790, name = "what? | Confusion Glove", category = "Normal"},
-    {id = 2129568267, name = "01010010 01010101 01001110 | Glitch Glove", category = "Normal"},
-    {id = 2129871858, name = "EXPOSED | Elude Glove", category = "Normal"},
-    {id = 2130031244, name = "RNGod | RNG Glove", category = "Normal"},
-    {id = 2130032297, name = "DEEP SLUMBER | fish Glove", category = "Normal"},
-    {id = 2130155314, name = "🗿 | 🗿 Glove", category = "Normal"},
-    {id = 2130463063, name = "ULTRAROCK | Obby Glove", category = "Normal"},
-    {id = 2132544202, name = "Insanity | Voodoo Glove", category = "Normal"},
-    {id = 2133016756, name = "CHAOS | Goofy Glove", category = "Normal"},
-    {id = 2136607413, name = "Demonic Ritual | Leash Glove", category = "Normal"},
-    {id = 2140855364, name = "Underkill | Flamarang Glove", category = "Normal"},
-    {id = 2141386326, name = "Kinetically Charged | Kinetic Glove", category = "Normal"},
-    {id = 2141784233, name = "GO BERSERK | Berserk Glove", category = "Normal"},
-    {id = 2142826462, name = "Incredible Running Man | Sparkly Glove", category = "Normal"},
-    {id = 2143034526, name = "Boogie With It | Boogie Glove", category = "Normal"},
-    {id = 2143973603, name = "Repressed Memories | Recall Glove", category = "Normal"},
-    {id = 2144766764, name = "Blasting Off Again | Quake Glove", category = "Normal"},
-    {id = 2145165421, name = "Ultimate Control | Psycho Glove", category = "Normal"},
-    {id = 2145381761, name = "Escape the Abyss | Kraken Glove", category = "Normal"},
-    {id = 2146130728, name = "Da Maze Runner | Counter Glove", category = "Normal"},
-    {id = 2146540403, name = "Toolbox | Hammer Glove", category = "Normal"},
-    {id = 2147429609, name = "Emissary Of Light | rob Glove", category = "Normal"},
-    {id = 2148234934, name = "Total Rhythm | Rhythm Glove", category = "Normal"},
-    {id = 2148480065, name = "See in the dark | Rojo Glove", category = "Normal"},
-    {id = 2149637240, name = "Parkour Pwner | Retro Glove", category = "Normal"},
-    {id = 2150485950, name = "The Relic | Null Glove", category = "Normal"},
-    {id = 2151266964, name = "Catch Emm All | Lure Glove", category = "Normal"},
-    {id = 2152295593, name = "Great Escape | Tinkerer Glove", category = "Normal"},
-    {id = 2153473254, name = "Containment Breach | Alchemist Glove", category = "Normal"},
-    {id = 2153911928, name = "Gardens And Ghouls | Druid Glove", category = "Normal"},
-    {id = 2500227230783997, name = "Now You See Me | Jester Glove", category = "Normal"},
-    {id = 3318257806017965, name = "Farmland Fray | Scythe Glove", category = "Normal"},
-    {id = 2906002612987222, name = "Slap Battles: On Ice | Iceskate Glove", category = "Normal"},
-    {id = 3335299217032061, name = "G-Grandson..? | Blasphemy Glove", category = "Normal"},
-    {id = 4404799574333856, name = "Into the Crypt | Pan Glove", category = "Normal"},
-    {id = 1840188608156642, name = "CERTIFIED ADMIN | Admin Glove", category = "Normal"},
-    {id = 1662954021427606, name = "Stand your ground | Joust Glove", category = "Normal"},
-    {id = 2628581469266954, name = "Easy As Pie | Firework Glove", category = "Normal"},
-    {id = 1579276416564374, name = "It's Finally Over... | Run Glove", category = "Normal"},
-    {id = 128402905805563, name = "The Hunt | Glovel Glove", category = "Normal"},
-    {id = 342573645147372, name = "Null Piercer | Divebomb Glove", category = "Normal"},
-    {id = 490455814138437, name = "Friend of the Dark | Lamp Glove", category = "Normal"},
-    {id = 1962623816699442, name = "Code Breaker | Knockoff Glove", category = "Normal"},
-    {id = 1286358044443937, name = "Ice Essence | Frostbite Glove", category = "Normal"},
-    {id = 4031317971987872, name = "Cranking 90's | Plank Glove", category = "Normal"},
-    {id = 2236076719770808, name = "SLAP BATTLES SWEEP | Spoonful Glove", category = "Normal"},
-    {id = 1354956782555226, name = "Leap of Faith | the schlob Glove", category = "Normal"},
-    {id = 187186758930457, name = "Caution: High Voltage | Siphon Glove", category = "Normal"},
-    {id = 2240434593038483, name = "ÜberCharged | Wrench Glove", category = "Normal"},
-    {id = 4414076328730650, name = "Nah, I'd win | Avatar Glove", category = "Normal"},
-    {id = 154204790800271, name = "A Guiding Hand | Relude Glove", category = "Normal"},
-    {id = 3483144763925839, name = "Bounty Claimed | Hunter Glove", category = "Normal"},
-    {id = 2193861648156971, name = "How did we get here? | Water Glove", category = "Normal"},
-    {id = 2657379023348335, name = "FREE OOG! | Fan Glove", category = "Normal"},
-    {id = 1223765330375569, name = "The Glove | Boxer Glove", category = "Normal"},
-    {id = 4256352459948010, name = "Orb of Honor | MATERIALIZE Glove", category = "Normal"},
-    {id = 3199562682373814, name = "Garden of Erasure | Bind Glove", category = "Normal"},
-    {id = 2035627575374951, name = "Shattered Memories | Clock Glove", category = "Normal"},
-    {id = 2223110832777636, name = "Hurt me plenty | Untitled Tag Glove", category = "Normal"},
-    {id = 4390302507334168, name = "Fortress of Dreams | Pillow Glove", category = "Normal"},
-    {id = 2117833544213343, name = "You're gonna need a bigger glove | Angler Glove", category = "Normal"},
-    {id = 3726156327470282, name = "Insane Minds think Alike | Snowroller Glove", category = "Normal"},
-    {id = 2460702219299014, name = "Oh! That's a Baseball! | Draw4 Glove", category = "Normal"},
-    {id = 2146300368310575, name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "Normal"},
-    {id = 2090213992277846, name = "Enlightened | Hexa Glove", category = "Normal"},
-    {id = 1060832194529561, name = "Day in the life of a small Game Developer | Metaverse Glove", category = "Normal"},
-    {id = 1788920058870613, name = "Sword Fighter of The Heights | Swordfighter Glove", category = "Normal"},
-    {id = 99649310086892, name = "Pillow Fight | Tank Glove", category = "Normal"},
-    {id = 2286252038116816, name = "Egging Over It | Eggler Glove", category = "Normal"},
-    {id = 2442504376213257, name = "Collect My Pages | Slender Glove", category = "Normal"},
-    {id = 3096378656988806, name = "Captain's Orders | Swashbuckler Glove", category = "Normal"},
-    {id = 4342029848828580, name = "Banished | Silly Glove", category = "Normal"},
-    {id = 231810132716643, name = "Reawoken | Slasher Glove", category = "Normal"},
-    {id = 1294103285471925, name = "Slappy Wheels | Car Keys Glove", category = "Normal"},
-    {id = 3798851936234989, name = "Plungering Heights | Suction Glove", category = "Normal"},
-    {id = 1745844401258079, name = "Shattered Reality | Reflect Glove", category = "Normal"},
-    {id = 663807976473858, name = "Dodecacide | Dave Glove", category = "Normal"},
-    {id = 1605140663413534, name = "Die Hard | mortis Glove", category = "Normal"},
-    {id = 1133862849283260, name = "Dead or Alive | Bounty Glove", category = "Normal"},
-    {id = 117389283982009, name = "Out of Bounds | Debug Glove", category = "Normal"},
-    {id = 1035608345203235, name = "Color Splash | Paint Glove", category = "Normal"},
-    {id = 1198780403030188, name = "Ceramic Panic | Plate Glove", category = "Normal"},
-    {id = 3713925567966983, name = "2000 Ping | Lag Glove", category = "Normal"},
-    {id = 65341581701492, name = "Bullseye | Riftshot Glove", category = "Normal"},
-    {id = 1304426038175458, name = "Autumnal Conkerer | Conker Glove", category = "Normal"},
-    {id = 659930747853345, name = "Glass Bones | Wheelchair Glove", category = "Normal"},
-    {id = 1698466561019878, name = "Minimum Wage | Shopkeeper Glove", category = "Normal"},
-    {id = 1902849233175110, name = "Find The Gloves | Collector Glove", category = "Normal"},
-    {id = 1778876340809040, name = "Cleaved in Two | Glaxe Glove", category = "Normal"},
-    {id = 217389347032866, name = "Birthday Bash | Piñata Glove", category = "Normal"},
-    {id = 996318649761767, name = "Hibernal Snowstopper | Penguin Glove", category = "Normal"},
-    {id = 1239535438142380, name = "Untimely End | Undead Glove", category = "Normal"},
-    {id = 4207775293625676, name = "Clobbering Time! | Groundbreaker Glove", category = "Normal"},
-    {id = 2604207010521588, name = "Easter Hatchastrophe | Shellbert Glove", category = "Normal"},
-    {id = 1662521369541218, name = "Genuinely how am I still alive | Lasso Glove", category = "Normal"},
-}
-
--- Store owned badges
-local ownedBadges = {}
-local badgeParagraph = nil
+-- Variables for tracking
+local timeStarted = nil
+local timeStopped = nil
+local isCounting = false
+local isRockActive = false
+local totalTimeNeeded = 10 * 60 * 60 -- 10 hours in seconds (36000 Seconds)
+local rockStartTime = nil
+local isTimerFinished = false
 local updateConnection = nil
+local currentTimeWaiting = "Waiting for Rock..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "N/A"
+local currentTimeFinished = "Not Finished"
+local savedStoppedTime = nil
+local isAntiAfkEnabled = false
+local autoMegarockEnabled = false
+local autoMegarockLoop = nil
+local isProcessing = false -- Prevents double firing
 
--- Function to fetch owned badges from Roblox API
-local function fetchOwnedBadges()
-    local player = game:GetService("Players").LocalPlayer
+-- Badge tracking variables
+local ownsReallyBadge = false
+local ownsWHYBadge = false
+local reallyBadgeAward = "No Glove"
+local whyBadgeAward = "MEGAROCK Glove"
+
+-- Badge IDs
+local REALLY_BADGE_ID = 2124760923 -- "really?" badge
+local WHY_BADGE_ID = 2124807768 -- "WHY" badge (MEGAROCK Glove)
+
+-- Function to format time (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to check if a badge is owned
+local function checkBadge(badgeId)
+    local player = game.Players.LocalPlayer
     local userId = player.UserId
     local url = "https://badges.roblox.com/v1/users/" .. userId .. "/badges?limit=100&sortOrder=Asc"
     
@@ -332,153 +217,361 @@ local function fetchOwnedBadges()
     if success then
         local data = game:GetService("HttpService"):JSONDecode(response)
         if data and data.data then
-            ownedBadges = {}
             for _, badge in ipairs(data.data) do
-                ownedBadges[badge.id] = true
+                if badge.id == badgeId then
+                    return true
+                end
             end
+        end
+    end
+    return false
+end
+
+-- Function to update badge statuses
+local function updateBadgeStatuses()
+    ownsReallyBadge = checkBadge(REALLY_BADGE_ID)
+    ownsWHYBadge = checkBadge(WHY_BADGE_ID)
+end
+
+-- Function to get formatted badge status text
+local function getFormattedBadgeStatus()
+    local statusText = string.format([[
+Owns really? Badge: %s
+Owns WHY Badge: %s
+really? Badge Awards Glove: %s
+WHY Badge Awards Glove: %s
+]],
+    ownsReallyBadge and "✅ Yes" or "❌ No",
+    ownsWHYBadge and "✅ Yes" or "❌ No",
+    reallyBadgeAward,
+    whyBadgeAward
+)
+    return statusText
+end
+
+-- Optimized function to check for rock
+local function hasRock()
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    if character then
+        return character:FindFirstChild("rock") ~= nil
+    end
+    return false
+end
+
+-- Function to check if diamond glove is EQUIPPED
+local function isDiamondEquipped()
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    if character then
+        local diamondTool = character:FindFirstChild("Diamond")
+        if diamondTool then
             return true
         end
     end
     return false
 end
 
--- Function to get formatted badge list with checkmarks
-local function getFormattedBadgeList()
-    local categories = {
-        Miscellaneous = {},
-        Limited = {},
-        Double = {},
-        Normal = {}
-    }
+-- Timer update function (FAST - updates every 0.1 seconds)
+local function updateTimerDisplay(paragraph)
+    local currentTime = tick()
+    local hasRockNow = hasRock()
+    local diamondEquipped = isDiamondEquipped()
     
-    -- Group badges by category
-    for _, badge in ipairs(allBadges) do
-        if categories[badge.category] then
-            table.insert(categories[badge.category], badge)
-        else
-            table.insert(categories.Normal, badge)
+    -- Time Waiting logic (just waits, doesn't start timer)
+    if not hasRockNow then
+        currentTimeWaiting = "Waiting for Rock..."
+    else
+        currentTimeWaiting = "Rock Found!"
+    end
+    
+    -- Time Started / Time Stopped / Time Finished logic
+    if hasRockNow then
+        if not isRockActive then
+            -- Rock just appeared - START the timer
+            isRockActive = true
+            rockStartTime = currentTime
+            isCounting = true
+            isTimerFinished = false
+            timeStarted = rockStartTime
+            savedStoppedTime = nil
+            currentTimeStopped = "N/A"
+            currentTimeStarted = formatTime(0, 0)
+            
+            -- Send notification when rock is found
+            Fluent:Notify({
+                Title = "MEGAROCK Timer",
+                Content = "Rock found! Timer started!",
+                Duration = 3
+            })
+        end
+        
+        if isCounting and not isTimerFinished then
+            local elapsed = currentTime - rockStartTime
+            local milliseconds = (elapsed - math.floor(elapsed)) * 1000
+            currentTimeStarted = formatTime(elapsed, milliseconds)
+            
+            -- Check if reached 10 hours
+            if elapsed >= totalTimeNeeded then
+                isTimerFinished = true
+                isCounting = false
+                currentTimeFinished = formatTime(totalTimeNeeded, 0)
+                Fluent:Notify({
+                    Title = "MEGAROCK Timer",
+                    Content = "10 hours completed! You've earned MEGAROCK!",
+                    Duration = 5
+                })
+            end
+        elseif isTimerFinished then
+            currentTimeFinished = formatTime(totalTimeNeeded, 0)
+            currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        end
+    else
+        -- Rock disappeared
+        if isRockActive then
+            -- Save the time when rock disappeared
+            isRockActive = false
+            isCounting = false
+            savedStoppedTime = currentTimeStarted
+            currentTimeStopped = savedStoppedTime
+            Fluent:Notify({
+                Title = "MEGAROCK Timer",
+                Content = "Rock disappeared! Timer stopped at: " .. currentTimeStopped,
+                Duration = 3
+            })
+        end
+        -- Keep showing the saved stopped time, don't reset to N/A
+        if savedStoppedTime then
+            currentTimeStopped = savedStoppedTime
+        end
+        -- Reset timer variables so next rock starts fresh
+        if not isRockActive and not hasRockNow then
+            isCounting = false
         end
     end
     
-    -- Build formatted output
-    local result = ""
+    -- Format the paragraph content (ONLY timer info, no badge stuff)
+    local paragraphContent = string.format([[
+Auto Rock Time Waiting: %s
+Auto Rock Time Started: %s
+Auto Rock Time Stopped: %s
+Auto Rock Time Finished: %s
+Total Time Need: %s
+Diamond Glove Equipped: %s
+Anti AFK: %s
+]], 
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    diamondEquipped and "✅ Yes" or "❌ No",
+    isAntiAfkEnabled and "✅ Yes" or "❌ No"
+)
     
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              🏆 MISCELLANEOUS BADGES 🏆\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Miscellaneous) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              🎯 LIMITED BADGES 🎯\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Limited) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              ⚡ DOUBLE BADGES ⚡\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Double) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              📜 NORMAL BADGES 📜\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    for _, badge in ipairs(categories.Normal) do
-        local status = ownedBadges[badge.id] and "✅" or "❌"
-        result = result .. status .. " " .. badge.name .. "\n"
-    end
-    
-    -- Add statistics
-    local ownedCount = 0
-    local totalCount = #allBadges
-    for _, badge in ipairs(allBadges) do
-        if ownedBadges[badge.id] then
-            ownedCount = ownedCount + 1
-        end
-    end
-    
-    result = result .. "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "              📊 STATISTICS 📊\n"
-    result = result .. "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    result = result .. "✅ Owned: " .. ownedCount .. "/" .. totalCount .. "\n"
-    result = result .. "❌ Missing: " .. (totalCount - ownedCount) .. "/" .. totalCount .. "\n"
-    result = result .. "📈 Progress: " .. string.format("%.1f", (ownedCount / totalCount) * 100) .. "%\n"
-    
-    return result
+    -- Update paragraph
+    pcall(function()
+        paragraph:Set(paragraphContent)
+    end)
 end
 
--- Update function for badge display (refetches badges and updates display)
-local function updateBadgeDisplay()
-    fetchOwnedBadges()
-    if badgeParagraph then
-        local text = getFormattedBadgeList()
-        -- Update using direct DescLabel access for reliability
-        if badgeParagraph.DescLabel then
-            badgeParagraph.DescLabel.Text = text
-            badgeParagraph.DescLabel.Visible = true
-        elseif badgeParagraph.SetDesc then
-            badgeParagraph:SetDesc(text)
-        end
-    end
-end
+-- Create the paragraphs (using Fluent's AddParagraph)
+local RestStatusParagraph = Tab:AddParagraph({
+    Title = "MEGAROCK Status",
+    Content = "Loading..."
+})
 
--- Create the paragraph
-badgeParagraph = Tab:AddParagraph({Title = "Badges Owned/Unowned List:", Content = "Loading badges..."})
+local BadgeStatusParagraph = Tab:AddParagraph({
+    Title = "Badge Status",
+    Content = "Loading badge info..."
+})
 
--- Initial fetch and display
-task.wait(0.5)
-updateBadgeDisplay()
-
--- AUTO UPDATE - Runs every 2 seconds without toggle
--- This will continuously check for new badges and update the display
+-- FAST update loop for timer (every 0.1 seconds)
+local isUpdating = true
 task.spawn(function()
-    while true do
-        task.wait(2) -- Update every 2 seconds
-        updateBadgeDisplay()
+    while isUpdating do
+        local startTime = tick()
+        updateTimerDisplay(RestStatusParagraph)
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.01, 0.1 - elapsed)
+        task.wait(waitTime)
     end
 end)
 
-Tab = Window:AddTab({Title = "MEGAROCK", Icon = ""})
+-- SLOW update loop for badges (every 5 seconds - saves performance)
+task.spawn(function()
+    -- Initial badge check
+    updateBadgeStatuses()
+    BadgeStatusParagraph:Set(getFormattedBadgeStatus())
+    
+    -- Update every 5 seconds (badges don't change often)
+    while isUpdating do
+        task.wait(5)
+        updateBadgeStatuses()
+        BadgeStatusParagraph:Set(getFormattedBadgeStatus())
+    end
+end)
 
-AutoMegarock = Tab:AddToggle("Toggle_1", {
+-- Function to fire rock remote (with cooldown to prevent double firing)
+local function fireRockRemote()
+    if isProcessing then
+        return false -- Already processing
+    end
+    
+    isProcessing = true
+    
+    pcall(function()
+        local replicatedStorage = game:GetService("ReplicatedStorage")
+        local rockmode = replicatedStorage:FindFirstChild("Rockmode")
+        if rockmode then
+            rockmode:FireServer()
+            task.wait(0.5)
+        end
+    end)
+    
+    task.wait(1) -- Cooldown to prevent double firing
+    isProcessing = false
+    return true
+end
+
+-- Auto Megarock Loop
+local function startAutoMegarockLoop()
+    autoMegarockLoop = task.spawn(function()
+        while autoMegarockEnabled do
+            pcall(function()
+                local player = game.Players.LocalPlayer
+                local hasRockNow = hasRock()
+                
+                if not hasRockNow then
+                    -- No rock, teleport and fire remote (with cooldown)
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                        task.wait(0.5)
+                        fireRockRemote()
+                        task.wait(0.5)
+                    end
+                end
+            end)
+            task.wait(3) -- Check every 3 seconds (reduces double firing)
+        end
+    end)
+end
+
+-- Auto Get MEGAROCK Toggle
+local AutoMegarock = Tab:AddToggle("AutoMegarock", {
     Title = "Auto Get MEGAROCK Glove",
+    Description = "Automatically obtains MEGAROCK glove",
     Default = false,
     Callback = function(Value)
+        -- Prevent running if already in this state
+        if autoMegarockEnabled == Value then
+            return
+        end
+        
+        autoMegarockEnabled = Value
+        
         if Value then
             local player = game.Players.LocalPlayer
-            if player.leaderstats.Glove.Value == "Diamond" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(10001, -42, 10000)
-task.wait(0.5)
-                game:GetService("ReplicatedStorage").Rockmode:FireServer()
+            
+            -- Check if player already has rock
+            if hasRock() then
+                -- Has rock, notify user
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "You already have Rock! Disable the toggle when you want to remove it.",
+                    Duration = 3
+                })
             else
-Fluent:Notify({Title = "Error", Content = "Equip Diamond Glove/Use In Arena", Duration = 3})
-task.wait(0.05)
-AutoMegarock:SetValue(false)
+                -- No rock, start the process
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "Auto Get MEGAROCK Enabled! Teleporting to position...",
+                    Duration = 3
+                })
+                
+                -- Teleport and fire remote once immediately (with cooldown)
+                if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                    task.wait(0.5)
+                    fireRockRemote()
+                end
+                
+                -- Stop existing loop if any
+                if autoMegarockLoop then
+                    task.cancel(autoMegarockLoop)
+                    autoMegarockLoop = nil
+                end
+                
+                -- Start the loop to keep trying (only if still enabled)
+                if autoMegarockEnabled then
+                    startAutoMegarockLoop()
+                end
+            end
+        else
+            -- Disable toggle - ONLY fire remote if user has rock
+            if hasRock() then
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "Disabling MEGAROCK...",
+                    Duration = 2
+                })
+                
+                -- Run remote to disable MEGAROCK
+                fireRockRemote()
+            else
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "MEGAROCK Disabled.",
+                    Duration = 2
+                })
+            end
+            
+            -- Stop the loop
+            if autoMegarockLoop then
+                task.cancel(autoMegarockLoop)
+                autoMegarockLoop = nil
             end
         end
     end
 })
 
-AntiAfk = Tab:AddToggle("Toggle_2", {
-	Title = "Anti Afk",
-	Default = false,
-	Callback = function(Value)
-	_G.AntiAfk = Value
-local VirtualUser = game:GetService('VirtualUser')
-
-game:GetService('Players').LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new())
-end)
-	end    
+-- Anti AFK Toggle
+local AntiAfk = Tab:AddToggle("AntiAfk", {
+    Title = "Anti AFK",
+    Description = "Prevents you from being kicked for inactivity",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            Fluent:Notify({
+                Title = "Anti AFK",
+                Content = "Anti AFK has been enabled!",
+                Duration = 2
+            })
+            
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        else
+            Fluent:Notify({
+                Title = "Anti AFK",
+                Content = "Anti AFK has been disabled!",
+                Duration = 2
+            })
+        end
+    end    
 })
+
+-- Cleanup when script stops
+game.Players.LocalPlayer.OnTeleport:Connect(function()
+    isUpdating = false
+    if autoMegarockLoop then
+        task.cancel(autoMegarockLoop)
+    end
+end)
 
 Tab = Window:AddTab({Title = "Plague", Icon = ""})
 
@@ -11540,6 +11633,362 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Bear
     end
 })
 
+-- ============================================================
+-- TAB: LASSO
+-- ============================================================
+local LassoTab = Window:AddTab({
+    Title = "Lasso",
+    Icon = "rbxassetid://7733673987"
+})
+
+LassoTab:AddButton({
+    Title = "Equip Trap (🗿 Badge Need)",
+    Description = "Click detector for Trap glove",
+    Callback = function()
+        pcall(function()
+            fireclickdetector(workspace.Lobby["Trap"].ClickDetector)
+        end)
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Equip Knockoff (Code Breaker Badge Need)",
+    Description = "Click detector for Knockoff glove",
+    Callback = function()
+        pcall(function()
+            fireclickdetector(workspace.Lobby["Knockoff"].ClickDetector)
+        end)
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Equip Beatdown (41000+ Slaps Need)",
+    Description = "Click detector for Beatdown glove",
+    Callback = function()
+        pcall(function()
+            fireclickdetector(workspace.Lobby["Beatdown"].ClickDetector)
+        end)
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Someone Using Knockoff?",
+    Description = "Checks if anyone has Knockoff glove equipped",
+    Callback = function()
+        local found = false
+        for _, plr in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = plr:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Knockoff" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = plr.Name .. " has equipped the Knockoff glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Knockoff glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Teleport To Knockoff Player",
+    Description = "Teleports to a player with Knockoff glove",
+    Callback = function()
+        local localPlr = game.Players.LocalPlayer
+        local foundPlayer = nil
+        for _, plr in pairs(game.Players:GetPlayers()) do
+            if plr ~= localPlr then
+                local stats = plr:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Knockoff" then
+                    foundPlayer = plr
+                    break
+                end
+            end
+        end
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlr.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Knockoff Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Someone Using Beatdown?",
+    Description = "Checks if anyone has Beatdown glove equipped",
+    Callback = function()
+        local found = false
+        for _, plr in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = plr:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Beatdown" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = plr.Name .. " has equipped the Beatdown glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Beatdown glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Teleport To Beatdown Player",
+    Description = "Teleports to a player with Beatdown glove",
+    Callback = function()
+        local localPlr = game.Players.LocalPlayer
+        local foundPlayer = nil
+        for _, plr in pairs(game.Players:GetPlayers()) do
+            if plr ~= localPlr then
+                local stats = plr:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Beatdown" then
+                    foundPlayer = plr
+                    break
+                end
+            end
+        end
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlr.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Beatdown Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Use Trap Ability",
+    Description = "Activates the Trap glove ability",
+    Callback = function()
+        pcall(function()
+            game:GetService("ReplicatedStorage"):WaitForChild("funnyhilariousbeartrap"):FireServer()
+        end)
+    end
+})
+
+LassoTab:AddButton({
+    Title = "Teleport To Trap",
+    Description = "Teleports you to the Bear Trap location",
+    Callback = function()
+        pcall(function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.BearTrap.CFrame
+        end)
+    end
+})
+
+-- ============================================================
+-- TAB: LOTUS
+-- ============================================================
+local LotusTab = Window:AddTab({
+    Title = "Lotus",
+    Icon = "rbxassetid://7733673987"
+})
+
+LotusTab:AddButton({
+    Title = "Lotus Obtainment",
+    Description = "Teleports to the Lotus Obtainment game",
+    Callback = function()
+        pcall(function()
+            game:GetService("TeleportService"):Teleport(93981091811742)
+            Fluent:Notify({
+                Title = "Teleporting",
+                Content = "Teleporting to Lotus Obtainment game...",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ============================================================
+-- TAB: ELASTIC
+-- ============================================================
+local ElasticTab = Window:AddTab({
+    Title = "Elastic",
+    Icon = "rbxassetid://7733673987"
+})
+
+ElasticTab:AddButton({
+    Title = "Equip Gummy (7750+ Slaps Need)",
+    Description = "Click detector for Gummy glove",
+    Callback = function()
+        pcall(function()
+            fireclickdetector(workspace.Lobby["Gummy"].ClickDetector)
+        end)
+    end
+})
+
+ElasticTab:AddButton({
+    Title = "Slap Player",
+    Description = "Slaps all players in the server using Gummy glove",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Gummy" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            local slappedCount = 0
+            
+            for _, targetPlayer in pairs(Players:GetPlayers()) do
+                if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Right Arm") then
+                    pcall(function()
+                        local args = { [1] = targetPlayer.Character["Right Arm"] }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
+                        slappedCount = slappedCount + 1
+                    end)
+                end
+            end
+            
+            Fluent:Notify({
+                Title = "Slap Player",
+                Content = "Slapped " .. slappedCount .. " player(s)!",
+                Duration = 2
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Please equip Gummy glove first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- WalkFling Variables
+local elastic_WalkFlingActive = false
+local elastic_WalkFlingConnection = nil
+local elastic_player = game.Players.LocalPlayer
+local elastic_RunService = game:GetService("RunService")
+
+local function elastic_getRoot(char)
+    return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+local function elastic_setNoclip(enabled)
+    local character = elastic_player.Character
+    if character then
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = not enabled
+            end
+        end
+    end
+end
+
+local function elastic_startWalkFling()
+    if elastic_WalkFlingConnection then return end
+    
+    elastic_WalkFlingConnection = elastic_RunService.Heartbeat:Connect(function()
+        if not elastic_WalkFlingActive then return end
+        
+        local character = elastic_player.Character
+        local root = elastic_getRoot(character)
+        local vel = nil
+        local movel = 0.1
+        
+        while not (character and character.Parent and root and root.Parent) do
+            elastic_RunService.Heartbeat:Wait()
+            character = elastic_player.Character
+            root = elastic_getRoot(character)
+        end
+        
+        vel = root.Velocity
+        root.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+        elastic_setNoclip(true)
+        
+        elastic_RunService.RenderStepped:Wait()
+        if character and character.Parent and root and root.Parent then
+            root.Velocity = vel
+        end
+        
+        elastic_RunService.Stepped:Wait()
+        if character and character.Parent and root and root.Parent then
+            root.Velocity = vel + Vector3.new(0, movel, 0)
+            movel = movel * -1
+        end
+    end)
+end
+
+local function elastic_stopWalkFling()
+    elastic_WalkFlingActive = false
+    if elastic_WalkFlingConnection then
+        elastic_WalkFlingConnection:Disconnect()
+        elastic_WalkFlingConnection = nil
+    end
+    elastic_setNoclip(false)
+end
+
+elastic_player.CharacterAdded:Connect(function()
+    task.wait(0.1)
+    if elastic_WalkFlingActive then
+        elastic_stopWalkFling()
+        task.wait(0.1)
+        elastic_WalkFlingActive = true
+        elastic_startWalkFling()
+    end
+end)
+
+ElasticTab:AddToggle("WalkFlingElastic", {
+    Title = "WalkFling",
+    Description = "Launches your character across the map with noclip",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            elastic_WalkFlingActive = true
+            elastic_startWalkFling()
+            Fluent:Notify({
+                Title = "WalkFling",
+                Content = "WalkFling enabled! Your character will be launched.",
+                Duration = 2
+            })
+        else
+            elastic_stopWalkFling()
+            Fluent:Notify({
+                Title = "WalkFling",
+                Content = "WalkFling disabled!",
+                Duration = 2
+            })
+        end
+    end
+})
+
 -- SETTINGS
 Tab = Window:AddTab({Title = "Settings", Icon = ""})
 
@@ -11635,15 +12084,229 @@ Tab:AddButton({
     end
 })
 
--- Section: Badge Giver
-Section = Tab:AddSection("Badge Giver")
+local StuffGiverSection = Tab:AddSection("Stuff Giver")
 
 Tab:AddButton({
     Title = "Give All Badges (Visual)",
+    Description = "Gives you all badges (visual only)",
     Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+        pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
+            Fluent:Notify({
+                Title = "Badge Giver",
+                Content = "Attempting to give all badges!",
+                Duration = 3
+            })
+        end)
     end
 })
+
+Tab:AddButton({
+    Title = "Give All Emotes (Free + FE)",
+    Description = "Gives you all free and FE emotes",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
+            Fluent:Notify({
+                Title = "Emotes",
+                Content = "Attempting to give all emotes!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- ============================================================
+-- SECTION: DEATH SOUND MODIFIER
+-- ============================================================
+
+-- Variables
+local deathSoundEnabled = false
+local currentSoundId = "rbxassetid://9126695500" -- Default funny sound
+local monitorConnection = nil
+local childAddedConnections = {}
+
+-- Function to clean up old connections
+local function cleanupConnections()
+    if monitorConnection then
+        monitorConnection:Disconnect()
+        monitorConnection = nil
+    end
+    
+    for _, conn in pairs(childAddedConnections) do
+        pcall(function()
+            conn:Disconnect()
+        end)
+    end
+    childAddedConnections = {}
+end
+
+-- Function to modify death sounds in a character
+local function modifyDeathSounds(character)
+    if not deathSoundEnabled then return end
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    for _, sound in pairs(torso:GetChildren()) do
+        if sound:IsA("Sound") then
+            local soundName = sound.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                pcall(function()
+                    if sound.SoundId ~= currentSoundId then
+                        sound.SoundId = currentSoundId
+                    end
+                end)
+            end
+        end
+    end
+end
+
+-- Function to setup listener for new sounds
+local function setupSoundListener(character)
+    if not character then return end
+    
+    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+    if not torso then return end
+    
+    local connection = torso.ChildAdded:Connect(function(child)
+        if child:IsA("Sound") and deathSoundEnabled then
+            local soundName = child.Name:lower()
+            if soundName:find("death") or soundName:find("die") then
+                task.wait(0.1)
+                pcall(function()
+                    child.SoundId = currentSoundId
+                end)
+            end
+        end
+    end)
+    
+    table.insert(childAddedConnections, connection)
+end
+
+-- Function to start monitoring
+local function startMonitoring()
+    if monitorConnection then return end
+    
+    monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        if deathSoundEnabled then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                modifyDeathSounds(character)
+            end
+        end
+    end)
+    
+    -- Setup listener for current character
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        setupSoundListener(character)
+    end
+end
+
+-- Function to stop monitoring
+local function stopMonitoring()
+    cleanupConnections()
+end
+
+-- Function to update all existing death sounds
+local function updateAllDeathSounds()
+    if not deathSoundEnabled then return end
+    
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
+        if torso then
+            for _, sound in pairs(torso:GetChildren()) do
+                if sound:IsA("Sound") then
+                    local soundName = sound.Name:lower()
+                    if soundName:find("death") or soundName:find("die") then
+                        pcall(function()
+                            sound.SoundId = currentSoundId
+                        end)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Add Sound ID information paragraph
+Tab:AddParagraph({
+    Title = "Custom Sound ID",
+    Content = "Enter your sound ID below (format: rbxassetid://1234567890)\nDefault: rbxassetid://9126695500 (Funny sound)"
+})
+
+-- Sound ID Input (using Fluent's AddInput instead of AddTextbox)
+local soundIdInput = Tab:AddInput("SoundID", {
+    Title = "Custom Sound ID",
+    Description = "Enter a sound ID (rbxassetid://... or just the ID number)",
+    Default = "9126695500",
+    Placeholder = "Enter sound ID here...",
+    Numeric = false,
+    Finished = true,
+    Callback = function(value)
+        if value and value ~= "" then
+            -- Ensure it has rbxassetid:// prefix if not present
+            if not value:find("rbxassetid://") then
+                currentSoundId = "rbxassetid://" .. value
+            else
+                currentSoundId = value
+            end
+            
+            -- Update existing sounds if enabled
+            if deathSoundEnabled then
+                updateAllDeathSounds()
+            end
+            
+            Fluent:Notify({
+                Title = "Sound ID Updated",
+                Content = "New sound ID: " .. currentSoundId,
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Auto Apply Death Sound Toggle
+local DeathSoundToggle = Tab:AddToggle("DeathSoundModifier", {
+    Title = "Auto Apply Death Sound",
+    Description = "Automatically changes death sounds to your custom sound ID",
+    Default = false,
+    Callback = function(value)
+        deathSoundEnabled = value
+        
+        if value then
+            startMonitoring()
+            updateAllDeathSounds()
+            
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
+                Duration = 3
+            })
+        else
+            stopMonitoring()
+            Fluent:Notify({
+                Title = "Death Sound Modifier",
+                Content = "Disabled! Death sounds restored to normal.",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- Handle character respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(0.5)
+    
+    if deathSoundEnabled then
+        setupSoundListener(character)
+        task.wait(0.2)
+        modifyDeathSounds(character)
+    end
+end)
 
 -- Variables
 local nametagText = ""
