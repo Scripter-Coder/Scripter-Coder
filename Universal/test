@@ -805,7 +805,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
 	WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
 	WindowConfig.HidePremium = WindowConfig.HidePremium or false
-	WindowConfig.Version = WindowConfig.Version or "1.0.0"
+	WindowConfig.Version = WindowConfig.Version or ""
 	OrionLib.Version = WindowConfig.Version
 	
 	if WindowConfig.IntroEnabled == nil then
@@ -1013,18 +1013,18 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
--- Version text - Only show if Version is defined
-local VersionText = nil
-if WindowConfig.Version and WindowConfig.Version ~= "" then
-	VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 16), {
-		Size = UDim2.new(0, 120, 0, 20),
-		Position = UDim2.new(1, -290, 1, -28),
-		TextXAlignment = Enum.TextXAlignment.Right,
-		BackgroundTransparency = 1,
-		ZIndex = 10
-	}), "TextDark")
-	VersionText.Parent = MainWindow.TopBar
-end
+	-- Version text - Only show if Version is defined and not empty
+	local VersionText = nil
+	if WindowConfig.Version ~= nil and WindowConfig.Version ~= "" then
+		VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 16), {
+			Size = UDim2.new(0, 120, 0, 20),
+			Position = UDim2.new(1, -290, 1, -28),
+			TextXAlignment = Enum.TextXAlignment.Right,
+			BackgroundTransparency = 1,
+			ZIndex = 10
+		}), "TextDark")
+		VersionText.Parent = MainWindow.TopBar
+	end
 
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
 		Size = UDim2.new(1, 350, 2, 0),
@@ -1051,7 +1051,6 @@ end
 		}), {
 			WindowName,
 			WindowTopBarLine,
-			VersionText,
 			AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 7), {
 				Size = UDim2.new(0, 70, 0, 30),
 				Position = UDim2.new(1, -90, 0, 10)
@@ -1158,33 +1157,38 @@ end
 			MinimizeTween:Cancel()
 		end
 		
--- In the minimize function, change:
-if Minimized then
-	local restoreSize = OrionLib.WindowSize or UDim2.new(0, 700, 0, 400)
-	local restorePos = OrionLib.WindowPosition or UDim2.new(0.5, -350, 0.5, -200)
-	MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos})
-	MinimizeTween:Play()
-	MinimizeBtn.Ico.Image = "rbxassetid://7072719338"
-	task.wait(0.05)
-	MainWindow.ClipsDescendants = false
-	WindowStuff.Visible = true
-	WindowTopBarLine.Visible = true
-	if VersionText then VersionText.Visible = true end
-	ElementSearchContainer.Visible = true
-else
-	OrionLib.WindowSize = MainWindow.Size
-	OrionLib.WindowPosition = MainWindow.Position
-	MainWindow.ClipsDescendants = true
-	WindowTopBarLine.Visible = false
-	if VersionText then VersionText.Visible = false end
-	ElementSearchContainer.Visible = false
-	MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
+		if Minimized then
+			local restoreSize = OrionLib.WindowSize or UDim2.new(0, 700, 0, 400)
+			local restorePos = OrionLib.WindowPosition or UDim2.new(0.5, -350, 0.5, -200)
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = restoreSize, Position = restorePos})
+			MinimizeTween:Play()
+			MinimizeBtn.Ico.Image = "rbxassetid://7072719338"
+			task.wait(0.05)
+			MainWindow.ClipsDescendants = false
+			WindowStuff.Visible = true
+			WindowTopBarLine.Visible = true
+			if VersionText then
+				VersionText.Visible = true
+			end
+			ElementSearchContainer.Visible = true
+		else
+			OrionLib.WindowSize = MainWindow.Size
+			OrionLib.WindowPosition = MainWindow.Position
+			MainWindow.ClipsDescendants = true
+			WindowTopBarLine.Visible = false
+			if VersionText then
+				VersionText.Visible = false
+			end
+			ElementSearchContainer.Visible = false
+			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
 
-	MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)})
-	MinimizeTween:Play()
-	task.wait(0.05)
-	WindowStuff.Visible = false	
-end
+			MinimizeTween = TweenService:Create(MainWindow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50), Position = UDim2.new(MainWindow.Position.X.Scale, MainWindow.Position.X.Offset, MainWindow.Position.Y.Scale, MainWindow.Position.Y.Offset)})
+			MinimizeTween:Play()
+			task.wait(0.05)
+			WindowStuff.Visible = false	
+		end
+		Minimized = not Minimized    
+	end)
 
 	local function LoadSequence()
 		MainWindow.Visible = false
