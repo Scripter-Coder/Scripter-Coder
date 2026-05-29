@@ -1013,25 +1013,12 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 
-	-- Version text - Only show if Version is defined and not empty
-	local VersionText = nil
-	if WindowConfig.Version ~= nil and WindowConfig.Version ~= "" then
-		VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 16), {
-			Size = UDim2.new(0, 120, 0, 20),
-			Position = UDim2.new(1, -290, 1, -28),
-			TextXAlignment = Enum.TextXAlignment.Right,
-			BackgroundTransparency = 1,
-			ZIndex = 10
-		}), "TextDark")
-		VersionText.Parent = MainWindow.TopBar
-	end
-
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
 		Size = UDim2.new(1, 350, 2, 0),
 		Position = UDim2.new(0, 25, 0, -24),
 		Font = Enum.Font.GothamBlack,
 		TextSize = 16,
-		TextScaled = false -- Added TextScaled to prevent overflow
+		TextScaled = false
 	}), "Text")
 
 	local WindowTopBarLine = AddThemeObject(SetProps(MakeElement("Frame"), {
@@ -1067,6 +1054,19 @@ function OrionLib:MakeWindow(WindowConfig)
 		DragPoint,
 		WindowStuff
 	}), "Main")
+
+	-- Version text - Now created AFTER MainWindow and TopBar exist
+	local VersionText = nil
+	if WindowConfig.Version ~= nil and WindowConfig.Version ~= "" then
+		VersionText = AddThemeObject(SetProps(MakeElement("Label", "Version: " .. WindowConfig.Version, 16), {
+			Size = UDim2.new(0, 120, 0, 20),
+			Position = UDim2.new(1, -290, 1, -28),
+			TextXAlignment = Enum.TextXAlignment.Right,
+			BackgroundTransparency = 1,
+			ZIndex = 10
+		}), "TextDark")
+		VersionText.Parent = MainWindow.TopBar
+	end
 
 	-- Element Search Box - Fixed position and sizing
 	local ElementSearchBox = AddThemeObject(Create("TextBox", {
@@ -1254,7 +1254,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		TabConfig.PremiumOnly = TabConfig.PremiumOnly or false
 
 		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
-			Size = UDim2.new(1, 0, 0, 40), -- Increased height for better readability
+			Size = UDim2.new(1, 0, 0, 40),
 			Parent = TabHolder,
 			Name = TabConfig.Name
 		}), {
@@ -1289,8 +1289,8 @@ function OrionLib:MakeWindow(WindowConfig)
 			Visible = false,
 			Name = "ItemContainer"
 		}), {
-			MakeElement("List", 0, 12), -- Increased spacing
-			MakeElement("Padding", 20, 20, 20, 20) -- Increased padding
+			MakeElement("List", 0, 12),
+			MakeElement("Padding", 20, 20, 20, 20)
 		}), "Divider")
 
 		AddConnection(Container.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
@@ -1334,7 +1334,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Parent = ItemParent,
 					AutomaticSize = Enum.AutomaticSize.Y
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", Text, 16), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", Text, 16), {
 						Size = UDim2.new(1, -16, 0, 0),
 						Position = UDim2.new(0, 16, 0, 12),
 						Font = Enum.Font.GothamBold,
@@ -1342,7 +1342,7 @@ function OrionLib:MakeWindow(WindowConfig)
 						AutomaticSize = Enum.AutomaticSize.Y
 					}), "Text"),
 					AddThemeObject(MakeElement("Stroke"), "Stroke"),
-					MakeElement("Padding", 16, 20, 20, 16) -- Increased padding
+					MakeElement("Padding", 16, 20, 20, 16)
 				}), "Second")
 
 				table.insert(AllElements, {Frame = LabelFrame, Name = Text})
@@ -1364,13 +1364,13 @@ function OrionLib:MakeWindow(WindowConfig)
 					Parent = ItemParent,
 					AutomaticSize = Enum.AutomaticSize.Y
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", Text, 16), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", Text, 16), {
 						Size = UDim2.new(1, -16, 0, 16),
 						Position = UDim2.new(0, 16, 0, 12),
 						Font = Enum.Font.GothamBold,
 						Name = "Title"
 					}), "Text"),
-					AddThemeObject(SetProps(MakeElement("Label", "", 14), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", "", 14), {
 						Size = UDim2.new(1, -32, 0, 0),
 						Position = UDim2.new(0, 16, 0, 36),
 						Font = Enum.Font.GothamSemibold,
@@ -1379,7 +1379,7 @@ function OrionLib:MakeWindow(WindowConfig)
 						AutomaticSize = Enum.AutomaticSize.Y
 					}), "TextDark"),
 					AddThemeObject(MakeElement("Stroke"), "Stroke"),
-					MakeElement("Padding", 16, 20, 20, 16) -- Increased padding
+					MakeElement("Padding", 16, 20, 20, 16)
 				}), "Second")
 
 				AddConnection(ParagraphFrame.Content:GetPropertyChangedSignal("Text"), function()
@@ -1414,21 +1414,21 @@ function OrionLib:MakeWindow(WindowConfig)
 					Parent = ItemParent,
 					AutomaticSize = Enum.AutomaticSize.Y
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", ButtonConfig.Name, 16), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", ButtonConfig.Name, 16), {
 						Size = UDim2.new(1, -60, 0, 0),
-						Position = UDim2.new(0, 16, 0, 16), -- Adjusted positioning
+						Position = UDim2.new(0, 16, 0, 16),
 						Font = Enum.Font.GothamBold,
 						Name = "Content",
 						TextWrapped = true,
 						AutomaticSize = Enum.AutomaticSize.Y
 					}), "Text"),
 					AddThemeObject(SetProps(MakeElement("Image", ButtonConfig.Icon), {
-						Size = UDim2.new(0, 24, 0, 24), -- Increased icon size
+						Size = UDim2.new(0, 24, 0, 24),
 						Position = UDim2.new(1, -40, 0.5, 0),
 						AnchorPoint = Vector2.new(0, 0.5)
 					}), "TextDark"),
 					AddThemeObject(MakeElement("Stroke"), "Stroke"),
-					MakeElement("Padding", 16, 20, 20, 16), -- Increased padding
+					MakeElement("Padding", 16, 20, 20, 16),
 					Click
 				}), "Second")
 
@@ -1476,12 +1476,12 @@ function OrionLib:MakeWindow(WindowConfig)
 				})
 
 				local SwitchBox = SetChildren(SetProps(MakeElement("RoundFrame", ToggleConfig.Value and SwitchColors.Enabled or SwitchColors.Disabled, 1, 0), {
-					Size = UDim2.new(0, 50, 0, 26), -- Increased size
+					Size = UDim2.new(0, 50, 0, 26),
 					Position = UDim2.new(1, -60, 0.5, 0),
 					AnchorPoint = Vector2.new(1, 0.5)
 				}), {
 					SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 1, 0), {
-						Size = UDim2.new(0, 22, 0, 22), -- Increased knob size
+						Size = UDim2.new(0, 22, 0, 22),
 						Position = UDim2.new(ToggleConfig.Value and 0.85 or 0.15, 0, 0.5, 0),
 						AnchorPoint = Vector2.new(0.5, 0.5),
 						Name = "Knob"
@@ -1493,7 +1493,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Parent = ItemParent,
 					AutomaticSize = Enum.AutomaticSize.Y
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", ToggleConfig.Name, 16), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", ToggleConfig.Name, 16), {
 						Size = UDim2.new(1, -75, 0, 0),
 						Position = UDim2.new(0, 16, 0, 16),
 						Font = Enum.Font.GothamBold,
@@ -1502,7 +1502,7 @@ function OrionLib:MakeWindow(WindowConfig)
 						AutomaticSize = Enum.AutomaticSize.Y
 					}), "Text"),
 					AddThemeObject(MakeElement("Stroke"), "Stroke"),
-					MakeElement("Padding", 16, 20, 20, 16), -- Increased padding
+					MakeElement("Padding", 16, 20, 20, 16),
 					SwitchBox,
 					Click
 				}), "Second")
@@ -1561,7 +1561,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					BackgroundTransparency = 0.3,
 					ClipsDescendants = true
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", "value", 14), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", "value", 14), {
 						Size = UDim2.new(1, -12, 0, 16),
 						Position = UDim2.new(0, 12, 0, 8),
 						Font = Enum.Font.GothamBold,
@@ -1571,7 +1571,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				})
 
 				local SliderBar = SetChildren(SetProps(MakeElement("RoundFrame", SliderConfig.Color, 0, 5), {
-					Size = UDim2.new(1, -32, 0, 36), -- Increased height
+					Size = UDim2.new(1, -32, 0, 36),
 					Position = UDim2.new(0, 16, 0, 42),
 					BackgroundTransparency = 0.9
 				}), {
@@ -1593,7 +1593,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Parent = ItemParent,
 					AutomaticSize = Enum.AutomaticSize.Y
 				}), {
-					AddThemeObject(SetProps(MakeElement("Label", SliderConfig.Name, 16), { -- Increased font size
+					AddThemeObject(SetProps(MakeElement("Label", SliderConfig.Name, 16), {
 						Size = UDim2.new(1, -16, 0, 20),
 						Position = UDim2.new(0, 16, 0, 16),
 						Font = Enum.Font.GothamBold,
@@ -1603,7 +1603,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					}), "Text"),
 					AddThemeObject(MakeElement("Stroke"), "Stroke"),
 					SliderBar,
-					MakeElement("Padding", 16, 20, 20, 16), -- Increased padding
+					MakeElement("Padding", 16, 20, 20, 16),
 				}), "Second")
 
 				table.insert(AllElements, {Frame = SliderFrame, Name = SliderConfig.Name})
@@ -1658,13 +1658,13 @@ function OrionLib:MakeWindow(WindowConfig)
 					Dropdown.Value = "..."
 				end
 
-				local DropdownList = MakeElement("List", 0, 2) -- Increased spacing
+				local DropdownList = MakeElement("List", 0, 2)
 
 				local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(40, 40, 40), 5), {
 					DropdownList
 				}), {
 					Parent = ItemParent,
-					Position = UDim2.new(0, 0, 0, 50), -- Adjusted position
+					Position = UDim2.new(0, 0, 0, 50),
 					Size = UDim2.new(1, 0, 1, -50),
 					ClipsDescendants = true
 				}), "Divider")
@@ -1741,7 +1741,7 @@ function OrionLib:MakeWindow(WindowConfig)
 							}), "Text")
 						}), {
 							Parent = DropdownContainer,
-							Size = UDim2.new(1, 0, 0, 30), -- Increased height for options
+							Size = UDim2.new(1, 0, 0, 30),
 							BackgroundTransparency = 1,
 							ClipsDescendants = true,
 							AutomaticSize = Enum.AutomaticSize.Y
@@ -1811,7 +1811,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				return Dropdown
 			end
 			
-			-- MULTI DROPDOWN - Fixed with larger options
+			-- MULTI DROPDOWN
 			function ElementFunction:AddMultiDropdown(MultiDropdownConfig)
 				MultiDropdownConfig = MultiDropdownConfig or {}
 				MultiDropdownConfig.Name = MultiDropdownConfig.Name or "MultiDropdown"
@@ -1925,7 +1925,7 @@ function OrionLib:MakeWindow(WindowConfig)
 						local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(40, 40, 40)), {
 							MakeElement("Corner", 0, 8),
 							SetProps(MakeElement("Image", "rbxassetid://3944680095"), {
-								Size = UDim2.new(0, 20, 0, 20), -- Larger checkmark
+								Size = UDim2.new(0, 20, 0, 20),
 								Position = UDim2.new(1, -20, 0.5, 0),
 								AnchorPoint = Vector2.new(1, 0.5),
 								ImageColor3 = Color3.fromRGB(255, 255, 255),
@@ -1933,7 +1933,7 @@ function OrionLib:MakeWindow(WindowConfig)
 								Name = "Checkmark"
 							}),
 							AddThemeObject(SetProps(MakeElement("Label", Option, 20, isSelected and 0 or 0.4), {
-								Position = UDim2.new(0, 16, 0, 6), -- Adjusted position
+								Position = UDim2.new(0, 16, 0, 6),
 								Size = UDim2.new(1, -56, 0, 0),
 								Name = "Title",
 								TextWrapped = true,
@@ -1941,7 +1941,7 @@ function OrionLib:MakeWindow(WindowConfig)
 							}), "Text")
 						}), {
 							Parent = DropdownContainer,
-							Size = UDim2.new(1, 0, 0, 44), -- Increased height
+							Size = UDim2.new(1, 0, 0, 44),
 							BackgroundTransparency = 1,
 							ClipsDescendants = true,
 							AutomaticSize = Enum.AutomaticSize.Y
@@ -2535,7 +2535,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				Parent = Container,
 				AutomaticSize = Enum.AutomaticSize.Y
 			}), {
-				AddThemeObject(SetProps(MakeElement("Label", SectionConfig.Name, 16), { -- Increased font size
+				AddThemeObject(SetProps(MakeElement("Label", SectionConfig.Name, 16), {
 					Size = UDim2.new(1, -16, 0, 22),
 					Position = UDim2.new(0, 0, 0, 8),
 					Font = Enum.Font.GothamSemibold
