@@ -903,7 +903,7 @@ Tab:AddToggle({
                         local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                         if rightArm then
                             pcall(function()
-                                ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(rightArm)
+                                ReplicatedStorage:WaitForChild("DualHit"):FireServer(rightArm)
                             end)
                         end
                     end
