@@ -831,7 +831,7 @@ Section = Tab:AddSection({
 })
 
 Tab:AddToggle({
-    Name = "Auto Slap Reverse With Dual Glove",
+    Name = "Auto Slap Reverse With Default Glove",
     Default = false,
     Callback = function(Value)
         _G.AutoSlapReverse = Value
@@ -846,10 +846,10 @@ Tab:AddToggle({
                 local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
                 local glove = leaderstats and leaderstats:FindFirstChild("Glove")
                 
-                if not (glove and glove.Value == "Dual") then
+                if not (glove and glove.Value == "Default") then
                     OrionLib:MakeNotification({
                         Name = "Error",
-                        Content = "Please equip Dual glove first!",
+                        Content = "Please equip Default glove first!",
                         Image = "rbxassetid://7743878857",
                         Time = 3
                     })
@@ -903,7 +903,7 @@ Tab:AddToggle({
                         local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                         if rightArm then
                             pcall(function()
-                                ReplicatedStorage:WaitForChild("DualHit"):FireServer(rightArm)
+                                ReplicatedStorage:WaitForChild("b"):FireServer(rightArm)
                             end)
                         end
                     end
