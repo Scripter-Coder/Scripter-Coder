@@ -926,13 +926,13 @@ Tab:AddToggle({
                     if #reversedPlayers > 0 then
                         -- Teleport to random reversed player
                         teleportToRandomReversedPlayer()
-                        task.wait(0.1) -- Small delay after teleport
+                        task.wait(0.01) -- Small delay after teleport
                         
                         -- Hit all reversed players
                         fireGeneralHitOnAllReversedPlayers()
                     end
                     
-                    task.wait(0.5) -- Cooldown between attempts
+                    task.wait(0.01) -- Cooldown between attempts
                 end
             end)
             
