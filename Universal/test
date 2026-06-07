@@ -3,16 +3,6 @@
     ║                    CUSTOM LIBRARY v1.0.0                      ║
     ║              A Modern UI Library for Roblox                   ║
     ╚═══════════════════════════════════════════════════════════════╝
-    
-    Features:
-    ✓ Window & Tabs Support
-    ✓ Buttons, Toggles, Dropdowns, Multi-Dropdowns
-    ✓ Sliders, Labels, Paragraphs, Sections
-    ✓ ColorPickers, Keybinds, Textboxes
-    ✓ Themes Support (Dark/Light/Dracula/Midnight)
-    ✓ Notifications System
-    ✓ Auto-updating with :Set() / :OnChanged()
-    ✓ Smooth Animations
 ]]
 
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -38,7 +28,7 @@ local CustomLibrary = {
     GUI = nil,
     CurrentWindow = nil,
     Notifications = {},
-    ThemeCallbacks = {}
+    CurrentTheme = "Dark"
 }
 
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -138,6 +128,13 @@ local Themes = {
 
 local ActiveTheme = Themes.Dark
 
+-- Store all themed elements for theme switching
+local ThemedElements = {}
+
+local function RegisterThemedElement(element, properties)
+    table.insert(ThemedElements, {element = element, properties = properties})
+end
+
 -- ═══════════════════════════════════════════════════════════════════════════
 -- HELPER FUNCTIONS
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -160,8 +157,8 @@ end
 local function CreateShadow(parent, size)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
-    shadow.Size = size or UDim2.new(1, 20, 1, 20)
-    shadow.Position = UDim2.new(0, -10, 0, -10)
+    shadow.Size = size or UDim2.new(1, 30, 1, 30)
+    shadow.Position = UDim2.new(0, -15, 0, -15)
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxassetid://1316045217"
     shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
@@ -180,13 +177,19 @@ local function TweenObject(object, properties, duration, style)
     return tween
 end
 
-local function ApplyThemeToElement(element, theme)
-    if element.ThemeProperties then
-        for prop, colorKey in pairs(element.ThemeProperties) do
+local function ApplyThemeToGui(element, theme)
+    if element._ThemeData then
+        for _, data in ipairs(element._ThemeData) do
+            local property = data.property
+            local colorKey = data.colorKey
             if theme[colorKey] then
-                element[prop] = theme[colorKey]
+                element[property] = theme[colorKey]
             end
         end
+    end
+    
+    for _, child in ipairs(element:GetChildren()) do
+        ApplyThemeToGui(child, theme)
     end
 end
 
@@ -206,9 +209,11 @@ local function CreateNotificationFrame(parent, config)
     notification.BackgroundTransparency = 1
     notification.BorderSizePixel = 0
     notification.Parent = parent
-    notification.ThemeProperties = {
-        BackgroundColor3 = "Secondary"
+    
+    notification._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"}
     }
+    RegisterThemedElement(notification, {{property = "BackgroundColor3", colorKey = "Secondary"}})
     
     CreateRoundedCorner(notification, 10)
     CreateStroke(notification, 1, ActiveTheme.Border)
@@ -234,9 +239,11 @@ local function CreateNotificationFrame(parent, config)
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = notification
-    titleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    titleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(titleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     -- Content
     local contentLabel = Instance.new("TextLabel")
@@ -250,9 +257,11 @@ local function CreateNotificationFrame(parent, config)
     contentLabel.TextXAlignment = Enum.TextXAlignment.Left
     contentLabel.TextWrapped = true
     contentLabel.Parent = notification
-    contentLabel.ThemeProperties = {
-        TextColor3 = "TextSecondary"
+    
+    contentLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
     }
+    RegisterThemedElement(contentLabel, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     -- Close Button
     local closeBtn = Instance.new("TextButton")
@@ -264,6 +273,11 @@ local function CreateNotificationFrame(parent, config)
     closeBtn.TextSize = 14
     closeBtn.Font = Enum.Font.Gotham
     closeBtn.Parent = notification
+    
+    closeBtn._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
+    }
+    RegisterThemedElement(closeBtn, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     closeBtn.MouseEnter:Connect(function()
         TweenObject(closeBtn, {TextColor3 = ActiveTheme.Danger}, 0.1)
@@ -318,34 +332,26 @@ end
 
 function CustomLibrary:SetTheme(themeName)
     local newTheme = Themes[themeName]
-    if not newTheme then return end
+    if not newTheme then return false end
     
     ActiveTheme = newTheme
+    CustomLibrary.CurrentTheme = themeName
     
-    -- Update all themed elements
-    local function updateElementTheme(element)
-        if element.ThemeProperties then
-            for prop, colorKey in pairs(element.ThemeProperties) do
-                if newTheme[colorKey] then
-                    element[prop] = newTheme[colorKey]
+    for _, item in ipairs(ThemedElements) do
+        local element = item.element
+        local properties = item.properties
+        if element and element.Parent then
+            for _, propData in ipairs(properties) do
+                if newTheme[propData.colorKey] then
+                    element[propData.property] = newTheme[propData.colorKey]
                 end
             end
         end
-        
-        for _, child in ipairs(element:GetChildren()) do
-            if child:IsA("GuiObject") or child:IsA("TextLabel") or child:IsA("TextButton") then
-                updateElementTheme(child)
-            end
-        end
     end
     
+    -- Also update all descendants recursively
     if self.GUI then
-        updateElementTheme(self.GUI)
-    end
-    
-    -- Trigger theme change callbacks
-    for _, callback in ipairs(self.ThemeCallbacks) do
-        callback(newTheme)
+        ApplyThemeToGui(self.GUI, newTheme)
     end
     
     return true
@@ -375,6 +381,7 @@ function CustomLibrary:CreateWindow(config)
     self.Minimized = false
     
     ActiveTheme = Themes[self.Theme] or Themes.Dark
+    CustomLibrary.CurrentTheme = self.Theme
     
     -- Create ScreenGui
     self.GUI = Instance.new("ScreenGui")
@@ -382,9 +389,6 @@ function CustomLibrary:CreateWindow(config)
     self.GUI.ResetOnSpawn = false
     self.GUI.ZIndexBehavior = Enum.ZIndexBehavior.Global
     self.GUI.Parent = CoreGui
-    self.GUI.ThemeProperties = {
-        BackgroundTransparency = "Background"
-    }
     
     CustomLibrary.GUI = self.GUI
     
@@ -396,9 +400,11 @@ function CustomLibrary:CreateWindow(config)
     self.MainFrame.BackgroundColor3 = ActiveTheme.Background
     self.MainFrame.BorderSizePixel = 0
     self.MainFrame.Parent = self.GUI
-    self.MainFrame.ThemeProperties = {
-        BackgroundColor3 = "Background"
+    
+    self.MainFrame._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Background"}
     }
+    RegisterThemedElement(self.MainFrame, {{property = "BackgroundColor3", colorKey = "Background"}})
     
     CreateRoundedCorner(self.MainFrame, 12)
     CreateShadow(self.MainFrame, UDim2.new(1, 30, 1, 30))
@@ -410,9 +416,11 @@ function CustomLibrary:CreateWindow(config)
     self.Header.BackgroundColor3 = ActiveTheme.Header
     self.Header.BorderSizePixel = 0
     self.Header.Parent = self.MainFrame
-    self.Header.ThemeProperties = {
-        BackgroundColor3 = "Header"
+    
+    self.Header._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Header"}
     }
+    RegisterThemedElement(self.Header, {{property = "BackgroundColor3", colorKey = "Header"}})
     CreateRoundedCorner(self.Header, 12)
     
     -- Title Label
@@ -426,9 +434,11 @@ function CustomLibrary:CreateWindow(config)
     self.TitleLabel.Font = Enum.Font.GothamBold
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Header
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     -- Minimize Button
     local minimizeBtn = Instance.new("TextButton")
@@ -440,6 +450,11 @@ function CustomLibrary:CreateWindow(config)
     minimizeBtn.TextSize = 20
     minimizeBtn.Font = Enum.Font.GothamBold
     minimizeBtn.Parent = self.Header
+    
+    minimizeBtn._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
+    }
+    RegisterThemedElement(minimizeBtn, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     minimizeBtn.MouseEnter:Connect(function()
         TweenObject(minimizeBtn, {TextColor3 = ActiveTheme.Text}, 0.1)
@@ -459,6 +474,11 @@ function CustomLibrary:CreateWindow(config)
     closeBtn.TextSize = 16
     closeBtn.Font = Enum.Font.GothamBold
     closeBtn.Parent = self.Header
+    
+    closeBtn._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
+    }
+    RegisterThemedElement(closeBtn, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     closeBtn.MouseEnter:Connect(function()
         TweenObject(closeBtn, {TextColor3 = ActiveTheme.Danger}, 0.1)
@@ -480,9 +500,11 @@ function CustomLibrary:CreateWindow(config)
     self.TabContainer.BackgroundColor3 = ActiveTheme.Secondary
     self.TabContainer.BorderSizePixel = 0
     self.TabContainer.Parent = self.MainFrame
-    self.TabContainer.ThemeProperties = {
-        BackgroundColor3 = "Secondary"
+    
+    self.TabContainer._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"}
     }
+    RegisterThemedElement(self.TabContainer, {{property = "BackgroundColor3", colorKey = "Secondary"}})
     
     -- Content Container
     self.ContentContainer = Instance.new("ScrollingFrame")
@@ -540,7 +562,9 @@ function CustomLibrary:CreateWindow(config)
         TweenObject(self.ContentContainer, {BackgroundTransparency = targetContentTransparency}, 0.3)
         
         for _, tab in pairs(self.Tabs) do
-            TweenObject(tab.Button, {BackgroundTransparency = targetContentTransparency}, 0.3)
+            if tab.Button then
+                TweenObject(tab.Button, {BackgroundTransparency = targetContentTransparency}, 0.3)
+            end
         end
         
         minimizeBtn.Text = self.Minimized and "□" or "−"
@@ -581,10 +605,15 @@ function Window:AddTab(config)
     button.TextSize = 14
     button.Font = Enum.Font.GothamSemibold
     button.Parent = self.TabContainer
-    button.ThemeProperties = {
-        BackgroundColor3 = "TabInactive",
-        TextColor3 = "Text"
+    
+    button._ThemeData = {
+        {property = "BackgroundColor3", colorKey = #self.Tabs == 0 and "TabActive" or "TabInactive"},
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(button, {
+        {property = "BackgroundColor3", colorKey = #self.Tabs == 0 and "TabActive" or "TabInactive"},
+        {property = "TextColor3", colorKey = "Text"}
+    })
     
     -- Tab Content Frame
     local content = Instance.new("Frame")
@@ -593,7 +622,6 @@ function Window:AddTab(config)
     content.BackgroundTransparency = 1
     content.Visible = (#self.Tabs == 0)
     content.Parent = self.ContentContainer
-    content.ThemeProperties = {}
     
     -- Scrolling Frame for content
     local scrollFrame = Instance.new("ScrollingFrame")
@@ -621,14 +649,16 @@ function Window:AddTab(config)
     
     button.MouseButton1Click:Connect(function()
         for _, otherTab in pairs(self.Tabs) do
-            otherTab.Content.Visible = false
-            TweenObject(otherTab.Button, {BackgroundColor3 = ActiveTheme.TabInactive}, 0.2)
-            otherTab.Button.ThemeProperties.BackgroundColor3 = "TabInactive"
+            otherTab.Content.Parent.Visible = false
+            if otherTab.Button then
+                TweenObject(otherTab.Button, {BackgroundColor3 = ActiveTheme.TabInactive}, 0.2)
+                otherTab.Button._ThemeData[1].colorKey = "TabInactive"
+            end
         end
         
         content.Visible = true
         TweenObject(button, {BackgroundColor3 = ActiveTheme.TabActive}, 0.2)
-        button.ThemeProperties.BackgroundColor3 = "TabActive"
+        button._ThemeData[1].colorKey = "TabActive"
         self.CurrentTab = tab
     end)
     
@@ -648,9 +678,11 @@ function Window:AddSection(parent, config)
     section.BackgroundColor3 = ActiveTheme.Tertiary
     section.BorderSizePixel = 0
     section.Parent = parent.Content
-    section.ThemeProperties = {
-        BackgroundColor3 = "Tertiary"
+    
+    section._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Tertiary"}
     }
+    RegisterThemedElement(section, {{property = "BackgroundColor3", colorKey = "Tertiary"}})
     CreateRoundedCorner(section, 6)
     
     local label = Instance.new("TextLabel")
@@ -663,9 +695,11 @@ function Window:AddSection(parent, config)
     label.Font = Enum.Font.GothamBold
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = section
-    label.ThemeProperties = {
-        TextColor3 = "Accent"
+    
+    label._ThemeData = {
+        {property = "TextColor3", colorKey = "Accent"}
     }
+    RegisterThemedElement(label, {{property = "TextColor3", colorKey = "Accent"}})
     
     return section
 end
@@ -684,7 +718,6 @@ function Window:AddLabel(parent, config)
     self.Frame.Size = UDim2.new(1, -20, 0, 25)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.Label = Instance.new("TextLabel")
     self.Label.Size = UDim2.new(1, 0, 1, 0)
@@ -695,9 +728,11 @@ function Window:AddLabel(parent, config)
     self.Label.Font = Enum.Font.Gotham
     self.Label.TextXAlignment = Enum.TextXAlignment.Left
     self.Label.Parent = self.Frame
-    self.Label.ThemeProperties = {
-        TextColor3 = "TextSecondary"
+    
+    self.Label._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
     }
+    RegisterThemedElement(self.Label, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     return self
 end
@@ -717,10 +752,9 @@ function Window:AddParagraph(parent, config)
     local self = setmetatable({}, Paragraph)
     
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 50)
+    self.Frame.Size = UDim2.new(1, -20, 0, 60)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
     self.TitleLabel.Size = UDim2.new(1, 0, 0, 20)
@@ -731,12 +765,14 @@ function Window:AddParagraph(parent, config)
     self.TitleLabel.Font = Enum.Font.GothamBold
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Accent"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Accent"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Accent"}})
     
     self.ContentLabel = Instance.new("TextLabel")
-    self.ContentLabel.Size = UDim2.new(1, 0, 0, 25)
+    self.ContentLabel.Size = UDim2.new(1, 0, 0, 35)
     self.ContentLabel.Position = UDim2.new(0, 0, 0, 22)
     self.ContentLabel.BackgroundTransparency = 1
     self.ContentLabel.Text = config.Content or "Content"
@@ -747,12 +783,16 @@ function Window:AddParagraph(parent, config)
     self.ContentLabel.TextWrapped = true
     self.ContentLabel.LineHeight = 1.2
     self.ContentLabel.Parent = self.Frame
-    self.ContentLabel.ThemeProperties = {
-        TextColor3 = "TextSecondary"
+    
+    self.ContentLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
     }
+    RegisterThemedElement(self.ContentLabel, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     -- Auto-adjust height based on content
     local function updateHeight()
+        task.wait()
+        if not self.Frame then return end
         local textBounds = self.ContentLabel.TextBounds
         local lines = math.max(1, math.ceil(textBounds.Y / 16))
         local newHeight = 22 + (lines * 16)
@@ -785,13 +825,12 @@ function Window:AddButton(parent, config)
     local self = setmetatable({}, Button)
     
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 40)
+    self.Frame.Size = UDim2.new(1, -20, 0, config.Description and 50 or 40)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.Button = Instance.new("TextButton")
-    self.Button.Size = UDim2.new(1, 0, 1, 0)
+    self.Button.Size = UDim2.new(1, 0, 0, config.Description and 30 or 40)
     self.Button.BackgroundColor3 = ActiveTheme.Secondary
     self.Button.BorderSizePixel = 0
     self.Button.Text = config.Title or "Button"
@@ -799,17 +838,22 @@ function Window:AddButton(parent, config)
     self.Button.TextSize = 13
     self.Button.Font = Enum.Font.GothamSemibold
     self.Button.Parent = self.Frame
-    self.Button.ThemeProperties = {
-        BackgroundColor3 = "Secondary",
-        TextColor3 = "Text"
+    
+    self.Button._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.Button, {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
+    })
     CreateRoundedCorner(self.Button, 6)
     CreateStroke(self.Button, 1, ActiveTheme.Border)
     
     if config.Description then
         local desc = Instance.new("TextLabel")
         desc.Size = UDim2.new(1, 0, 0, 16)
-        desc.Position = UDim2.new(0, 10, 0, 24)
+        desc.Position = UDim2.new(0, 10, 0, 32)
         desc.BackgroundTransparency = 1
         desc.Text = config.Description
         desc.TextColor3 = ActiveTheme.TextMuted
@@ -817,11 +861,11 @@ function Window:AddButton(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 50)
-        self.Button.Size = UDim2.new(1, 0, 0, 30)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
     end
     
     self.Button.MouseEnter:Connect(function()
@@ -865,14 +909,14 @@ function Window:AddToggle(parent, config)
     self.Value = config.Default or false
     self.Callbacks = {}
     
+    local frameHeight = config.Description and 50 or 35
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 35)
+    self.Frame.Size = UDim2.new(1, -20, 0, frameHeight)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
-    self.TitleLabel.Size = UDim2.new(1, -60, 1, 0)
+    self.TitleLabel.Size = UDim2.new(1, -60, 0, config.Description and 18 or 35)
     self.TitleLabel.Position = UDim2.new(0, 10, 0, 0)
     self.TitleLabel.BackgroundTransparency = 1
     self.TitleLabel.Text = config.Title or "Toggle"
@@ -881,14 +925,16 @@ function Window:AddToggle(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     if config.Description then
         local desc = Instance.new("TextLabel")
         desc.Size = UDim2.new(1, -60, 0, 15)
-        desc.Position = UDim2.new(0, 10, 0, 18)
+        desc.Position = UDim2.new(0, 10, 0, 20)
         desc.BackgroundTransparency = 1
         desc.Text = config.Description
         desc.TextColor3 = ActiveTheme.TextMuted
@@ -896,11 +942,11 @@ function Window:AddToggle(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 50)
-        self.TitleLabel.Size = UDim2.new(1, -60, 0, 18)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
     end
     
     -- Toggle Switch
@@ -910,9 +956,11 @@ function Window:AddToggle(parent, config)
     self.Switch.BackgroundColor3 = self.Value and ActiveTheme.ToggleOn or ActiveTheme.ToggleOff
     self.Switch.BorderSizePixel = 0
     self.Switch.Parent = self.Frame
-    self.Switch.ThemeProperties = {
-        BackgroundColor3 = self.Value and "ToggleOn" or "ToggleOff"
+    
+    self.Switch._ThemeData = {
+        {property = "BackgroundColor3", colorKey = self.Value and "ToggleOn" or "ToggleOff"}
     }
+    RegisterThemedElement(self.Switch, {{property = "BackgroundColor3", colorKey = self.Value and "ToggleOn" or "ToggleOff"}})
     CreateRoundedCorner(self.Switch, 11)
     
     self.Knob = Instance.new("Frame")
@@ -936,6 +984,8 @@ function Window:AddToggle(parent, config)
         
         TweenObject(self.Switch, {BackgroundColor3 = targetColor}, 0.2)
         TweenObject(self.Knob, {Position = knobPos}, 0.2)
+        
+        self.Switch._ThemeData[1].colorKey = value and "ToggleOn" or "ToggleOff"
         
         for _, callback in ipairs(self.Callbacks) do
             callback(value)
@@ -985,11 +1035,11 @@ function Window:AddDropdown(parent, config)
     self.Callbacks = {}
     self.Open = false
     
+    local frameHeight = config.Description and 55 or 40
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 40)
+    self.Frame.Size = UDim2.new(1, -20, 0, frameHeight)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
     self.TitleLabel.Size = UDim2.new(1, 0, 0, 18)
@@ -1000,9 +1050,11 @@ function Window:AddDropdown(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     if config.Description then
         local desc = Instance.new("TextLabel")
@@ -1015,10 +1067,11 @@ function Window:AddDropdown(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 55)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
     end
     
     -- Dropdown Button
@@ -1033,12 +1086,21 @@ function Window:AddDropdown(parent, config)
     self.Button.Font = Enum.Font.Gotham
     self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.Parent = self.Frame
-    self.Button.ThemeProperties = {
-        BackgroundColor3 = "Secondary",
-        TextColor3 = "Text"
+    
+    self.Button._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.Button, {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
+    })
     CreateRoundedCorner(self.Button, 6)
     CreateStroke(self.Button, 1, ActiveTheme.Border)
+    
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft = UDim.new(0, 10)
+    padding.Parent = self.Button
     
     -- Arrow
     self.Arrow = Instance.new("TextLabel")
@@ -1050,9 +1112,11 @@ function Window:AddDropdown(parent, config)
     self.Arrow.TextSize = 12
     self.Arrow.Font = Enum.Font.Gotham
     self.Arrow.Parent = self.Button
-    self.Arrow.ThemeProperties = {
-        TextColor3 = "TextSecondary"
+    
+    self.Arrow._ThemeData = {
+        {property = "TextColor3", colorKey = "TextSecondary"}
     }
+    RegisterThemedElement(self.Arrow, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
     -- Dropdown List
     self.List = Instance.new("Frame")
@@ -1062,9 +1126,12 @@ function Window:AddDropdown(parent, config)
     self.List.BorderSizePixel = 0
     self.List.Visible = false
     self.List.Parent = self.Button
-    self.List.ThemeProperties = {
-        BackgroundColor3 = "Secondary"
+    self.List.ZIndex = 10
+    
+    self.List._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"}
     }
+    RegisterThemedElement(self.List, {{property = "BackgroundColor3", colorKey = "Secondary"}})
     CreateRoundedCorner(self.List, 6)
     CreateStroke(self.List, 1, ActiveTheme.Border)
     
@@ -1086,14 +1153,20 @@ function Window:AddDropdown(parent, config)
         item.Font = Enum.Font.Gotham
         item.TextXAlignment = Enum.TextXAlignment.Left
         item.Parent = self.List
-        item.ThemeProperties = {
-            BackgroundColor3 = "Tertiary",
-            TextColor3 = "Text"
-        }
+        item.ZIndex = 11
         
-        local padding = Instance.new("UIPadding")
-        padding.PaddingLeft = UDim.new(0, 10)
-        padding.Parent = item
+        item._ThemeData = {
+            {property = "BackgroundColor3", colorKey = "Tertiary"},
+            {property = "TextColor3", colorKey = "Text"}
+        }
+        RegisterThemedElement(item, {
+            {property = "BackgroundColor3", colorKey = "Tertiary"},
+            {property = "TextColor3", colorKey = "Text"}
+        })
+        
+        local itemPadding = Instance.new("UIPadding")
+        itemPadding.PaddingLeft = UDim.new(0, 10)
+        itemPadding.Parent = item
         
         local isSelected = false
         
@@ -1230,7 +1303,7 @@ function Window:AddDropdown(parent, config)
     self.OnChanged = function(callback)
         table.insert(self.Callbacks, callback)
         return self
-    end
+   
     
     self.GetValue = function()
         return self.Selected
@@ -1241,12 +1314,14 @@ function Window:AddDropdown(parent, config)
         if gameProcessed then return end
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             local mousePos = UserInputService:GetMouseLocation()
-            local buttonAbsPos = self.Button.AbsolutePosition
-            local buttonAbsSize = self.Button.AbsoluteSize
-            
-            if self.Open and (mousePos.X < buttonAbsPos.X or mousePos.X > buttonAbsPos.X + buttonAbsSize.X or
-                mousePos.Y < buttonAbsPos.Y or mousePos.Y > buttonAbsPos.Y + buttonAbsSize.Y) then
-                self:Close()
+            if self.Button and self.Button.Parent then
+                local buttonAbsPos = self.Button.AbsolutePosition
+                local buttonAbsSize = self.Button.AbsoluteSize
+                
+                if self.Open and (mousePos.X < buttonAbsPos.X or mousePos.X > buttonAbsPos.X + buttonAbsSize.X or
+                    mousePos.Y < buttonAbsPos.Y or mousePos.Y > buttonAbsPos.Y + buttonAbsSize.Y) then
+                    self:Close()
+                end
             end
         end
     end)
@@ -1279,11 +1354,11 @@ function Window:AddSlider(parent, config)
     self.Rounding = config.Rounding or 0
     self.Callbacks = {}
     
+    local frameHeight = config.Description and 70 or 55
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 70)
+    self.Frame.Size = UDim2.new(1, -20, 0, frameHeight)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
     self.TitleLabel.Size = UDim2.new(1, -80, 0, 20)
@@ -1294,9 +1369,11 @@ function Window:AddSlider(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.Size = UDim2.new(0, 70, 0, 20)
@@ -1308,9 +1385,11 @@ function Window:AddSlider(parent, config)
     self.ValueLabel.Font = Enum.Font.GothamBold
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Frame
-    self.ValueLabel.ThemeProperties = {
-        TextColor3 = "Accent"
+    
+    self.ValueLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Accent"}
     }
+    RegisterThemedElement(self.ValueLabel, {{property = "TextColor3", colorKey = "Accent"}})
     
     if config.Description then
         local desc = Instance.new("TextLabel")
@@ -1323,12 +1402,11 @@ function Window:AddSlider(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 85)
-        self.TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-        self.ValueLabel.Position = UDim2.new(1, -70, 0, 0)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
     end
     
     -- Slider Track
@@ -1338,9 +1416,11 @@ function Window:AddSlider(parent, config)
     self.Track.BackgroundColor3 = ActiveTheme.SliderBackground
     self.Track.BorderSizePixel = 0
     self.Track.Parent = self.Frame
-    self.Track.ThemeProperties = {
-        BackgroundColor3 = "SliderBackground"
+    
+    self.Track._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "SliderBackground"}
     }
+    RegisterThemedElement(self.Track, {{property = "BackgroundColor3", colorKey = "SliderBackground"}})
     CreateRoundedCorner(self.Track, 3)
     
     -- Slider Fill
@@ -1350,9 +1430,11 @@ function Window:AddSlider(parent, config)
     self.Fill.BackgroundColor3 = ActiveTheme.SliderFill
     self.Fill.BorderSizePixel = 0
     self.Fill.Parent = self.Track
-    self.Fill.ThemeProperties = {
-        BackgroundColor3 = "SliderFill"
+    
+    self.Fill._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "SliderFill"}
     }
+    RegisterThemedElement(self.Fill, {{property = "BackgroundColor3", colorKey = "SliderFill"}})
     CreateRoundedCorner(self.Fill, 3)
     
     -- Slider Knob
@@ -1362,9 +1444,11 @@ function Window:AddSlider(parent, config)
     self.Knob.BackgroundColor3 = ActiveTheme.SliderFill
     self.Knob.BorderSizePixel = 0
     self.Knob.Parent = self.Track
-    self.Knob.ThemeProperties = {
-        BackgroundColor3 = "SliderFill"
+    
+    self.Knob._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "SliderFill"}
     }
+    RegisterThemedElement(self.Knob, {{property = "BackgroundColor3", colorKey = "SliderFill"}})
     CreateRoundedCorner(self.Knob, 8)
     
     local dragging = false
@@ -1372,6 +1456,7 @@ function Window:AddSlider(parent, config)
     local function updateValue(input)
         local trackPos = self.Track.AbsolutePosition
         local trackWidth = self.Track.AbsoluteSize.X
+        if trackWidth == 0 then return end
         local mouseX = input.Position.X
         local percent = math.clamp((mouseX - trackPos.X) / trackWidth, 0, 1)
         local newValue = self.Min + (self.Max - self.Min) * percent
@@ -1466,7 +1551,6 @@ function Window:AddTextbox(parent, config)
     self.Frame.Size = UDim2.new(1, -20, 0, 55)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
     self.TitleLabel.Size = UDim2.new(1, 0, 0, 20)
@@ -1477,27 +1561,35 @@ function Window:AddTextbox(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     self.Box = Instance.new("TextBox")
     self.Box.Size = UDim2.new(1, 0, 0, 32)
     self.Box.Position = UDim2.new(0, 0, 0, 22)
     self.Box.BackgroundColor3 = ActiveTheme.Secondary
     self.Box.BorderSizePixel = 0
-    self.Box.Text = self.Value
+    self.Box.Text = tostring(self.Value)
     self.Box.PlaceholderText = self.Placeholder
     self.Box.TextColor3 = ActiveTheme.Text
     self.Box.PlaceholderColor3 = ActiveTheme.TextMuted
     self.Box.TextSize = 12
     self.Box.Font = Enum.Font.Gotham
     self.Box.Parent = self.Frame
-    self.Box.ThemeProperties = {
-        BackgroundColor3 = "Secondary",
-        TextColor3 = "Text",
-        PlaceholderColor3 = "TextMuted"
+    
+    self.Box._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"},
+        {property = "PlaceholderColor3", colorKey = "TextMuted"}
     }
+    RegisterThemedElement(self.Box, {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"},
+        {property = "PlaceholderColor3", colorKey = "TextMuted"}
+    })
     CreateRoundedCorner(self.Box, 6)
     CreateStroke(self.Box, 1, ActiveTheme.Border)
     
@@ -1569,11 +1661,11 @@ function Window:AddColorpicker(parent, config)
     self.Callbacks = {}
     self.Open = false
     
+    local frameHeight = config.Description and 55 or 40
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 40)
+    self.Frame.Size = UDim2.new(1, -20, 0, frameHeight)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
     self.TitleLabel.Size = UDim2.new(1, -80, 1, 0)
@@ -1584,9 +1676,11 @@ function Window:AddColorpicker(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     -- Color Preview Button
     self.Preview = Instance.new("TextButton")
@@ -1596,9 +1690,6 @@ function Window:AddColorpicker(parent, config)
     self.Preview.BorderSizePixel = 0
     self.Preview.Text = ""
     self.Preview.Parent = self.Frame
-    self.Preview.ThemeProperties = {
-        BackgroundColor3 = "Accent"
-    }
     CreateRoundedCorner(self.Preview, 6)
     CreateStroke(self.Preview, 1, ActiveTheme.Border)
     
@@ -1613,11 +1704,11 @@ function Window:AddColorpicker(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 55)
-        self.TitleLabel.Size = UDim2.new(1, -80, 0, 20)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
     end
     
     -- Color Picker Popup
@@ -1628,9 +1719,11 @@ function Window:AddColorpicker(parent, config)
     self.Popup.BorderSizePixel = 0
     self.Popup.Visible = false
     self.Popup.Parent = self.Frame
-    self.Popup.ThemeProperties = {
-        BackgroundColor3 = "Secondary"
+    
+    self.Popup._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"}
     }
+    RegisterThemedElement(self.Popup, {{property = "BackgroundColor3", colorKey = "Secondary"}})
     CreateRoundedCorner(self.Popup, 8)
     CreateStroke(self.Popup, 1, ActiveTheme.Border)
     
@@ -1664,9 +1757,11 @@ function Window:AddColorpicker(parent, config)
         label.Font = Enum.Font.GothamBold
         label.TextXAlignment = Enum.TextXAlignment.Left
         label.Parent = frame
-        label.ThemeProperties = {
-            TextColor3 = "Text"
+        
+        label._ThemeData = {
+            {property = "TextColor3", colorKey = "Text"}
         }
+        RegisterThemedElement(label, {{property = "TextColor3", colorKey = "Text"}})
         
         local sliderTrack = Instance.new("Frame")
         sliderTrack.Size = UDim2.new(1, -40, 0, 4)
@@ -1674,9 +1769,11 @@ function Window:AddColorpicker(parent, config)
         sliderTrack.BackgroundColor3 = ActiveTheme.SliderBackground
         sliderTrack.BorderSizePixel = 0
         sliderTrack.Parent = frame
-        sliderTrack.ThemeProperties = {
-            BackgroundColor3 = "SliderBackground"
+        
+        sliderTrack._ThemeData = {
+            {property = "BackgroundColor3", colorKey = "SliderBackground"}
         }
+        RegisterThemedElement(sliderTrack, {{property = "BackgroundColor3", colorKey = "SliderBackground"}})
         CreateRoundedCorner(sliderTrack, 2)
         
         local sliderFill = Instance.new("Frame")
@@ -1701,6 +1798,7 @@ function Window:AddColorpicker(parent, config)
         local function updateSlider(input)
             local trackPos = sliderTrack.AbsolutePosition
             local trackWidth = sliderTrack.AbsoluteSize.X
+            if trackWidth == 0 then return end
             local mouseX = input.Position.X
             local percent = math.clamp((mouseX - trackPos.X) / trackWidth, 0, 1)
             value = math.floor(percent * 255)
@@ -1819,14 +1917,14 @@ function Window:AddKeybind(parent, config)
     self.ChangedCallbacks = {}
     self.Listening = false
     
+    local frameHeight = config.Description and 55 or 40
     self.Frame = Instance.new("Frame")
-    self.Frame.Size = UDim2.new(1, -20, 0, 40)
+    self.Frame.Size = UDim2.new(1, -20, 0, frameHeight)
     self.Frame.BackgroundTransparency = 1
     self.Frame.Parent = parent.Content
-    self.Frame.ThemeProperties = {}
     
     self.TitleLabel = Instance.new("TextLabel")
-    self.TitleLabel.Size = UDim2.new(1, -140, 1, 0)
+    self.TitleLabel.Size = UDim2.new(1, -140, 0, 20)
     self.TitleLabel.BackgroundTransparency = 1
     self.TitleLabel.Text = config.Title or "Keybind"
     self.TitleLabel.TextColor3 = ActiveTheme.Text
@@ -1834,9 +1932,11 @@ function Window:AddKeybind(parent, config)
     self.TitleLabel.Font = Enum.Font.Gotham
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.Frame
-    self.TitleLabel.ThemeProperties = {
-        TextColor3 = "Text"
+    
+    self.TitleLabel._ThemeData = {
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.TitleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
     self.KeyButton = Instance.new("TextButton")
     self.KeyButton.Size = UDim2.new(0, 120, 0, 32)
@@ -1848,10 +1948,15 @@ function Window:AddKeybind(parent, config)
     self.KeyButton.TextSize = 12
     self.KeyButton.Font = Enum.Font.Gotham
     self.KeyButton.Parent = self.Frame
-    self.KeyButton.ThemeProperties = {
-        BackgroundColor3 = "Secondary",
-        TextColor3 = "Text"
+    
+    self.KeyButton._ThemeData = {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
     }
+    RegisterThemedElement(self.KeyButton, {
+        {property = "BackgroundColor3", colorKey = "Secondary"},
+        {property = "TextColor3", colorKey = "Text"}
+    })
     CreateRoundedCorner(self.KeyButton, 6)
     CreateStroke(self.KeyButton, 1, ActiveTheme.Border)
     
@@ -1866,10 +1971,11 @@ function Window:AddKeybind(parent, config)
         desc.Font = Enum.Font.Gotham
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Frame
-        desc.ThemeProperties = {
-            TextColor3 = "TextMuted"
+        
+        desc._ThemeData = {
+            {property = "TextColor3", colorKey = "TextMuted"}
         }
-        self.Frame.Size = UDim2.new(1, -20, 0, 55)
+        RegisterThemedElement(desc, {{property = "TextColor3", colorKey = "TextMuted"}})
         self.TitleLabel.Size = UDim2.new(1, -140, 0, 20)
     end
     
@@ -2038,7 +2144,7 @@ function Window:AddThemeDropdown(parent, config)
     return self:AddDropdown(parent, {
         Title = config.Title or "Theme",
         Values = themeNames,
-        Default = ActiveTheme.Name,
+        Default = CustomLibrary.CurrentTheme or ActiveTheme.Name,
         Callback = function(value)
             CustomLibrary:SetTheme(value)
         end
@@ -2062,7 +2168,6 @@ end
 
 function CustomLibrary:Init()
     print(string.format([[
-
     ╔═══════════════════════════════════════════════════════════════╗
     ║                                                               ║
     ║              CUSTOM LIBRARY v%s LOADED                       ║
@@ -2079,7 +2184,6 @@ function CustomLibrary:Init()
     ║    ✓ Smooth Animations                                       ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
-    
     ]], self.Version))
     return self
 end
