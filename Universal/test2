@@ -1,14 +1,3 @@
---[[
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║                    CUSTOM LIBRARY v1.0.0                      ║
-    ║              A Modern UI Library for Roblox                   ║
-    ╚═══════════════════════════════════════════════════════════════╝
-]]
-
--- ═══════════════════════════════════════════════════════════════════════════
--- SERVICES & UTILITIES
--- ═══════════════════════════════════════════════════════════════════════════
-
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -18,10 +7,6 @@ local HttpService = game:GetService("HttpService")
 
 local player = Players.LocalPlayer
 
--- ═══════════════════════════════════════════════════════════════════════════
--- LIBRARY INITIALIZATION
--- ═══════════════════════════════════════════════════════════════════════════
-
 local CustomLibrary = {
     Version = "1.0.0",
     Unloaded = false,
@@ -30,10 +15,6 @@ local CustomLibrary = {
     Notifications = {},
     CurrentTheme = "Dark"
 }
-
--- ═══════════════════════════════════════════════════════════════════════════
--- THEMES CONFIGURATION
--- ═══════════════════════════════════════════════════════════════════════════
 
 local Themes = {
     Dark = {
@@ -128,16 +109,11 @@ local Themes = {
 
 local ActiveTheme = Themes.Dark
 
--- Store all themed elements for theme switching
 local ThemedElements = {}
 
 local function RegisterThemedElement(element, properties)
     table.insert(ThemedElements, {element = element, properties = properties})
 end
-
--- ═══════════════════════════════════════════════════════════════════════════
--- HELPER FUNCTIONS
--- ═══════════════════════════════════════════════════════════════════════════
 
 local function CreateRoundedCorner(instance, radius)
     local corner = Instance.new("UICorner")
@@ -193,10 +169,6 @@ local function ApplyThemeToGui(element, theme)
     end
 end
 
--- ═══════════════════════════════════════════════════════════════════════════
--- NOTIFICATION SYSTEM
--- ═══════════════════════════════════════════════════════════════════════════
-
 local NotificationQueue = {}
 local IsShowingNotification = false
 
@@ -218,7 +190,6 @@ local function CreateNotificationFrame(parent, config)
     CreateRoundedCorner(notification, 10)
     CreateStroke(notification, 1, ActiveTheme.Border)
     
-    -- Accent Bar
     local accentBar = Instance.new("Frame")
     accentBar.Size = UDim2.new(0, 4, 1, -16)
     accentBar.Position = UDim2.new(0, 8, 0, 8)
@@ -228,7 +199,6 @@ local function CreateNotificationFrame(parent, config)
     accentBar.Parent = notification
     CreateRoundedCorner(accentBar, 2)
     
-    -- Title
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -50, 0, 22)
     titleLabel.Position = UDim2.new(0, 20, 0, 8)
@@ -245,7 +215,6 @@ local function CreateNotificationFrame(parent, config)
     }
     RegisterThemedElement(titleLabel, {{property = "TextColor3", colorKey = "Text"}})
     
-    -- Content
     local contentLabel = Instance.new("TextLabel")
     contentLabel.Size = UDim2.new(1, -20, 0, 35)
     contentLabel.Position = UDim2.new(0, 20, 0, 32)
@@ -263,7 +232,6 @@ local function CreateNotificationFrame(parent, config)
     }
     RegisterThemedElement(contentLabel, {{property = "TextColor3", colorKey = "TextSecondary"}})
     
-    -- Close Button
     local closeBtn = Instance.new("TextButton")
     closeBtn.Size = UDim2.new(0, 24, 0, 24)
     closeBtn.Position = UDim2.new(1, -30, 0, 6)
@@ -299,12 +267,10 @@ local function CreateNotificationFrame(parent, config)
         if config.Callback then config.Callback() end
     end)
     
-    -- Animate In
     TweenObject(notification, {BackgroundTransparency = 0}, 0.3)
     TweenObject(notification, {Position = UDim2.new(1, -360, 1, -100)}, 0.3)
     TweenObject(accentBar, {BackgroundTransparency = 0}, 0.3)
     
-    -- Auto Close
     if config.Duration and config.Duration > 0 then
         task.delay(config.Duration, function()
             if notification and notification.Parent then
@@ -325,10 +291,6 @@ function CustomLibrary:Notify(config)
         CreateNotificationFrame(self.GUI, config)
     end
 end
-
--- ═══════════════════════════════════════════════════════════════════════════
--- THEME MANAGER
--- ═══════════════════════════════════════════════════════════════════════════
 
 function CustomLibrary:SetTheme(themeName)
     local newTheme = Themes[themeName]
