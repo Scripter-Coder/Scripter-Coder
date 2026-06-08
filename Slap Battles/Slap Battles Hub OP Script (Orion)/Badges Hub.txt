@@ -328,6 +328,7 @@ local allBadges = {
   {id = "1662521369541218",  name = "Genuinely how am I still alive | Lasso Glove", category = "Normal"},
   {id = "3964935687406576", name = "Vernal Floralscence | Lotus Glove", category = "Normal"},
   {id = "3344995751929220", name = "Gum, Gummy, Gone | Elastic Glove", category = "Normal"},
+  {id = "1703260768466206", name = "Fix my dang ‘puter | G-X Glove", category = "Normal"},
 }
 
 -- ============================================================
@@ -1100,24 +1101,64 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddButton({
-	Name = "Get [Redacted] Glove",
-	Callback = function()
-if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 0 then
-Door = 0
-for i = 1, 10 do
-Door = Door + 1
-if game:GetService("BadgeService"):UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 2124847850) then
-Door = nil
-else
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), workspace.PocketDimension.Doors[Door].TouchInterest.Parent, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), workspace.PocketDimension.Doors[Door].TouchInterest.Parent, 1)
-wait(3.75)
-end
-end
-else
-OrionLib:MakeNotification({Name = "Error",Content = "0+ Slaps Required",Image = "rbxassetid://7743878857",Time = 3})
-end
-  	end    
+    Name = "Get [REDACTED] Glove",
+    Callback = function()
+        task.spawn(function()
+            local player = game.Players.LocalPlayer
+            
+            -- Check slaps requirement
+            if player.leaderstats.Slaps.Value < 0 then
+                OrionLib:MakeNotification({Name = "Error", Content = "0+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+                return
+            end
+            
+            -- Keep running until badge is obtained
+            local badgeId = 2124847850
+            local hasBadge = false
+            
+            repeat
+                -- Wait for character to load
+                local character = player.Character
+                if not character or not character.Parent then
+                    character = player.CharacterAdded:Wait()
+                    task.wait(1)
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then
+                    hrp = character:WaitForChild("HumanoidRootPart")
+                end
+                
+                -- Bring every object from Doors folder
+                for _, obj in pairs(workspace.PocketDimension.Doors:GetChildren()) do
+                    pcall(function()
+                        if obj:IsA("BasePart") then
+                            local originalCFrame = obj.CFrame
+                            local originalAnchored = obj.Anchored
+                            
+                            obj.Anchored = false
+                            obj.CFrame = hrp.CFrame
+                            task.wait(0.05)
+                            obj.CFrame = originalCFrame
+                            obj.Anchored = originalAnchored
+                        end
+                    end)
+                    task.wait(0.05)
+                end
+                
+                -- Check if badge was obtained
+                pcall(function()
+                    hasBadge = game:GetService("BadgeService"):UserHasBadgeAsync(player.UserId, badgeId)
+                end)
+                
+                task.wait(0.02) -- Small delay before next loop
+                
+            until hasBadge == true
+            
+            -- Notify success
+            OrionLib:MakeNotification({Name = "Success", Content = "Glove obtained!", Image = "rbxassetid://7743878857", Time = 3})
+        end)
+    end    
 })
 
 end
@@ -1205,20 +1246,66 @@ Tab:AddButton({
 })
 
 Tab:AddToggle({
-	Name = "Auto Bring Bus",
-	Default = false,
-	Callback = function(Value) 
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Bus",
+    Default = false,
+    Callback = function(Value) 
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find BusModel
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "BusModel" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Method 1: Teleport the bus to the player (brings bus to you)
+                            local busPrimaryPart = v:FindFirstChild("PrimaryPart") or v:FindFirstChild("HumanoidRootPart") or v:FindFirstChild("RootPart")
+                            
+                            if busPrimaryPart then
+                                -- Move bus to player's position
+                                busPrimaryPart.CFrame = hrp.CFrame
+                            else
+                                -- If no primary part, move the whole model
+                                local modelParts = {}
+                                for _, part in pairs(v:GetDescendants()) do
+                                    if part:IsA("BasePart") then
+                                        table.insert(modelParts, part)
+                                    end
+                                end
+                                
+                                -- Move each part to player
+                                for _, part in pairs(modelParts) do
+                                    part.CFrame = hrp.CFrame
+                                end
+                            end
+                            
+                            -- Alternative: Move player to bus (if you want player to go to bus)
+                            -- hrp.CFrame = v:GetPivot() + Vector3.new(0, 3, 0)
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Faster than original for better collection
+            end
+        end)
+    end
 })
 
 end
@@ -1230,20 +1317,62 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddToggle({
-	Name = "Auto Bring Gift",
-	Default = false,
-	Callback = function(Value)
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Gift",
+    Default = false,
+    Callback = function(Value)
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find all Gifts
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "Gift" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Teleport gift directly to player
+                            if v:IsA("BasePart") then
+                                -- Gift is a single part
+                                v.CFrame = hrp.CFrame
+                            elseif v:IsA("Model") then
+                                -- Gift is a model
+                                local giftPart = v:FindFirstChild("Handle") or v:FindFirstChild("GiftPart") or v:FindFirstChild("PrimaryPart")
+                                
+                                if giftPart then
+                                    giftPart.CFrame = hrp.CFrame
+                                else
+                                    -- Move all parts to player
+                                    for _, part in pairs(v:GetDescendants()) do
+                                        if part:IsA("BasePart") then
+                                            part.CFrame = hrp.CFrame
+                                        end
+                                    end
+                                end
+                            end
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Fast loop to collect gifts quickly
+            end
+        end)
+    end
 })
 
 end
@@ -1258,16 +1387,58 @@ Tab:AddToggle({
 	Name = "Auto Bring Phase Orb",
 	Default = false,
 	Callback = function(Value)
-_G.PhaseOrJetfarm = Value
-while _G.PhaseOrJetfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
-                    if v.Name == "PhaseOrb" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 1)
-                    end
-                end
-task.wait()
-end
+		_G.PhaseOrJetfarm = Value
+		
+		task.spawn(function()
+			while _G.PhaseOrJetfarm do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				local character = player.Character
+				if not character or not character.Parent then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local head = character:FindFirstChild("Head")
+				if not head then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				-- Find all Phase Orbs
+				for _, v in pairs(workspace:GetChildren()) do
+					if v.Name == "PhaseOrb" then
+						pcall(function()
+							-- Teleport Phase Orb directly to player's head
+							if v:IsA("BasePart") then
+								-- Orb is a single part
+								v.CFrame = head.CFrame
+							elseif v:IsA("Model") then
+								-- Orb is a model
+								local orbPart = v:FindFirstChild("Handle") or v:FindFirstChild("OrbPart") or v:FindFirstChild("PrimaryPart")
+								
+								if orbPart then
+									orbPart.CFrame = head.CFrame
+								else
+									-- Move all parts to player's head
+									for _, part in pairs(v:GetDescendants()) do
+										if part:IsA("BasePart") then
+											part.CFrame = head.CFrame
+										end
+									end
+								end
+							end
+						end)
+					end
+				end
+				
+				task.wait(0.05) -- Fast loop for orb collection
+			end
+		end)
 	end    
 })
 
@@ -1592,16 +1763,58 @@ Tab:AddToggle({
 	Name = "Auto Bring Jet Orb",
 	Default = false,
 	Callback = function(Value)
-_G.PhaseOrJetfarm = Value
-while _G.PhaseOrJetfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
-                    if v.Name == "JetOrb" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 1)
-                    end
-                end
-task.wait()
-end
+		_G.PhaseOrJetfarm = Value
+		
+		task.spawn(function()
+			while _G.PhaseOrJetfarm do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				local character = player.Character
+				if not character or not character.Parent then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local head = character:FindFirstChild("Head")
+				if not head then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				-- Find all Jet Orbs
+				for _, v in pairs(workspace:GetChildren()) do
+					if v.Name == "JetOrb" then
+						pcall(function()
+							-- Teleport Jet Orb directly to player's head
+							if v:IsA("BasePart") then
+								-- Orb is a single part
+								v.CFrame = head.CFrame
+							elseif v:IsA("Model") then
+								-- Orb is a model
+								local orbPart = v:FindFirstChild("Handle") or v:FindFirstChild("OrbPart") or v:FindFirstChild("PrimaryPart")
+								
+								if orbPart then
+									orbPart.CFrame = head.CFrame
+								else
+									-- Move all parts to player's head
+									for _, part in pairs(v:GetDescendants()) do
+										if part:IsA("BasePart") then
+											part.CFrame = head.CFrame
+										end
+									end
+								end
+							end
+						end)
+					end
+				end
+				
+				task.wait(0.05) -- Fast loop for orb collection
+			end
+		end)
 	end    
 })
 
@@ -1829,27 +2042,72 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		Potatofarm = Value
-		if Potatofarm then
-			local player = game.Players.LocalPlayer
-			if player.leaderstats.Glove.Value == "Reverse" then
-				task.spawn(function()
-					while Potatofarm do
-						for _, v in pairs(game.Workspace:GetChildren()) do
-							if v.Name == "BubbleObject" then
-								local hrp = player.Character:FindFirstChild("HumanoidRootPart")
-								if hrp then
-									firetouchinterest(hrp, v, 0)
-									firetouchinterest(hrp, v, 1)
+		
+		task.spawn(function()
+			while Potatofarm do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				-- Check for Reverse glove
+				if player.leaderstats and player.leaderstats.Glove and player.leaderstats.Glove.Value ~= "Reverse" then
+					OrionLib:MakeNotification({Name = "Error", Content = "Equip Reverse/Use Ability", Image = "rbxassetid://7743878857", Time = 3})
+					Potatofarm = false
+					break
+				end
+				
+				local character = player.Character
+				if not character or not character.Parent then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local hrp = character:FindFirstChild("HumanoidRootPart")
+				if not hrp then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local bubblesFound = 0
+				
+				-- Find all BubbleObjects
+				for _, v in pairs(workspace:GetChildren()) do
+					if v.Name == "BubbleObject" then
+						bubblesFound = bubblesFound + 1
+						pcall(function()
+							-- Teleport bubble directly to player's HRP
+							if v:IsA("BasePart") then
+								-- Bubble is a single part
+								v.CFrame = hrp.CFrame
+							elseif v:IsA("Model") then
+								-- Bubble is a model
+								local bubblePart = v:FindFirstChild("Handle") or v:FindFirstChild("BubblePart") or v:FindFirstChild("PrimaryPart")
+								
+								if bubblePart then
+									bubblePart.CFrame = hrp.CFrame
+								else
+									-- Move all parts to player
+									for _, part in pairs(v:GetDescendants()) do
+										if part:IsA("BasePart") then
+											part.CFrame = hrp.CFrame
+										end
+									end
 								end
 							end
-						end
-						task.wait(0.1) -- avoid tight looping
+						end)
 					end
-				end)
-			else
-OrionLib:MakeNotification({Name = "Error",Content = "Equip Reverse/Use Ability",Image = "rbxassetid://7743878857",Time = 3})
+				end
+				
+				-- Adjust wait time based on whether bubbles were found
+				if bubblesFound == 0 then
+					task.wait(0.3) -- No bubbles, wait a bit
+				else
+					task.wait(0.05) -- Bubbles found, fast loop
+				end
 			end
-		end
+		end)
 	end
 })
 
@@ -4778,20 +5036,66 @@ Tab:AddButton({
 })
 
 Tab:AddToggle({
-	Name = "Auto Bring Bus",
-	Default = false,
-	Callback = function(Value) 
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Bus",
+    Default = false,
+    Callback = function(Value) 
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find BusModel
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "BusModel" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Method 1: Teleport the bus to the player (brings bus to you)
+                            local busPrimaryPart = v:FindFirstChild("PrimaryPart") or v:FindFirstChild("HumanoidRootPart") or v:FindFirstChild("RootPart")
+                            
+                            if busPrimaryPart then
+                                -- Move bus to player's position
+                                busPrimaryPart.CFrame = hrp.CFrame
+                            else
+                                -- If no primary part, move the whole model
+                                local modelParts = {}
+                                for _, part in pairs(v:GetDescendants()) do
+                                    if part:IsA("BasePart") then
+                                        table.insert(modelParts, part)
+                                    end
+                                end
+                                
+                                -- Move each part to player
+                                for _, part in pairs(modelParts) do
+                                    part.CFrame = hrp.CFrame
+                                end
+                            end
+                            
+                            -- Alternative: Move player to bus (if you want player to go to bus)
+                            -- hrp.CFrame = v:GetPivot() + Vector3.new(0, 3, 0)
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Faster than original for better collection
+            end
+        end)
+    end
 })
 
 end
@@ -4847,20 +5151,62 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddToggle({
-	Name = "Auto Bring Gift",
-	Default = false,
-	Callback = function(Value)
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Gift",
+    Default = false,
+    Callback = function(Value)
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find all Gifts
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "Gift" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Teleport gift directly to player
+                            if v:IsA("BasePart") then
+                                -- Gift is a single part
+                                v.CFrame = hrp.CFrame
+                            elseif v:IsA("Model") then
+                                -- Gift is a model
+                                local giftPart = v:FindFirstChild("Handle") or v:FindFirstChild("GiftPart") or v:FindFirstChild("PrimaryPart")
+                                
+                                if giftPart then
+                                    giftPart.CFrame = hrp.CFrame
+                                else
+                                    -- Move all parts to player
+                                    for _, part in pairs(v:GetDescendants()) do
+                                        if part:IsA("BasePart") then
+                                            part.CFrame = hrp.CFrame
+                                        end
+                                    end
+                                end
+                            end
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Fast loop to collect gifts quickly
+            end
+        end)
+    end
 })
 
 end
@@ -9719,20 +10065,66 @@ Tab = Window:MakeTab({
 	})
 
 Tab:AddToggle({
-	Name = "Auto Bring Bus",
-	Default = false,
-	Callback = function(Value) 
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Bus",
+    Default = false,
+    Callback = function(Value) 
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find BusModel
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "BusModel" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Method 1: Teleport the bus to the player (brings bus to you)
+                            local busPrimaryPart = v:FindFirstChild("PrimaryPart") or v:FindFirstChild("HumanoidRootPart") or v:FindFirstChild("RootPart")
+                            
+                            if busPrimaryPart then
+                                -- Move bus to player's position
+                                busPrimaryPart.CFrame = hrp.CFrame
+                            else
+                                -- If no primary part, move the whole model
+                                local modelParts = {}
+                                for _, part in pairs(v:GetDescendants()) do
+                                    if part:IsA("BasePart") then
+                                        table.insert(modelParts, part)
+                                    end
+                                end
+                                
+                                -- Move each part to player
+                                for _, part in pairs(modelParts) do
+                                    part.CFrame = hrp.CFrame
+                                end
+                            end
+                            
+                            -- Alternative: Move player to bus (if you want player to go to bus)
+                            -- hrp.CFrame = v:GetPivot() + Vector3.new(0, 3, 0)
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Faster than original for better collection
+            end
+        end)
+    end
 })
 
 end
@@ -10409,31 +10801,69 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.AutoLabyrinth = Value
-		local player = game.Players.LocalPlayer
-		local char = player.Character or player.CharacterAdded:Wait()
-		local hrp = char:WaitForChild("HumanoidRootPart")
-
-		while _G.AutoLabyrinth do
-			for _, labyrinth in pairs(workspace:GetChildren()) do
-				if string.find(labyrinth.Name, "Labyrinth") and labyrinth:FindFirstChild("Doors") then
-					for _, door in ipairs(labyrinth.Doors:GetChildren()) do
-						local hitbox = door:FindFirstChild("Hitbox")
-						if hitbox and hitbox:IsA("BasePart") and hitbox:FindFirstChildWhichIsA("TouchTransmitter") then
-							-- Teleport above the Hitbox
-							hrp.CFrame = hitbox.CFrame + Vector3.new(0, 3, 0)
-
-							-- Simulate touch
-							firetouchinterest(hrp, hitbox, 0)
-							task.wait(0.1)
-							firetouchinterest(hrp, hitbox, 1)
-
-							task.wait(0.3)
+		
+		task.spawn(function()
+			while _G.AutoLabyrinth do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				local char = player.Character
+				if not char or not char.Parent then 
+					-- Wait for character to load
+					char = player.CharacterAdded:Wait()
+					task.wait(0.5)
+					continue 
+				end
+				
+				local hrp = char:FindFirstChild("HumanoidRootPart")
+				if not hrp then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local doorsFound = 0
+				
+				for _, labyrinth in pairs(workspace:GetChildren()) do
+					if string.find(labyrinth.Name, "Labyrinth") and labyrinth:FindFirstChild("Doors") then
+						for _, door in ipairs(labyrinth.Doors:GetChildren()) do
+							local hitbox = door:FindFirstChild("Hitbox")
+							if hitbox and hitbox:IsA("BasePart") then
+								doorsFound = doorsFound + 1
+								pcall(function()
+									-- Method 1: Teleport player directly into the hitbox multiple times
+									for i = 1, 8 do
+										hrp.CFrame = hitbox.CFrame
+										task.wait(0.02)
+									end
+									
+									-- Move slightly forward into the door
+									hrp.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector * 2
+									task.wait(0.1)
+									
+									-- Shake/teleport inside hitbox to ensure trigger
+									for i = 1, 5 do
+										hrp.CFrame = hitbox.CFrame
+										task.wait(0.01)
+									end
+									
+									task.wait(0.3)
+								end)
+							end
 						end
 					end
 				end
+				
+				-- Adjust wait time based on whether doors were found
+				if doorsFound == 0 then
+					task.wait(0.5) -- No doors, wait longer
+				else
+					task.wait(0.2) -- Doors found, fast loop
+				end
 			end
-			task.wait(0.5)
-		end
+		end)
 	end
 })
 
@@ -11485,29 +11915,72 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		G_.SiphonAuto = Value
-		local player = game.Players.LocalPlayer
-
-		if G_.SiphonAuto then
-			if player.leaderstats.Slaps.Value >= 0 then
-				task.spawn(function()
-					while G_.SiphonAuto do
-						for _, v in pairs(game.Workspace:GetChildren()) do
-							if v.Name == "SiphonOrb" then
-								local head = player.Character and player.Character:FindFirstChild("Head")
-								if head then
-									firetouchinterest(head, v, 0)
-									firetouchinterest(head, v, 1)
+		
+		task.spawn(function()
+			while G_.SiphonAuto do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				-- Check slaps requirement
+				if player.leaderstats and player.leaderstats.Slaps and player.leaderstats.Slaps.Value < 0 then
+					G_.SiphonAuto = false
+					OrionLib:MakeNotification({Name = "Error", Content = "0+ Slaps Required", Image = "rbxassetid://7743878857", Time = 3})
+					break
+				end
+				
+				local character = player.Character
+				if not character or not character.Parent then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local head = character:FindFirstChild("Head")
+				if not head then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local orbsFound = 0
+				
+				-- Find all Siphon Orbs
+				for _, v in pairs(workspace:GetChildren()) do
+					if v.Name == "SiphonOrb" then
+						orbsFound = orbsFound + 1
+						pcall(function()
+							-- Teleport Siphon Orb directly to player's head
+							if v:IsA("BasePart") then
+								-- Orb is a single part
+								v.CFrame = head.CFrame
+							elseif v:IsA("Model") then
+								-- Orb is a model
+								local orbPart = v:FindFirstChild("Handle") or v:FindFirstChild("OrbPart") or v:FindFirstChild("PrimaryPart")
+								
+								if orbPart then
+									orbPart.CFrame = head.CFrame
+								else
+									-- Move all parts to player's head
+									for _, part in pairs(v:GetDescendants()) do
+										if part:IsA("BasePart") then
+											part.CFrame = head.CFrame
+										end
+									end
 								end
 							end
-						end
-						task.wait(0.1)
+						end)
 					end
-				end)
-			else
-				G_.SiphonAuto = false
-OrionLib:MakeNotification({Name = "Error",Content = "0+ Slaps Required",Image = "rbxassetid://7743878857",Time = 3})
+				end
+				
+				-- Adjust wait time based on whether orbs were found
+				if orbsFound == 0 then
+					task.wait(0.3) -- No orbs, wait a bit
+				else
+					task.wait(0.05) -- Orbs found, fast loop
+				end
 			end
-		end
+		end)
 	end
 })
 
@@ -13099,16 +13572,66 @@ Tab:AddToggle({
 	Name = "Auto Bring MATERIALIZE Orb",
 	Default = false,
 	Callback = function(Value)
-_G.Materializefarm = Value
-while _G.Materializefarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
-                    if v.Name == "MATERIALIZEOrb" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("Head"), v, 1)
-                    end
-                end
-task.wait()
-end
+		_G.Materializefarm = Value
+		
+		task.spawn(function()
+			while _G.Materializefarm do
+				local player = game.Players.LocalPlayer
+				if not player then 
+					task.wait(0.1) 
+					continue 
+				end
+				
+				local character = player.Character
+				if not character or not character.Parent then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local head = character:FindFirstChild("Head")
+				if not head then 
+					task.wait(0.01) 
+					continue 
+				end
+				
+				local orbsFound = 0
+				
+				-- Find all MATERIALIZE Orbs
+				for _, v in pairs(workspace:GetChildren()) do
+					if v.Name == "MATERIALIZEOrb" then
+						orbsFound = orbsFound + 1
+						pcall(function()
+							-- Teleport MATERIALIZE Orb directly to player's head
+							if v:IsA("BasePart") then
+								-- Orb is a single part
+								v.CFrame = head.CFrame
+							elseif v:IsA("Model") then
+								-- Orb is a model
+								local orbPart = v:FindFirstChild("Handle") or v:FindFirstChild("OrbPart") or v:FindFirstChild("PrimaryPart")
+								
+								if orbPart then
+									orbPart.CFrame = head.CFrame
+								else
+									-- Move all parts to player's head
+									for _, part in pairs(v:GetDescendants()) do
+										if part:IsA("BasePart") then
+											part.CFrame = head.CFrame
+										end
+									end
+								end
+							end
+						end)
+					end
+				end
+				
+				-- Adjust wait time based on whether orbs were found
+				if orbsFound == 0 then
+					task.wait(0.5) -- No orbs, wait longer
+				else
+					task.wait(0.05) -- Orbs found, fast loop
+				end
+			end
+		end)
 	end    
 })
 
@@ -14521,114 +15044,111 @@ do
 	PremiumOnly = false
 	})
 
--- Eggler Button
 Tab:AddButton({
-    Name = "Auto Teleport To Egg Place + Get Eggler",
+    Name = "Collect All 10 Eggs",
     Callback = function()
-        local firstPlaceId = 6403373529
-        local secondPlaceId = 129665246576996
-        local currentPlaceId = game.PlaceId
-        
-        local function executeEgglerScript()
-            if not game:IsLoaded() then game.Loaded:Wait() end
-            if getgenv().AutoGetEgglerExecuted then return end
-            getgenv().AutoGetEgglerExecuted = true
-
-            if game.PlaceId == secondPlaceId then
-                -- Second place: Egg Place - Get Eggler
-                while task.wait() do
-                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
-                    end
-                    for i,v in pairs(workspace:GetDescendants()) do
-                        if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
-                            v.CanCollide = false
-                            v.CanTouch = true
-                            v.CanQuery = true
-                            v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                        end
-                    end
-                    if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
-                        fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
-                    end
-                end
-                
-            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
-                -- First place: Slap Battles - Click eggs and teleport
-                for i,v in pairs(workspace.EasterHuntEggs:GetChildren()) do
-                    if v and v:FindFirstChildWhichIsA("ClickDetector") then
-                        fireclickdetector(v:FindFirstChildWhichIsA("ClickDetector"))
-                    end
-                end
-                repeat task.wait() until workspace:FindFirstChild("EggTeleport")
-                task.wait()
-                if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
-                    fireclickdetector(workspace.EggTeleport.ClickDetector)
-                end
-                task.wait(2)
-                game:GetService("TeleportService"):Teleport(secondPlaceId)
+        task.spawn(function()
+            local player = game.Players.LocalPlayer
+            if not player then return end
+            
+            local character = player.Character
+            if not character or not character.Parent then
+                character = player.CharacterAdded:Wait()
             end
-        end
-
-        -- Function to set up teleport monitoring
-        local function setupTeleportMonitor()
-            local connection
-            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
-                if state == Enum.TeleportState.InProgress then
-                    local egglerScript = [[
-                        getgenv().AutoGetEgglerExecuted = false
+            
+            local hrp = character:FindFirstChild("HumanoidRootPart")
+            if not hrp then
+                hrp = character:WaitForChild("HumanoidRootPart")
+            end
+            
+            local EasterEggsFolder = workspace:FindFirstChild("EasterHuntEggs")
+            if not EasterEggsFolder then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "EasterHuntEggs folder not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                return
+            end
+            
+            -- Create table of all eggs
+            local eggs = {
+                EasterEggsFolder:FindFirstChild("Black"),
+                EasterEggsFolder:FindFirstChild("Blossom"),
+                EasterEggsFolder:FindFirstChild("Blue"),
+                EasterEggsFolder:FindFirstChild("Brown"),
+                EasterEggsFolder:FindFirstChild("DarkGrey"),
+                EasterEggsFolder:FindFirstChild("Green"),
+                EasterEggsFolder:FindFirstChild("LightGrey"),
+                EasterEggsFolder:FindFirstChild("Orange"),
+                EasterEggsFolder:FindFirstChild("Red"),
+                EasterEggsFolder:FindFirstChild("White")
+            }
+            
+            -- Collect each egg
+            for _, egg in pairs(eggs) do
+                if egg then
+                    pcall(function()
+                        -- Find ClickDetector in the egg
+                        local clickDetector = egg:FindFirstChildWhichIsA("ClickDetector")
                         
-                        if not game:IsLoaded() then game.Loaded:Wait() end
-                        task.wait(3)
-                        
-                        local secondPlaceId = 129665246576996
-                        
-                        if game.PlaceId == secondPlaceId then
-                            -- Auto-execute in second place
-                            while task.wait() do
-                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
-                                end
-                                for i,v in pairs(workspace:GetDescendants()) do
-                                    if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
-                                        v.CanCollide = false
-                                        v.CanTouch = true
-                                        v.CanQuery = true
-                                        v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                                    end
-                                end
-                                if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
-                                    fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
+                        if clickDetector then
+                            -- Method 1: Teleport to egg and fire ClickDetector
+                            local eggPart = egg:FindFirstChildWhichIsA("BasePart") or egg
+                            
+                            if eggPart then
+                                -- Teleport player to the egg
+                                hrp.CFrame = eggPart.CFrame + Vector3.new(0, 3, 0)
+                                task.wait(0.05)
+                                
+                                -- Fire the ClickDetector
+                                clickDetector:Click()
+                                task.wait(0.03)
+                                
+                                -- Teleport directly onto the egg for good measure
+                                hrp.CFrame = eggPart.CFrame
+                                task.wait(0.03)
+                                
+                                -- Click again to ensure collection
+                                clickDetector:Click()
+                            end
+                        else
+                            -- If no ClickDetector, try touching the egg
+                            local eggPart = egg:FindFirstChildWhichIsA("BasePart") or egg
+                            if eggPart then
+                                -- Teleport into the egg multiple times
+                                for i = 1, 5 do
+                                    hrp.CFrame = eggPart.CFrame
+                                    task.wait(0.01)
                                 end
                             end
                         end
-                    ]]
-                    if syn and syn.queue_on_teleport then 
-                        syn.queue_on_teleport(egglerScript) 
-                    else 
-                        queue_on_teleport(egglerScript) 
-                    end
+                    end)
                 end
-            end)
-            return connection
-        end
-
-        -- Main execution logic
-        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
-            executeEgglerScript()
-        else
-            local connection = setupTeleportMonitor()
-            
-            local TeleportService = game:GetService("TeleportService")
-            local success, errorMsg = pcall(function() 
-                TeleportService:Teleport(firstPlaceId) 
-            end)
-            
-            if not success then
-                if connection then connection:Disconnect() end
+                
+                task.wait(0.03) -- Wait between eggs
             end
-        end
+            
+            -- Success notification
+            OrionLib:MakeNotification({
+                Name = "Success",
+                Content = "All eggs collected!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end)
     end
+})
+
+-- Eggler Button
+Tab:AddButton({
+    Name = "Click On Egg To Teleport Egg Place",
+    Callback = function()
+        if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
+        fireclickdetector(workspace.EggTeleport.ClickDetector)
+    end
+end
 })
 
 end
@@ -16427,114 +16947,111 @@ Tab = Window:MakeTab({
 	PremiumOnly = false
 	})
 
--- Eggler Button
 Tab:AddButton({
-    Name = "Auto Teleport To Egg Place + Get Eggler Auto",
+    Name = "Collect All 10 Eggs",
     Callback = function()
-        local firstPlaceId = 6403373529
-        local secondPlaceId = 129665246576996
-        local currentPlaceId = game.PlaceId
-        
-        local function executeEgglerScript()
-            if not game:IsLoaded() then game.Loaded:Wait() end
-            if getgenv().AutoGetEgglerExecuted then return end
-            getgenv().AutoGetEgglerExecuted = true
-
-            if game.PlaceId == secondPlaceId then
-                -- Second place: Egg Place - Get Eggler
-                while task.wait() do
-                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
-                    end
-                    for i,v in pairs(workspace:GetDescendants()) do
-                        if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
-                            v.CanCollide = false
-                            v.CanTouch = true
-                            v.CanQuery = true
-                            v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                        end
-                    end
-                    if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
-                        fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
-                    end
-                end
-                
-            elseif game.PlaceId == firstPlaceId or game.PlaceId == 11520107397 or game.PlaceId == 9015014224 or game.PlaceId == 124596094333302 then
-                -- First place: Slap Battles - Click eggs and teleport
-                for i,v in pairs(ReplicatedStorage.EasterHuntEggs:GetChildren()) do
-                    if v and v:FindFirstChildWhichIsA("ClickDetector") then
-                        fireclickdetector(v:FindFirstChildWhichIsA("ClickDetector"))
-                    end
-                end
-                repeat task.wait() until workspace:FindFirstChild("EggTeleport")
-                task.wait()
-                if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
-                    fireclickdetector(workspace.EggTeleport.ClickDetector)
-                end
-                task.wait(2)
-                game:GetService("TeleportService"):Teleport(secondPlaceId)
+        task.spawn(function()
+            local player = game.Players.LocalPlayer
+            if not player then return end
+            
+            local character = player.Character
+            if not character or not character.Parent then
+                character = player.CharacterAdded:Wait()
             end
-        end
-
-        -- Function to set up teleport monitoring
-        local function setupTeleportMonitor()
-            local connection
-            connection = game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(state)
-                if state == Enum.TeleportState.InProgress then
-                    local egglerScript = [[
-                        getgenv().AutoGetEgglerExecuted = false
+            
+            local hrp = character:FindFirstChild("HumanoidRootPart")
+            if not hrp then
+                hrp = character:WaitForChild("HumanoidRootPart")
+            end
+            
+            local EasterEggsFolder = workspace:FindFirstChild("EasterHuntEggs")
+            if not EasterEggsFolder then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "EasterHuntEggs folder not found!",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                return
+            end
+            
+            -- Create table of all eggs
+            local eggs = {
+                EasterEggsFolder:FindFirstChild("Black"),
+                EasterEggsFolder:FindFirstChild("Blossom"),
+                EasterEggsFolder:FindFirstChild("Blue"),
+                EasterEggsFolder:FindFirstChild("Brown"),
+                EasterEggsFolder:FindFirstChild("DarkGrey"),
+                EasterEggsFolder:FindFirstChild("Green"),
+                EasterEggsFolder:FindFirstChild("LightGrey"),
+                EasterEggsFolder:FindFirstChild("Orange"),
+                EasterEggsFolder:FindFirstChild("Red"),
+                EasterEggsFolder:FindFirstChild("White")
+            }
+            
+            -- Collect each egg
+            for _, egg in pairs(eggs) do
+                if egg then
+                    pcall(function()
+                        -- Find ClickDetector in the egg
+                        local clickDetector = egg:FindFirstChildWhichIsA("ClickDetector")
                         
-                        if not game:IsLoaded() then game.Loaded:Wait() end
-                        task.wait(3)
-                        
-                        local secondPlaceId = 129665246576996
-                        
-                        if game.PlaceId == secondPlaceId then
-                            -- Auto-execute in second place
-                            while task.wait() do
-                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69,4240,2)
-                                end
-                                for i,v in pairs(workspace:GetDescendants()) do
-                                    if v and v.Name == "root" and v:FindFirstChildWhichIsA("TouchTransmitter") then
-                                        v.CanCollide = false
-                                        v.CanTouch = true
-                                        v.CanQuery = true
-                                        v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                                    end
-                                end
-                                if workspace:FindFirstChild("Kenneth") and workspace.Kenneth:FindFirstChild("Head") and workspace.Kenneth.Head:FindFirstChild("ProximityPrompt") then
-                                    fireproximityprompt(workspace.Kenneth.Head.ProximityPrompt)
+                        if clickDetector then
+                            -- Method 1: Teleport to egg and fire ClickDetector
+                            local eggPart = egg:FindFirstChildWhichIsA("BasePart") or egg
+                            
+                            if eggPart then
+                                -- Teleport player to the egg
+                                hrp.CFrame = eggPart.CFrame + Vector3.new(0, 3, 0)
+                                task.wait(0.05)
+                                
+                                -- Fire the ClickDetector
+                                clickDetector:Click()
+                                task.wait(0.03)
+                                
+                                -- Teleport directly onto the egg for good measure
+                                hrp.CFrame = eggPart.CFrame
+                                task.wait(0.03)
+                                
+                                -- Click again to ensure collection
+                                clickDetector:Click()
+                            end
+                        else
+                            -- If no ClickDetector, try touching the egg
+                            local eggPart = egg:FindFirstChildWhichIsA("BasePart") or egg
+                            if eggPart then
+                                -- Teleport into the egg multiple times
+                                for i = 1, 5 do
+                                    hrp.CFrame = eggPart.CFrame
+                                    task.wait(0.01)
                                 end
                             end
                         end
-                    ]]
-                    if syn and syn.queue_on_teleport then 
-                        syn.queue_on_teleport(egglerScript) 
-                    else 
-                        queue_on_teleport(egglerScript) 
-                    end
+                    end)
                 end
-            end)
-            return connection
-        end
-
-        -- Main execution logic
-        if currentPlaceId == firstPlaceId or currentPlaceId == secondPlaceId then
-            executeEgglerScript()
-        else
-            local connection = setupTeleportMonitor()
-            
-            local TeleportService = game:GetService("TeleportService")
-            local success, errorMsg = pcall(function() 
-                TeleportService:Teleport(firstPlaceId) 
-            end)
-            
-            if not success then
-                if connection then connection:Disconnect() end
+                
+                task.wait(0.03) -- Wait between eggs
             end
-        end
+            
+            -- Success notification
+            OrionLib:MakeNotification({
+                Name = "Success",
+                Content = "All eggs collected!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end)
     end
+})
+
+-- Eggler Button
+Tab:AddButton({
+    Name = "Click On Egg To Teleport Egg Place",
+    Callback = function()
+        if workspace.EggTeleport and workspace.EggTeleport:FindFirstChild("ClickDetector") then
+        fireclickdetector(workspace.EggTeleport.ClickDetector)
+    end
+end
 })
 
 end
@@ -16869,6 +17386,21 @@ Tab:AddToggle({
         else
             stopWalkFling()
         end
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "G-X",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "operation genius",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(77283826005207)
     end
 })
 
@@ -18081,82 +18613,95 @@ Tab:AddToggle({
     Callback = function(Value)
         AutoEnterActive = Value
         
-        if Value then
-            
-            -- Start auto enter in separate thread
-            task.spawn(function()
-                while AutoEnterActive do
-                    local player = game.Players.LocalPlayer
-                    local character = player.Character
-                    
-                    if character and character:FindFirstChild("HumanoidRootPart") then
-                        local entered = character:FindFirstChild("entered")
-                        
-                        if not entered then
-                            -- Get the correct teleport part based on mode
-                            local teleportFolder = workspace.Lobby
-                            local teleportPart = nil
-                            
-                            if AutoEnterMode == "Arena" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
-                            elseif AutoEnterMode == "Arena Default" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
-                            end
-                            
-                            if teleportPart then
-                                -- Find the TouchInterest parent (the actual part)
-                                local touchPart = nil
-                                
-                                -- Look for TouchTransmitter or TouchInterest
-                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or 
-                                                     teleportPart:FindFirstChild("TouchInterest")
-                                
-                                if touchInterest then
-                                    touchPart = touchInterest.Parent
-                                else
-                                    touchPart = teleportPart
-                                end
-                                
-                                if touchPart and touchPart:IsA("BasePart") then
-                                    -- Bring teleport part to player instead of player to teleport
-                                    local hrp = character:FindFirstChild("HumanoidRootPart")
-                                    if hrp then
-                                        -- Save original position
-                                        local originalPosition = touchPart.Position
-                                        local originalAnchored = touchPart.Anchored
-                                        
-                                        -- Temporarily move teleport to player
-                                        touchPart.Anchored = false
-                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
-                                        
-                                        -- Touch the part
-                                        firetouchinterest(hrp, touchPart, 0)
-                                        task.wait(0.05)
-                                        firetouchinterest(hrp, touchPart, 1)
-                                        
-                                        -- Return teleport to original position
-                                        task.wait(0.1)
-                                        touchPart.Position = originalPosition
-                                        touchPart.Anchored = originalAnchored
-                                        
-                                    end
-                                end
-                            end
-                        else
-                            -- Already entered, just wait
-                        end
-                    else
-                        -- Character not loaded yet
-                        task.wait(1)
+        task.spawn(function()
+            while AutoEnterActive do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.5) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                -- Check if already entered
+                local entered = character:FindFirstChild("entered")
+                
+                if not entered then
+                    -- Get the correct teleport part based on mode
+                    local teleportFolder = workspace:FindFirstChild("Lobby")
+                    if not teleportFolder then
+                        task.wait(0.5)
                         continue
                     end
                     
-                    -- Wait before next attempt
-                    task.wait(0.5)
+                    local teleportPart = nil
+                    
+                    if AutoEnterMode == "Arena" then
+                        teleportPart = teleportFolder:FindFirstChild("Teleport1")
+                    elseif AutoEnterMode == "Arena Default" then
+                        teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                    end
+                    
+                    if teleportPart then
+                        pcall(function()
+                            -- Method 1: Teleport player directly to the teleport part
+                            local touchPart = nil
+                            
+                            -- Find the actual part to teleport to
+                            if teleportPart:IsA("BasePart") then
+                                touchPart = teleportPart
+                            else
+                                touchPart = teleportPart:FindFirstChildWhichIsA("BasePart")
+                            end
+                            
+                            if touchPart then
+                                -- Teleport player to the teleport location
+                                hrp.CFrame = touchPart.CFrame + Vector3.new(0, 3, 0)
+                                task.wait(0.1)
+                                
+                                -- Move directly into the teleport part
+                                hrp.CFrame = touchPart.CFrame
+                                task.wait(0.1)
+                                
+                                -- Spam teleport into the part to ensure trigger
+                                for i = 1, 5 do
+                                    hrp.CFrame = touchPart.CFrame
+                                    task.wait(0.01)
+                                end
+                                
+                                -- Move slightly forward through the teleport
+                                hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 3
+                                task.wait(0.1)
+                                
+                                -- Teleport back and forth through the teleport
+                                for i = 1, 3 do
+                                    hrp.CFrame = touchPart.CFrame - touchPart.CFrame.LookVector * 2
+                                    task.wait(0.05)
+                                    hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 4
+                                    task.wait(0.05)
+                                end
+                            end
+                        end)
+                    end
+                else
+                    -- Already entered, just wait
+                    task.wait(1)
                 end
-            end)
-        else
-        end
+                
+                -- Wait before next attempt
+                task.wait(0.5)
+            end
+        end)
     end
 })
 
