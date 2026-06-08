@@ -17,6 +17,8 @@ Fluent:Notify({Title = "From Scripter", Content = "GoodLuck!", Duration = 3})
 
 Tab = Window:AddTab({Title = "Welcome", Icon = ""})
 
+Window:SelectTab(1)
+
 local player = game.Players.LocalPlayer
 Tab:AddParagraph({Title = "Hello " .. player.Name .. "!"})
 
@@ -4967,97 +4969,147 @@ Section = Tab:AddSection("Arena Settings")
 -- Auto Enter Arena System
 local AutoEnterActive = false
 local AutoEnterMode = "Arena" -- Default mode
+local autoEnterConnection = nil
 
-Tab:AddDropdown("Dropdown_1", {
-    Title = "Enter",
-    Default = "Arena",
+Tab:AddDropdown("EnterMode", {
+    Title = "Enter Mode",
+    Description = "Select which teleport to use",
     Values = {"Arena", "Arena Default"},
+    Default = "Arena",
     Callback = function(Value)
         AutoEnterMode = Value
     end
 })
 
-Tab:AddToggle("Toggle_4", {
+Tab:AddToggle("AutoEnter", {
     Title = "Auto Enter",
+    Description = "Automatically enters the arena when not inside",
     Default = false,
     Callback = function(Value)
         AutoEnterActive = Value
         
         if Value then
-            
-            -- Start auto enter in separate thread
-            task.spawn(function()
+            -- Start auto enter loop
+            autoEnterConnection = task.spawn(function()
                 while AutoEnterActive do
                     local player = game.Players.LocalPlayer
-                    local character = player.Character
+                    if not player then 
+                        task.wait(0.1)
+                        if not AutoEnterActive then break end
+                        continue 
+                    end
                     
-                    if character and character:FindFirstChild("HumanoidRootPart") then
-                        local entered = character:FindFirstChild("entered")
+                    local character = player.Character
+                    if not character or not character.Parent then 
+                        task.wait(0.5)
+                        if not AutoEnterActive then break end
+                        continue 
+                    end
+                    
+                    local hrp = character:FindFirstChild("HumanoidRootPart")
+                    if not hrp then 
+                        task.wait(0.1)
+                        if not AutoEnterActive then break end
+                        continue 
+                    end
+                    
+                    -- Check if already entered
+                    local entered = character:FindFirstChild("entered")
+                    
+                    if not entered then
+                        -- Get the correct teleport part based on mode
+                        local lobby = workspace:FindFirstChild("Lobby")
+                        if not lobby then
+                            task.wait(0.5)
+                            if not AutoEnterActive then break end
+                            continue
+                        end
                         
-                        if not entered then
-                            -- Get the correct teleport part based on mode
-                            local teleportFolder = workspace.Lobby
-                            local teleportPart = nil
+                        local teleportPart = nil
+                        
+                        if AutoEnterMode == "Arena" then
+                            teleportPart = lobby:FindFirstChild("Teleport1")
+                        elseif AutoEnterMode == "Arena Default" then
+                            teleportPart = lobby:FindFirstChild("Teleport2")
+                        end
+                        
+                        if teleportPart then
+                            -- Find the actual BasePart to teleport to
+                            local touchPart = nil
                             
-                            if AutoEnterMode == "Arena" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
-                            elseif AutoEnterMode == "Arena Default" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                            if teleportPart:IsA("BasePart") then
+                                touchPart = teleportPart
+                            else
+                                touchPart = teleportPart:FindFirstChildWhichIsA("BasePart")
                             end
                             
-                            if teleportPart then
-                                -- Find the TouchInterest parent (the actual part)
-                                local touchPart = nil
-                                
-                                -- Look for TouchTransmitter or TouchInterest
-                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or 
-                                                     teleportPart:FindFirstChild("TouchInterest")
-                                
-                                if touchInterest then
-                                    touchPart = touchInterest.Parent
-                                else
-                                    touchPart = teleportPart
-                                end
-                                
-                                if touchPart and touchPart:IsA("BasePart") then
-                                    -- Bring teleport part to player instead of player to teleport
-                                    local hrp = character:FindFirstChild("HumanoidRootPart")
-                                    if hrp then
-                                        -- Save original position
-                                        local originalPosition = touchPart.Position
-                                        local originalAnchored = touchPart.Anchored
-                                        
-                                        -- Temporarily move teleport to player
-                                        touchPart.Anchored = false
-                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
-                                        
-                                        -- Touch the part
-                                        firetouchinterest(hrp, touchPart, 0)
-                                        task.wait(0.05)
-                                        firetouchinterest(hrp, touchPart, 1)
-                                        
-                                        -- Return teleport to original position
-                                        task.wait(0.1)
-                                        touchPart.Position = originalPosition
-                                        touchPart.Anchored = originalAnchored
-                                        
+                            if touchPart then
+                                -- Method: Teleport player directly through the teleport part
+                                local success, err = pcall(function()
+                                    -- Store original CFrames
+                                    local originalPlayerCFrame = hrp.CFrame
+                                    local originalPartCFrame = touchPart.CFrame
+                                    
+                                    -- Teleport slightly above the teleport part
+                                    hrp.CFrame = touchPart.CFrame + Vector3.new(0, 3, 0)
+                                    task.wait(0.05)
+                                    
+                                    -- Teleport directly into the teleport part
+                                    hrp.CFrame = touchPart.CFrame
+                                    task.wait(0.05)
+                                    
+                                    -- Rapid teleports to ensure trigger
+                                    for i = 1, 8 do
+                                        hrp.CFrame = touchPart.CFrame
+                                        task.wait(0.01)
                                     end
+                                    
+                                    -- Move forward through the teleport
+                                    hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 5
+                                    task.wait(0.05)
+                                    
+                                    -- Quick back-and-forth movement
+                                    for i = 1, 5 do
+                                        hrp.CFrame = touchPart.CFrame - touchPart.CFrame.LookVector * 3
+                                        task.wait(0.01)
+                                        hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 6
+                                        task.wait(0.01)
+                                    end
+                                    
+                                    -- Final teleport forward
+                                    hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 10
+                                end)
+                                
+                                if not success then
+                                    -- Fallback method if first method fails
+                                    pcall(function()
+                                        hrp.CFrame = touchPart.CFrame
+                                        task.wait(0.1)
+                                        touchPart.CanTouch = true
+                                        for i = 1, 15 do
+                                            hrp.CFrame = touchPart.CFrame
+                                            task.wait(0.01)
+                                        end
+                                    end)
                                 end
                             end
-                        else
-                            -- Already entered, just wait
                         end
                     else
-                        -- Character not loaded yet
+                        -- Already entered, just wait a bit longer
                         task.wait(1)
-                        continue
                     end
                     
                     -- Wait before next attempt
-                    task.wait(0.5)
+                    task.wait(0.3)
+                    if not AutoEnterActive then break end
                 end
             end)
         else
+            -- Stop the auto enter loop
+            if autoEnterConnection then
+                task.cancel(autoEnterConnection)
+                autoEnterConnection = nil
+            end
         end
     end
 })
