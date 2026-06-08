@@ -43,7 +43,7 @@ Section = Tab:AddSection({
 
 -- Create dropdown for Mastery selection
 local masteryNames = {
-    "spin", "Stick", "Brick", "Flash", "Spring", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak", 
+    "spin", "Stick", "Brick", "Flash", "Spring", "Dice", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak", 
     "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", 
     "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", 
     "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Run", "Frostbite", "Plank", "Hexa", "Eggler", "Car Keys", 
@@ -272,9 +272,6 @@ Tab:AddToggle({
                 
                 getgenv().UnionsFlingLoop = true
                 
-                -- Store original walk speed
-                local originalWalkSpeed = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").WalkSpeed
-                
                 task.spawn(function()
                     -- Infinite Yield style fling loop
                     local RunService = game:GetService("RunService")
@@ -331,24 +328,29 @@ Tab:AddToggle({
                             movel = movel * -1
                         end
                         
-                        -- Find and bring Unions with TouchInterest to player while flinging
-                        local unions = {}
+                        -- Bring Unions to player (like Slapples method)
                         for _, obj in pairs(workspace:GetDescendants()) do
                             if obj:IsA("BasePart") and obj.Name == "Union" then
-                                -- Check if this Union has TouchInterest inside
-                                local hasTouchInterest = false
-                                for _, child in pairs(obj:GetChildren()) do
-                                    if child:IsA("TouchTransmitter") or child.Name == "TouchInterest" then
-                                        hasTouchInterest = true
-                                        break
-                                    end
-                                end
-                                
-                                if hasTouchInterest then
-                                    table.insert(unions, obj)
-                                end
+                                pcall(function()
+                                    -- Save original properties
+                                    local originalCFrame = obj.CFrame
+                                    local originalAnchored = obj.Anchored
+                                    
+                                    -- Unanchor to move
+                                    obj.Anchored = false
+                                    
+                                    -- Bring Union directly to player's root
+                                    obj.CFrame = root.CFrame
+                                    task.wait(0.01)
+                                    
+                                    -- Return Union to original position
+                                    obj.CFrame = originalCFrame
+                                    obj.Anchored = originalAnchored
+                                end)
                             end
                         end
+                        
+                        task.wait(0.05)
                     end
                     
                     -- Cleanup connections when loop ends
@@ -368,25 +370,6 @@ Tab:AddToggle({
         else
             -- STOP
             getgenv().UnionsFlingLoop = false
-            
-            -- Restore original walk speed
-            if game.Players.LocalPlayer.Character then
-                local humanoid = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = 16 -- Default walk speed
-                end
-            end
-            
-            -- Clean up velocity objects from Unions
-            for _, obj in pairs(workspace:GetDescendants()) do
-                if obj:IsA("BasePart") and obj.Name == "Union" then
-                    local velocity = obj:FindFirstChild("FlingVelocity")
-                    if velocity then
-                        velocity:Destroy()
-                    end
-                end
-            end
-            
         end
     end    
 })
@@ -555,6 +538,122 @@ while true do
 end
 else
 OrionLib:MakeNotification({Name = "Error",Content = "Equip Spring",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
+})
+
+local Tab = Window:MakeTab({
+    Name = "Dice",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-3 Quest"
+})
+
+-- Global flag to control loop
+_G.DiceSlapRunning = false
+
+Tab:AddToggle({
+    Name = "Auto Slap Players",
+    Default = false,
+    Callback = function(state)
+        _G.DiceSlapRunning = state
+
+        -- Teleport to random player (not self)
+        local function teleportToRandomPlayer()
+            local playerList = Players:GetPlayers()
+            if #playerList > 1 then
+                local randomPlayer
+                repeat
+                    randomPlayer = playerList[math.random(1, #playerList)]
+                until randomPlayer ~= LocalPlayer
+
+                local char = randomPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if localHRP then
+                        localHRP.CFrame = char.HumanoidRootPart.CFrame
+                    end
+                end
+            else
+                warn("Not enough players to teleport.")
+            end
+        end
+
+        -- Fire DiceHit on all players
+        local function fireDiceHitForAllPlayers()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Character then
+                    local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
+                    if rightArm then
+                        ReplicatedStorage:WaitForChild("DiceHit"):FireServer(rightArm)
+                    end
+                end
+            end
+        end
+
+        -- Main loop
+        local function runAutoDiceSlapLoop()
+            local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
+            local glove = leaderstats and leaderstats:FindFirstChild("Glove")
+
+            if not (glove and glove.Value == "Dice") then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Dice glove.",
+                    Image = "rbxassetid://7743878857",
+                    Time = 3
+                })
+                _G.DiceSlapRunning = false
+                return
+            end
+
+            while _G.DiceSlapRunning do
+                task.wait(0.5) -- cooldown between hits
+                teleportToRandomPlayer()
+                fireDiceHitForAllPlayers()
+            end
+        end
+
+        if state then
+            coroutine.wrap(runAutoDiceSlapLoop)()
+        else
+            _G.DiceSlapRunning = false
+        end
+    end
+})
+
+Tab:AddButton({
+	Name = "Auto Dice Slap Aura",
+	Callback = function()   
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Dice" then
+-- Get the ReplicatedStorage and Players service
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Start the infinite loop to fire for all players
+while true do
+    -- Loop through each player in the game
+    for _, player in pairs(Players:GetPlayers()) do
+        -- Ensure the player has a character and it contains the "Head"
+        if player.Character and player.Character:FindFirstChild("Head") then
+            -- Create the arguments table for the FireServer function
+            local args = {
+                [1] = player.Character.Head
+            }
+
+            -- Fire the server with the "Head" part as an argument
+            ReplicatedStorage.DiceHit:FireServer(unpack(args))
+        end
+    end
+
+    -- Wait 1 second before running the loop again (adjust the wait time as needed)
+    wait(0.5)
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Dice",Image = "rbxassetid://7743878857",Time = 3})
 end
 end
 })
@@ -935,20 +1034,66 @@ Tab:AddButton({
 })
 
 Tab:AddToggle({
-	Name = "Auto Bring Bus",
-	Default = false,
-	Callback = function(Value) 
-Giftfarm = Value
-while Giftfarm do
-for i,v in pairs(game.Workspace:GetChildren()) do
+    Name = "Auto Bring Bus",
+    Default = false,
+    Callback = function(Value) 
+        Giftfarm = Value
+        
+        task.spawn(function()
+            while Giftfarm do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.01) 
+                    continue 
+                end
+                
+                -- Find BusModel
+                for _, v in pairs(workspace:GetChildren()) do
                     if v.Name == "BusModel" then
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 0)
-firetouchinterest(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"), v, 1)
+                        pcall(function()
+                            -- Method 1: Teleport the bus to the player (brings bus to you)
+                            local busPrimaryPart = v:FindFirstChild("PrimaryPart") or v:FindFirstChild("HumanoidRootPart") or v:FindFirstChild("RootPart")
+                            
+                            if busPrimaryPart then
+                                -- Move bus to player's position
+                                busPrimaryPart.CFrame = hrp.CFrame
+                            else
+                                -- If no primary part, move the whole model
+                                local modelParts = {}
+                                for _, part in pairs(v:GetDescendants()) do
+                                    if part:IsA("BasePart") then
+                                        table.insert(modelParts, part)
+                                    end
+                                end
+                                
+                                -- Move each part to player
+                                for _, part in pairs(modelParts) do
+                                    part.CFrame = hrp.CFrame
+                                end
+                            end
+                            
+                            -- Alternative: Move player to bus (if you want player to go to bus)
+                            -- hrp.CFrame = v:GetPivot() + Vector3.new(0, 3, 0)
+                        end)
                     end
                 end
-task.wait()
-end
-end
+                
+                task.wait(0.05) -- Faster than original for better collection
+            end
+        end)
+    end
 })
 
 Section = Tab:AddSection({ Name = "3 Quest" })
@@ -5074,82 +5219,95 @@ Tab:AddToggle({
     Callback = function(Value)
         AutoEnterActive = Value
         
-        if Value then
-            
-            -- Start auto enter in separate thread
-            task.spawn(function()
-                while AutoEnterActive do
-                    local player = game.Players.LocalPlayer
-                    local character = player.Character
-                    
-                    if character and character:FindFirstChild("HumanoidRootPart") then
-                        local entered = character:FindFirstChild("entered")
-                        
-                        if not entered then
-                            -- Get the correct teleport part based on mode
-                            local teleportFolder = workspace.Lobby
-                            local teleportPart = nil
-                            
-                            if AutoEnterMode == "Arena" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport1")
-                            elseif AutoEnterMode == "Arena Default" then
-                                teleportPart = teleportFolder:FindFirstChild("Teleport2")
-                            end
-                            
-                            if teleportPart then
-                                -- Find the TouchInterest parent (the actual part)
-                                local touchPart = nil
-                                
-                                -- Look for TouchTransmitter or TouchInterest
-                                local touchInterest = teleportPart:FindFirstChildOfClass("TouchTransmitter") or 
-                                                     teleportPart:FindFirstChild("TouchInterest")
-                                
-                                if touchInterest then
-                                    touchPart = touchInterest.Parent
-                                else
-                                    touchPart = teleportPart
-                                end
-                                
-                                if touchPart and touchPart:IsA("BasePart") then
-                                    -- Bring teleport part to player instead of player to teleport
-                                    local hrp = character:FindFirstChild("HumanoidRootPart")
-                                    if hrp then
-                                        -- Save original position
-                                        local originalPosition = touchPart.Position
-                                        local originalAnchored = touchPart.Anchored
-                                        
-                                        -- Temporarily move teleport to player
-                                        touchPart.Anchored = false
-                                        touchPart.Position = hrp.Position + Vector3.new(0, 0, 2)
-                                        
-                                        -- Touch the part
-                                        firetouchinterest(hrp, touchPart, 0)
-                                        task.wait(0.05)
-                                        firetouchinterest(hrp, touchPart, 1)
-                                        
-                                        -- Return teleport to original position
-                                        task.wait(0.1)
-                                        touchPart.Position = originalPosition
-                                        touchPart.Anchored = originalAnchored
-                                        
-                                    end
-                                end
-                            end
-                        else
-                            -- Already entered, just wait
-                        end
-                    else
-                        -- Character not loaded yet
-                        task.wait(1)
+        task.spawn(function()
+            while AutoEnterActive do
+                local player = game.Players.LocalPlayer
+                if not player then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                local character = player.Character
+                if not character or not character.Parent then 
+                    task.wait(0.5) 
+                    continue 
+                end
+                
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if not hrp then 
+                    task.wait(0.1) 
+                    continue 
+                end
+                
+                -- Check if already entered
+                local entered = character:FindFirstChild("entered")
+                
+                if not entered then
+                    -- Get the correct teleport part based on mode
+                    local teleportFolder = workspace:FindFirstChild("Lobby")
+                    if not teleportFolder then
+                        task.wait(0.5)
                         continue
                     end
                     
-                    -- Wait before next attempt
-                    task.wait(0.5)
+                    local teleportPart = nil
+                    
+                    if AutoEnterMode == "Arena" then
+                        teleportPart = teleportFolder:FindFirstChild("Teleport1")
+                    elseif AutoEnterMode == "Arena Default" then
+                        teleportPart = teleportFolder:FindFirstChild("Teleport2")
+                    end
+                    
+                    if teleportPart then
+                        pcall(function()
+                            -- Method 1: Teleport player directly to the teleport part
+                            local touchPart = nil
+                            
+                            -- Find the actual part to teleport to
+                            if teleportPart:IsA("BasePart") then
+                                touchPart = teleportPart
+                            else
+                                touchPart = teleportPart:FindFirstChildWhichIsA("BasePart")
+                            end
+                            
+                            if touchPart then
+                                -- Teleport player to the teleport location
+                                hrp.CFrame = touchPart.CFrame + Vector3.new(0, 3, 0)
+                                task.wait(0.1)
+                                
+                                -- Move directly into the teleport part
+                                hrp.CFrame = touchPart.CFrame
+                                task.wait(0.1)
+                                
+                                -- Spam teleport into the part to ensure trigger
+                                for i = 1, 5 do
+                                    hrp.CFrame = touchPart.CFrame
+                                    task.wait(0.01)
+                                end
+                                
+                                -- Move slightly forward through the teleport
+                                hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 3
+                                task.wait(0.1)
+                                
+                                -- Teleport back and forth through the teleport
+                                for i = 1, 3 do
+                                    hrp.CFrame = touchPart.CFrame - touchPart.CFrame.LookVector * 2
+                                    task.wait(0.05)
+                                    hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 4
+                                    task.wait(0.05)
+                                end
+                            end
+                        end)
+                    end
+                else
+                    -- Already entered, just wait
+                    task.wait(1)
                 end
-            end)
-        else
-        end
+                
+                -- Wait before next attempt
+                task.wait(0.5)
+            end
+        end)
     end
 })
 
