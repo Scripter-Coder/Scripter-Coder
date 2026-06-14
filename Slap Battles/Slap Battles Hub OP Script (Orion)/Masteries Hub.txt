@@ -4120,7 +4120,7 @@ Section = Tab:AddSection({
 Tab:AddTextbox({
     Name = "How Many Slaps? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local slapNumber = tonumber(Value)
         if slapNumber and slapNumber > 0 then
@@ -4155,7 +4155,7 @@ Tab:AddButton({
 Tab:AddTextbox({
     Name = "How Many Null Shards? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local nullshardNumber = tonumber(Value)
         if nullshardNumber and nullshardNumber >= 0 then
