@@ -68,20 +68,6 @@ fireclickdetector(game.Workspace.Lobby.Scene.knofe.ClickDetector)
 end
 })
 
-Section = Tab:AddSection("Not Added Gloves List")
-
-Tab:AddParagraph({Title = "Gloves That Not Added Are:", Content = [[
-Boogie Glove
-Slender Glove
-Slasher Glove
-Dave Glove
-Mortis Glove
-Paint Glove
-Reflect Glove
-Draw4 Glove
-Swashbuckler Glove
-]]})
-
 Section = Tab:AddSection("Messages For Badges")
 
 Tab:AddDropdown("SelectGloveHelpToSendMessage", {
@@ -328,6 +314,7 @@ local allBadges = {
   {id = "3964935687406576", name = "Vernal Floralscence | Lotus Glove", category = "Normal"},
   {id = "3344995751929220", name = "Gum, Gummy, Gone | Elastic Glove", category = "Normal"},
   {id = "1703260768466206", name = "Fix my dang ‘puter | G-X Glove", category = "Normal"},
+  {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "Normal"},
 }
 
 -- ============================================================
@@ -6959,6 +6946,106 @@ Tab:AddButton({
 
 end
 do
+    local Tab = Window:AddTab({ Title = "Boogie" })
+
+    -- Equip Boogie Button
+    Tab:AddButton({
+        Title = "Equip Boogie (Boogie With It Badge Need) [Not Important]",
+        Callback = function()
+            fireclickdetector(workspace.Lobby["Boogie"].ClickDetector)
+        end
+    })
+
+    -- Someone Using Boogie Button
+    Tab:AddButton({
+        Title = "Someone Using Boogie?",
+        Callback = function()
+            local found = false
+
+            for _, player in ipairs(game.Players:GetPlayers()) do
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local glove = leaderstats:FindFirstChild("Glove")
+                    if glove and glove.Value == "Boogie" then
+                        found = true
+                        Fluent:Notify({
+                            Title = "Detected!",
+                            Content = player.Name .. " has equipped the Boogie glove.",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            end
+
+            if not found then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "No one has equipped the Boogie glove",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    -- Teleport To Boogie Player Button
+    Tab:AddButton({
+        Title = "Teleport To Boogie Player",
+        Callback = function()
+            local localPlayer = game.Players.LocalPlayer
+            local foundPlayer = nil
+
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local stats = player:FindFirstChild("leaderstats")
+                    if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Boogie" then
+                        foundPlayer = player
+                        break
+                    end
+                end
+            end
+
+            if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = foundPlayer.Character.HumanoidRootPart
+                localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+                Fluent:Notify({
+                    Title = "Success!",
+                    Content = "Teleported To: " .. foundPlayer.Name,
+                    SubContent = "",
+                    Duration = 3
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Boogie Player Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    -- Use /e Dance Button
+    Tab:AddButton({
+        Title = "Use /e Dance",
+        Callback = function()
+            local player = game:GetService("Players").LocalPlayer
+            local character = player.Character
+            local humanoid = character and character:FindFirstChild("Humanoid")
+            
+            if humanoid then
+                local emote = Instance.new("Animation")
+                emote.AnimationId = "rbxassetid://507770756" -- Dance emote ID
+                local danceTrack = humanoid:LoadAnimation(emote)
+                danceTrack:Play()
+            end
+        end
+    })
+
+end
+do
 Tab = Window:AddTab({ Title = "Recall" })
 
 Tab:AddButton({
@@ -7060,73 +7147,417 @@ Tab:AddButton({
     end
 })
 
---// Section: Answers
-Section = Tab:AddSection("Answers")
+    local AnswersSection = Tab:AddSection("Answers")
 
-Tab:AddParagraph({Title = "When was Slap Battles first published?", Content = "16/2/2021"})
-Tab:AddParagraph({Title = "What glove costs 9750 slaps?", Content = "Coil"})
-Tab:AddParagraph({Title = "What is the chance of getting bob from Replica?", Content = "1/7500"})
-Tab:AddParagraph({Title = "How many gloves stands are in Slap Battles right now?", Content = "279 (Last Updated: 24 April 2026 UTC, Lasso Update)"})
-Tab:AddParagraph({Title = "What is the badge name for the Glitch glove?", Content = "01010010 01010101 01001110"})
-Tab:AddParagraph({Title = "If 1=3 2=3 3=5 4=4 5=4 6=?", Content = "3"})
-Tab:AddParagraph({Title = "Whom ultimately controls this realm?", Content = "Tencelll"})
-Tab:AddParagraph({Title = "How many slaps do you have?", Content = "Check Below"})
-Tab:AddParagraph({Title = "How many players were present in this server when you were sent here?", Content = "Check Below"})
-Tab:AddParagraph({Title = "What color is your name in the Roblox Chat?", Content = "First Check Ur Color Name In Chat Before Answer"})
-Tab:AddParagraph({Title = "How old is your account in days?", Content = "Check Below"})
-Tab:AddParagraph({Title = "What has a bottom at the top?", Content = "A leg (You must type in the chat)"})
-Tab:AddParagraph({Title = "When was Slap Battles first published?", Content = "A leg (You must type in the chat)"})
-Tab:AddParagraph({Title = "Did you forget that you repressed your memories?", Content = "Yes"})
-Tab:AddParagraph({Title = "Do you know who I am?", Content = "A forgotten memory"})
-Tab:AddParagraph({Title = "How many players currently exist in this realm as of when I started asking this question?", Content = "Count the number of people in the server when the clone asks this question, enter that number."})
-Tab:AddParagraph({Title = "What has 4 fingers and one thumb but is not alive?", Content = "Glove (You must type in the chat)"})
-Tab:AddParagraph({Title = "What glove can't you hit when it isn't there?", Content = "Elude"})
-Tab:AddParagraph({Title = "We will play Simon Says at the end, do you understand?", Content = "Yes"})
-
---// Section: Simon Says
-Section = Tab:AddSection("Simon Says")
-
-Tab:AddParagraph({Title = "Simon says if you seek for the reward, dance on top of the entities head.", Content = "Dance on top of the clone's head (by typing /e dance) if it says Simon says. Walk through the portal if it doesn't say Simon says"})
-
-Tab:AddParagraph({Title = "Simon says walk through the portal to claim your reward", Content = "Self-explanatory. Walk through the portal if it says Simon says. Jump off the map if it doesn't say Simon says"})
-
-Tab:AddParagraph({Title = "Simon says jump off the map to claim your reward", Content = "Self-explanatory. Jump off the map if it says Simon says. Walk through the portal if it doesn't say Simon says"})
-
-Tab:AddParagraph({Title = "Simon says if the reward is what you seek, You must dance on top of the Right/Left staircase Crystal.", Content = "Dance on top of the Crystals according to the NPC's Perspective by using the command (/e dance) in chat. If it says, (Left Crystal), You go and Dance on the Right Crystal (Its Left will be your Right and its Right will be your Left). Walk through the portal if it doesn't say Simon says"})
-
-Tab:AddParagraph({Title = "Simon says riddle me this and speak it out. What has four fingers and a thumb but isn't alive?", Content = "Type (a glove) in chat."})
-
-Tab:AddParagraph({Title = "Simon says riddle me this and speak it out. What has a bottom at the top?", Content = "Type (a leg) in chat."})
-
---// Section: Info
-Section = Tab:AddSection("Info")
-
--- Dynamic Labels
-local ServerPlayer = Tab:AddParagraph({Title = "Player In Server [ " .. #game.Players:GetPlayers() .. " / " .. game.Players.MaxPlayers .. " ]", Content = ""})
-local AgeAccYou = Tab:AddParagraph({Title = "Your Account Age [ " .. game.Players.LocalPlayer.AccountAge .. " ]", Content = ""})
-local CheckSlap = Tab:AddParagraph({Title = "Check Slap [ " .. game.Players.LocalPlayer.leaderstats.Slaps.Value .. " ]", Content = ""})
-
--- Auto Set Info Toggle
-local AutoSetInfoServer
-
-Tab:AddToggle("AutoSetInfo", {
-    Title = "Auto Set Info",
-    Default = false,
-    Callback = function(Value)
-        _G.AutoSetInfo = Value
-
-        if Value then
-            AutoSetInfoServer = game:GetService("RunService").RenderStepped:Connect(function()
-                ServerPlayer:SetTitle("Player In Server [ " .. #game.Players:GetPlayers() .. " / " .. game.Players.MaxPlayers .. " ]")
-                AgeAccYou:SetTitle("Your Account Age [ " .. game.Players.LocalPlayer.AccountAge .. " ]")
-                CheckSlap:SetTitle("Check Slap [ " .. game.Players.LocalPlayer.leaderstats.Slaps.Value .. " ]")
-            end)
-        elseif AutoSetInfoServer then
-            AutoSetInfoServer:Disconnect()
-            AutoSetInfoServer = nil
-        end
-    end
+AnswersSection:AddParagraph({
+    Title = "Note",
+    Content = "Make sure that you are in Limbo World first before using that button otherwise it will say that changed 0 and 0 so it wont really change because if u enter into Limbo World it will show that changed more than like greater than 0"
 })
+
+    AnswersSection:AddButton({
+        Title = "Set Correct/Incorrect Answers",
+        Callback = function()
+            local rightCount = 0
+            local failCount = 0
+            
+            local rm = workspace:FindFirstChild("RepressedMemories")
+            if not rm then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Not in RepressedMemories!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            for _, obj in pairs(rm:GetDescendants()) do
+                if obj:IsA("DialogChoice") and obj.UserDialog then
+                    local currentText = obj.UserDialog
+                    
+                    if obj:FindFirstChild("RightChoice") then
+                        if not string.find(currentText, "✅") then
+                            obj.UserDialog = currentText .. " ✅"
+                            rightCount = rightCount + 1
+                        else
+                            rightCount = rightCount + 1
+                        end
+                    end
+                    
+                    if obj:FindFirstChild("FailChoice") then
+                        if not string.find(currentText, "❌") then
+                            obj.UserDialog = currentText .. " ❌"
+                            failCount = failCount + 1
+                        else
+                            failCount = failCount + 1
+                        end
+                    end
+                end
+            end
+            
+            Fluent:Notify({
+                Title = "Symbols Added",
+                Content = "Added ✅ to " .. rightCount .. " correct answers\nAdded ❌ to " .. failCount .. " incorrect answers",
+                SubContent = "",
+                Duration = 4
+            })
+        end
+    })
+
+    local SimonSection = Tab:AddSection("Simon Says")
+
+AnswersSection:AddParagraph({
+    Title = "Simon says if you seek for the reward, dance on top of the entities head.",
+    Content = "Dance on top of the clone's head (by typing /e dance) if it says Simon says. Walk through the portal if it doesn't say Simon says"
+})
+
+AnswersSection:AddParagraph({
+    Title = "Simon says walk through the portal to claim your reward",
+    Content = "Self-explanatory. Walk through the portal if it says Simon says. Jump off the map if it doesn't say Simon says"
+})
+
+AnswersSection:AddParagraph({
+    Title = "Simon says jump off the map to claim your reward",
+    Content = "Self-explanatory. Jump off the map if it says Simon says. Walk through the portal if it doesn't say Simon says"
+})
+
+AnswersSection:AddParagraph({
+    Title = "Simon says if the reward is what you seek, You must dance on top of the Right/Left staircase Crystal.",
+    Content = "Dance on top of the Crystals according to the NPC's Perspective by using the command (/e dance) in chat. If it says, (Left Crystal), You go and Dance on the Right Crystal (Its Left will be your Right and its Right will be your Left). Walk through the portal if it doesn't say Simon says"
+})
+
+AnswersSection:AddParagraph({
+    Title = "Simon says riddle me this and speak it out. What has four fingers and a thumb but isn't alive?",
+    Content = "Type (a glove) in chat."
+})
+
+AnswersSection:AddParagraph({
+    Title = "Simon says riddle me this and speak it out. What has a bottom at the top?",
+    Content = "Type (a leg) in chat."
+})
+
+    -- Button 1: Teleport To NPC Head And Dance
+    SimonSection:AddButton({
+        Title = "Teleport To NPC Head And Dance",
+        Callback = function()
+            local function startDance()
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if not character then return end
+                
+                local humanoid = character:FindFirstChild("Humanoid")
+                if not humanoid then return end
+                
+                local danceAnim = Instance.new("Animation")
+                danceAnim.AnimationId = "rbxassetid://507766756"
+                
+                local danceTrack = humanoid:LoadAnimation(danceAnim)
+                if danceTrack then
+                    danceTrack:Play()
+                end
+            end
+            
+            local function teleportTo(position)
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame = CFrame.new(position)
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            local npcHead = workspace.RepressedMemories:FindFirstChild("RepressedMemoriesNPC")
+            if npcHead then
+                npcHead = npcHead:FindFirstChild("Head")
+            end
+            
+            if npcHead and npcHead:IsA("BasePart") then
+                teleportTo(npcHead.Position)
+                task.wait(0.1)
+                startDance()
+                Fluent:Notify({
+                    Title = "Teleported",
+                    Content = "Teleported to NPC Head and dancing!",
+                    SubContent = "",
+                    Duration = 2
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "NPC Head not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+            end
+        end
+    })
+
+    -- Button 2: Teleport To Portal
+    SimonSection:AddButton({
+        Title = "Teleport To Portal",
+        Callback = function()
+            local function teleportTo(position)
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame = CFrame.new(position)
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            teleportTo(Vector3.new(18823, 3007, -225))
+            Fluent:Notify({
+                Title = "Teleported",
+                Content = "Teleported to Portal!",
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
+
+    -- Button 3: Teleport To Void
+    SimonSection:AddButton({
+        Title = "Teleport To Void",
+        Callback = function()
+            local function teleportTo(position)
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame = CFrame.new(position)
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            teleportTo(Vector3.new(18690, 2889, -31))
+            Fluent:Notify({
+                Title = "Teleported",
+                Content = "Teleported to Void!",
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
+
+    -- Button 4: Teleport To Top Left Crystal And Dance
+    SimonSection:AddButton({
+        Title = "Teleport To Top Left Crystal And Dance",
+        Callback = function()
+            local function startDance()
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if not character then return end
+                
+                local humanoid = character:FindFirstChild("Humanoid")
+                if not humanoid then return end
+                
+                local danceAnim = Instance.new("Animation")
+                danceAnim.AnimationId = "rbxassetid://507766756"
+                
+                local danceTrack = humanoid:LoadAnimation(danceAnim)
+                if danceTrack then
+                    danceTrack:Play()
+                end
+            end
+            
+            local function teleportTo(position)
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame = CFrame.new(position)
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            teleportTo(Vector3.new(18666, 3019, -336))
+            task.wait(0.1)
+            startDance()
+            Fluent:Notify({
+                Title = "Teleported",
+                Content = "Teleported to Top Left Crystal and dancing!",
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
+
+    -- Button 5: Teleport To Top Right Crystal And Dance
+    SimonSection:AddButton({
+        Title = "Teleport To Top Right Crystal And Dance",
+        Callback = function()
+            local function startDance()
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if not character then return end
+                
+                local humanoid = character:FindFirstChild("Humanoid")
+                if not humanoid then return end
+                
+                local danceAnim = Instance.new("Animation")
+                danceAnim.AnimationId = "rbxassetid://507766756"
+                
+                local danceTrack = humanoid:LoadAnimation(danceAnim)
+                if danceTrack then
+                    danceTrack:Play()
+                end
+            end
+            
+            local function teleportTo(position)
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame = CFrame.new(position)
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            teleportTo(Vector3.new(18667, 3019, -117))
+            task.wait(0.1)
+            startDance()
+            Fluent:Notify({
+                Title = "Teleported",
+                Content = "Teleported to Top Right Crystal and dancing!",
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
+
+    -- Button 6: Say "a glove" In Chat
+    SimonSection:AddButton({
+        Title = 'Say "a glove" In Chat (Needs Chat Unlocked)',
+        Callback = function()
+            local function sendChatMessage(message)
+                local textChatService = game:GetService("TextChatService")
+                
+                if textChatService and textChatService.TextChannels then
+                    local textChannel = textChatService.TextChannels:FindFirstChild("RBXGeneral")
+                    if textChannel and textChannel.SendAsync then
+                        textChannel:SendAsync(message)
+                        return
+                    end
+                end
+                
+                local replicatedStorage = game:GetService("ReplicatedStorage")
+                local chatEvent = replicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+                if chatEvent then
+                    local sendEvent = chatEvent:FindFirstChild("SayMessageRequest")
+                    if sendEvent then
+                        sendEvent:FireServer(message, "All")
+                        return
+                    end
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            sendChatMessage("a glove")
+            Fluent:Notify({
+                Title = "Message Sent",
+                Content = 'Sent "a glove" to chat',
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
+
+    -- Button 7: Say "a leg" In Chat
+    SimonSection:AddButton({
+        Title = 'Say "a leg" In Chat (Needs Chat Unlocked)',
+        Callback = function()
+            local function sendChatMessage(message)
+                local textChatService = game:GetService("TextChatService")
+                
+                if textChatService and textChatService.TextChannels then
+                    local textChannel = textChatService.TextChannels:FindFirstChild("RBXGeneral")
+                    if textChannel and textChannel.SendAsync then
+                        textChannel:SendAsync(message)
+                        return
+                    end
+                end
+                
+                local replicatedStorage = game:GetService("ReplicatedStorage")
+                local chatEvent = replicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+                if chatEvent then
+                    local sendEvent = chatEvent:FindFirstChild("SayMessageRequest")
+                    if sendEvent then
+                        sendEvent:FireServer(message, "All")
+                        return
+                    end
+                end
+            end
+            
+            if not workspace:FindFirstChild("RepressedMemories") then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "RepressedMemories not found!",
+                    SubContent = "",
+                    Duration = 2
+                })
+                return
+            end
+            
+            sendChatMessage("a leg")
+            Fluent:Notify({
+                Title = "Message Sent",
+                Content = 'Sent "a leg" to chat',
+                SubContent = "",
+                Duration = 2
+            })
+        end
+    })
 
 end
 do
@@ -12934,6 +13365,66 @@ Tab:AddButton({
 
 end
 do
+    local Tab = Window:AddTab({ Title = "Draw4" })
+
+    getgenv().AutoPingPongReal = false
+    local autoPingPongLoop = nil
+
+    local function CheckGlove()
+        local leaderstats = game:GetService("Players").LocalPlayer:FindFirstChild("leaderstats")
+        if leaderstats then
+            local glove = leaderstats:FindFirstChild("Glove")
+            if glove then
+                return glove.Value
+            end
+        end
+        return nil
+    end
+
+    local function startPingPongLoop()
+        if autoPingPongLoop then return end
+        
+        autoPingPongLoop = task.spawn(function()
+            while getgenv().AutoPingPongReal do
+                if CheckGlove() == "Ping Pong" then
+                    local character = game:GetService("Players").LocalPlayer.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        for _, v in pairs(game.Workspace:GetChildren()) do
+                            if v.Name:find("_PingPongBall") and (character.HumanoidRootPart.Position - v.Position).Magnitude <= 48 then
+                                pcall(function()
+                                    game:GetService("ReplicatedStorage"):WaitForChild("PingPongEvent"):FireServer()
+                                end)
+                            end
+                        end
+                    end
+                end
+                task.wait()
+            end
+        end)
+    end
+
+    local function stopPingPongLoop()
+        if autoPingPongLoop then
+            task.cancel(autoPingPongLoop)
+            autoPingPongLoop = nil
+        end
+    end
+
+    local PingPongToggle = Tab:AddToggle("AutoPingPong", {
+        Title = "Auto Ping Pong",
+        Default = false,
+        Callback = function(state)
+            getgenv().AutoPingPongReal = state
+            if state then
+                startPingPongLoop()
+            else
+                stopPingPongLoop()
+            end
+        end
+    })
+
+end
+do
     Tab = Window:AddTab({ Title = "Mouse" })
 
 -- Mouse Button
@@ -13734,6 +14225,448 @@ end
 
 end
 do
+    local Tab = Window:AddTab({ Title = "Slender" })
+
+Tab:AddParagraph({
+    Title = "Helper:",
+    Content = "Big Thanks To BaconScripter For Helping Me Out For Slender Glove Obtainment Stuff"
+})
+
+    -- Variables
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local Workspace = game:GetService("Workspace")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local UserInputService = game:GetService("UserInputService")
+
+    -- Functions
+    local function equipGlove(gloveName)
+        local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
+        if not leaderstats then return end
+        
+        local slaps = leaderstats:FindFirstChild("Slaps")
+        local currentGlove = leaderstats:FindFirstChild("Glove")
+        
+        if gloveName == "Balloony" then
+            if currentGlove and currentGlove.Value == "Balloony" then
+                Fluent:Notify({
+                    Title = "Notice!",
+                    Content = "You are already equipped Balloony!",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            if slaps and slaps.Value < 10500 then
+                Fluent:Notify({
+                    Title = "You don't have enough slaps!",
+                    Content = "you need 10500 slaps",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            local character = LocalPlayer.Character
+            if character and character:FindFirstChild("entered") then
+                Fluent:Notify({
+                    Title = "Can't equip Balloony",
+                    Content = "While in arena!",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            local balloony = Workspace:FindFirstChild("Lobby") and Workspace.Lobby:FindFirstChild("Balloony")
+            if balloony then
+                local clickDetector = balloony:FindFirstChildWhichIsA("ClickDetector")
+                if clickDetector then
+                    fireclickdetector(clickDetector)
+                end
+            end
+        elseif gloveName == "Pocket" then
+            if currentGlove and currentGlove.Value == "Pocket" then
+                Fluent:Notify({
+                    Title = "You are already equipped Pocket!",
+                    Content = "",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            if slaps and slaps.Value < 26000 then
+                Fluent:Notify({
+                    Title = "You don't have enough slaps!",
+                    Content = "you need 26000 slaps",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            local character = LocalPlayer.Character
+            if character and character:FindFirstChild("entered") then
+                Fluent:Notify({
+                    Title = "Can't equip Pocket",
+                    Content = "While in arena!",
+                    SubContent = "",
+                    Duration = 3
+                })
+                return
+            end
+            
+            local pocket = Workspace:FindFirstChild("Lobby") and Workspace.Lobby:FindFirstChild("Pocket")
+            if pocket then
+                local clickDetector = pocket:FindFirstChildWhichIsA("ClickDetector")
+                if clickDetector then
+                    fireclickdetector(clickDetector)
+                end
+            end
+        end
+    end
+
+    local function getCode()
+        local codeValue = Workspace:FindFirstChild("SecretCodeForPocketKeypad")
+        if codeValue then
+            local code = codeValue.Value
+            Fluent:Notify({
+                Title = "Notice!",
+                Content = "Code: " .. code,
+                SubContent = "",
+                Duration = 5
+            })
+            return code
+        end
+        return nil
+    end
+
+    local function redeemCode()
+        local code = getCode()
+        if not code then
+            Fluent:Notify({
+                Title = "Notice!",
+                Content = "No code found!",
+                SubContent = "",
+                Duration = 3
+            })
+            return
+        end
+        
+        for _, room in pairs(Workspace:FindFirstChild("RoomsFolder"):GetChildren() or {}) do
+            if string.find(room.Name, "'s Room") then
+                local keypad = room:FindFirstChild("PocketKeypad")
+                if keypad then
+                    local resetBtn = keypad:FindFirstChild("Buttons") and keypad.Buttons:FindFirstChild("Reset")
+                    if resetBtn then
+                        local clickDetector = resetBtn:FindFirstChildWhichIsA("ClickDetector")
+                        if clickDetector then
+                            fireclickdetector(clickDetector)
+                            task.wait(0.5)
+                        end
+                    end
+                    
+                    for i = 1, #code do
+                        local digit = string.sub(code, i, i)
+                        local button = keypad:FindFirstChild("Buttons") and keypad.Buttons:FindFirstChild(digit)
+                        if button then
+                            local clickDetector = button:FindFirstChildWhichIsA("ClickDetector")
+                            if clickDetector then
+                                fireclickdetector(clickDetector)
+                                task.wait(0.3)
+                            end
+                        end
+                    end
+                    
+                    local enterBtn = keypad:FindFirstChild("Buttons") and keypad.Buttons:FindFirstChild("Enter")
+                    if enterBtn then
+                        local clickDetector = enterBtn:FindFirstChildWhichIsA("ClickDetector")
+                        if clickDetector then
+                            fireclickdetector(clickDetector)
+                        end
+                    end
+                    
+                    Fluent:Notify({
+                        Title = "Notice!",
+                        Content = "Code Redeemed!",
+                        SubContent = "",
+                        Duration = 3
+                    })
+                    break
+                end
+            end
+        end
+    end
+
+    local function checkTapeRecorder()
+        local tapeRecorder = Workspace:FindFirstChild("TapeRecorder")
+        if tapeRecorder then
+            Fluent:Notify({
+                Title = "Notice!",
+                Content = "It is spawned!",
+                SubContent = "",
+                Duration = 3
+            })
+            return true
+        else
+            Fluent:Notify({
+                Title = "Notice!",
+                Content = "Not spawned yet, use Balloony",
+                SubContent = "",
+                Duration = 3
+            })
+            return false
+        end
+    end
+
+    local function interactWithTapeRecorder()
+        local tapeRecorder = Workspace:FindFirstChild("TapeRecorder")
+        if tapeRecorder then
+            local front = tapeRecorder:FindFirstChild("Front")
+            if front then
+                local prompt = front:FindFirstChildWhichIsA("ProximityPrompt")
+                if prompt then
+                    fireproximityprompt(prompt)
+                    task.wait(0.5)
+                end
+            end
+        end
+    end
+
+    local function collectAllPages()
+        local bountyRoom = Workspace:FindFirstChild("BountyHunterRoom")
+        if bountyRoom then
+            local mysteryRoom = bountyRoom:FindFirstChild("BountyHunterMysteryRoom")
+            if mysteryRoom then
+                local pages = mysteryRoom:FindFirstChild("Pages")
+                if pages then
+                    for _, page in pairs(pages:GetChildren()) do
+                        local clickDetector = page:FindFirstChildWhichIsA("ClickDetector")
+                        if clickDetector then
+                            fireclickdetector(clickDetector)
+                            task.wait(0.2)
+                        end
+                    end
+                    Fluent:Notify({
+                        Title = "Notice!",
+                        Content = "Pages Collected!",
+                        SubContent = "",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+    end
+
+    Tab:AddButton({
+        Title = "Equip Balloony",
+        Callback = function()
+            equipGlove("Balloony")
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Check If Tape Recorder Is Spawned",
+        Callback = function()
+            checkTapeRecorder()
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Interact With Tape Recorder",
+        Callback = function()
+            interactWithTapeRecorder()
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Get Code",
+        Callback = function()
+            getCode()
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Equip Pocket",
+        Callback = function()
+            equipGlove("Pocket")
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Redeem The Code (Use In Pocket's Room)",
+        Callback = function()
+            redeemCode()
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Collect Pages",
+        Callback = function()
+            collectAllPages()
+        end
+    })
+
+end
+do
+    local Tab = Window:AddTab({ Title = "Swashbuckler" })
+
+    Tab:AddButton({
+        Title = "Equip Kraken (Escape the Abyss Badge Need)",
+        Callback = function()
+            fireclickdetector(workspace.Lobby["Kraken"].ClickDetector)
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Someone Using Plank?",
+        Callback = function()
+            local found = false
+
+            for _, player in ipairs(game.Players:GetPlayers()) do
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local glove = leaderstats:FindFirstChild("Glove")
+                    if glove and glove.Value == "Plank" then
+                        found = true
+                        Fluent:Notify({
+                            Title = "Detected!",
+                            Content = player.Name .. " has equipped the Plank glove.",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            end
+
+            if not found then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "No one has equipped the Plank glove",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Someone Using Lure?",
+        Callback = function()
+            local found = false
+
+            for _, player in ipairs(game.Players:GetPlayers()) do
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local glove = leaderstats:FindFirstChild("Glove")
+                    if glove and glove.Value == "Lure" then
+                        found = true
+                        Fluent:Notify({
+                            Title = "Detected!",
+                            Content = player.Name .. " has equipped the Lure glove.",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            end
+
+            if not found then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "No one has equipped the Lure glove",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Plank Player",
+        Callback = function()
+            local localPlayer = game.Players.LocalPlayer
+            local foundPlayer = nil
+
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local stats = player:FindFirstChild("leaderstats")
+                    if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Plank" then
+                        foundPlayer = player
+                        break
+                    end
+                end
+            end
+
+            if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = foundPlayer.Character.HumanoidRootPart
+                localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+                Fluent:Notify({
+                    Title = "Success!",
+                    Content = "Teleported To: " .. foundPlayer.Name,
+                    SubContent = "",
+                    Duration = 3
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Plank Player Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Lure Player",
+        Callback = function()
+            local localPlayer = game.Players.LocalPlayer
+            local foundPlayer = nil
+
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local stats = player:FindFirstChild("leaderstats")
+                    if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Lure" then
+                        foundPlayer = player
+                        break
+                    end
+                end
+            end
+
+            if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = foundPlayer.Character.HumanoidRootPart
+                localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+                Fluent:Notify({
+                    Title = "Success!",
+                    Content = "Teleported To: " .. foundPlayer.Name,
+                    SubContent = "",
+                    Duration = 3
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Lure Player Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Void",
+        Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(92, -156, -73)
+        end
+    })
+
+end
+do
     Tab = Window:AddTab({ Title = "Silly" })
 
 Tab:AddButton({
@@ -13848,6 +14781,59 @@ Tab:AddButton({
         end
     end
 })
+
+end
+do
+    local Tab = Window:AddTab({ Title = "Slasher" })
+
+    Tab:AddButton({
+        Title = "Find & Teleport To Painting",
+        Callback = function()
+            local paintingModel = nil
+            
+            -- Search entire workspace for PaintingModel
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj.Name == "PaintingModel" then
+                    paintingModel = obj
+                    break
+                end
+            end
+            
+            -- If found, teleport to it
+            if paintingModel then
+                local character = game:GetService("Players").LocalPlayer.Character
+                local hrp = character and character:FindFirstChild("HumanoidRootPart")
+                
+                if hrp then
+                    local part = paintingModel:FindFirstChildWhichIsA("BasePart") or paintingModel.PrimaryPart
+                    if part then
+                        hrp.CFrame = part.CFrame + Vector3.new(0, 3, 0)
+                        Fluent:Notify({
+                            Title = "Success",
+                            Content = "Teleported to PaintingModel!",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    else
+                        Fluent:Notify({
+                            Title = "Error",
+                            Content = "PaintingModel found but has no BasePart!",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            else
+                -- Notify if not found
+                Fluent:Notify({
+                    Title = "Not Found",
+                    Content = "PaintingModel not found in workspace!",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
 
 end
 do
@@ -14007,6 +14993,77 @@ Tab:AddButton({
 
 end
 do
+    local Tab = Window:AddTab({ Title = "Reflect" })
+
+    -- The Suction Trials (Teleport)
+    Tab:AddButton({
+        Title = "Teleport To Shattered Reality Place (1)",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(75803343514634)
+        end
+    })
+
+    -- The Suction Trials (Click Sequence)
+    Tab:AddButton({
+        Title = "Teleport To Shattered Reality Place (2)",
+        Callback = function()
+            if game.workspace.BountyHunterRoom.QuestObjects.ShatteredRealityMirror["Meshes/Mirror1_Plane.007"].Transparency == 0 then
+                game.workspace.BountyHunterRoom.QuestObjects.ShatteredRealityMirror["Meshes/Mirror1_Plane.007"].ProximityPrompt.HoldDuration = 0
+                task.wait(0.2)
+                fireproximityprompt(workspace.BountyHunterRoom.QuestObjects.ShatteredRealityMirror["Meshes/Mirror1_Plane.007"].ProximityPrompt)
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Shattered Reality Portal Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+end
+do
+    local Tab = Window:AddTab({ Title = "Dave" })
+
+    -- Barzil (Teleport)
+    Tab:AddButton({
+        Title = "Teleport To barzil Place (1)",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(7234087065)
+        end
+    })
+
+    -- Barzil (Local Teleport)
+    Tab:AddButton({
+        Title = "Teleport To barzil Place (2)",
+        Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.brazil.portal.CFrame
+        end
+    })
+
+end
+do
+    local Tab = Window:AddTab({ Title = "mortis" })
+
+    -- Barzil (Teleport)
+    Tab:AddButton({
+        Title = "Teleport To barzil Place (1)",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(7234087065)
+        end
+    })
+
+    -- Barzil (Local Teleport)
+    Tab:AddButton({
+        Title = "Teleport To barzil Place (2)",
+        Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Lobby.brazil.portal.CFrame
+        end
+    })
+
+end
+do
     Tab = Window:AddTab({ Title = "Bounty" })
 
 Tab:AddButton({
@@ -14144,6 +15201,26 @@ Tab:AddButton({
 		Fluent:Notify({Title = "Success", Content = "Code entered: ", Duration = 4})
 	end
 })
+
+end
+do
+    local Tab = Window:AddTab({ Title = "Paint" })
+
+    Tab:AddButton({
+        Title = "Teleport To Splatbattles Place (1)",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(90553746175288)
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Splatbattles Place (2)",
+        Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17900, -69, -3563)
+            task.wait(0.5)
+            fireproximityprompt(workspace.BountyHunterRoom.SplatBattles.Graffiti.Attachment.ProximityPrompt)
+        end
+    })
 
 end
 do
@@ -15669,6 +16746,184 @@ Tab:AddButton({
 
 end
 do
+    local Tab = Window:AddTab({ Title = "Doorkeeper" })
+
+    Tab:AddButton({
+        Title = "Equip Elude (EXPOSED Badge Need)",
+        Callback = function()
+            fireclickdetector(workspace.Lobby["Elude"].ClickDetector)
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Equip Relude (A Guiding Hand Badge Need)",
+        Callback = function()
+            fireclickdetector(workspace.Lobby["Relude"].ClickDetector)
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Someone Using Elude?",
+        Callback = function()
+            local found = false
+
+            for _, player in ipairs(game.Players:GetPlayers()) do
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local glove = leaderstats:FindFirstChild("Glove")
+                    if glove and glove.Value == "Elude" then
+                        found = true
+                        Fluent:Notify({
+                            Title = "Detected!",
+                            Content = player.Name .. " has equipped the Elude glove.",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            end
+
+            if not found then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "No one has equipped the Elude glove",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Someone Using Relude?",
+        Callback = function()
+            local found = false
+
+            for _, player in ipairs(game.Players:GetPlayers()) do
+                local leaderstats = player:FindFirstChild("leaderstats")
+                if leaderstats then
+                    local glove = leaderstats:FindFirstChild("Glove")
+                    if glove and glove.Value == "Relude" then
+                        found = true
+                        Fluent:Notify({
+                            Title = "Detected!",
+                            Content = player.Name .. " has equipped the Relude glove.",
+                            SubContent = "",
+                            Duration = 3
+                        })
+                    end
+                end
+            end
+
+            if not found then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "No one has equipped the Relude glove",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Elude Player",
+        Callback = function()
+            local localPlayer = game.Players.LocalPlayer
+            local foundPlayer = nil
+
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local stats = player:FindFirstChild("leaderstats")
+                    if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Elude" then
+                        foundPlayer = player
+                        break
+                    end
+                end
+            end
+
+            if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = foundPlayer.Character.HumanoidRootPart
+                localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+                Fluent:Notify({
+                    Title = "Success!",
+                    Content = "Teleported To: " .. foundPlayer.Name,
+                    SubContent = "",
+                    Duration = 3
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Elude Player Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Relude Player",
+        Callback = function()
+            local localPlayer = game.Players.LocalPlayer
+            local foundPlayer = nil
+
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local stats = player:FindFirstChild("leaderstats")
+                    if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Relude" then
+                        foundPlayer = player
+                        break
+                    end
+                end
+            end
+
+            if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = foundPlayer.Character.HumanoidRootPart
+                localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+
+                Fluent:Notify({
+                    Title = "Success!",
+                    Content = "Teleported To: " .. foundPlayer.Name,
+                    SubContent = "",
+                    Duration = 3
+                })
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Relude Player Not Found",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Doorkeeper Obtainment Place (1)",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(125845699717230)
+        end
+    })
+
+    Tab:AddButton({
+        Title = "Teleport To Doorkeeper Obtainment Place (2)",
+        Callback = function()
+            if game.workspace:FindFirstChild("Door") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Door.CFrame
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "White Door not found/spawned",
+                    SubContent = "",
+                    Duration = 3
+                })
+            end
+        end
+    })
+end
+do
 -- SETTINGS
 Tab = Window:AddTab({ Title = "Settings" })
 
@@ -15683,7 +16938,7 @@ local nullshardChanger = nil
 Tab:AddInput("How Many Slaps? (Visual)", {
     Title = "How Many Slaps? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local slapNumber = tonumber(Value)
         if slapNumber and slapNumber > 0 then
@@ -15716,7 +16971,7 @@ Tab:AddButton({
 Tab:AddInput("How Many Null Shards? (Visual)", {
     Title = "How Many Null Shards? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local nullshardNumber = tonumber(Value)
         if nullshardNumber and nullshardNumber >= 0 then
