@@ -43,22 +43,30 @@ local Tab = Window:MakeTab({
     PremiumOnly = false
 })
 
-Tab:AddParagraph("Article Hub", "Total Scripts: #")
-Tab:AddParagraph("AstroSX", "Total Scripts: 14")
+Tab:AddParagraph("Asuza Article Hub", "Total Scripts: 6")
+Tab:AddParagraph("AstroSX", "Total Scripts: 15")
 Tab:AddParagraph("BaconScripter", "Total Scripts: 18")
-Tab:AddParagraph("DonjoSx", "Total Scripts: 33")
+Tab:AddParagraph("Celerity", "Total Scripts: 14")
+Tab:AddParagraph("Cheatsmith Zyron", "Total Scripts: 3")
+Tab:AddParagraph("DonjoSx", "Total Scripts: 35")
+Tab:AddParagraph("Dizzyhvh", "Total Scripts: 1")
 Tab:AddParagraph("Ekanite", "Total Scripts: 12")
+Tab:AddParagraph("Guy that exists", "Total Scripts: 1")
 Tab:AddParagraph("Herkle", "Total Scripts: 1")
 Tab:AddParagraph("Incognito Scripts", "Total Scripts: 49")
+Tab:AddParagraph("InterScription", "Total Scripts: 2")
 Tab:AddParagraph("Kiet Scripter", "Total Scripts: 62")
 Tab:AddParagraph("Nexer", "Total Scripts: 177")
+Tab:AddParagraph("PacMan", "Total Scripts: 13")
 Tab:AddParagraph("Scrept", "Total Scripts: 2")
 Tab:AddParagraph("Scripter", "Total Scripts: 21")
+Tab:AddParagraph("St1mlx the Scripter", "Total Scripts: 1")
+Tab:AddParagraph("SBScripts", "Total Scripts: 5")
 Tab:AddParagraph("TimerScripts", "Total Scripts: 24")
 Tab:AddParagraph("(TDKG) = The Darkness Keeps Growing", "Total Scripts: 71")
-Tab:AddParagraph("Virus_SX", "Total Scripts: 30")
+Tab:AddParagraph("Virus_SX", "Total Scripts: 32")
 
-Tab:AddParagraph("All Scripters", "Total Scripts: 520")
+Tab:AddParagraph("All Scripters", "Total Scripts: 565")
 
 local Tab = Window:MakeTab({
 	Name = "Article Hub",
@@ -212,6 +220,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Jwjshdiwj/Test/refs/h
 end
 })
 
+Tab:AddButton({
+	Name = "Astral Overseee.lua",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AstroSX-Scripts/CustomGloves/refs/heads/main/Astral%20Overseer"))()
+end
+})
+
 local Tab = Window:MakeTab({
 	Name = "BaconScripter",
 	Icon = "rbxassetid://7733960981",
@@ -341,6 +356,147 @@ Tab:AddButton({
 	Name = "Slap Battles",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdat4461/1-Line-Scripts/refs/heads/main/Slap%20Battles"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Celerity",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Celerity Hub",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/isaberjan420/Roblox/refs/heads/main/AutoCelerity.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/isaberjan420/Roblox/refs/heads/main/Slap%20Battles/AutoSlapFarm.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Skillware",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/isaberjan420/Roblox/refs/heads/main/AutoSkillware.lua'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Tycoon Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Tycoon%20Farm.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Legit Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Legit%20Slap%20Farm.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "All Badge Gloves Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Obtain%20All%20Badge%20Gloves.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Divebomb Tool",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Divebomb%20Tool"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Car Keys Mastery",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Car%20Keys%20Mastery.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Chara Moveset (BETA)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Chara.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Fan Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Fan.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Slap%20Farm%20Loader.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Frostbite God",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/LYJzX6un/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "CLanker slap bot",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Bot%20Slap%20Farm%20Rework.lua"))()
+end
+})
+
+Tab:AddButton({
+	Name = "tryhard ai demo",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CelerityRBLX/Roblox/refs/heads/main/Slap%20Battles/Tryhard%20AI%20Demo.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Cheatsmith Zyron",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "[PATCHED] Slap Royale Script [PASTEBIN] | ANTI VOTEKICK | Slap Aura | Get All Loots | Best UI",
+	Callback = function()
+--Slap Royale Script (NEW)
+--Made by Cheatmisth Zyron (Youtube) @CheatmsithZyron
+ 
+--SCRIPT COPY LINK:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BreApple/RobloxUI/main/SRscriptNew"))()
+ 
+ 
+--Don't forget to subscribe to @CheatsmithZyron on Youtube
+end
+})
+
+Tab:AddButton({
+	Name = "Rojo Glove Script | Slap Battles Troll",
+	Callback = function()
+--Subscribe to Cheatsmith Zyron
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BreApple/RobloxUI/main/SBRojoScript"))()
+end
+})
+
+Tab:AddButton({
+	Name = "50 Slaps/sec | Game Breaking Exploit | Slap Grind Script",
+	Callback = function()
+--Made by Cheatsmith Zyron (YouTube)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BreApple/RobloxUI/main/SBhomerunScript"))()
 end
 })
 
@@ -581,6 +737,33 @@ loadstring(game:HttpGet("https://pastefy.app/Ds8bqkE9/raw"))()
 end
 })
 
+Tab:AddButton({
+	Name = "Auto get GX glove + its badge in 30s no cost",
+	Callback = function()
+loadstring(game:HttpGet('https://pastefy.app/hy4al8Ya/raw'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Gloves Abuser - Use many glove at once",
+	Callback = function()
+loadstring(game:HttpGet('https://pastefy.app/3r2F05qX/raw'))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Dizzyhvh",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "dizzy hub",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dizyhvh/slap_battles_gui/main/0.lua"))()
+end
+})
+
 local Tab = Window:MakeTab({
 	Name = "Ekanite",
 	Icon = "rbxassetid://7733960981",
@@ -668,6 +851,19 @@ Tab:AddButton({
 	Name = "test",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Ekanite-a/Scripts/refs/heads/main/Slap%20battles/test.lua"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Guy that exists",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "Hub that exists",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Guy-that-exists/Hub-that-exists/main/Script"))()
 end
 })
 
@@ -1030,6 +1226,26 @@ Tab:AddButton({
 	Name = "inco hub",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/IncognitoScripts/IncognitoScripts/refs/heads/main/incohub.txt"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "InterScription",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "OP Slap Royale",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/interscripting/OPSlapRoyale/refs/heads/main/OPSlapRoyale"))()
+end
+})
+
+Tab:AddButton({
+	Name = "OP Slap Royale PC UI",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/interscripting/OPSlapRoyale/refs/heads/main/OPSlapRoyalePCUI"))()
 end
 })
 
@@ -2719,6 +2935,103 @@ end
 })
 
 local Tab = Window:MakeTab({
+	Name = "PacMan",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "EDGELORD V4 BY PACMAN",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/EDGELORD-V4/refs/heads/main/edgelord%20obfv4.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Pc Verison edgelord",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/QhadFIUD/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap farm by pacman one and only",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/FarmByPacman/refs/heads/main/obfuscated%20(6).txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Kick script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/BROKEN/refs/heads/main/KICK%20SCRIPT.txt"))() 
+end
+})
+
+Tab:AddButton({
+	Name = "701",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/VCVehBWE/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Sussy glove",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/lI57ilUJ"))()
+end
+})
+
+Tab:AddButton({
+	Name = "FREE RADIO V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/BEST-MOST-OP/refs/heads/main/Give%20god%20obf.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Fan fling Gun",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/XPhPgVpJ/raw"))()
+end
+})
+
+Tab:AddButton({
+	Name = "GIVE GOD MODE V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/BEST-MOST-OP/refs/heads/main/Give%20god%20obf.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto get clock",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/Auto-get-clock/refs/heads/main/Free.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "CLOCK ABUSER V2",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/Clock-abuser-op/refs/heads/main/CLOCK%20ABUSER%20OBF.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Oven ABUSER",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/OP-OVEN-ABUSER-/refs/heads/main/jail.txt"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Hitbox increaser script, works for other games also",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Ungravved/OP-HITBOX-ABUSER/refs/heads/main/Pacman"))()
+end
+})
+
+local Tab = Window:MakeTab({
 	Name = "Scrept",
 	Icon = "rbxassetid://7733960981",
 	PremiumOnly = false
@@ -2888,6 +3201,149 @@ Tab:AddButton({
 	Name = "Slap Battles Hub OP Script (Fluent) (Scripter Hub)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "St1mlx the Scripter",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "St1mlx's Hub | Premium Loader",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/st1mlx/St1mlx-Scripts/refs/heads/main/hubtest'))()
+end
+})
+
+local Tab = Window:MakeTab({
+	Name = "SBScripts",
+	Icon = "rbxassetid://7733960981",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+	Name = "No Cooldown Script",
+	Callback = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local tool = character:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool")
+
+while character.Humanoid.Health ~= 0 do
+local localscript = tool:FindFirstChildOfClass("LocalScript")
+local localscriptclone = localscript:Clone()
+localscriptclone = localscript:Clone()
+localscriptclone:Clone()
+localscript:Destroy()
+localscriptclone.Parent = tool
+wait(0.1)
+end
+end
+})
+
+Tab:AddButton({
+	Name = "Infinite Invisibility Script",
+	Callback = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+if character.isInArena.Value == false then
+fireclickdetector(game.Workspace.Lobby.Ghost.ClickDetector)
+game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+
+while character.Humanoid.Health ~= 0 do
+character.Head.Transparency = 0.5
+character.Torso.Transparency = 0.5
+character["Left Arm"].Transparency = 0.5
+character["Right Arm"].Transparency = 0.5
+character["Left Leg"].Transparency = 0.5
+character["Right Leg"].Transparency = 0.5
+wait(0.05)
+end
+end
+
+-- after this equip any glove and boom invisiblity :D
+end
+})
+
+Tab:AddButton({
+	Name = "Invincibility Script",
+	Callback = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local teleport = game.Workspace.Lobby.Teleport1
+
+character.HumanoidRootPart.CFrame = teleport.CFrame
+wait(0.5)
+local tool = character:FindFirstChildOfClass("Tool")
+tool.Parent = game.ReplicatedStorage
+character.Humanoid.Health = 0
+wait(4)
+player = game.Players.LocalPlayer
+character = player.Character or player.CharacterAdded:Wait()
+tool.Parent = character
+character.HumanoidRootPart.CFrame = game.Workspace.Origo.CFrame
+end
+})
+
+Tab:AddButton({
+	Name = "Killerfish Script",
+	Callback = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local tool = character:FindFirstChild("fish") or player.Backpack:FindFirstChild("fish")
+
+local fish = game.Workspace.Lobby.fish
+local fishStand = game.Workspace.Lobby.GloveStands.fish
+local leaderstats = player:FindFirstChild("leaderstats")
+local gloveStat = leaderstats:FindFirstChild("Glove")
+
+local userInputService = game:GetService("UserInputService")
+local canUseAbility = true
+userInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+if character.isInArena.Value == true then
+if gloveStat.Value == "fish" or gloveStat.Value == "Killerfish" then
+    if input.KeyCode == Enum.KeyCode.R and canUseAbility then
+            canUseAbility = false
+            game:GetService("ReplicatedStorage").GeneralAbility:FireServer()
+            wait(3.05)
+            canUseAbility = true
+        end
+    end
+    end
+end)
+
+while fish:FindFirstChild("Texture") do
+fish.Texture:Destroy()
+fish.Color = Color3.new(124, 124, 124)
+fish.Material = "DiamondPlate"
+fishStand.GloveDesc.DescOutline.DescFrame:FindFirstChild("Name").Text = "Killerfish"
+wait(0.05)
+end
+
+while true do
+if gloveStat.Value == "fish" or gloveStat.Value == "Killerfish" then
+gloveStat.Value = "Killerfish"
+end
+wait(0.05)
+end
+
+while tool.Glove:FindFirstChild("Texture") do
+tool.Glove.Texture:Destroy()
+wait(0.05)
+end
+
+tool.Glove.Color = Color3.new(124, 124, 124)
+tool.Glove.Material = "DiamondPlate"
+tool.Name = "Killerfish"
+end
+})
+
+Tab:AddButton({
+	Name = "SBS Hub",
+	Callback = function()
+loadstring(game:HttpGet('https://pastebin.com/raw/t9XmdEFT'))()
 end
 })
 
@@ -3795,6 +4251,25 @@ loadstring(game:HttpGet("https://pastefy.app/B1GxTxcV/raw"))()
 end
 })
 
+Tab:AddButton({
+	Name = "⚰️ Demise Glove! ⚰️",
+	Callback = function()
+getgenv().Settings = {
+    ["VisibleHitboxes"] = false,
+    ["Yapping"] = true,
+    ["ScreenShakes"] = true
+}
+loadstring(game:HttpGet("https://pastefy.app/lNo8SxY0/raw", true))()
+end
+})
+
+Tab:AddButton({
+	Name = "Barzil kicker script (only kicks everyone in arena) need 1k slaps",
+	Callback = function()
+loadstring(game:HttpGet("https://pastefy.app/ieh2dBM0/raw", true))()
+end
+})
+
 -- SETTINGS
 Tab = Window:MakeTab({
     Name = "Settings",
@@ -3810,7 +4285,7 @@ Section = Tab:AddSection({
 Tab:AddTextbox({
     Name = "How Many Slaps? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local slapNumber = tonumber(Value)
         if slapNumber and slapNumber > 0 then
@@ -3845,7 +4320,7 @@ Tab:AddButton({
 Tab:AddTextbox({
     Name = "How Many Null Shards? (Visual)",
     Default = "",
-    TextDisappear = true,
+    TextDisappear = false,
     Callback = function(Value)
         local nullshardNumber = tonumber(Value)
         if nullshardNumber and nullshardNumber >= 0 then
