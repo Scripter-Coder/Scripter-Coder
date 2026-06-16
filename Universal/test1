@@ -1,4 +1,4 @@
--- Orion Hub Library - Complete Updated Version
+-- Orion Hub Library - Complete Updated Version (FIXED)
 local OrionLib = {
     _version = "2.0",
     _customAnimations = {},
@@ -274,39 +274,9 @@ local function CreateCustomAnimationGUI(animationData, callback)
     return screenGui
 end
 
--- Create Main UI
-function OrionLib:MakeWindow(config)
-    config = config or {}
-    config.Title = config.Title or "Orion Hub"
-    config.CustomAnimation = config.CustomAnimation or false
-    config.HideUsername = config.HideUsername or false
-    config.HideAvatar = config.HideAvatar or false
-    
-    local windowData = {
-        Title = config.Title,
-        Elements = {},
-        Tabs = {},
-        CurrentTab = nil,
-        ScreenGui = nil,
-        MainFrame = nil
-    }
-    
-    if config.CustomAnimation and self._currentCustomAnimation then
-        local animationGui = CreateCustomAnimationGUI(self._currentCustomAnimation, function(animationData)
-            config.HideUsername = animationData.HideUsername
-            config.HideAvatar = animationData.HideAvatar
-            BuildMainUI(windowData, config)
-        end)
-        windowData.AnimationGui = animationGui
-    else
-        BuildMainUI(windowData, config)
-    end
-    
-    table.insert(self._windows, windowData)
-    return windowData
-end
-
--- Build Main UI
+-- ============================================
+-- BUILD MAIN UI FUNCTION - MOVED HERE (BEFORE MakeWindow)
+-- ============================================
 local function BuildMainUI(windowData, config)
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "OrionHub"
@@ -498,7 +468,43 @@ local function BuildMainUI(windowData, config)
     return windowData
 end
 
--- Make Tab
+-- ============================================
+-- MakeWindow - NOW BuildMainUI is defined above
+-- ============================================
+function OrionLib:MakeWindow(config)
+    config = config or {}
+    config.Title = config.Title or "Orion Hub"
+    config.CustomAnimation = config.CustomAnimation or false
+    config.HideUsername = config.HideUsername or false
+    config.HideAvatar = config.HideAvatar or false
+    
+    local windowData = {
+        Title = config.Title,
+        Elements = {},
+        Tabs = {},
+        CurrentTab = nil,
+        ScreenGui = nil,
+        MainFrame = nil
+    }
+    
+    if config.CustomAnimation and self._currentCustomAnimation then
+        local animationGui = CreateCustomAnimationGUI(self._currentCustomAnimation, function(animationData)
+            config.HideUsername = animationData.HideUsername
+            config.HideAvatar = animationData.HideAvatar
+            BuildMainUI(windowData, config)
+        end)
+        windowData.AnimationGui = animationGui
+    else
+        BuildMainUI(windowData, config)
+    end
+    
+    table.insert(self._windows, windowData)
+    return windowData
+end
+
+-- ============================================
+-- MakeTab
+-- ============================================
 function OrionLib:MakeTab(window, config)
     config = config or {}
     config.Name = config.Name or "Tab"
@@ -569,7 +575,9 @@ function OrionLib:MakeTab(window, config)
     }
 end
 
--- Add Section
+-- ============================================
+-- MakeSection
+-- ============================================
 function OrionLib:MakeSection(tab, config)
     config = config or {}
     config.Name = config.Name or "Section"
@@ -594,7 +602,9 @@ function OrionLib:MakeSection(tab, config)
     return section
 end
 
--- Add Button
+-- ============================================
+-- MakeButton
+-- ============================================
 function OrionLib:MakeButton(tab, config)
     config = config or {}
     config.Name = config.Name or "Button"
@@ -622,7 +632,9 @@ function OrionLib:MakeButton(tab, config)
     return button
 end
 
--- Add Toggle
+-- ============================================
+-- MakeToggle
+-- ============================================
 function OrionLib:MakeToggle(tab, config)
     config = config or {}
     config.Name = config.Name or "Toggle"
@@ -674,7 +686,9 @@ function OrionLib:MakeToggle(tab, config)
     return toggle
 end
 
--- Add Dropdown (Fixed)
+-- ============================================
+-- MakeDropdown (Single and Multi)
+-- ============================================
 function OrionLib:MakeDropdown(tab, config)
     config = config or {}
     config.Name = config.Name or "Dropdown"
@@ -837,7 +851,9 @@ function OrionLib:MakeDropdown(tab, config)
     return dropdown
 end
 
--- Add Slider
+-- ============================================
+-- MakeSlider
+-- ============================================
 function OrionLib:MakeSlider(tab, config)
     config = config or {}
     config.Name = config.Name or "Slider"
@@ -920,7 +936,9 @@ function OrionLib:MakeSlider(tab, config)
     return slider
 end
 
--- Make Notification
+-- ============================================
+-- MakeNotification
+-- ============================================
 function OrionLib:MakeNotification(config)
     config = config or {}
     config.Name = config.Name or "Notification"
@@ -932,7 +950,9 @@ function OrionLib:MakeNotification(config)
     self:ProcessNotificationQueue()
 end
 
--- Make Confirm Notification
+-- ============================================
+-- MakeConfirmNotification
+-- ============================================
 function OrionLib:MakeConfirmNotification(config)
     config = config or {}
     config.Name = config.Name or "Confirmation"
@@ -944,7 +964,9 @@ function OrionLib:MakeConfirmNotification(config)
     self:ProcessNotificationQueue()
 end
 
+-- ============================================
 -- Process Notification Queue
+-- ============================================
 function OrionLib:ProcessNotificationQueue()
     if self._isNotificationShowing or #self._notificationQueue == 0 then
         return
@@ -960,7 +982,9 @@ function OrionLib:ProcessNotificationQueue()
     end
 end
 
+-- ============================================
 -- Show Normal Notification
+-- ============================================
 function OrionLib:ShowNormalNotification(config)
     local screenGui = self._notificationScreenGui
     
@@ -1046,7 +1070,9 @@ function OrionLib:ShowNormalNotification(config)
     end)
 end
 
+-- ============================================
 -- Show Confirm Notification
+-- ============================================
 function OrionLib:ShowConfirmNotification(config)
     local screenGui = self._notificationScreenGui
     
