@@ -394,11 +394,13 @@ Config files are made for every game the library is launched in.
 OrionLib:Destroy()
 ```
 
-## 3 Things Not Added Yet Are
+## 5 Things Not Added/Done Yet Are
 ```lua
 Custom Animation Gui (When Script Loads)
 Icon of face is white (Where The White Circle Is)
 User is a fallback of your name incase if this code cant get your username properly it refers as User/Anonymous (Simple but its bug)
+Dropdowns (They exists but a bit look broken)
+Are You Sure Notification? (Alternative notification if you wanna confirm that are you sure that u wanna for ex. load that script and there will be 2 buttons in that Other Notification which Variants of adding buttons and names to it its yours like if no then notification can be used to close it if yes then it will load what button has inside and etc...)
 ```
 
 # Finishing your script (REQUIRED)
