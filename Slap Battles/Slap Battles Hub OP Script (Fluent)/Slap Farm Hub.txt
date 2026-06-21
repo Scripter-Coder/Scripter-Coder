@@ -1274,28 +1274,131 @@ Tabs.Bounty:AddButton({
     end
 })
 
-Tabs.Bounty:AddToggle("AutoGiveCards", {
+-- Load the code from external source (you can change the URL)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Auto%20Cards%20Giver"))()
+
+-- ==========================================
+-- TOGGLE: Auto Give Yourself Cards
+-- ==========================================
+Tabs.Bounty:AddToggle("AutoGiveYourselfCards", {
     Title = "Auto Give Yourself Cards",
-    Description = "Automatically uses the GeneralAbility remote",
     Default = false,
     Callback = function(Value)
-        local running = Value
-        
-        local function giveCardsLoop()
-            while running do
-                pcall(function()
-                    ReplicatedStorage:WaitForChild("GeneralAbility"):FireServer()
-                end)
-                task.wait(0.01)
-                if Fluent.Unloaded then break end
-            end
-        end
-        
         if Value then
-            task.spawn(giveCardsLoop)
+            if _G.AutoGiveCards then
+                _G.AutoGiveCards.Start()
+            end
+        else
+            if _G.AutoGiveCards then
+                _G.AutoGiveCards.Stop()
+            end
         end
     end
 })
+
+-- ==========================================
+-- PLATFORM SETTINGS (Define these first)
+-- ==========================================
+local PLATFORM_POSITION = Vector3.new(-103, 3000000, 144.5)
+local PLATFORM_SIZE = Vector3.new(500, 1, 500)
+
+-- ==========================================
+-- VARIABLES
+-- ==========================================
+local safespotPart = nil
+
+-- ==========================================
+-- TOGGLE: Create Safespot
+-- ==========================================
+Tabs.Bounty:AddToggle("CreateSafespot", {
+    Title = "Create Safespot",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- Remove existing safespot if any
+            if safespotPart then
+                safespotPart:Destroy()
+                safespotPart = nil
+            end
+            
+            -- Create safespot at the platform position
+            safespotPart = Instance.new("Part")
+            safespotPart.Name = "Safespot"
+            safespotPart.Size = PLATFORM_SIZE
+            safespotPart.Position = PLATFORM_POSITION
+            safespotPart.Anchored = true
+            safespotPart.CanCollide = true
+            safespotPart.BrickColor = BrickColor.new("Bright green")
+            safespotPart.Material = Enum.Material.Neon
+            safespotPart.Transparency = 0.3
+            safespotPart.Parent = workspace
+            
+            Fluent:Notify({
+                Title = "Safespot",
+                Content = "Safespot created at platform position!",
+                Duration = 3
+            })
+        else
+            -- Remove safespot
+            if safespotPart then
+                safespotPart:Destroy()
+                safespotPart = nil
+                
+                Fluent:Notify({
+                    Title = "Safespot",
+                    Content = "Safespot removed!",
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+-- ==========================================
+-- BUTTON: Teleport To Safespot
+-- ==========================================
+Tabs.Bounty:AddButton({
+    Title = "Teleport To Safespot",
+    Callback = function()
+        if safespotPart then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    hrp.CFrame = CFrame.new(PLATFORM_POSITION + Vector3.new(0, (PLATFORM_SIZE.Y / 2) + 4, 0))
+                    
+                    Fluent:Notify({
+                        Title = "Teleport",
+                        Content = "Teleported to safespot!",
+                        Duration = 2
+                    })
+                end
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No safespot created! Turn on 'Create Safespot' first.",
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- ==========================================
+-- CLEANUP ON CHARACTER RESPAWN
+-- ==========================================
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    if _G.AutoGiveCards then
+        _G.AutoGiveCards.Stop()
+    end
+end)
+
+-- Cleanup when script stops
+game.Players.LocalPlayer.OnTeleport:Connect(function()
+    if _G.AutoGiveCards then
+        _G.AutoGiveCards.Stop()
+    end
+end)
 
 -- ===============================
 -- DEBUG TAB
@@ -1940,6 +2043,239 @@ player.CharacterAdded:Connect(function(character)
         end
     end
 end)
+
+-- ==========================================
+-- BACKPACK V2 TOGGLE
+-- ==========================================
+
+_G.BackpackV2 = false
+_G.BackpackV2Loop = true
+_G.ConnectFun = _G.ConnectFun or {}
+
+-- Store original positions
+if _G.Backpack == nil then
+    _G.Backpack = {
+        ["Old"] = {
+            ["Hotbar"] = game:GetService("CoreGui").RobloxGui.Backpack.Hotbar.Position,
+            ["Inventory"] = game:GetService("CoreGui").RobloxGui.Backpack.Inventory.Position,
+            ["Backpack Number"] = {}
+        },
+        ["New"] = {
+            ["Hotbar"] = (game:GetService("CoreGui").RobloxGui.Backpack.Hotbar.Position + UDim2.new(0, 0, 0, -10)),
+            ["Inventory"] = (game:GetService("CoreGui").RobloxGui.Backpack.Inventory.Position + UDim2.new(0, 0, 0, -10)),
+            ["Backpack Number"] = {}
+        }
+    }
+    wait()
+    for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+        if v:IsA("TextButton") then
+            _G.Backpack["Old"]["Backpack Number"][v.Name] = v.Position
+            _G.Backpack["New"]["Backpack Number"][v.Name] = UDim2.new(0, 3, 0, 3)
+        end
+    end
+end
+
+-- Main loop for backpack styling
+spawn(function()
+    while _G.BackpackV2Loop do
+        if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Hotbar") then
+            game:GetService("CoreGui").RobloxGui.Backpack.Hotbar.Position = (_G.BackpackV2 == true and (_G.Backpack["New"]["Hotbar"]) or (_G.Backpack["Old"]["Hotbar"]))
+        end
+        if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Inventory") then
+            game:GetService("CoreGui").RobloxGui.Backpack.Inventory.Position = (_G.BackpackV2 == true and (_G.Backpack["New"]["Inventory"]) or (_G.Backpack["Old"]["Inventory"]))
+        end
+        for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+            if v:IsA("TextButton") and v:FindFirstChild("Number") then
+                v.Number.Position = (_G.BackpackV2 == true and (_G.Backpack["New"]["Backpack Number"][v.Name]) or (_G.Backpack["Old"]["Backpack Number"][v.Name]))
+            end
+        end
+        if _G.BackpackV2 == true then
+            if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Inventory").Visible == false then
+                if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Hotbar"):FindFirstChild("UIListLayout") == nil then
+                    local UIListLayout = Instance.new("UIListLayout")
+                    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+                    UIListLayout.Padding = UDim.new(0, 5)
+                    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+                    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+                    UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+                    UIListLayout.Parent = game:GetService("CoreGui").RobloxGui.Backpack.Hotbar
+                end
+            else
+                if game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:FindFirstChild("UIListLayout") then
+                    game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:FindFirstChild("UIListLayout"):Destroy()
+                end
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+                if v:IsA("TextButton") then
+                    if v:FindFirstChild("Equipped") then
+                        v.Equipped.Visible = false
+                    end
+                    if v:FindFirstChild("Equipped") and v:FindFirstChild("SelectionObjectClipper") then
+                        v.SelectionObjectClipper.Visible = true
+                    else
+                        v.SelectionObjectClipper.Visible = false
+                    end
+                    if v:FindFirstChild("UICorner") == nil then
+                        local RobloxUi = Instance.new("UICorner", v)
+                        RobloxUi.CornerRadius = UDim.new(0, 10)
+                    end
+                end
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Inventory.ScrollingFrame.UIGridFrame:GetChildren()) do
+                if v:IsA("TextButton") then
+                    if v:FindFirstChild("Equipped") then
+                        v.Equipped.Visible = false
+                    end
+                    if v:FindFirstChild("Equipped") and v:FindFirstChild("SelectionObjectClipper") then
+                        v.SelectionObjectClipper.Visible = true
+                    else
+                        v.SelectionObjectClipper.Visible = false
+                    end
+                    if v:FindFirstChild("UICorner") == nil then
+                        local RobloxUi = Instance.new("UICorner", v)
+                        RobloxUi.CornerRadius = UDim.new(0, 10)
+                    end
+                end
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Inventory:GetChildren()) do
+                if v.Name == "Search" then
+                    if v:FindFirstChild("UICorner") == nil then
+                        local RobloxUi = Instance.new("UICorner", v)
+                        RobloxUi.CornerRadius = UDim.new(0, 10)
+                    end
+                    if v:FindFirstChild("X") and v["X"]:FindFirstChild("UICorner") == nil then
+                        local RobloxUi = Instance.new("UICorner", v["X"])
+                        RobloxUi.CornerRadius = UDim.new(0, 10)
+                    end
+                end
+            end
+            if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Inventory") and game:GetService("CoreGui").RobloxGui.Backpack.Inventory:FindFirstChild("UICorner") == nil then
+                local RobloxUi = Instance.new("UICorner", game:GetService("CoreGui").RobloxGui.Backpack.Inventory)
+                RobloxUi.CornerRadius = UDim.new(0, 10)
+            end
+        elseif _G.BackpackV2 == false then
+            if game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:FindFirstChild("UIListLayout") then
+                game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:FindFirstChild("UIListLayout"):Destroy()
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+                if v:IsA("TextButton") then
+                    if v:FindFirstChild("Equipped") then
+                        v.Equipped.Visible = true
+                    end
+                    if v:FindFirstChild("SelectionObjectClipper") then
+                        v.SelectionObjectClipper.Visible = false
+                    end
+                    if v:FindFirstChild("UICorner") then
+                        v:FindFirstChild("UICorner"):Destroy()
+                    end
+                end
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Inventory.ScrollingFrame.UIGridFrame:GetChildren()) do
+                if v:IsA("TextButton") then
+                    if v:FindFirstChild("Equipped") then
+                        v.Equipped.Visible = true
+                    end
+                    if v:FindFirstChild("SelectionObjectClipper") then
+                        v.SelectionObjectClipper.Visible = false
+                    end
+                    if v:FindFirstChild("UICorner") then
+                        v:FindFirstChild("UICorner"):Destroy()
+                    end
+                end
+            end
+            for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Inventory:GetChildren()) do
+                if v.Name == "Search" then
+                    if v:FindFirstChild("UICorner") then
+                        v:FindFirstChild("UICorner"):Destroy()
+                    end
+                    if v:FindFirstChild("X") and v["X"]:FindFirstChild("UICorner") then
+                        v["X"]:FindFirstChild("UICorner"):Destroy()
+                    end
+                end
+            end
+            if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Inventory") and game:GetService("CoreGui").RobloxGui.Backpack.Inventory:FindFirstChild("UICorner") then
+                game:GetService("CoreGui").RobloxGui.Backpack.Inventory:FindFirstChild("UICorner"):Destroy()
+            end
+        end
+        task.wait()
+    end
+end)
+
+-- Function for backpack slot interactions
+local function BackpackV2(v)
+    v.MouseEnter:Connect(function()
+        if _G.BackpackV2 == true then
+            local sound = Instance.new("Sound", workspace)
+            sound.SoundId = "rbxassetid://10066942189"
+            sound.Volume = 2
+            sound.PlaybackSpeed = 1
+            sound.PlayOnRemove = true
+            sound:Destroy()
+            game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 70, 0, 70)}):Play()
+        end
+    end)
+    v.MouseLeave:Connect(function()
+        if _G.BackpackV2 == true then
+            local sound = Instance.new("Sound", workspace)
+            sound.SoundId = "rbxassetid://10066942189"
+            sound.Volume = 2
+            sound.PlaybackSpeed = 1
+            sound.PlayOnRemove = true
+            sound:Destroy()
+            game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 60, 0, 60)}):Play()
+        end
+    end)
+    v.MouseButton1Click:Connect(function()
+        if _G.BackpackV2 == true then
+            local sound = Instance.new("Sound", workspace)
+            sound.SoundId = "rbxassetid://10066936758"
+            sound.Volume = 2
+            sound.PlaybackSpeed = 1
+            sound.PlayOnRemove = true
+            sound:Destroy()
+            local TweenGui = game:GetService("TweenService"):Create(v, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 70, 0, 70)})
+            TweenGui:Play()
+            TweenGui.Completed:Connect(function()
+                game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 60, 0, 60)}):Play()
+            end)
+        end
+    end)
+end
+
+-- Apply to existing hotbar slots
+for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+    if v:IsA("TextButton") then
+        BackpackV2(v)
+    end
+end
+
+-- Apply to new slots when added
+table.insert(_G.ConnectFun, game:GetService("CoreGui").RobloxGui.Backpack.Inventory.ScrollingFrame.UIGridFrame.ChildAdded:Connect(function(v)
+    if v:IsA("TextButton") then
+        BackpackV2(v)
+    end
+end))
+
+-- ==========================================
+-- TOGGLE: Backpack V2
+-- ==========================================
+Tab:AddToggle("BackpackV2Toggle", {
+    Title = "Backpack V2 (Cool Style UI)",
+    Default = false,
+    Callback = function(Value)
+        _G.BackpackV2 = Value
+        
+        if Value then
+            Fluent:Notify({
+                Title = "Backpack V2",
+                Content = "Backpack V2 Enabled!",
+                Duration = 2
+            })
+        else
+            -- do nothing
+        end
+    end
+})
 
 -- Slap Aura Section
 local slapAuraSection = Tabs.Settings:AddSection("Slap Aura")
