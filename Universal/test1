@@ -1561,8 +1561,6 @@ Section = Tab:AddSection({
 -- Auto Teleport To Safespot + Auto Use Ability + Slap Aura (Helper)
 local autoHelperSafespot = false
 local helperSafespotLoop = nil
-local helperSlapAuraConnection = nil
-local helperAbilityConnection = nil
 
 Tab:AddToggle({
     Name = "Auto Teleport To Safespot + Auto Use Ability + Slap Aura",
@@ -1584,7 +1582,6 @@ Tab:AddToggle({
                 return
             end
             
-            -- Start Safespot teleport loop
             if helperSafespotLoop then
                 task.cancel(helperSafespotLoop)
                 helperSafespotLoop = nil
@@ -1593,6 +1590,7 @@ Tab:AddToggle({
             helperSafespotLoop = task.spawn(function()
                 while autoHelperSafespot do
                     pcall(function()
+                        -- Teleport to Safespot
                         local safespot = workspace:FindFirstChild("Safespot")
                         if safespot then
                             local base = safespot:FindFirstChild("Base")
@@ -1606,61 +1604,32 @@ Tab:AddToggle({
                                 end
                             end
                         end
-                    end)
-                    task.wait(0.5)
-                end
-            end)
-            
-            -- Start FlashTeleport ability (every 3 seconds)
-            if helperAbilityConnection then
-                helperAbilityConnection:Disconnect()
-                helperAbilityConnection = nil
-            end
-            
-            local abilityTimer = 0
-            helperAbilityConnection = game:GetService("RunService").Heartbeat:Connect(function()
-                if not autoHelperSafespot then return end
-                
-                abilityTimer = abilityTimer + 0.1
-                if abilityTimer >= 3 then
-                    abilityTimer = 0
-                    pcall(function()
+                        
+                        -- FlashTeleport ability (every 3 seconds)
                         local flashTeleport = game:GetService("ReplicatedStorage"):FindFirstChild("FlashTeleport")
                         if flashTeleport then
                             flashTeleport:FireServer()
                         end
-                    end)
-                end
-            end)
-            
-            -- Start Slap Aura (FlashHit on all players every 0.5 seconds)
-            if helperSlapAuraConnection then
-                helperSlapAuraConnection:Disconnect()
-                helperSlapAuraConnection = nil
-            end
-            
-            local slapTimer = 0
-            helperSlapAuraConnection = game:GetService("RunService").Heartbeat:Connect(function()
-                if not autoHelperSafespot then return end
-                
-                slapTimer = slapTimer + 0.1
-                if slapTimer >= 0.5 then
-                    slapTimer = 0
-                    pcall(function()
-                        local flashHit = game:GetService("ReplicatedStorage"):FindFirstChild("FlashHit")
-                        if not flashHit then return end
                         
-                        local localPlayer = game.Players.LocalPlayer
-                        for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-                            if player ~= localPlayer and player.Character then
-                                local targetPart = player.Character:FindFirstChild("Head") or 
-                                                  player.Character:FindFirstChild("Torso") or 
-                                                  player.Character:FindFirstChild("HumanoidRootPart")
-                                if targetPart then
-                                    flashHit:FireServer(targetPart)
+                        task.wait(3) -- Wait 3 seconds for ability
+                        
+                        -- FlashHit Slap Aura (hit all players)
+                        local flashHit = game:GetService("ReplicatedStorage"):FindFirstChild("FlashHit")
+                        if flashHit then
+                            local localPlayer = game.Players.LocalPlayer
+                            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                                if player ~= localPlayer and player.Character then
+                                    local targetPart = player.Character:FindFirstChild("Head") or 
+                                                      player.Character:FindFirstChild("Torso") or 
+                                                      player.Character:FindFirstChild("HumanoidRootPart")
+                                    if targetPart then
+                                        flashHit:FireServer(targetPart)
+                                    end
                                 end
                             end
                         end
+                        
+                        task.wait(0.5) -- Wait 0.5 seconds before next loop
                     end)
                 end
             end)
@@ -1673,20 +1642,9 @@ Tab:AddToggle({
             })
             
         else
-            -- Stop everything
             if helperSafespotLoop then
                 task.cancel(helperSafespotLoop)
                 helperSafespotLoop = nil
-            end
-            
-            if helperAbilityConnection then
-                helperAbilityConnection:Disconnect()
-                helperAbilityConnection = nil
-            end
-            
-            if helperSlapAuraConnection then
-                helperSlapAuraConnection:Disconnect()
-                helperSlapAuraConnection = nil
             end
             
             OrionLib:MakeNotification({
@@ -1769,6 +1727,207 @@ Tab:AddToggle({
         end
     end
 })
+
+local Tab = Window:MakeTab({
+    Name = "Spring",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3 Quest"
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Teleport To Safespot + Auto Jump + Slap Aura (Receiver)
+local autoReceiverSafespot = false
+local receiverSafespotLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Safespot + Auto Jump + Slap Aura",
+    Default = false,
+    Callback = function(Value)
+        autoReceiverSafespot = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoReceiverSafespot = false
+                return
+            end
+            
+            if receiverSafespotLoop then
+                task.cancel(receiverSafespotLoop)
+                receiverSafespotLoop = nil
+            end
+            
+            receiverSafespotLoop = task.spawn(function()
+                while autoReceiverSafespot do
+                    pcall(function()
+                        local char = game.Players.LocalPlayer.Character
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            local humanoid = char:FindFirstChildOfClass("Humanoid")
+                            
+                            if hrp and humanoid then
+                                -- Teleport to first position
+                                hrp.CFrame = CFrame.new(10000, -42, 9996)
+                                task.wait(0.05)
+                                
+                                -- Teleport to second position
+                                hrp.CFrame = CFrame.new(9999, -42, 9991)
+                                task.wait(0.05)
+                                
+                                -- Set JumpPower to 1
+                                humanoid.JumpPower = 1
+                                task.wait(0.05)
+                                
+                                -- Jump
+                                humanoid.Jump = true
+                                task.wait(0.1) -- Jump every 0.1 seconds
+                                
+                                -- Springhit Slap Aura (every 0.5 seconds)
+                                local springhit = game:GetService("ReplicatedStorage"):FindFirstChild("springhit")
+                                if springhit then
+                                    local localPlayer = game.Players.LocalPlayer
+                                    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                                        if player ~= localPlayer and player.Character then
+                                            local targetPart = player.Character:FindFirstChild("Left Arm") or 
+                                                              player.Character:FindFirstChild("Right Arm") or
+                                                              player.Character:FindFirstChild("Head") or 
+                                                              player.Character:FindFirstChild("Torso") or 
+                                                              player.Character:FindFirstChild("HumanoidRootPart")
+                                            if targetPart then
+                                                springhit:FireServer(targetPart)
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Receiver",
+                Content = "Auto Teleport + Jump + Slap Aura Enabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if receiverSafespotLoop then
+                task.cancel(receiverSafespotLoop)
+                receiverSafespotLoop = nil
+            end
+            
+            -- Reset JumpPower back to normal
+            pcall(function()
+                local char = game.Players.LocalPlayer.Character
+                if char then
+                    local humanoid = char:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.JumpPower = 50
+                    end
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Receiver",
+                Content = "Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Teleport To Receiver (Helper)
+local autoHelperReceiver = false
+local helperReceiverLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Receiver",
+    Default = false,
+    Callback = function(Value)
+        autoHelperReceiver = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoHelperReceiver = false
+                return
+            end
+            
+            if helperReceiverLoop then
+                task.cancel(helperReceiverLoop)
+                helperReceiverLoop = nil
+            end
+            
+            helperReceiverLoop = task.spawn(function()
+                while autoHelperReceiver do
+                    pcall(function()
+                        local char = game.Players.LocalPlayer.Character
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                hrp.CFrame = CFrame.new(10000, -42, 9996)
+                            end
+                        end
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Helper Receiver",
+                Content = "Auto teleport to Receiver position enabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+            
+        else
+            if helperReceiverLoop then
+                task.cancel(helperReceiverLoop)
+                helperReceiverLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Helper Receiver",
+                Content = "Auto teleport to Receiver position disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+
+
+
 
 
 
