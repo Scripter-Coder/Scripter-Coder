@@ -857,19 +857,24 @@ Section = Tab:AddSection({
     Name = "Receiver"
 })
 
--- Auto Teleport To Safespot
+-- Auto Teleport To Safespot + Slap Aura
 local autoSafespot = false
 local safespotLoop = nil
+local slapAuraConnection = nil
+
 Tab:AddToggle({
     Name = "Auto Teleport To Safespot + Slap Aura",
     Default = false,
     Callback = function(Value)
         autoSafespot = Value
+        
         if Value then
+            -- Start Safespot teleport loop
             if safespotLoop then
                 task.cancel(safespotLoop)
                 safespotLoop = nil
             end
+            
             safespotLoop = task.spawn(function()
                 while autoSafespot do
                     pcall(function()
@@ -877,7 +882,7 @@ Tab:AddToggle({
                         if safespot then
                             local base = safespot:FindFirstChild("Base")
                             if base then
-                                local char = LocalPlayer.Character
+                                local char = game.Players.LocalPlayer.Character
                                 if char then
                                     local hrp = char:FindFirstChild("HumanoidRootPart")
                                     if hrp then
@@ -890,11 +895,63 @@ Tab:AddToggle({
                     task.wait(0.5)
                 end
             end)
+            
+            -- Start Slap Aura (fires GeneralHit on all players every 0.5 seconds)
+            if slapAuraConnection then
+                slapAuraConnection:Disconnect()
+                slapAuraConnection = nil
+            end
+            
+            slapAuraConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                if not autoSafespot then return end
+                
+                pcall(function()
+                    local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                    if not generalHit then return end
+                    
+                    -- Fire GeneralHit on all players
+                    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                        if player.Character then
+                            -- Get a body part (Right Arm, Left Arm, Head, etc.)
+                            local targetPart = player.Character:FindFirstChild("Right Arm") or 
+                                              player.Character:FindFirstChild("Left Arm") or
+                                              player.Character:FindFirstChild("Head") or 
+                                              player.Character:FindFirstChild("Torso") or 
+                                              player.Character:FindFirstChild("HumanoidRootPart")
+                            if targetPart then
+                                generalHit:FireServer(targetPart)
+                            end
+                        end
+                    end
+                end)
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Safespot + Slap Aura",
+                Content = "Enabled! Teleporting to Safespot & slapping all players.",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
         else
+            -- Stop Safespot teleport loop
             if safespotLoop then
                 task.cancel(safespotLoop)
                 safespotLoop = nil
             end
+            
+            -- Stop Slap Aura
+            if slapAuraConnection then
+                slapAuraConnection:Disconnect()
+                slapAuraConnection = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Safespot + Slap Aura",
+                Content = "Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
     end
 })
@@ -972,7 +1029,493 @@ Tab:AddToggle({
     end
 })
 
+local Tab = Window:MakeTab({
+    Name = "Brick",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
 
+Section = Tab:AddSection({
+    Name = "1 Quest"
+})
+
+local brickMasterRunning = false
+local brickMasterConnection = nil
+local brickMasterLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Obtain Brick Master Badge",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local player = game.Players.LocalPlayer
+            
+            -- Check conditions
+            local hasBrickGlove = player.leaderstats and player.leaderstats:FindFirstChild("Glove") and player.leaderstats.Glove.Value == "Brick"
+            local hasEntered = player.Character and player.Character:FindFirstChild("entered")
+            local hasSafespot = workspace:FindFirstChild("Safespot")
+            
+            if not hasBrickGlove or not hasEntered or not hasSafespot then
+                local errorMsg = ""
+                if not hasBrickGlove then
+                    errorMsg = "Equip Brick Glove"
+                elseif not hasEntered then
+                    errorMsg = "Enter Arena First"
+                elseif not hasSafespot then
+                    errorMsg = "Create Safespot First"
+                end
+                
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = errorMsg,
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                return false
+            end
+            
+            -- Teleport to Safespot first
+            local safespot = workspace:FindFirstChild("Safespot")
+            if safespot then
+                local base = safespot:FindFirstChild("Base")
+                if base then
+                    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+                    if hrp then
+                        hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
+                    end
+                end
+            end
+            
+            task.wait(0.5)
+            
+            -- Start the loop
+            getgenv().BrickMasterLoop = true
+            brickMasterLoop = task.spawn(function()
+                while getgenv().BrickMasterLoop do
+                    pcall(function()
+                        -- Check if still in Safespot, if not teleport back
+                        local safespot = workspace:FindFirstChild("Safespot")
+                        if safespot then
+                            local base = safespot:FindFirstChild("Base")
+                            if base then
+                                local char = game.Players.LocalPlayer.Character
+                                if char then
+                                    local hrp = char:FindFirstChild("HumanoidRootPart")
+                                    if hrp then
+                                        -- Keep teleporting to Safespot to stay safe
+                                        hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
+                                    end
+                                end
+                            end
+                        end
+                        
+                        -- Fire lbrick remote
+                        local lbrick = game:GetService("ReplicatedStorage"):FindFirstChild("lbrick")
+                        if lbrick then
+                            lbrick:FireServer()
+                        end
+                        
+                        -- Update GUI brick count
+                        pcall(function()
+                            local gui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("BRICKCOUNT")
+                            if gui then
+                                local imageLabel = gui:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel then
+                                        local currentCount = tonumber(textLabel.Text) or 0
+                                        textLabel.Text = tostring(currentCount + 1)
+                                    end
+                                end
+                            end
+                        end)
+                    end)
+                    task.wait(1.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Brick Master",
+                Content = "Auto Obtain Brick Master Badge Started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            -- STOP
+            getgenv().BrickMasterLoop = false
+            if brickMasterLoop then
+                task.cancel(brickMasterLoop)
+                brickMasterLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Brick Master",
+                Content = "Auto Obtain Brick Master Badge Stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end    
+})
+
+Section = Tab:AddSection({
+    Name = "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+})
+
+Section = Tab:AddSection({
+    Name = "2-4 Quest"
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Teleport To Safespot + Auto Spawn Bricks
+local autoSafespot = false
+local safespotLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Safespot + Auto Spawn Bricks",
+    Default = false,
+    Callback = function(Value)
+        autoSafespot = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoSafespot = false
+                return
+            end
+            
+            -- Start Safespot teleport + Brick spawn loop
+            if safespotLoop then
+                task.cancel(safespotLoop)
+                safespotLoop = nil
+            end
+            
+            safespotLoop = task.spawn(function()
+                while autoSafespot do
+                    pcall(function()
+                        local safespot = workspace:FindFirstChild("Safespot")
+                        if safespot then
+                            local base = safespot:FindFirstChild("Base")
+                            if base then
+                                local char = game.Players.LocalPlayer.Character
+                                if char then
+                                    local hrp = char:FindFirstChild("HumanoidRootPart")
+                                    if hrp then
+                                        hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
+                                    end
+                                end
+                            end
+                        end
+                        
+                        -- Fire lbrick remote
+                        local lbrick = game:GetService("ReplicatedStorage"):FindFirstChild("lbrick")
+                        if lbrick then
+                            lbrick:FireServer()
+                        end
+                        
+                        -- Update GUI brick count
+                        pcall(function()
+                            local gui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("BRICKCOUNT")
+                            if gui then
+                                local imageLabel = gui:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel then
+                                        local currentCount = tonumber(textLabel.Text) or 0
+                                        textLabel.Text = tostring(currentCount + 1)
+                                    end
+                                end
+                            end
+                        end)
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Safespot + Auto Spawn Bricks",
+                Content = "Enabled! Teleporting to Safespot & spawning bricks.",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            -- Stop Safespot teleport + brick spawn loop
+            if safespotLoop then
+                task.cancel(safespotLoop)
+                safespotLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Safespot + Auto Spawn Bricks",
+                Content = "Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Teleport To Safespot + Auto Teleport To Bricks (Union Check)
+local autoReceiverSafespot = false
+local receiverSafespotLoop = nil
+
+-- The specific size to check for
+local TARGET_UNION_SIZE = Vector3.new(1.3293739557266235, 0.4905083179473877, 0.8358331918716431)
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Safespot + Auto Teleport To Bricks",
+    Default = false,
+    Callback = function(Value)
+        autoReceiverSafespot = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoReceiverSafespot = false
+                return
+            end
+            
+            if receiverSafespotLoop then
+                task.cancel(receiverSafespotLoop)
+                receiverSafespotLoop = nil
+            end
+            
+            receiverSafespotLoop = task.spawn(function()
+                while autoReceiverSafespot do
+                    pcall(function()
+                        local char = game.Players.LocalPlayer.Character
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                -- Check for Union parts with specific size
+                                local targetPart = nil
+                                for _, part in pairs(workspace:GetDescendants()) do
+                                    if part:IsA("Part") and part.Name == "Union" then
+                                        -- Check if size matches exactly
+                                        if part.Size.X == TARGET_UNION_SIZE.X and 
+                                           part.Size.Y == TARGET_UNION_SIZE.Y and 
+                                           part.Size.Z == TARGET_UNION_SIZE.Z then
+                                            targetPart = part
+                                            break
+                                        end
+                                    end
+                                end
+                                
+                                -- Teleport to Safespot or Union
+                                if targetPart then
+                                    -- Teleport to Union position
+                                    hrp.CFrame = targetPart.CFrame + Vector3.new(0, 3, 0)
+                                    print("✅ Teleported to Union")
+                                else
+                                    -- Teleport to Safespot
+                                    hrp.CFrame = CFrame.new(10000, -42, 9996)
+                                    print("✅ Teleported to Safespot")
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Teleport",
+                Content = "Auto teleport to Safespot/Bricks enabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+            
+        else
+            if receiverSafespotLoop then
+                task.cancel(receiverSafespotLoop)
+                receiverSafespotLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Teleport",
+                Content = "Auto teleport to Safespot/Bricks disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+})
+
+Section = Tab:AddSection({
+    Name = "3 Quest"
+})
+
+Tab:AddToggle({
+    Name = "Auto Fling Bricks",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- START
+            local player = game.Players.LocalPlayer
+            
+            if player.leaderstats.Glove.Value ~= "Brick" then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Equip Brick Glove first!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                return false
+            end
+            
+            local TARGET_UNION_SIZE = Vector3.new(1.3293739557266235, 0.4905083179473877, 0.8358331918716431)
+            
+            getgenv().UnionsFlingLoop = true
+            
+            task.spawn(function()
+                local RunService = game:GetService("RunService")
+                local speaker = game.Players.LocalPlayer
+                local flinging = true
+                
+                -- Noclip for flinging
+                local noclipConnection
+                noclipConnection = RunService.Stepped:Connect(function()
+                    if speaker.Character then
+                        for _, part in pairs(speaker.Character:GetDescendants()) do
+                            if part:IsA("BasePart") and part.CanCollide then
+                                part.CanCollide = false
+                            end
+                        end
+                    end
+                end)
+                
+                -- Death handler
+                local function onCharacterAdded(char)
+                    local humanoid = char:FindFirstChildWhichIsA("Humanoid")
+                    if humanoid then
+                        humanoid.Died:Connect(function()
+                            flinging = false
+                            if noclipConnection then
+                                noclipConnection:Disconnect()
+                            end
+                            getgenv().UnionsFlingLoop = false
+                        end)
+                    end
+                end
+                
+                -- Handle initial character
+                local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
+                if humanoid then
+                    humanoid.Died:Connect(function()
+                        flinging = false
+                        if noclipConnection then
+                            noclipConnection:Disconnect()
+                        end
+                        getgenv().UnionsFlingLoop = false
+                    end)
+                end
+                
+                -- Handle respawns
+                speaker.CharacterAdded:Connect(onCharacterAdded)
+                
+                while getgenv().UnionsFlingLoop and flinging do
+                    RunService.Heartbeat:Wait()
+                    local character = speaker.Character
+                    local root = character and character:FindFirstChild("HumanoidRootPart")
+                    local vel, movel = nil, 0.1
+
+                    while not (character and character.Parent and root and root.Parent) do
+                        RunService.Heartbeat:Wait()
+                        character = speaker.Character
+                        root = character and character:FindFirstChild("HumanoidRootPart")
+                    end
+
+                    -- Fling velocity
+                    vel = root.Velocity
+                    root.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+
+                    RunService.RenderStepped:Wait()
+                    if character and character.Parent and root and root.Parent then
+                        root.Velocity = vel
+                    end
+
+                    RunService.Stepped:Wait()
+                    if character and character.Parent and root and root.Parent then
+                        root.Velocity = vel + Vector3.new(0, movel, 0)
+                        movel = movel * -1
+                    end
+                    
+                    -- Bring Unions to player (only specific size)
+                    for _, obj in pairs(workspace:GetDescendants()) do
+                        if obj:IsA("BasePart") and obj.Name == "Union" then
+                            -- Check if size matches target
+                            if obj.Size.X == TARGET_UNION_SIZE.X and 
+                               obj.Size.Y == TARGET_UNION_SIZE.Y and 
+                               obj.Size.Z == TARGET_UNION_SIZE.Z then
+                                pcall(function()
+                                    -- Save original properties
+                                    local originalCFrame = obj.CFrame
+                                    local originalAnchored = obj.Anchored
+                                    
+                                    -- Unanchor to move
+                                    obj.Anchored = false
+                                    
+                                    -- Bring Union directly to player's root
+                                    obj.CFrame = root.CFrame
+                                    task.wait(0.01)
+                                    
+                                    -- Return Union to original position
+                                    obj.CFrame = originalCFrame
+                                    obj.Anchored = originalAnchored
+                                end)
+                            end
+                        end
+                    end
+                    
+                    task.wait(0.05)
+                end
+                
+                -- Cleanup connections when loop ends
+                if noclipConnection then
+                    noclipConnection:Disconnect()
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Fling Bricks",
+                Content = "Enabled! Flinging and bringing Unions.",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            -- STOP
+            getgenv().UnionsFlingLoop = false
+        end
+    end    
+})
 
 
 
