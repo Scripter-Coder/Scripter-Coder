@@ -1925,6 +1925,240 @@ Tab:AddToggle({
     end
 })
 
+local Tab = Window:MakeTab({
+    Name = "Dice",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3 Quest"
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Teleport To Safespot + Slap Aura (Receiver)
+local autoReceiverSlap = false
+local receiverSlapLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Safespot + Slap Aura",
+    Default = false,
+    Callback = function(Value)
+        autoReceiverSlap = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoReceiverSlap = false
+                return
+            end
+            
+            if receiverSlapLoop then
+                task.cancel(receiverSlapLoop)
+                receiverSlapLoop = nil
+            end
+            
+            receiverSlapLoop = task.spawn(function()
+                while autoReceiverSlap do
+                    pcall(function()
+                        local char = game.Players.LocalPlayer.Character
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                -- Teleport to Safespot
+                                local safespot = workspace:FindFirstChild("Safespot")
+                                if safespot then
+                                    local base = safespot:FindFirstChild("Base")
+                                    if base then
+                                        hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
+                                    end
+                                end
+                            end
+                        end
+                        
+                        -- DiceHit Slap Aura (every 0.5 seconds)
+                        local diceHit = game:GetService("ReplicatedStorage"):FindFirstChild("DiceHit")
+                        if diceHit then
+                            local localPlayer = game.Players.LocalPlayer
+                            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                                if player ~= localPlayer and player.Character then
+                                    local targetPart = player.Character:FindFirstChild("Head") or 
+                                                      player.Character:FindFirstChild("Torso") or 
+                                                      player.Character:FindFirstChild("HumanoidRootPart")
+                                    if targetPart then
+                                        diceHit:FireServer(targetPart)
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Receiver",
+                Content = "Auto Teleport + Slap Aura Enabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if receiverSlapLoop then
+                task.cancel(receiverSlapLoop)
+                receiverSlapLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Receiver",
+                Content = "Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Enter Arena + Auto Teleport To Receiver + Auto Die On Ragdoll (Helper)
+local autoHelperFull = false
+local helperFullLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Enter Arena + Auto Teleport To Receiver + Auto Die On Ragdoll",
+    Default = false,
+    Callback = function(Value)
+        autoHelperFull = Value
+        
+        if Value then
+            -- Check if Safespot exists
+            local safespot = workspace:FindFirstChild("Safespot")
+            if not safespot then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Safespot not found! Create Safespot first.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoHelperFull = false
+                return
+            end
+            
+            if helperFullLoop then
+                task.cancel(helperFullLoop)
+                helperFullLoop = nil
+            end
+            
+            helperFullLoop = task.spawn(function()
+                while autoHelperFull do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        if not char then
+                            task.wait(0.5)
+                            return
+                        end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then
+                            task.wait(0.5)
+                            return
+                        end
+                        
+                        -- Check if player has entered
+                        local hasEntered = char:FindFirstChild("entered")
+                        
+                        -- Auto Enter Arena
+                        if not hasEntered then
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(0.5)
+                        end
+                        
+                        -- Teleport to Receiver position (Helper's Safespot)
+                        local safespot = workspace:FindFirstChild("Safespot")
+                        if safespot then
+                            local base = safespot:FindFirstChild("Base")
+                            if base then
+                                hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
+                            end
+                        else
+                            hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        end
+                        
+                        task.wait(0.5)
+                        
+                        -- Check Ragdolled and DicePart
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        local dicePart = workspace:FindFirstChild("DicePart")
+                        
+                        -- Auto Die On Ragdoll
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                        end
+                        
+                        -- Check DicePart progress
+                        if dicePart then
+                            local billboard = dicePart:FindFirstChild("BillboardGui")
+                            if billboard then
+                                local imageLabel = billboard:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel then
+                                        local text = textLabel.Text
+                                        local number = tonumber(text)
+                                        if number and number >= 60 then
+                                            print("✅ DicePart progress is " .. number .. "%!")
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.5)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Helper",
+                Content = "Auto Enter Arena + Teleport + Die On Ragdoll Enabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if helperFullLoop then
+                task.cancel(helperFullLoop)
+                helperFullLoop = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Helper",
+                Content = "Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+
 
 
 
