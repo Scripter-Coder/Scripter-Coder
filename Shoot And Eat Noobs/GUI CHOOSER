@@ -67,7 +67,7 @@ CloseButton.TextSize = 12
 -- Button functions
 local function loadOrionHub()
     -- Replace this with your actual Orion Hub loadstring
-    local orionLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20And%20Eat%20Noobs%20Hub%20Script'))()"
+    local orionLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20Noobs%20And%20Eat%20Foods%20Hub%20Script%20(Orion%20Version)'))()"
     
     -- Execute the loadstring
     local success, err = pcall(function()
@@ -86,7 +86,7 @@ end
 
 local function loadFluentHub()
     -- Replace this with your actual Fluent Hub loadstring
-    local fluentLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20And%20Eat%20Noobs%20(Fluent%20Version)'))()"
+    local fluentLoadstring = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Shoot%20And%20Eat%20Noobs/Shoot%20Noobs%20And%20Eat%20Foods%20Hub%20Script%20(Fluent%20Version)'))()"
     
     -- Execute the loadstring
     local success, err = pcall(function()
