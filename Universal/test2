@@ -8665,17 +8665,20 @@ Section = Tab:AddSection({
     Name = "Helper"
 })
 
--- Auto Teleport To Safespot + Die on Ragdoll
+-- Auto Teleport To Safespot + Die on Ragdoll + Firework + Jump
 local autoHelper = false
 local helperLoop = nil
+local helperJumpTimer = 0
 
 Tab:AddToggle({
-    Name = "Auto Helper (Safespot + Die on Ragdoll + Auto Re-enter)",
+    Name = "Auto Helper (Safespot + Firework + Jump + Die on Ragdoll + Auto Re-enter)",
     Default = false,
     Callback = function(Value)
         autoHelper = Value
         
         if Value then
+            helperJumpTimer = 0
+            
             if helperLoop then
                 task.cancel(helperLoop)
                 helperLoop = nil
@@ -8700,12 +8703,34 @@ Tab:AddToggle({
                         -- 1. Teleport to Safespot (Receiver position)
                         hrp.CFrame = CFrame.new(10000, -42, 9996)
                         
-                        -- 2. Check for entered and ragdoll
-                        local entered = char:FindFirstChild("entered")
-                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        -- 2. Auto teleport to Firework (any basepart with "Firework" in name)
+                        for _, part in ipairs(workspace:GetChildren()) do
+                            if part:IsA("BasePart") and string.find(part.Name, "Firework") then
+                                hrp.CFrame = part.CFrame + Vector3.new(0, 2, 0)
+                                break
+                            end
+                        end
                         
-                        if entered and entered.Value == true then
-                            -- Check if ragdolled is true
+                        -- 3. Auto jump every 4 seconds
+                        helperJumpTimer = helperJumpTimer + 0.5
+                        if helperJumpTimer >= 4 then
+                            local humanoid = char:FindFirstChild("Humanoid")
+                            if humanoid then
+                                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            end
+                            helperJumpTimer = 0
+                        end
+                        
+                        -- 4. Check if entered exists
+                        local entered = char:FindFirstChild("entered")
+                        
+                        if entered == nil then
+                            -- If entered doesn't exist, teleport to arena position
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(0.5)
+                        else
+                            -- 5. If entered exists, check for Ragdolled
+                            local ragdolled = char:FindFirstChild("Ragdolled")
                             if ragdolled and ragdolled.Value == true then
                                 -- Die on ragdoll
                                 local humanoid = char:FindFirstChild("Humanoid")
@@ -8713,7 +8738,7 @@ Tab:AddToggle({
                                     humanoid.Health = 0
                                     task.wait(2) -- Wait for respawn
                                     
-                                    -- 3. Auto re-enter arena after respawn
+                                    -- Auto re-enter arena after respawn
                                     local newChar = player.Character
                                     if newChar then
                                         local newHrp = newChar:FindFirstChild("HumanoidRootPart")
@@ -8732,7 +8757,7 @@ Tab:AddToggle({
             
             OrionLib:MakeNotification({
                 Name = "Auto Helper",
-                Content = "Enabled! Teleporting to Safespot & monitoring ragdoll.",
+                Content = "Enabled! Teleporting to Safespot, Firework, Jumping & monitoring ragdoll.",
                 Image = "rbxassetid://7743878857",
                 Time = 3
             })
@@ -8742,6 +8767,8 @@ Tab:AddToggle({
                 task.cancel(helperLoop)
                 helperLoop = nil
             end
+            
+            helperJumpTimer = 0
             
             OrionLib:MakeNotification({
                 Name = "Auto Helper",
