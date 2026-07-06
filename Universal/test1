@@ -8700,22 +8700,27 @@ Tab:AddToggle({
                         -- 1. Teleport to Safespot (Receiver position)
                         hrp.CFrame = CFrame.new(10000, -42, 9996)
                         
-                        -- 2. Check for ragdoll (entered)
+                        -- 2. Check for entered and ragdoll
                         local entered = char:FindFirstChild("entered")
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        
                         if entered and entered.Value == true then
-                            -- Die on ragdoll
-                            local humanoid = char:FindFirstChild("Humanoid")
-                            if humanoid then
-                                humanoid.Health = 0
-                                task.wait(2) -- Wait for respawn
-                                
-                                -- 3. Auto re-enter arena after respawn
-                                local newChar = player.Character
-                                if newChar then
-                                    local newHrp = newChar:FindFirstChild("HumanoidRootPart")
-                                    if newHrp then
-                                        newHrp.CFrame = CFrame.new(-1209, 328, 3)
-                                        task.wait(0.5)
+                            -- Check if ragdolled is true
+                            if ragdolled and ragdolled.Value == true then
+                                -- Die on ragdoll
+                                local humanoid = char:FindFirstChild("Humanoid")
+                                if humanoid then
+                                    humanoid.Health = 0
+                                    task.wait(2) -- Wait for respawn
+                                    
+                                    -- 3. Auto re-enter arena after respawn
+                                    local newChar = player.Character
+                                    if newChar then
+                                        local newHrp = newChar:FindFirstChild("HumanoidRootPart")
+                                        if newHrp then
+                                            newHrp.CFrame = CFrame.new(-1209, 328, 3)
+                                            task.wait(0.5)
+                                        end
                                     end
                                 end
                             end
