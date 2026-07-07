@@ -8512,7 +8512,11 @@ local autoReceiver = false
 local receiverLoop = nil
 local slapAuraConnection = nil
 local abilityConnection = nil
+local fireworkConnection = nil
 local jumpTimer = 0
+local abilityTimer = 0
+local slapTimer = 0
+local fireworkTimer = 0
 
 Tab:AddToggle({
     Name = "Auto Receiver (Safespot + Ability + Firework + Jump + Slap Aura)",
@@ -8521,16 +8525,21 @@ Tab:AddToggle({
         autoReceiver = Value
         
         if Value then
-            -- Reset jump timer
+            -- Reset timers
             jumpTimer = 0
+            abilityTimer = 0
+            slapTimer = 0
+            fireworkTimer = 0
             
-            -- Start main loop
+            -- Start main loop for Safespot (every 0.01 seconds) and Jump (every 3 seconds)
             if receiverLoop then
                 task.cancel(receiverLoop)
                 receiverLoop = nil
             end
             
             receiverLoop = task.spawn(function()
+                local jumpTimer = 0
+                
                 while autoReceiver do
                     pcall(function()
                         local player = game.Players.LocalPlayer
@@ -8540,7 +8549,7 @@ Tab:AddToggle({
                         local hrp = char:FindFirstChild("HumanoidRootPart")
                         if not hrp then return end
                         
-                        -- 1. Teleport to Safespot
+                        -- 1. Teleport to Safespot (every 0.01 seconds)
                         local safespot = workspace:FindFirstChild("Safespot")
                         if safespot then
                             local base = safespot:FindFirstChild("Base")
@@ -8549,15 +8558,8 @@ Tab:AddToggle({
                             end
                         end
                         
-                        -- 2. Auto teleport to Firework (workspace.Firework_LocalPlayerUsername)
-                        local playerName = player.Name
-                        local fireworkPart = workspace:FindFirstChild("Firework_" .. playerName)
-                        if fireworkPart and fireworkPart:IsA("BasePart") then
-                            hrp.CFrame = fireworkPart.CFrame + Vector3.new(0, 2, 0)
-                        end
-                        
-                        -- 3. Auto jump every 4 seconds
-                        jumpTimer = jumpTimer + 0.5
+                        -- 2. Auto jump every 4 seconds
+                        jumpTimer = jumpTimer + 0.01
                         if jumpTimer >= 4 then
                             local humanoid = char:FindFirstChild("Humanoid")
                             if humanoid then
@@ -8566,66 +8568,107 @@ Tab:AddToggle({
                             jumpTimer = 0
                         end
                     end)
-                    task.wait(0.5)
+                    task.wait(0.01) -- Safespot teleport every 0.01 seconds
                 end
             end)
             
-            -- Start Auto Use Ability (every 0.1 seconds)
+            -- Start Auto Teleport to Firework (every 1 second)
+            if fireworkConnection then
+                fireworkConnection:Disconnect()
+                fireworkConnection = nil
+            end
+            
+            fireworkConnection = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
+                if not autoReceiver then 
+                    fireworkConnection:Disconnect()
+                    fireworkConnection = nil
+                    return 
+                end
+                
+                fireworkTimer = fireworkTimer + deltaTime
+                if fireworkTimer >= 1 then
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        local playerName = player.Name
+                        local fireworkPart = workspace:FindFirstChild("Firework_" .. playerName)
+                        if fireworkPart and fireworkPart:IsA("BasePart") then
+                            hrp.CFrame = fireworkPart.CFrame + Vector3.new(0, 2, 0)
+                        end
+                    end)
+                    fireworkTimer = 0
+                end
+            end)
+            
+            -- Start Auto Use Ability (every 3 seconds)
             if abilityConnection then
                 abilityConnection:Disconnect()
                 abilityConnection = nil
             end
             
-            abilityConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            abilityConnection = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
                 if not autoReceiver then 
                     abilityConnection:Disconnect()
                     abilityConnection = nil
                     return 
                 end
                 
-                pcall(function()
-                    local generalAbility = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralAbility")
-                    if generalAbility then
-                        generalAbility:FireServer()
-                    end
-                end)
+                abilityTimer = abilityTimer + deltaTime
+                if abilityTimer >= 3 then
+                    pcall(function()
+                        local generalAbility = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralAbility")
+                        if generalAbility then
+                            generalAbility:FireServer()
+                        end
+                    end)
+                    abilityTimer = 0
+                end
             end)
             
-            -- Start Slap Aura (every 0.5 seconds)
+            -- Start Slap Aura (every 3 seconds)
             if slapAuraConnection then
                 slapAuraConnection:Disconnect()
                 slapAuraConnection = nil
             end
             
-            slapAuraConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            slapAuraConnection = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
                 if not autoReceiver then 
                     slapAuraConnection:Disconnect()
                     slapAuraConnection = nil
                     return 
                 end
                 
-                pcall(function()
-                    local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
-                    if not generalHit then return end
-                    
-                    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-                        if player.Character then
-                            local targetPart = player.Character:FindFirstChild("Right Arm") or 
-                                              player.Character:FindFirstChild("Left Arm") or
-                                              player.Character:FindFirstChild("Head") or 
-                                              player.Character:FindFirstChild("Torso") or 
-                                              player.Character:FindFirstChild("HumanoidRootPart")
-                            if targetPart then
-                                generalHit:FireServer(targetPart)
+                slapTimer = slapTimer + deltaTime
+                if slapTimer >= 3 then
+                    pcall(function()
+                        local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                        if not generalHit then return end
+                        
+                        for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                            if player ~= game.Players.LocalPlayer and player.Character then
+                                local targetPart = player.Character:FindFirstChild("Right Arm") or 
+                                                  player.Character:FindFirstChild("Left Arm") or
+                                                  player.Character:FindFirstChild("Head") or 
+                                                  player.Character:FindFirstChild("Torso") or 
+                                                  player.Character:FindFirstChild("HumanoidRootPart")
+                                if targetPart then
+                                    generalHit:FireServer(targetPart)
+                                end
                             end
                         end
-                    end
-                end)
+                    end)
+                    slapTimer = 0
+                end
             end)
             
             OrionLib:MakeNotification({
                 Name = "Auto Receiver",
-                Content = "Enabled! All features activated.",
+                Content = "Enabled! Safespot at 0.01s, Firework at 1s, others at 3s.",
                 Image = "rbxassetid://7743878857",
                 Time = 3
             })
@@ -8635,6 +8678,12 @@ Tab:AddToggle({
             if receiverLoop then
                 task.cancel(receiverLoop)
                 receiverLoop = nil
+            end
+            
+            -- Stop Firework
+            if fireworkConnection then
+                fireworkConnection:Disconnect()
+                fireworkConnection = nil
             end
             
             -- Stop Ability
@@ -8650,6 +8699,9 @@ Tab:AddToggle({
             end
             
             jumpTimer = 0
+            abilityTimer = 0
+            slapTimer = 0
+            fireworkTimer = 0
             
             OrionLib:MakeNotification({
                 Name = "Auto Receiver",
