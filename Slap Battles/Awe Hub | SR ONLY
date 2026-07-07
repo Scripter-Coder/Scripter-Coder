@@ -166,6 +166,41 @@ end
 
 clearUnderMapSafetyPlatform()
 
+-- FIX: Proper place check - moved before WindUI load to prevent errors on wrong place
+local SUPPORTED_PLACE_ID = 9431156611
+local currentPlaceId = game.PlaceId
+
+if currentPlaceId ~= SUPPORTED_PLACE_ID then
+    -- Show error and stop execution for wrong place
+    local errorGui = Instance.new("ScreenGui")
+    errorGui.Name = "ErrorGui"
+    errorGui.ResetOnSpawn = true
+    errorGui.Parent = player:WaitForChild("PlayerGui")
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0.5, 0, 0.2, 0)
+    frame.Position = UDim2.new(0.1, 0, 0.3, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    frame.BorderSizePixel = 0
+    frame.Parent = errorGui
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 12)
+    corner.Parent = frame
+    
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = "❌ Unsupported Place!\n\nThis script only works in:\nOP Slap Royale\n\nPlace ID: " .. SUPPORTED_PLACE_ID .. "\nCurrent: " .. currentPlaceId .. "\n\nReset/Die For Error Gui To Dissapear"
+    label.TextColor3 = Color3.fromRGB(255, 200, 200)
+    label.TextSize = 18
+    label.TextWrapped = true
+    label.Font = Enum.Font.GothamBold
+    label.Parent = frame
+    
+    return -- Stop execution
+end
+
 local WindUI = loadstring(game:HttpGet(
 	"https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"
 ))()
@@ -5625,8 +5660,7 @@ function Items.SetAutoHeal(state, silent)
 			createNotification("Auto Heal", "Auto Heal enabled.", "Success")
 		end
 	else
-		if autoHealConnection then
-			autoHealConnection:Disconnect()
+		if autoHealConnection then			autoHealConnection:Disconnect()
 			autoHealConnection = nil
 		end
 
@@ -8419,7 +8453,7 @@ end
 local WindUIWindow = WindUI:CreateWindow({
 	Title = "OP Slap Royale",
 	Icon = "crown",
-	Author = "Merged functions",
+	Author = "By: Scripter | St1mlx",
 	Folder = "OPSlapRoyale",
 	Size = UDim2.fromOffset(580, 460),
 	ToggleKey = Enum.KeyCode.T,
@@ -8427,6 +8461,76 @@ local WindUIWindow = WindUI:CreateWindow({
 	Theme = Preferences.Theme or "Dark",
 	SideBarWidth = 200,
 })
+
+-- Featured Tag
+Window:Tag({
+    Title = "Version: 1.1.7",
+    Icon = "star",
+    Color = Color3.fromRGB(75, 0, 130),
+})
+
+-- FPS Tag
+local FPSTag = Window:Tag({
+    Title = "FPS: 0",
+    Color = Color3.fromRGB(100, 150, 255),
+})
+ 
+local RunService = game:GetService("RunService")
+local lastUpdate = tick()
+local frameCount = 0
+ 
+RunService.RenderStepped:Connect(function()
+    frameCount = frameCount + 1
+    local now = tick()
+    
+    if now - lastUpdate >= 1 then
+        local fps = math.floor(frameCount / (now - lastUpdate))
+        FPSTag:SetTitle("FPS: " .. fps)
+        
+        if fps >= 60 then
+            FPSTag:SetColor(Color3.fromRGB(0, 255, 0))
+        elseif fps >= 30 then
+            FPSTag:SetColor(Color3.fromRGB(255, 200, 0))
+        else
+            FPSTag:SetColor(Color3.fromRGB(255, 0, 0))
+        end
+        
+        frameCount = 0
+        lastUpdate = now
+    end
+end)
+
+-- Ping Tag
+local PingTag = Window:Tag({
+    Title = "Ping: 0ms",
+    Color = Color3.fromRGB(100, 200, 255),
+})
+ 
+task.spawn(function()
+    while true do
+        local success, ping = pcall(function()
+            local Stats = game:GetService("Stats")
+            local pingValue = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+            return math.floor(pingValue)
+        end)
+        
+        if success and ping then
+            PingTag:SetTitle("Ping: " .. ping .. "ms")
+            
+            if ping <= 50 then
+                PingTag:SetColor(Color3.fromRGB(0, 255, 0))
+            elseif ping <= 100 then
+                PingTag:SetColor(Color3.fromRGB(255, 200, 0))
+            elseif ping <= 200 then
+                PingTag:SetColor(Color3.fromRGB(255, 150, 0))
+            else
+                PingTag:SetColor(Color3.fromRGB(255, 0, 0))
+            end
+        end
+        
+        task.wait(0.1)
+    end
+end)
 
 local TabInfo = WindUIWindow:Tab({ Title = "Info", Icon = "info" })
 local TabMain = WindUIWindow:Tab({ Title = "Main", Icon = "star" })
@@ -10256,7 +10360,7 @@ function UI.SetAutoEarlyBusJump(state, silent)
 	end
 end
 
-;(function()
+(function()
 local ItemTeleportNames = {
 	"True Power", "Potion of Strength", "Bull's Essence", "Boba", "Speed Potion",
 	"Frog Potion", "Sphere of Fury", "Tomahawk", "Gravitation Shard",
