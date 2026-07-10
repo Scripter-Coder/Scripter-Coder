@@ -1,4 +1,3 @@
-    -- Built-in glove hits table (no external loading)
     local gloveHits = {
         -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
@@ -10,7 +9,6 @@
         ["Snow"] = ReplicatedStorage.SnowHit,
         ["Pull"] = ReplicatedStorage.PullHit,
         ["Flash"] = ReplicatedStorage.FlashHit,
-        ["Stilts"] = "", --Not Supported (Doesnt use any hit remotes)
         ["Spring"] = ReplicatedStorage.springhit,
         ["Pinwheel"] = ReplicatedStorage.GeneralHit,
         ["Swapper"] = ReplicatedStorage.HitSwapper,
@@ -100,7 +98,6 @@
         ["Gravity"] = ReplicatedStorage.GeneralHit,
         ["Helix"] = ReplicatedStorage.GeneralHit,
         ["Parry"] = ReplicatedStorage.GeneralHit,
-        ["Glue"] = "", --Not Supported (Doesnt use any hit remotes)
         ["Jebaited"] = ReplicatedStorage.GeneralHit,
         ["Meteor"] = ReplicatedStorage.GeneralHit,
         ["Oven"] = ReplicatedStorage.GeneralHit,
@@ -283,20 +280,26 @@
         ["G-X"] = ReplicatedStorage.GeneralHit,
         ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
         ["Camera"] = ReplicatedStorage.GeneralHit,
+        ["Grillmaster"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
-        ["Spectator"] = "", --(This glove cannot be used... Reason: doesnt have any methods for using any Hit Remote)
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
         
         -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
-        ["Default but bad"] = ReplicatedStorage.dbb,
+        ["Default but Bad"] = ReplicatedStorage.dbb,
+        ["Ketchup Default"] = ReplicatedStorage.b,
         ["Stick"] = ReplicatedStorage.GeneralHit,
         ["potato"] = ReplicatedStorage.potatohit,
         ["Error"] = ReplicatedStorage.Errorhit,
         ["killerfish"] = ReplicatedStorage.GeneralHit,
         ["Titan"] = ReplicatedStorage.GeneralHit,
         ["Acrobat"] = ReplicatedStorage.AcHit,
+
+        -- No Hit Remote Gloves + Ignore Those Gloves
+        ["Stilts"] = "",
+        ["Glue"] = "",
+        ["Spectator"] = "",
     }
