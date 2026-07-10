@@ -210,30 +210,20 @@ end
 local Icons = {}
 
 local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Feather%20Icons%20List")).icons
+    Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Feather%20Icons%20List")).icons
 end)
 
--- DEBUG: Check what loaded
-print("Fetch Success:", Success)
-if Icons then
-    print("info icon:", Icons.info or "NOT FOUND")
-    print("subscript icon:", Icons.subscript or "NOT FOUND")
-    print("Total icons:", table.getn(Icons) or "unknown")
-else
-    warn("Icons table is nil or empty!")
-end
-
 if not Success then
-	--do nothing
-end	
+    warn("Orion Library - Failed to load Feather Icons. Error code: " .. Response)
+end    
 
 local function GetIcon(IconName)
-	if Icons[IconName] ~= nil then
-		return Icons[IconName]
-	else
-		return nil
-	end
-end   
+    if Icons[IconName] ~= nil then
+        return Icons[IconName]
+    else
+        return nil
+    end
+end
 
 local Orion = Instance.new("ScreenGui")
 Orion.Name = "Orion"
