@@ -1,3 +1,4 @@
+    -- Built-in glove hits table (no external loading)
     local gloveHits = {
         -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
@@ -235,7 +236,7 @@
         ["Avatar"] = ReplicatedStorage.GeneralHit,
         ["Water"] = ReplicatedStorage.GeneralHit,
         ["Fan"] = ReplicatedStorage.GeneralHit,
-        ["Boxer"] = ReplicatedStorage.Boxing,
+        ["Boxer"] = ReplicatedStorage.Events.Boxing,
         ["MATERIALIZE"] = ReplicatedStorage.GeneralHit,
         ["Bind"] = ReplicatedStorage.GeneralHit,
         ["Poltergeist"] = ReplicatedStorage.GeneralHit,
@@ -275,7 +276,7 @@
         ["Penguin"] = ReplicatedStorage.GeneralHit,
         ["Undead"] = ReplicatedStorage.GeneralHit,
         ["Groundbreaker"] = ReplicatedStorage.GeneralHit,
-        ["Shellbert"] = ReplicatedStorage.FabergeSwing,
+        ["Shellbert"] = ReplicatedStorage.Events.FabergeSwing,
         ["Lasso"] = ReplicatedStorage.GeneralHit,
         ["Lotus"] = ReplicatedStorage.GeneralHit,
         ["Elastic"] = ReplicatedStorage.GeneralHit,
