@@ -493,7 +493,7 @@
     "hammer": "rbxassetid://7733955511",
     "history": "rbxassetid://7733960880",
     "align-vertical-justify-start": "rbxassetid://8997382639",
-    "flask-round": "rbxassetid://7733798957",
+    "potion": "rbxassetid://7733798957",
     "wifi-off": "rbxassetid://7743878056",
     "zoom-out": "rbxassetid://7743879082",
     "toggle-right": "rbxassetid://7743873539",
@@ -566,6 +566,5 @@
     "shield-off": "rbxassetid://7734056540",
     "wrench": "rbxassetid://7743878358",
     "slap": "rbxassetid://15315284749",
-    "potion": "rbxassetid://114793572860145"
   }
 }
