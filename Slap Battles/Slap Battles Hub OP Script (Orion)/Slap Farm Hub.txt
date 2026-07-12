@@ -9,12 +9,13 @@ local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scri
 OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can Take 1-5 Seconds)",Image = "rbxassetid://7734059095",Time = 1})
 
 --If Slap Battles Then
-if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 or game.PlaceId == 7234087065 or game.PlaceId == 9020359053 or game.PlaceId == 9068206286 or game.PlaceId == 9426795465 or game.PlaceId == 9431156611 or game.PlaceId == 11359765900 or game.PlaceId == 11367956190 or game.PlaceId == 11828384869 or game.PlaceId == 12432152490 or game.PlaceId == 12712288037 or game.PlaceId == 12845859004 or game.PlaceId == 13833961666 or game.PlaceId == 15228348051 or game.PlaceId == 15507333474 or game.PlaceId == 16034567693 or game.PlaceId == 17290438723 or game.PlaceId == 18550498098 or game.PlaceId == 18698003301 or game.PlaceId == 74169485398268 or game.PlaceId == 89837553336708 or game.PlaceId == 102908326578005 or game.PlaceId == 103505724406848 or game.PlaceId == 14422118326 or game.PlaceId == 92516899071319 or game.PlaceId == 115782629143468 or game.PlaceId == 95706409702231 or game.PlaceId == 118650724506449 or game.PlaceId == 97220865182663 or game.PlaceId == 98726100529621 or game.PlaceId == 136005148166028 or game.PlaceId == 117232463555132 or game.PlaceId == 129665246576996 or game.PlaceId == 132277598079047 or game.PlaceId == 136690395520488 or game.PlaceId == 86045914443715 or game.PlaceId == 75803343514634 or game.PlaceId == 80420091630966 or game.PlaceId == 98871361390239 or game.PlaceId == 90553746175288 or game.PlaceId == 106620300132058 or game.PlaceId == 94481828238038 or game.PlaceId == 122901288403496 or game.PlaceId == 79885102123162 or game.PlaceId == 86643839793301 or game.PlaceId == 113228834069218 or game.PlaceId == 95356852680586 then
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 then
 
 local Window = OrionLib:MakeWindow({Name = "Slap Farm Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Slap Farm Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
 
 OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
 
+do
 Tab = Window:MakeTab({
     Name = "Welcome",
     Icon = "rbxassetid://7734059095",
@@ -134,6 +135,9 @@ local antiAfkEnabled = false
 local isUsingDual = false
 local dualConnection = nil
 local hasTeleportedToArena = false
+local enableJumping = false
+local jumpConnection = nil
+local nextJumpTime = 0
 
 -- Character references
 local character
@@ -264,19 +268,20 @@ end
 -- Walk to Teleport1 (for entering arena)
 local function walkToTeleport1()
     local lobby = workspace:FindFirstChild("Lobby")
-    if not lobby then return false end
+    if not lobby then 
+        print("⚠️ Lobby not found!")
+        return false 
+    end
     
     local teleport1 = lobby:FindFirstChild("Teleport1")
-    if not teleport1 or not teleport1:IsA("BasePart") then return false end
+    if not teleport1 or not teleport1:IsA("BasePart") then 
+        print("⚠️ Teleport1 not found!")
+        return false 
+    end
     
     local teleportPos = teleport1.Position + Vector3.new(0, 3, 0)
     
-    OrionLib:MakeNotification({
-        Name = "Walking",
-        Content = "Walking to Teleport1...",
-        Image = "rbxassetid://4483345998",
-        Time = 2
-    })
+    print("🚶 Walking to Teleport1...")
     
     return walkToPosition(teleportPos, 5)
 end
@@ -308,18 +313,15 @@ local function startAutoUseDual()
         local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
         if not humanoidRootPart then return end
         
-        -- Check if we're in arena
         if not amIInArena() then return end
         
-        -- Find closest player within 5-10 studs
         local closestPlayer = nil
-        local closestDistance = 10 -- Only slap if within 10 studs
+        local closestDistance = 5
         
         for _, plr in pairs(Players:GetPlayers()) do
             if plr ~= player and plr.Character then
                 local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
                 if hrp and isPlayerInArena(plr) then
-                    -- Apply filters
                     local shouldSkip = false
                     
                     if ignoreRocks and plr.Character:FindFirstChild("rock") then
@@ -337,18 +339,14 @@ local function startAutoUseDual()
             end
         end
         
-        -- If a player is within range, activate Dual tool
-        if closestPlayer and closestDistance <= 10 then
-            -- Check both character and backpack for Dual tool
+        if closestPlayer and closestDistance <= 5 then
             local dualTool = character:FindFirstChild("Dual") or player.Backpack:FindFirstChild("Dual")
             
             if dualTool then
-                -- Make sure tool is equipped
                 if dualTool.Parent == player.Backpack then
                     dualTool.Parent = character
                 end
                 
-                -- Activate the tool
                 if dualTool:IsA("Tool") then
                     pcall(function()
                         dualTool:Activate()
@@ -366,6 +364,42 @@ local function stopAutoUseDual()
         dualConnection:Disconnect()
         dualConnection = nil
     end
+end
+
+-- Function to start auto jumping (random 1-10 seconds)
+local function startAutoJumping()
+    if jumpConnection then
+        jumpConnection:Disconnect()
+        jumpConnection = nil
+    end
+    
+    if not enableJumping then return end
+    
+    nextJumpTime = tick() + math.random(1, 10)
+    
+    jumpConnection = RunService.Heartbeat:Connect(function()
+        if not dualBotActive or not enableJumping then return end
+        if not character or not humanoid then return end
+        
+        if amIInArena() then
+            if tick() >= nextJumpTime then
+                pcall(function()
+                    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                end)
+                nextJumpTime = tick() + math.random(1, 10)
+                print("🦘 Jumped! Next jump in " .. math.floor(nextJumpTime - tick()) .. " seconds")
+            end
+        end
+    end)
+end
+
+-- Function to stop auto jumping
+local function stopAutoJumping()
+    if jumpConnection then
+        jumpConnection:Disconnect()
+        jumpConnection = nil
+    end
+    nextJumpTime = 0
 end
 
 -- Barzil portal control
@@ -411,7 +445,7 @@ local function getClosestPlayerForWalking()
     return closestPlayer, closestDistance
 end
 
--- Auto collect slapples - BRING METHOD (teleports slapples directly to player)
+-- Auto collect slapples - BRING METHOD
 local function collectSlapples()
     if not character or not humanoidRootPart or not autoCollectSlapples then return end
     
@@ -426,7 +460,6 @@ local function collectSlapples()
             pcall(function()
                 local glove = slappleModel:FindFirstChild("Glove")
                 if glove and glove:IsA("BasePart") then
-                    -- Move Glove to player's EXACT position (0 studs away)
                     glove.CFrame = humanoidRootPart.CFrame
                 end
             end)
@@ -436,6 +469,8 @@ end
 
 -- Main Dual bot function
 local function startDualBot()
+    print("🔄 Dual Bot Started!")
+    
     OrionLib:MakeNotification({
         Name = "Dual Bot Started",
         Content = "Walking mode enabled!",
@@ -445,12 +480,14 @@ local function startDualBot()
     
     hasTeleportedToArena = false
     
-    -- Start auto using Dual tool (auto slaps when close)
     startAutoUseDual()
+    
+    if enableJumping then
+        startAutoJumping()
+    end
     
     while dualBotActive do
         if character and humanoid and humanoidRootPart then
-            -- Check if Dual glove is still equipped
             if not isDualEquipped() then
                 OrionLib:MakeNotification({
                     Name = "Error",
@@ -462,21 +499,16 @@ local function startDualBot()
                 break
             end
             
-            -- Check if we're in arena
             if not amIInArena() then
                 hasTeleportedToArena = false
-                OrionLib:MakeNotification({
-                    Name = "Walking",
-                    Content = "Walking to Teleport1...",
-                    Image = "rbxassetid://4483345998",
-                    Time = 2
-                })
+                print("🚶 Not in arena, walking to Teleport1...")
                 walkToTeleport1()
-                task.wait(2)
-                continue
+                task.wait(1)
+                task.wait(0.5)
             else
                 if not hasTeleportedToArena then
                     hasTeleportedToArena = true
+                    print("✅ Entered arena!")
                     OrionLib:MakeNotification({
                         Name = "Entered",
                         Content = "Entered arena!",
@@ -484,49 +516,43 @@ local function startDualBot()
                         Time = 2
                     })
                 end
-            end
-            
-            -- Control Barzil portal if enabled
-            if ignoreBarzilPortal then
-                controlBarzilPortal()
-            end
-            
-            -- Auto collect slapples if enabled (runs every loop)
-            if autoCollectSlapples then
-                task.spawn(function()
-                    collectSlapples()
-                end)
-            end
-            
-            -- Get closest player for walking
-            local target, distanceToTarget = getClosestPlayerForWalking()
-            
-            if target and target.Character then
-                local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
-                if targetHRP then
-                    local targetPos = targetHRP.Position
-                    local currentDistance = (humanoidRootPart.Position - targetPos).Magnitude
-                    
-                    -- Only walk if not already close enough for slapping
-                    if currentDistance > 15 then
-                        -- Walk towards target
-                        local walkPos = Vector3.new(targetPos.X, targetPos.Y + 3, targetPos.Z)
-                        walkToPosition(walkPos, 12)
-                    else
-                        -- Close enough, stop moving and let auto-slap do its job
-                        humanoid:MoveTo(humanoidRootPart.Position)
-                        
-                        -- Face the target
-                        local lookAt = CFrame.new(humanoidRootPart.Position, targetPos)
-                        humanoidRootPart.CFrame = lookAt
-                    end
+                
+                if ignoreBarzilPortal then
+                    controlBarzilPortal()
                 end
-            else
-                -- No valid players, walk to a safe island
-                if amIInArena() then
-                    local safePos = safePositions["island5"] or safePositions["main island"]
-                    if safePos then
-                        walkToPosition(safePos, 10)
+                
+                if autoCollectSlapples then
+                    task.spawn(function()
+                        collectSlapples()
+                    end)
+                end
+                
+                local target, distanceToTarget = getClosestPlayerForWalking()
+                
+                if target and target.Character then
+                    local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                    if targetHRP then
+                        local targetPos = targetHRP.Position
+                        local currentDistance = (humanoidRootPart.Position - targetPos).Magnitude
+                        
+                        if currentDistance > 8 then
+                            local walkPos = Vector3.new(targetPos.X, targetPos.Y + 3, targetPos.Z)
+                            print("🚶 Walking to: " .. target.Name .. " (" .. math.floor(currentDistance) .. " studs away)")
+                            walkToPosition(walkPos, 8)
+                        else
+                            humanoid:MoveTo(humanoidRootPart.Position)
+                            
+                            local lookAt = CFrame.new(humanoidRootPart.Position, targetPos)
+                            humanoidRootPart.CFrame = lookAt
+                        end
+                    end
+                else
+                    if amIInArena() then
+                        local safePos = safePositions["island5"] or safePositions["main island"]
+                        if safePos then
+                            print("🚶 No players found, walking to safe island...")
+                            walkToPosition(safePos, 10)
+                        end
                     end
                 end
             end
@@ -537,12 +563,14 @@ local function startDualBot()
         task.wait(detectionSpeed)
     end
     
-    -- Clean up when bot stops
     stopAutoUseDual()
+    stopAutoJumping()
     disableNoclip()
     if humanoid then
         humanoid.WalkSpeed = 16
     end
+    
+    print("🛑 Dual Bot Stopped!")
     
     OrionLib:MakeNotification({
         Name = "Dual Bot Stopped",
@@ -552,12 +580,12 @@ local function startDualBot()
     })
 end
 
--- Character respawn handling - RESET EVERYTHING
+-- Character respawn handling
 player.CharacterAdded:Connect(function(newChar)
     character = newChar
     hasTeleportedToArena = false
     
-    task.wait(1) -- Wait for character to fully load
+    task.wait(0.5)
     humanoid = character:FindFirstChild("Humanoid")
     humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     
@@ -569,19 +597,9 @@ player.CharacterAdded:Connect(function(newChar)
         enableNoclip()
     end
     
-    -- If bot is active, force immediate re-entry to arena
     if dualBotActive then
-        OrionLib:MakeNotification({
-            Name = "Respawned",
-            Content = "Returning to arena...",
-            Image = "rbxassetid://4483345998",
-            Time = 2
-        })
-        
-        -- Reset arena state
+        print("🔄 Respawned, returning to arena...")
         hasTeleportedToArena = false
-        
-        -- Walk to Teleport1 immediately
         task.spawn(function()
             walkToTeleport1()
         end)
@@ -618,14 +636,15 @@ Tab:AddToggle({
         else
             dualBotActive = false
             stopAutoUseDual()
+            stopAutoJumping()
         end
     end
 })
 
 -- Noclip toggle
 Tab:AddToggle({
-    Name = "Enable Noclip (Recommended)",
-    Default = true,
+    Name = "Enable Noclip",
+    Default = false,
     Callback = function(value)
         noclipEnabled = value
         if value then
@@ -643,6 +662,20 @@ Tab:AddToggle({
     Callback = function(value)
         antiAfkEnabled = value
         setupAntiAfk()
+    end
+})
+
+-- Enable Jumping toggle
+Tab:AddToggle({
+    Name = "Enable Jumping",
+    Default = false,
+    Callback = function(value)
+        enableJumping = value
+        if value and dualBotActive then
+            startAutoJumping()
+        else
+            stopAutoJumping()
+        end
     end
 })
 
@@ -744,7 +777,96 @@ task.spawn(function()
     end
 end)
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
+	Name = "Hubs",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Section = Tab:AddSection({
+    Name = "If you loaded wrong hub here rest hubs..."
+})
+
+Section = Tab:AddSection({
+    Name = "Normal Hubs"
+})
+
+Tab:AddButton({
+    Name = "Load Badges Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Badges%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Mastery Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Masteries%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Script Hub",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Script%20Hub.txt"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Main Hub Script",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Limited Hubs"
+})
+
+Tab:AddButton({
+    Name = "Load Halloween Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Halloween%20Hub.txt"))()
+  end    
+})
+
+Tab:AddButton({
+    Name = "Load Christmas Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Christmas%20Hub.txt"))()
+  end    
+})
+
+Section = Tab:AddSection({
+    Name = "Universal Scripts"
+})
+
+Tab:AddButton({
+    Name = "Load Infinite Yield",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Dex Explorer",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Remote Spy",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
     Name = "Dual",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -783,7 +905,7 @@ Tab:AddToggle({
                 if player.Character then
                     local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                     if rightArm then
-                        ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(rightArm)
+                        ReplicatedStorage:WaitForChild("DualHit"):FireServer(rightArm)
                     end
                 end
             end
@@ -820,7 +942,9 @@ Tab:AddToggle({
     end
 })
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Reverse",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1013,7 +1137,9 @@ Tab:AddToggle({
     end
 })
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Engineer",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1040,7 +1166,9 @@ Tab:AddToggle({
     end
 })
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "el gato",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1236,7 +1364,9 @@ Tab:AddToggle({
     end
 })
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Angler",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1269,7 +1399,9 @@ Tab:AddToggle({
     end
 })
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Bounty",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1332,7 +1464,7 @@ Tab:AddToggle({
             end
 
             while _G.BountySlapRunning do
-                wait(0.5)
+                task.wait(0.5)
                 teleportToRandomPlayer()
                 fireGeneralHitForAllPlayers()
             end
@@ -1379,37 +1511,35 @@ end
 end
 })
 
--- Load the code from external source (you can change the URL)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Auto%20Cards%20Giver"))()
 
 -- ==========================================
--- TOGGLE: Auto Give Yourself Cards
+-- ORION HUB TOGGLE
 -- ==========================================
 Tab:AddToggle({
     Name = "Auto Give Yourself Cards",
     Default = false,
     Callback = function(Value)
         if Value then
-            if _G.AutoGiveCards then
-                _G.AutoGiveCards.Start()
-            end
+            _G.AutoCardsFarm.Start()
+            OrionLib:MakeNotification({
+                Name = "Auto Cards",
+                Content = "Farming started! Every 1 second.",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
         else
-            if _G.AutoGiveCards then
-                _G.AutoGiveCards.Stop()
-            end
+            _G.AutoCardsFarm.Stop()
+
         end
     end
 })
 
 -- ==========================================
--- PLATFORM SETTINGS (Define these first)
+-- PLATFORM SETTINGS
 -- ==========================================
 local PLATFORM_POSITION = Vector3.new(-103, 3000000, 144.5)
 local PLATFORM_SIZE = Vector3.new(500, 1, 500)
-
--- ==========================================
--- VARIABLES
--- ==========================================
 local safespotPart = nil
 
 -- ==========================================
@@ -1420,13 +1550,11 @@ Tab:AddToggle({
     Default = false,
     Callback = function(Value)
         if Value then
-            -- Remove existing safespot if any
             if safespotPart then
                 safespotPart:Destroy()
                 safespotPart = nil
             end
             
-            -- Create safespot at the platform position
             safespotPart = Instance.new("Part")
             safespotPart.Name = "Safespot"
             safespotPart.Size = PLATFORM_SIZE
@@ -1445,7 +1573,6 @@ Tab:AddToggle({
                 Time = 3
             })
         else
-            -- Remove safespot
             if safespotPart then
                 safespotPart:Destroy()
                 safespotPart = nil
@@ -1468,7 +1595,7 @@ Tab:AddButton({
     Name = "Teleport To Safespot",
     Callback = function()
         if safespotPart then
-            local character = game.Players.LocalPlayer.Character
+            local character = LocalPlayer.Character
             if character then
                 local hrp = character:FindFirstChild("HumanoidRootPart")
                 if hrp then
@@ -1494,19 +1621,23 @@ Tab:AddButton({
 })
 
 -- ==========================================
--- CLEANUP ON CHARACTER RESPAWN
+-- CLEANUP
 -- ==========================================
 LocalPlayer.CharacterAdded:Connect(function()
-    isFarming = false
-    stopSpamConnection()
+    if _G.AutoCardsFarm then
+        _G.AutoCardsFarm.Stop()
+    end
 end)
 
--- Cleanup when script stops
 game.Players.LocalPlayer.OnTeleport:Connect(function()
-    stopSpamConnection()
+    if _G.AutoCardsFarm then
+        _G.AutoCardsFarm.Stop()
+    end
 end)
 
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Debug",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
@@ -1699,7 +1830,1000 @@ Tab:AddToggle({
 })
 
 -- SETTINGS
+end
+do
 local Tab = Window:MakeTab({
+    Name = "Webhook",
+    Icon = "rbxassetid://7733978098",
+    PremiumOnly = false
+})
+
+Tab:AddSection({
+    Name = "Webhook for telling u what u have gotten and ur playtime"
+})
+
+Tab:AddSection({
+    Name = "NOTE: IF U GONNA IMPORT YOUR WEBHOOK HERE THE DATA WONT GET SENT TO OWNER SO DONT WORRY ABOUT LOSING YOUR WEBHOOK"
+})
+
+-- Webhook Logging System for Orion Hub
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+
+local username = LocalPlayer.Name
+
+-- ============================================================
+-- BADGES SYSTEM
+-- ============================================================
+
+local allBadges = {
+    -- REGULAR BADGES
+    {id = "2124743766", name = "Welcome | No Glove", category = "Regular"},
+    {id = "2124760252", name = "You met the owner | No Glove", category = "Regular"},
+    {id = "2124760875", name = "you met snow | No Glove", category = "Regular"},
+    {id = "2124760911", name = "[REDACTED] | No Glove", category = "Regular"},
+    {id = "2124760917", name = "Divine punishment | No Glove", category = "Regular"},
+    {id = "2124760923", name = "really? | No Glove", category = "Regular"},
+    {id = "2124775097", name = "barzil | No Glove", category = "Regular"},
+    {id = "2124807750", name = "The one | No Glove", category = "Regular"},
+    {id = "2124807752", name = "Ascend | No Glove", category = "Regular"},
+    {id = "2124836270", name = "1 0 0 | No Glove", category = "Regular"},
+    {id = "2124912059", name = "The 'Reverse' Incident | No Glove", category = "Regular"},
+    {id = "2147535393", name = "Clipped Wings | No Glove", category = "Regular"},
+    {id = "4414399146292319", name = "Apostle of Judgement | No Glove", category = "Regular"},
+
+    -- GLOVE-REWARDING BADGES
+    {id = "2124760254", name = "Error glove | Link Glove", category = "GloveRewarding"},
+    {id = "2124760895", name = "ez | Moon Glove", category = "GloveRewarding"},
+    {id = "2124760907", name = "court evidence | Hitman Glove", category = "GloveRewarding"},
+    {id = "2124760928", name = "the touch of midas | buddies Glove", category = "GloveRewarding"},
+    {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "GloveRewarding"},
+    {id = "2124819262", name = "Infected | Plague Glove", category = "GloveRewarding"},
+    {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "GloveRewarding"},
+    {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "GloveRewarding"},
+    {id = "2124854307", name = "250 | Bubble Glove", category = "GloveRewarding"},
+    {id = "2124858899", name = "To the moon | bus Glove", category = "GloveRewarding"},
+    {id = "2124875920", name = "Lucky Gift | Mitten Glove", category = "GloveRewarding"},
+    {id = "2124886261", name = "Unphased | Phase Glove", category = "GloveRewarding"},
+    {id = "2124914780", name = "Savior | Warp Glove", category = "GloveRewarding"},
+    {id = "2124919840", name = "Short fuse | Bomb Glove", category = "GloveRewarding"},
+    {id = "2124925929", name = "Harbinger of death | Bubble Glove", category = "GloveRewarding"},
+    {id = "2124930374", name = "Orb of flight | Jet Glove", category = "GloveRewarding"},
+    {id = "2124938910", name = "Firefighter | Shard Glove", category = "GloveRewarding"},
+    {id = "2124989121", name = "Sorry to burst your bubble | potato Glove", category = "GloveRewarding"},
+    {id = "2125850245", name = "good job | CULT Glove", category = "GloveRewarding"},
+    {id = "2125950512", name = "bob | bob Glove", category = "GloveRewarding"},
+    {id = "2126334003", name = "Death Dodger | Jupiter Glove", category = "GloveRewarding"},
+    {id = "2126450753", name = "Predator | Spy Glove", category = "GloveRewarding"},
+    {id = "2126589561", name = "Head Hunter | Detonator Glove", category = "GloveRewarding"},
+    {id = "2127132894", name = "Anticlimactic End | Rage Glove", category = "GloveRewarding"},
+    {id = "2127567042", name = "Brick Master | Trap Glove", category = "GloveRewarding"},
+    {id = "2127703232", name = "YOU MONSTER | Orbit Glove", category = "GloveRewarding"},
+    {id = "2127816588", name = "Island Conqueror | Dominance Glove", category = "GloveRewarding"},
+    {id = "2127861437", name = "Prolonged Anger | Hybrid Glove", category = "GloveRewarding"},
+    {id = "2128012376", name = "The Golden Slapple | Slapple Glove", category = "GloveRewarding"},
+    {id = "2128233612", name = "Memento Mori | Disarm Glove", category = "GloveRewarding"},
+    {id = "2128557186", name = "THE ACCIDENT | Chain Glove", category = "GloveRewarding"},
+    {id = "2128772719", name = "Candy King | Rattlebones Glove", category = "GloveRewarding"},
+    {id = "2129002959", name = "Witch Brew | Witch Glove | Slap Royale", category = "GloveRewarding"},
+    {id = "2129104684", name = "Killer | Charge Glove", category = "GloveRewarding"},
+    {id = "2129212145", name = "Plate Master | Tycoon Glove", category = "GloveRewarding"},
+    {id = "2129474790", name = "what? | Confusion Glove", category = "GloveRewarding"},
+    {id = "2129568267", name = "01010010 01010101 01001110 | Glitch Glove", category = "GloveRewarding"},
+    {id = "2129648848", name = "Engineer's Gift | Snowball Glove", category = "GloveRewarding"},
+    {id = "2129871858", name = "EXPOSED | Elude Glove", category = "GloveRewarding"},
+    {id = "2130031244", name = "RNGod | RNG Glove", category = "GloveRewarding"},
+    {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "GloveRewarding"},
+    {id = "2130155314", name = "🗿 | 🗿 Glove", category = "GloveRewarding"},
+    {id = "2130463063", name = "ULTRAROCK | Obby Glove", category = "GloveRewarding"},
+    {id = "2132544202", name = "Insanity | Voodoo Glove", category = "GloveRewarding"},
+    {id = "2133016756", name = "CHAOS | Goofy Glove", category = "GloveRewarding"},
+    {id = "2136607413", name = "Demonic Ritual | Leash Glove", category = "GloveRewarding"},
+    {id = "2140855364", name = "Underkill | Flamarang Glove", category = "GloveRewarding"},
+    {id = "2141386326", name = "Kinetically Charged | Kinetic Glove", category = "GloveRewarding"},
+    {id = "2141784233", name = "GO BERSERK | Berserk Glove", category = "GloveRewarding"},
+    {id = "2142826462", name = "Incredible Running Man | Sparkly Glove", category = "GloveRewarding"},
+    {id = "2143034526", name = "Boogie With It | Boogie Glove", category = "GloveRewarding"},
+    {id = "2143973603", name = "Repressed Memories | Recall Glove", category = "GloveRewarding"},
+    {id = "2144766764", name = "Blasting Off Again | Quake Glove", category = "GloveRewarding"},
+    {id = "2145165421", name = "Ultimate Control | Psycho Glove", category = "GloveRewarding"},
+    {id = "2145381761", name = "Escape the Abyss | Kraken Glove", category = "GloveRewarding"},
+    {id = "2146130728", name = "Da Maze Runner | Counter Glove", category = "GloveRewarding"},
+    {id = "2146540403", name = "Toolbox | Hammer Glove", category = "GloveRewarding"},
+    {id = "2147429609", name = "Emissary Of Light | rob Glove", category = "GloveRewarding"},
+    {id = "2148234934", name = "Total Rhythm | Rhythm Glove", category = "GloveRewarding"},
+    {id = "2148480065", name = "See in the dark | Rojo Glove", category = "GloveRewarding"},
+    {id = "2148934270", name = "Sharp Shooter | Hitman Glove", category = "GloveRewarding"},
+    {id = "2149637240", name = "Parkour Pwner | Retro Glove", category = "GloveRewarding"},
+    {id = "2150485950", name = "The Relic | Null Glove", category = "GloveRewarding"},
+    {id = "2151266964", name = "Catch Emm All | Lure Glove", category = "GloveRewarding"},
+    {id = "2152295593", name = "Great Escape | Tinkerer Glove", category = "GloveRewarding"},
+    {id = "2152906832", name = "Sweeth-Tooth Sovereign | Necromancer Glove", category = "GloveRewarding"},
+    {id = "2153473254", name = "Containment Breach | Alchemist Glove", category = "GloveRewarding"},
+    {id = "2153911928", name = "Gardens And Ghouls | Druid Glove", category = "GloveRewarding"},
+    {id = "2500227230783997", name = "Now You See Me | Jester Glove", category = "GloveRewarding"},
+    {id = "3318257806017965", name = "Farmland Fray | Scythe Glove", category = "GloveRewarding"},
+    {id = "2895206704788569", name = "Yuletime Might | Santa Glove", category = "GloveRewarding"},
+    {id = "2906002612987222", name = "Slap Battles: On Ice | Iceskate Glove", category = "GloveRewarding"},
+    {id = "3335299217032061", name = "G-Grandson..? | Blasphemy Glove", category = "GloveRewarding"},
+    {id = "4404799574333856", name = "Into the Crypt | Pan Glove", category = "GloveRewarding"},
+    {id = "1840188608156642", name = "CERTIFIED ADMIN | Admin Glove", category = "GloveRewarding"},
+    {id = "1662954021427606", name = "Stand your ground | Joust Glove", category = "GloveRewarding"},
+    {id = "2628581469266954", name = "Easy As Pie | Firework Glove", category = "GloveRewarding"},
+    {id = "1579276416564374", name = "It's Finally Over... | Run Glove", category = "GloveRewarding"},
+    {id = "128402905805563", name = "The Hunt | Glovel Glove", category = "GloveRewarding"},
+    {id = "342573645147372", name = "Null Piercer | Divebomb Glove", category = "GloveRewarding"},
+    {id = "490455814138437", name = "Friend of the Dark | Lamp Glove", category = "GloveRewarding"},
+    {id = "1962623816699442", name = "Code Breaker | Knockoff Glove", category = "GloveRewarding"},
+    {id = "1286358044443937", name = "Ice Essence | Frostbite Glove", category = "GloveRewarding"},
+    {id = "4031317971987872", name = "Cranking 90's | Plank Glove", category = "GloveRewarding"},
+    {id = "2236076719770808", name = "SLAP BATTLES SWEEP | Spoonful Glove", category = "GloveRewarding"},
+    {id = "1354956782555226", name = "Leap of Faith | the schlob Glove", category = "GloveRewarding"},
+    {id = "187186758930457", name = "Caution: High Voltage | Siphon Glove", category = "GloveRewarding"},
+    {id = "2240434593038483", name = "UberCharged | Wrench Glove", category = "GloveRewarding"},
+    {id = "4414076328730650", name = "Nah, I'd win | Avatar Glove", category = "GloveRewarding"},
+    {id = "154204790800271", name = "A Guiding Hand | Relude Glove", category = "GloveRewarding"},
+    {id = "3483144763925839", name = "Bounty Claimed | Hunter Glove", category = "GloveRewarding"},
+    {id = "2193861648156971", name = "How did we get here? | Water Glove", category = "GloveRewarding"},
+    {id = "2657379023348335", name = "FREE OOG! | Fan Glove", category = "GloveRewarding"},
+    {id = "1223765330375569", name = "The Glove | Boxer Glove", category = "GloveRewarding"},
+    {id = "4256352459948010", name = "Orb of Honor | MATERIALIZE Glove", category = "GloveRewarding"},
+    {id = "3199562682373814", name = "Garden of Erasure | Bind Glove", category = "GloveRewarding"},
+    {id = "868768988664040", name = "Fetch me their Souls | Poltergeist Glove", category = "GloveRewarding"},
+    {id = "2035627575374951", name = "Shattered Memories | Clock Glove", category = "GloveRewarding"},
+    {id = "2223110832777636", name = "Hurt me plenty | Untitled Tag Glove", category = "GloveRewarding"},
+    {id = "4390302507334168", name = "Fortress of Dreams | Pillow Glove", category = "GloveRewarding"},
+    {id = "2117833544213343", name = "You're gonna need a bigger glove | Angler Glove", category = "GloveRewarding"},
+    {id = "182408299845710", name = "Snow man left behind | Jerry Glove", category = "GloveRewarding"},
+    {id = "3726156327470282", name = "Insane Minds think Alike | Snowroller Glove", category = "GloveRewarding"},
+    {id = "2460702219299014", name = "Oh! That's a Baseball! | Draw4 Glove", category = "GloveRewarding"},
+    {id = "2146300368310575", name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "GloveRewarding"},
+    {id = "2090213992277846", name = "Enlightened | Hexa Glove", category = "GloveRewarding"},
+    {id = "1060832194529561", name = "Day in the life of a small Game Developer | Metaverse Glove", category = "GloveRewarding"},
+    {id = "1788920058870613", name = "Sword Fighter of The Heights | Swordfighter Glove", category = "GloveRewarding"},
+    {id = "99649310086892", name = "Pillow Fight | Tank Glove", category = "GloveRewarding"},
+    {id = "2286252038116816", name = "Egging Over It | Eggler Glove", category = "GloveRewarding"},
+    {id = "2442504376213257", name = "Collect My Pages | Slender Glove", category = "GloveRewarding"},
+    {id = "3096378656988806", name = "Captain's Orders | Swashbuckler Glove", category = "GloveRewarding"},
+    {id = "4342029848828580", name = "Banished | Silly Glove", category = "GloveRewarding"},
+    {id = "231810132716643", name = "Reawoken | Slasher Glove", category = "GloveRewarding"},
+    {id = "1294103285471925", name = "Slappy Wheels | Car Keys Glove", category = "GloveRewarding"},
+    {id = "3798851936234989", name = "Plungering Heights | Suction Glove", category = "GloveRewarding"},
+    {id = "1745844401258079", name = "Shattered Reality | Reflect Glove", category = "GloveRewarding"},
+    {id = "663807976473858", name = "Dodecacide | Dave Glove", category = "GloveRewarding"},
+    {id = "1605140663413534", name = "Die Hard | mortis Glove", category = "GloveRewarding"},
+    {id = "1133862849283260", name = "Dead or Alive | Bounty Glove", category = "GloveRewarding"},
+    {id = "117389283982009", name = "Out of Bounds | Debug Glove", category = "GloveRewarding"},
+    {id = "1035608345203235", name = "Color Splash | Paint Glove", category = "GloveRewarding"},
+    {id = "1198780403030188", name = "Ceramic Panic | Plate Glove", category = "GloveRewarding"},
+    {id = "3713925567966983", name = "2000 Ping | Lag Glove", category = "GloveRewarding"},
+    {id = "847759908824783", name = "The Cornfeared | Harvester Glove", category = "GloveRewarding"},
+    {id = "65341581701492", name = "Bullseye | Riftshot Glove", category = "GloveRewarding"},
+    {id = "1304426038175458", name = "Autumnal Conkerer | Conker Glove", category = "GloveRewarding"},
+    {id = "659930747853345", name = "Glass Bones | Wheelchair Glove", category = "GloveRewarding"},
+    {id = "2748677045206815", name = "Snowball Synergy | Elf Glove", category = "GloveRewarding"},
+    {id = "1698466561019878", name = "Minimum Wage | Shopkeeper Glove", category = "GloveRewarding"},
+    {id = "1902849233175110", name = "Find The Gloves | Collector Glove", category = "GloveRewarding"},
+    {id = "1778876340809040", name = "Cleaved in Two | Glaxe Glove", category = "GloveRewarding"},
+    {id = "217389347032866", name = "Birthday Bash | Pinata Glove", category = "GloveRewarding"},
+    {id = "996318649761767", name = "Hibernal Snowstopper | Penguin Glove", category = "GloveRewarding"},
+    {id = "1239535438142380", name = "Untimely End | Undead Glove", category = "GloveRewarding"},
+    {id = "4207775293625676", name = "Clobbering Time! | Groundbreaker Glove", category = "GloveRewarding"},
+    {id = "2604207010521588", name = "Easter Hatchastrophe | Shellbert Glove", category = "GloveRewarding"},
+    {id = "1662521369541218", name = "Genuinely how am I still alive | Lasso Glove", category = "GloveRewarding"},
+    {id = "3964935687406576", name = "Vernal Floralscence | Lotus Glove", category = "GloveRewarding"},
+    {id = "1703260768466206", name = "Fix my dang 'puter | G-X Glove", category = "GloveRewarding"},
+    {id = "3344995751929220", name = "Gum, Gummy, Gone | Elastic Glove", category = "GloveRewarding"},
+    {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "GloveRewarding"},
+    {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
+    {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
+
+    -- SCAVENGER HUNT BADGES
+    {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
+    {id = "2128220957", name = "The Lone Orange | No Glove", category = "ScavengerHunt"},
+
+    -- EVENT BADGES
+    {id = "1195935784919838", name = "The Hunt - [The Hunt Event] | No Glove", category = "Event"},
+    {id = "1801589810989890", name = "Silver 1 | No Glove", category = "Event"},
+    {id = "4120294898386541", name = "Silver 2 | No Glove", category = "Event"},
+    {id = "3549738066523709", name = "Silver 3 | No Glove", category = "Event"},
+    {id = "3260965046908987", name = "Shine 1 | No Glove", category = "Event"},
+    {id = "3021396860328632", name = "Shine 2 | No Glove", category = "Event"},
+    {id = "664912768203321", name = "Shine 3 | No Glove", category = "Event"},
+    {id = "2689428968346995", name = "Shine 4 | No Glove", category = "Event"},
+    {id = "3754491329406300", name = "Shine 5 | No Glove", category = "Event"},
+    {id = "3842447881295457", name = "Jumping Dimensions [LIVE EVENT] | No Glove", category = "Event"},
+    {id = "2817596893524677", name = "The Takeover - Paint the town Neon | No Glove", category = "Event"},
+    {id = "2887389955562389", name = "The Takeover - Canvas Conqueror | No Glove", category = "Event"},
+    {id = "3400717641283825", name = "The Takeover - Splat Battles Champion | No Glove", category = "Event"},
+    {id = "2549860075363782", name = "King of the Snowhill | No Glove", category = "Event"},
+
+    -- CHANGED/DISABLED BADGES
+    {id = "2124760254", name = "Obama glove | Link Glove", category = "ChangedOrDisabled"},
+    {id = "2124760877", name = "pog | No Glove", category = "ChangedOrDisabled"},
+    {id = "2124929812", name = "The Backrooms | No Glove", category = "ChangedOrDisabled"},
+    {id = "2148902927", name = "Sharp Shooter | Hitman Glove", category = "ChangedOrDisabled"},
+    {id = "2895206704788569", name = "Yuletime Might | Santa Glove", category = "ChangedOrDisabled"},
+    {id = "2895206704788569", name = "Snow man left behind | Jerry Glove", category = "ChangedOrDisabled"},
+
+    -- UNRELEASED BADGES
+    {id = "2124760881", name = "Slapping master | No Glove", category = "Unreleased"},
+}
+
+-- Store owned badges
+local ownedBadges = {}
+
+-- Fetch owned badges from ReplicatedStorage
+local function fetchOwnedBadges()
+    ownedBadges = {}
+    
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then
+        return false
+    end
+    
+    local playerFolder = playerData:FindFirstChild(username)
+    if not playerFolder then
+        return false
+    end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then
+        return false
+    end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                ownedBadges[cleanId] = true
+            end
+        end
+        return true
+    end
+    return false
+end
+
+local WebhookSettings = {
+    WebhookURL = "",
+    SendInterval = "No time",
+    LoggedObjects = {},
+    SlapsThreshold = 0,
+    NullShardsThreshold = 0,
+    Enabled = false,
+    PingType = "No Pings",
+    UserID = "",
+    RoleID = "",
+    
+    -- Tracking variables
+    LastSlapsValue = 0,
+    LastNullShardsValue = 0,
+    TrackedSlaps = false,
+    TrackedNullShards = false,
+    SlapsStartValue = 0,
+    NullShardsStartValue = 0,
+    IsSlapsTracking = false,
+    IsNullShardsTracking = false,
+    ObjectLogged = {},
+    SlapsLogged = false,
+    NullShardsLogged = false,
+    SlappleLogged = {},
+    GoldenSlappleLogged = false,
+    LastBadgeCheck = {},
+    BadgeLogSent = false,
+}
+
+-- ============================================================
+-- HELPER FUNCTIONS
+-- ============================================================
+
+-- Helper function to get Null Shards
+function WebhookSettings:GetNullShards()
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if playerData then
+        local userData = playerData:FindFirstChild(username)
+        if userData then
+            local nullShards = userData:FindFirstChild("NullShards")
+            if nullShards then
+                return nullShards.Value
+            end
+        end
+    end
+    return 0
+end
+
+-- Get ping prefix based on settings
+local function getPingPrefix()
+    if WebhookSettings.PingType == "No Pings" then
+        return ""
+    elseif WebhookSettings.PingType == "@User Ping" and WebhookSettings.UserID ~= "" then
+        return "<@" .. WebhookSettings.UserID .. "> "
+    elseif WebhookSettings.PingType == "@Role Ping" and WebhookSettings.RoleID ~= "" then
+        return "<@&" .. WebhookSettings.RoleID .. "> "
+    elseif WebhookSettings.PingType == "@Everyone Ping" then
+        return "@everyone "
+    elseif WebhookSettings.PingType == "@Here Ping" then
+        return "@here "
+    end
+    return ""
+end
+
+-- Webhook send function
+local function sendWebhookMessage(content)
+    if not WebhookSettings.Enabled or WebhookSettings.WebhookURL == "" then return end
+    
+    local ping = getPingPrefix()
+    local fullContent = ping .. content
+    
+    local payload = {
+        content = fullContent or "No message provided"
+    }
+    
+    local jsonData = HttpService:JSONEncode(payload)
+    
+    local success, response = pcall(function()
+        if syn and syn.request then
+            return syn.request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = jsonData
+            })
+        elseif http_request then
+            return http_request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = jsonData
+            })
+        elseif request then
+            return request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = jsonData
+            })
+        else
+            warn("No request method available for webhook!")
+            return nil, "No request method available"
+        end
+    end)
+    
+    if not success then
+        warn("Failed to send webhook: " .. tostring(response))
+    end
+end
+
+-- Get badge name from ID
+local function getBadgeName(badgeId)
+    for _, badge in pairs(allBadges) do
+        if badge.id == badgeId then
+            return badge.name
+        end
+    end
+    return "Unknown Badge"
+end
+
+-- ============================================================
+-- UI ELEMENTS
+-- ============================================================
+
+-- 1. Webhook URL Textbox
+local WebhookTextbox = Tab:AddTextbox({
+    Name = "Webhook URL",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        WebhookSettings.WebhookURL = Value
+    end
+})
+
+-- 2. Send Interval Dropdown
+local IntervalDropdown = Tab:AddDropdown({
+    Name = "Send Interval",
+    Options = {"No time", "30 Seconds", "1 Minute", "10 Minutes", "30 Minutes", "1 Hour", "5 Hours", "10 Hours", "1 Day"},
+    Default = "No time",
+    Callback = function(Value)
+        WebhookSettings.SendInterval = Value
+    end,
+    Flag = "webhookInterval",
+    Save = true
+})
+
+-- 3. Multi Dropdown for Objects
+local ObjectsMultiDropdown = Tab:AddMultiDropdown({
+    Name = "Choose Objects Spawns To Log",
+    Options = {"Jet Orb", "Phase Orb", "Glitch Orb", "Siphon Orb", "MATERIALIZE Orb", "Slapple", "Golden Slapple", "Toolbox"},
+    Default = {},
+    Callback = function(Values)
+        WebhookSettings.LoggedObjects = Values
+        WebhookSettings.ObjectLogged = {}
+        WebhookSettings.SlappleLogged = {}
+        WebhookSettings.GoldenSlappleLogged = false
+        for _, obj in pairs(Values) do
+            if obj == "Slapple" then
+                WebhookSettings.SlappleLogged[obj] = {}
+            elseif obj == "Golden Slapple" then
+                WebhookSettings.GoldenSlappleLogged = false
+            else
+                WebhookSettings.ObjectLogged[obj] = false
+            end
+        end
+    end,
+    Flag = "loggedObjects",
+    Save = true
+})
+
+-- 4. Slaps Threshold Dropdown
+local SlapsDropdown = Tab:AddDropdown({
+    Name = "Slaps Threshold",
+    Options = {"100+ Slaps", "1000+ Slaps", "10000+ Slaps", "100000+ Slaps", "1000000+ Slaps", "Custom Slaps Amount"},
+    Default = "1000+ Slaps",
+    Callback = function(Value)
+        if Value == "Custom Slaps Amount" then
+            WebhookSettings.SlapsThreshold = 0
+        else
+            local num = tonumber(Value:match("(%d+)")) or 0
+            WebhookSettings.SlapsThreshold = num
+            WebhookSettings.TrackedSlaps = false
+            WebhookSettings.SlapsLogged = false
+        end
+    end,
+    Flag = "slapsThreshold",
+    Save = true
+})
+
+-- Custom Slaps Textbox
+local CustomSlapsTextbox = Tab:AddTextbox({
+    Name = "Custom Slaps Amount (e.g., 5000+)",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        local num = tonumber(Value:match("(%d+)")) or 0
+        WebhookSettings.SlapsThreshold = num
+        WebhookSettings.TrackedSlaps = false
+        WebhookSettings.SlapsLogged = false
+    end
+})
+
+-- 5. Null Shards Threshold Dropdown
+local NullShardsDropdown = Tab:AddDropdown({
+    Name = "Null Shards Threshold",
+    Options = {"10+ Null Shards", "100+ Null Shards", "1000+ Null Shards", "10000+ Null Shards", "Custom Null Shards Amount"},
+    Default = "100+ Null Shards",
+    Callback = function(Value)
+        if Value == "Custom Null Shards Amount" then
+            WebhookSettings.NullShardsThreshold = 0
+        else
+            local num = tonumber(Value:match("(%d+)")) or 0
+            WebhookSettings.NullShardsThreshold = num
+            WebhookSettings.TrackedNullShards = false
+            WebhookSettings.NullShardsLogged = false
+        end
+    end,
+    Flag = "nullShardsThreshold",
+    Save = true
+})
+
+-- Custom Null Shards Textbox
+local CustomNullShardsTextbox = Tab:AddTextbox({
+    Name = "Custom Null Shards Amount (e.g., 5000+)",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        local num = tonumber(Value:match("(%d+)")) or 0
+        WebhookSettings.NullShardsThreshold = num
+        WebhookSettings.TrackedNullShards = false
+        WebhookSettings.NullShardsLogged = false
+    end
+})
+
+-- 6. Ping Type Dropdown
+local PingDropdown = Tab:AddDropdown({
+    Name = "Ping Type",
+    Options = {"No Pings", "@User Ping", "@Role Ping", "@Everyone Ping", "@Here Ping"},
+    Default = "No Pings",
+    Callback = function(Value)
+        WebhookSettings.PingType = Value
+    end,
+    Flag = "pingType",
+    Save = true
+})
+
+-- User ID Textbox (for @User Ping)
+local UserIDTextbox = Tab:AddTextbox({
+    Name = "Discord User ID (for @User Ping)",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        WebhookSettings.UserID = Value
+    end
+})
+
+-- Role ID Textbox (for @Role Ping)
+local RoleIDTextbox = Tab:AddTextbox({
+    Name = "Discord Role ID (for @Role Ping)",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        WebhookSettings.RoleID = Value
+    end
+})
+
+-- 7. Enable/Disable Toggle
+local EnableToggle = Tab:AddToggle({
+    Name = "Enable Webhook Logging",
+    Default = false,
+    Callback = function(value)
+        if value then
+            WebhookSettings.Enabled = true
+            
+            -- Initialize tracking
+            WebhookSettings.LastSlapsValue = LocalPlayer.leaderstats.Slaps.Value
+            WebhookSettings.LastNullShardsValue = WebhookSettings:GetNullShards()
+            WebhookSettings.SlapsStartValue = WebhookSettings.LastSlapsValue
+            WebhookSettings.NullShardsStartValue = WebhookSettings.LastNullShardsValue
+            WebhookSettings.IsSlapsTracking = true
+            WebhookSettings.IsNullShardsTracking = true
+            WebhookSettings.SlapsLogged = false
+            WebhookSettings.NullShardsLogged = false
+            WebhookSettings.BadgeLogSent = false
+            WebhookSettings.ObjectLogged = {}
+            WebhookSettings.SlappleLogged = {}
+            WebhookSettings.GoldenSlappleLogged = false
+            WebhookSettings.LastBadgeCheck = {}
+            
+            -- Fetch initial badges
+            pcall(fetchOwnedBadges)
+            for badgeId, _ in pairs(ownedBadges) do
+                WebhookSettings.LastBadgeCheck[badgeId] = true
+            end
+            
+            for _, obj in pairs(WebhookSettings.LoggedObjects) do
+                if obj == "Slapple" then
+                    WebhookSettings.SlappleLogged[obj] = {}
+                elseif obj == "Golden Slapple" then
+                    WebhookSettings.GoldenSlappleLogged = false
+                else
+                    WebhookSettings.ObjectLogged[obj] = false
+                end
+            end
+            sendWebhookMessage("✅ Webhook logging **STARTED**!")
+        else
+            -- Send stop message before disabling
+            sendWebhookMessage("🛑 Webhook logging **STOPPED**!")
+            WebhookSettings.Enabled = false
+        end
+    end
+})
+
+-- ============================================================
+-- TRACKING FUNCTIONS
+-- ============================================================
+
+-- Object detection function
+local function checkObjectSpawns()
+    if not WebhookSettings.Enabled then return end
+    
+    -- Regular objects (not Slapples)
+    local objectsToCheck = {
+        ["Jet Orb"] = workspace:FindFirstChild("JetOrb"),
+        ["Phase Orb"] = workspace:FindFirstChild("PhaseOrb"),
+        ["Glitch Orb"] = workspace:FindFirstChild("GlitchOrb"),
+        ["Siphon Orb"] = workspace:FindFirstChild("SiphonOrb"),
+        ["MATERIALIZE Orb"] = workspace:FindFirstChild("MATERIALIZEOrb"),
+        ["Toolbox"] = workspace:FindFirstChild("Toolbox"),
+    }
+    
+    for name, object in pairs(objectsToCheck) do
+        if table.find(WebhookSettings.LoggedObjects, name) then
+            if object and not WebhookSettings.ObjectLogged[name] then
+                WebhookSettings.ObjectLogged[name] = true
+                
+                local placeName = "Unknown"
+                pcall(function()
+                    local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                    if info and info.Name then
+                        placeName = info.Name
+                    end
+                end)
+                
+                local message = string.format(
+                    "**From Webhook Log:**\n\n**Detected | Spawned:** %s\n\n**Name:** %s\n**Real Name:** %s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                    name, name, object.Name, placeName, game.PlaceId, game.JobId
+                )
+                
+                sendWebhookMessage(message)
+            elseif not object then
+                WebhookSettings.ObjectLogged[name] = false
+            end
+        end
+    end
+    
+    -- SLAPPLE CHECK (workspace.Arena.island5.Slapples)
+    if table.find(WebhookSettings.LoggedObjects, "Slapple") then
+        local slapplesFolder = workspace:FindFirstChild("Arena")
+        if slapplesFolder then
+            local island5 = slapplesFolder:FindFirstChild("island5")
+            if island5 then
+                local slapples = island5:FindFirstChild("Slapples")
+                if slapples then
+                    for _, model in ipairs(slapples:GetChildren()) do
+                        if model:IsA("Model") then
+                            local gloveMesh = model:FindFirstChild("Glove")
+                            if gloveMesh and gloveMesh:IsA("MeshPart") then
+                                local transparency = gloveMesh.Transparency
+                                local modelName = model.Name
+                                
+                                if not WebhookSettings.SlappleLogged[modelName] then
+                                    if transparency == 0 then
+                                        WebhookSettings.SlappleLogged[modelName] = true
+                                        
+                                        local placeName = "Unknown"
+                                        pcall(function()
+                                            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                                            if info and info.Name then
+                                                placeName = info.Name
+                                            end
+                                        end)
+                                        
+                                        local message = string.format(
+                                            "**From Webhook Log:**\n\n**Detected | Spawned:** Slapple\n\n**Name:** Slapple\n**Real Name:** %s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                                            modelName, placeName, game.PlaceId, game.JobId
+                                        )
+                                        
+                                        sendWebhookMessage(message)
+                                    end
+                                elseif transparency == 1 then
+                                    WebhookSettings.SlappleLogged[modelName] = nil
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    -- GOLDEN SLAPPLE CHECK
+    if table.find(WebhookSettings.LoggedObjects, "Golden Slapple") then
+        local slapplesFolder = workspace:FindFirstChild("Arena")
+        if slapplesFolder then
+            local island5 = slapplesFolder:FindFirstChild("island5")
+            if island5 then
+                local slapples = island5:FindFirstChild("Slapples")
+                if slapples then
+                    local goldenSlapple = slapples:FindFirstChild("GoldenSlapple")
+                    if goldenSlapple and goldenSlapple:IsA("Model") then
+                        local gloveMesh = goldenSlapple:FindFirstChild("Glove")
+                        if gloveMesh and gloveMesh:IsA("MeshPart") then
+                            local transparency = gloveMesh.Transparency
+                            
+                            if transparency == 0 and not WebhookSettings.GoldenSlappleLogged then
+                                WebhookSettings.GoldenSlappleLogged = true
+                                
+                                local placeName = "Unknown"
+                                pcall(function()
+                                    local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                                    if info and info.Name then
+                                        placeName = info.Name
+                                    end
+                                end)
+                                
+                                local message = string.format(
+                                    "**From Webhook Log:**\n\n**Detected | Spawned:** Golden Slapple\n\n**Name:** Golden Slapple\n**Real Name:** GoldenSlapple\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                                    placeName, game.PlaceId, game.JobId
+                                )
+                                
+                                sendWebhookMessage(message)
+                            elseif transparency == 1 then
+                                WebhookSettings.GoldenSlappleLogged = false
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Slaps tracking function
+local function checkSlaps()
+    if not WebhookSettings.Enabled or WebhookSettings.SlapsThreshold == 0 or not WebhookSettings.IsSlapsTracking then return end
+    
+    local currentSlaps = LocalPlayer.leaderstats.Slaps.Value
+    local previousSlaps = WebhookSettings.LastSlapsValue
+    
+    if currentSlaps >= WebhookSettings.SlapsThreshold and currentSlaps > previousSlaps then
+        WebhookSettings.LastSlapsValue = currentSlaps
+        
+        local earnedSlaps = currentSlaps - WebhookSettings.SlapsStartValue
+        
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        local message = string.format(
+            "**Slaps Counter Log**\n\n**Name:** Slaps\n**Before Amount:** %s\n**After Amount:** %s\n**Earned Total Slaps:** +%s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+            WebhookSettings.SlapsStartValue, currentSlaps, earnedSlaps, placeName, game.PlaceId, game.JobId
+        )
+        
+        sendWebhookMessage(message)
+        
+        WebhookSettings.SlapsStartValue = currentSlaps
+    end
+end
+
+-- Null Shards tracking function
+local function checkNullShards()
+    if not WebhookSettings.Enabled or WebhookSettings.NullShardsThreshold == 0 or not WebhookSettings.IsNullShardsTracking then return end
+    
+    local currentNullShards = WebhookSettings:GetNullShards()
+    local previousNullShards = WebhookSettings.LastNullShardsValue
+    
+    if currentNullShards >= WebhookSettings.NullShardsThreshold and currentNullShards > previousNullShards then
+        WebhookSettings.LastNullShardsValue = currentNullShards
+        
+        local earnedNullShards = currentNullShards - WebhookSettings.NullShardsStartValue
+        
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        local message = string.format(
+            "**Null Shards Counter Log**\n\n**Name:** Null Shards\n**Before Amount:** %s\n**After Amount:** %s\n**Earned Total Null Shards:** +%s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+            WebhookSettings.NullShardsStartValue, currentNullShards, earnedNullShards, placeName, game.PlaceId, game.JobId
+        )
+        
+        sendWebhookMessage(message)
+        
+        WebhookSettings.NullShardsStartValue = currentNullShards
+    end
+end
+
+-- Badge tracking function
+local function checkBadges()
+    if not WebhookSettings.Enabled then return end
+    
+    -- Fetch latest badges
+    local success = pcall(fetchOwnedBadges)
+    if not success then return end
+    
+    local newBadges = {}
+    
+    -- Check for new badges
+    for badgeId, _ in pairs(ownedBadges) do
+        if not WebhookSettings.LastBadgeCheck[badgeId] then
+            table.insert(newBadges, badgeId)
+            WebhookSettings.LastBadgeCheck[badgeId] = true
+        end
+    end
+    
+    -- If there are new badges, send a log
+    if #newBadges > 0 then
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        -- Find badge names
+        local newBadgeNames = {}
+        for _, id in pairs(newBadges) do
+            for _, badge in pairs(allBadges) do
+                if badge.id == id then
+                    table.insert(newBadgeNames, badge.name .. " (`" .. id .. "`)")
+                    break
+                end
+            end
+        end
+        
+        -- Build owned list (all badges)
+        local ownedList = {}
+        for id, _ in pairs(WebhookSettings.LastBadgeCheck) do
+            table.insert(ownedList, id)
+        end
+        
+        -- Build missing list (all glove-rewarding badges not owned)
+        local missingList = {}
+        for _, badge in pairs(allBadges) do
+            if badge.category == "GloveRewarding" and not ownedBadges[badge.id] then
+                table.insert(missingList, badge.id)
+            end
+        end
+        
+        local message = string.format(
+            "**🎉 NEW BADGE(S) UNLOCKED!**\n\n" ..
+            "**Badge(s):**\n%s\n\n" ..
+            "**Place Name:** %s\n" ..
+            "**Place ID:** %s\n" ..
+            "**JobID:** %s\n\n" ..
+            "**Total Badges Unlocked:** %s\n" ..
+            "**Missing Glove Badges:** %s",
+            table.concat(newBadgeNames, "\n"),
+            placeName,
+            game.PlaceId,
+            game.JobId,
+            #ownedList > 0 and #ownedList .. " badges" or "None",
+            #missingList > 0 and #missingList .. " badges" or "None"
+        )
+        
+        sendWebhookMessage(message)
+    end
+end
+
+-- Main loop
+local function startWebhookLoop()
+    while true do
+        if WebhookSettings.Enabled then
+            pcall(checkObjectSpawns)
+            pcall(checkSlaps)
+            pcall(checkNullShards)
+            pcall(checkBadges)
+        end
+        
+        local waitTime = 1
+        if WebhookSettings.SendInterval == "30 Seconds" then 
+            waitTime = 30
+        elseif WebhookSettings.SendInterval == "1 Minute" then 
+            waitTime = 60
+        elseif WebhookSettings.SendInterval == "10 Minutes" then 
+            waitTime = 600
+        elseif WebhookSettings.SendInterval == "30 Minutes" then 
+            waitTime = 1800
+        elseif WebhookSettings.SendInterval == "1 Hour" then 
+            waitTime = 3600
+        elseif WebhookSettings.SendInterval == "5 Hours" then 
+            waitTime = 18000
+        elseif WebhookSettings.SendInterval == "10 Hours" then 
+            waitTime = 36000
+        elseif WebhookSettings.SendInterval == "1 Day" then 
+            waitTime = 86400
+        end
+        
+        task.wait(waitTime)
+    end
+end
+
+-- Start the loop
+task.spawn(startWebhookLoop)
+
+end
+do
+-- CREDITS
+local Tab = Window:MakeTab({
+    Name = "Credits",
+    Icon = "rbxassetid://7743875759",
+    PremiumOnly = false
+})
+
+-- Credits Users
+Section = Tab:AddSection({
+    Name = "Credits Users"
+})
+
+Tab:AddParagraph("Credits List:", [[
+Nexer - (Youtube, Discord)
+BaconScripter - (Youtube, Discord)
+Scripter - (Youtube, Discord)
+Kiet Scripter - (Youtube, Discord, Roblox Group)
+St1mlx The Scripter - (Youtube, Discord)
+]])
+
+-- Helpers
+Section = Tab:AddSection({
+    Name = "Helpers"
+})
+
+Tab:AddParagraph("Helpers List:", [[
+R̸o̴b̵S̸c̴r̷i̸p̷t̷e̸r̶ - rob_bloxy || Old Slap Aura Remotes
+Shadow - cool_12344321 || Pinata Badge Glove Script
+St1mlx - st1mlx || Mastery Info + Camera Badge Glove Script
+Alya (I want friends to call) - sync_nah || New Slap Aura Remotes
+]])
+
+-- Links
+Section = Tab:AddSection({
+    Name = "Links"
+})
+
+Tab:AddButton({
+    Name = "Nexer (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@nexer1234")
+    end
+})
+
+Tab:AddButton({
+    Name = "Nexer (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/z5b2vhJRnF")
+    end
+})
+
+Tab:AddButton({
+    Name = "BaconScripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@BaconScripters")
+    end
+})
+
+Tab:AddButton({
+    Name = "BaconScripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/29zcq8NWBC")
+    end
+})
+
+Tab:AddButton({
+    Name = "Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@Scripter-Coder")
+    end
+})
+
+Tab:AddButton({
+    Name = "Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/v5swRqZzBG")
+    end
+})
+
+Tab:AddButton({
+    Name = "Kiet Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@TheSPRG")
+    end
+})
+
+Tab:AddButton({
+    Name = "Kiet Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/emvU4HuQFk")
+    end
+})
+
+Tab:AddButton({
+    Name = "St1mlx The Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@St1mlx-scripter")
+    end
+})
+
+Tab:AddButton({
+    Name = "St1mlx The Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/na2udBbTrc")
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
     Name = "Settings",
     Icon = "rbxassetid://7734053495",
     PremiumOnly = false
@@ -2399,18 +3523,17 @@ do
     local gloveHits = {
         -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
-        ["Dual"] = ReplicatedStorage.GeneralHit,
         ["Diamond"] = ReplicatedStorage.DiamondHit,
         ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
-        ["Extended"] = ReplicatedStorage.GeneralHit,
+        ["Extended"] = ReplicatedStorage.b,
+        ["Dual"] = ReplicatedStorage.DualHit,
         ["Brick"] = ReplicatedStorage.BrickHit,
         ["Snow"] = ReplicatedStorage.SnowHit,
         ["Pull"] = ReplicatedStorage.PullHit,
         ["Flash"] = ReplicatedStorage.FlashHit,
-        ["Stilts"] = ReplicatedStorage.GeneralHit,
         ["Spring"] = ReplicatedStorage.springhit,
         ["Pinwheel"] = ReplicatedStorage.GeneralHit,
-        ["Swapper"] = ReplicatedStorage.GeneralHit,
+        ["Swapper"] = ReplicatedStorage.HitSwapper,
         ["Screwdriver"] = ReplicatedStorage.GeneralHit,
         ["Bull"] = ReplicatedStorage.BullHit,
         ["Dice"] = ReplicatedStorage.DiceHit,
@@ -2437,12 +3560,13 @@ do
         ["Replica"] = ReplicatedStorage.ReplicaHit,
         ["Mace"] = ReplicatedStorage.GeneralHit,
         ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Offense"] = ReplicatedStorage.GeneralHit,
         ["Killstreak"] = ReplicatedStorage.KSHit,
-        ["Pineslapple"] = ReplicatedStorage.GeneralHit, 
+        ["Pineslapple"] = ReplicatedStorage.GeneralHit,
         ["Reverse"] = ReplicatedStorage.ReverseHit,
         ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
         ["Duelist"] = ReplicatedStorage.DuelistHit,
-        ["woah"] = ReplicatedStorage.GeneralHit,
+        ["woah"] = ReplicatedStorage.woahHit,
         ["Ice"] = ReplicatedStorage.IceHit,
         ["Gummy"] = ReplicatedStorage.GeneralHit,
         ["Adios"] = ReplicatedStorage.hitAdios,
@@ -2450,9 +3574,9 @@ do
         ["Divert"] = ReplicatedStorage.GeneralHit,
         ["Engineer"] = ReplicatedStorage.engiehit,
         ["Rocky"] = ReplicatedStorage.RockyHit,
-        ["Coil"] = ReplicatedStorage.GeneralHit,
+        ["Coil"] = ReplicatedStorage.HtStun,
         ["Conveyor"] = ReplicatedStorage.ConvHit,
-        ["Balloony"] = ReplicatedStorage.GeneralHit,
+        ["Balloony"] = ReplicatedStorage.HtStun,
         ["Phantom"] = ReplicatedStorage.PhantomHit,
         ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
         ["el gato"] = ReplicatedStorage.GeneralHit,
@@ -2460,17 +3584,19 @@ do
         ["Shackle"] = ReplicatedStorage.GeneralHit,
         ["Flick"] = ReplicatedStorage.GeneralHit,
         ["STOP"] = ReplicatedStorage.STOP,
+        ["Daredevil"] = ReplicatedStorage.GeneralHit,
         ["Equalizer"] = ReplicatedStorage.GeneralHit,
         ["Track"] = ReplicatedStorage.GeneralHit,
         ["Stalker"] = ReplicatedStorage.GeneralHit,
-        ["Retribution"] = ReplicatedStorage.RetributionHit,
         ["Prop"] = ReplicatedStorage.GeneralHit,
+        ["Cherry"] = ReplicatedStorage.GeneralHit,
         ["Shield"] = ReplicatedStorage.GeneralHit,
         ["Clover"] = ReplicatedStorage.GeneralHit,
         ["5 More"] = ReplicatedStorage.GeneralHit,
         ["Booster"] = ReplicatedStorage.GeneralHit,
         ["Chainsaw"] = ReplicatedStorage.GeneralHit,
         ["Ping Pong"] = ReplicatedStorage.GeneralHit,
+        ["Thumbtack"] = ReplicatedStorage.GeneralHit,
         ["Trifecta"] = ReplicatedStorage.GeneralHit,
         ["Baller"] = ReplicatedStorage.GeneralHit,
         ["Architect"] = ReplicatedStorage.GeneralHit,
@@ -2478,16 +3604,21 @@ do
         ["Friction"] = ReplicatedStorage.GeneralHit,
         ["Whirlwind"] = ReplicatedStorage.GeneralHit,
         ["Disc"] = ReplicatedStorage.GeneralHit,
-        ["Slicer"] = ReplicatedStorage.GeneralHit,
+        ["BONK"] = ReplicatedStorage.GeneralHit,
+        ["Grenadier"] = ReplicatedStorage.GeneralHit,
         ["Excavator"] = ReplicatedStorage.GeneralHit,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
         ["Nightmare"] = ReplicatedStorage.nightmarehit,
         ["Pylon"] = ReplicatedStorage.PylonHit,
         ["Thor"] = ReplicatedStorage.ThorHit,
         ["Slime"] = ReplicatedStorage.GeneralHit,
         ["Pocket"] = ReplicatedStorage.GeneralHit,
         ["Grapple"] = ReplicatedStorage.GeneralHit,
+        ["Command"] = ReplicatedStorage.GeneralHit,
         ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Stalagmite"] = ReplicatedStorage.GeneralHit,
         ["Gravity"] = ReplicatedStorage.GeneralHit,
+        ["Helix"] = ReplicatedStorage.GeneralHit,
         ["Parry"] = ReplicatedStorage.GeneralHit,
         ["Jebaited"] = ReplicatedStorage.GeneralHit,
         ["Meteor"] = ReplicatedStorage.GeneralHit,
@@ -2496,14 +3627,14 @@ do
         ["Sun"] = ReplicatedStorage.GeneralHit,
         ["Ferryman"] = ReplicatedStorage.GeneralHit,
         ["Blackhole"] = ReplicatedStorage.GeneralHit,
-        ["Walrus"] = ReplicatedStorage.GeneralHit,
+        ["Walrus"] = ReplicatedStorage.Events.WalrusHit,
         ["Blink"] = ReplicatedStorage.GeneralHit,
         ["Tableflip"] = ReplicatedStorage.GeneralHit,
         ["Slapstick"] = ReplicatedStorage.GeneralHit,
         ["Beatdown"] = ReplicatedStorage.GeneralHit,
+        ["Jockey"] = ReplicatedStorage.GeneralHit,
         ["Chicken"] = ReplicatedStorage.GeneralHit,
-        ["BONK"] = ReplicatedStorage.GeneralHit,
-        ["Grenadier"] = ReplicatedStorage.GeneralHit,
+        ["Slicer"] = ReplicatedStorage.GeneralHit,
         ["Sbeve"] = ReplicatedStorage.GeneralHit,
         ["Golem"] = ReplicatedStorage.GeneralHit,
         ["Doomsday"] = ReplicatedStorage.GeneralHit,
@@ -2521,16 +3652,18 @@ do
         ["Butcher"] = ReplicatedStorage.GeneralHit,
         ["Infinity"] = ReplicatedStorage.GeneralHit,
         ["Aggro"] = ReplicatedStorage.GeneralHit,
+        ["Medusa"] = ReplicatedStorage.GeneralHit,
+        ["Seal"] = ReplicatedStorage.GeneralHit,
         ["Soul"] = ReplicatedStorage.GeneralHit,
         ["R/C"] = ReplicatedStorage.GeneralHit,
         ["Mushroom"] = ReplicatedStorage.GeneralHit,
         ["Scuba"] = ReplicatedStorage.GeneralHit,
         ["Pyromania"] = ReplicatedStorage.GeneralHit,
         ["Automaton"] = ReplicatedStorage.GeneralHit,
-        ["Command"] = ReplicatedStorage.GeneralHit,
+        ["Roaring"] = ReplicatedStorage.GeneralHit,
         ["God's Hand"] = ReplicatedStorage.Godshand,
         ["The Flex"] = ReplicatedStorage.FlexHit,
-        
+
         -- Badge Gloves
         ["MEGAROCK"] = ReplicatedStorage.DiamondHit,
         ["Plague"] = ReplicatedStorage.PlagueHit,
@@ -2548,7 +3681,7 @@ do
         ["bob"] = ReplicatedStorage.bobhit,
         ["buddies"] = ReplicatedStorage.buddiesHIT,
         ["Moon"] = ReplicatedStorage.CelestialHit,
-        ["Jupiter"] = ReplicatedStorage.GeneralHit,
+        ["Jupiter"] = ReplicatedStorage.CelestialHit,
         ["Spy"] = ReplicatedStorage.SpyHit,
         ["Detonator"] = ReplicatedStorage.DetonatorHit,
         ["Rage"] = ReplicatedStorage.GRRRR,
@@ -2575,11 +3708,11 @@ do
         ["Goofy"] = ReplicatedStorage.GeneralHit,
         ["Leash"] = ReplicatedStorage.GeneralHit,
         ["Flamarang"] = ReplicatedStorage.GeneralHit,
-        ["Kinetic"] = ReplicatedStorage.GeneralHit,
-        ["Berserk"] = ReplicatedStorage.GeneralHit,
-        ["Sparky"] = ReplicatedStorage.GeneralHit,
-        ["Boogie"] = ReplicatedStorage.GeneralHit,
-        ["Recall"] = ReplicatedStorage.GeneralHit,
+        ["Kinetic"] = ReplicatedStorage.HtStun,
+        ["Berserk"] = ReplicatedStorage.HtStun,
+        ["Sparky"] = ReplicatedStorage.HtStun,
+        ["Boogie"] = ReplicatedStorage.HtStun,
+        ["Recall"] = ReplicatedStorage.HtStun,
         ["Quake"] = ReplicatedStorage.GeneralHit,
         ["Psycho"] = ReplicatedStorage.GeneralHit,
         ["Kraken"] = ReplicatedStorage.GeneralHit,
@@ -2606,7 +3739,8 @@ do
         ["Joust"] = ReplicatedStorage.GeneralHit,
         ["Firework"] = ReplicatedStorage.GeneralHit,
         ["Run"] = ReplicatedStorage.GeneralHit,
-        ["Glovel"] = ReplicatedStorage.GeneralHit,
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Normal
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Critical
         ["Divebomb"] = ReplicatedStorage.GeneralHit,
         ["Lamp"] = ReplicatedStorage.GeneralHit,
         ["Knockoff"] = ReplicatedStorage.GeneralHit,
@@ -2621,12 +3755,12 @@ do
         ["Avatar"] = ReplicatedStorage.GeneralHit,
         ["Water"] = ReplicatedStorage.GeneralHit,
         ["Fan"] = ReplicatedStorage.GeneralHit,
-        ["Boxer"] = ReplicatedStorage.GeneralHit,
+        ["Boxer"] = ReplicatedStorage.Events.Boxing,
         ["MATERIALIZE"] = ReplicatedStorage.GeneralHit,
         ["Bind"] = ReplicatedStorage.GeneralHit,
         ["Poltergeist"] = ReplicatedStorage.GeneralHit,
         ["Clock"] = ReplicatedStorage.GeneralHit,
-        ["Untitled Tag Glove"] = ReplicatedStorage.GeneralHit,
+        ["Untitled Tag Glove"] = ReplicatedStorage.UTGHit,
         ["Pillow"] = ReplicatedStorage.GeneralHit,
         ["Angler"] = ReplicatedStorage.GeneralHit,
         ["Jerry"] = ReplicatedStorage.GeneralHit,
@@ -2656,29 +3790,40 @@ do
         ["Wheelchair"] = ReplicatedStorage.GeneralHit,
         ["Shopkeeper"] = ReplicatedStorage.GeneralHit,
         ["Collector"] = ReplicatedStorage.GeneralHit,
-        ["Glaxe"] = ReplicatedStorage.GeneralHit, 
-        ["Piñata"] = ReplicatedStorage.GeneralHit, 
+        ["Glaxe"] = ReplicatedStorage.GeneralHit,
+        ["Piñata"] = ReplicatedStorage.GeneralHit,
         ["Penguin"] = ReplicatedStorage.GeneralHit,
+        ["Undead"] = ReplicatedStorage.GeneralHit,
+        ["Groundbreaker"] = ReplicatedStorage.GeneralHit,
+        ["Shellbert"] = ReplicatedStorage.Events.FabergeSwing,
+        ["Lasso"] = ReplicatedStorage.GeneralHit,
+        ["Lotus"] = ReplicatedStorage.GeneralHit,
+        ["Elastic"] = ReplicatedStorage.GeneralHit,
+        ["G-X"] = ReplicatedStorage.GeneralHit,
+        ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
+        ["Camera"] = ReplicatedStorage.GeneralHit,
+        ["Grillmaster"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
-        ["Spectator"] = ReplicatedStorage.GeneralHit,
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
         
         -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
+        ["Default but Bad"] = ReplicatedStorage.dbb,
+        ["Ketchup Default"] = ReplicatedStorage.b,
         ["Stick"] = ReplicatedStorage.GeneralHit,
         ["potato"] = ReplicatedStorage.potatohit,
         ["Error"] = ReplicatedStorage.Errorhit,
         ["killerfish"] = ReplicatedStorage.GeneralHit,
         ["Titan"] = ReplicatedStorage.GeneralHit,
         ["Acrobat"] = ReplicatedStorage.AcHit,
-        
-        -- Fallback for unknown gloves
-        ["GeneralHit"] = ReplicatedStorage.GeneralHit,
-        ["b"] = ReplicatedStorage.b,
-        ["HtStun"] = ReplicatedStorage.HtStun
+
+        -- No Hit Remote Gloves + Ignore Those Gloves
+        ["Stilts"] = "",
+        ["Glue"] = "",
+        ["Spectator"] = "",
     }
     
     -- Add metatable for dynamic glove lookups
@@ -3184,7 +4329,9 @@ Tab:AddButton({
 })
 
 -- OTHER SETTINGS
-local Tab = Window:MakeTab({
+end
+do
+Tab = Window:MakeTab({
     Name = "Other Settings",
     Icon = "rbxassetid://8997386997",
     PremiumOnly = false
@@ -3205,5 +4352,8 @@ Tab:AddButton({
     end
 })
 
-end -- FINISH ENITRE SCRIPT
-OrionLib:Init() -- FINISH ENITRE SCRIPT
+end
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Place is not supported",Image = "rbxassetid://7734053361",Time = 10})
+end
+OrionLib:Init()
