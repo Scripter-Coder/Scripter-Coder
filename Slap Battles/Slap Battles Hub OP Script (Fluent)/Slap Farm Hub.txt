@@ -1,45 +1,15 @@
--- Skid if u want idc just dont forget about credits or smt
--- Webhook
+-- ============================================================
+-- WEBHOOK SETUP
+-- ============================================================
 local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
 
--- Load Fluent Library
+-- ============================================================
+-- FLUENT HUB SETUP
+-- ============================================================
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
--- Check if game is Slap Battles or related
-local validPlaceIds = {
-    6403373529, 9015014224, 11520107397, 124596094333302, 7234087065, 9020359053,
-    9068206286, 9426795465, 9431156611, 11359765900, 11367956190, 11828384869,
-    12432152490, 12712288037, 12845859004, 13833961666, 15228348051, 15507333474,
-    16034567693, 17290438723, 18550498098, 18698003301, 74169485398268, 89837553336708,
-    102908326578005, 103505724406848, 14422118326, 92516899071319, 115782629143468,
-    95706409702231, 118650724506449, 97220865182663, 98726100529621, 136005148166028,
-    117232463555132, 129665246576996, 132277598079047, 136690395520488, 86045914443715,
-    75803343514634, 80420091630966, 98871361390239, 90553746175288, 106620300132058,
-    94481828238038, 122901288403496, 79885102123162, 86643839793301, 113228834069218,
-    95356852680586
-}
-
-local function isSlapBattlesGame()
-    for _, id in pairs(validPlaceIds) do
-        if game.PlaceId == id then
-            return true
-        end
-    end
-    return false
-end
-
-if not isSlapBattlesGame() then
-    Fluent:Notify({
-        Title = "Error",
-        Content = "This script only works in Slap Battles and related games!",
-        Duration = 5
-    })
-    return
-end
-
--- Create Window
 local Window = Fluent:CreateWindow({
     Title = "Slap Farm Hub (Scripter Hub)",
     SubTitle = "Slap Battles - Slap Farm Hub",
@@ -47,52 +17,42 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.RightControl
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
+
+-- ============================================================
+-- CHECK IF SLAP BATTLES
+-- ============================================================
+if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 then
 
 Fluent:Notify({
     Title = "From Scripter",
     Content = "Script Loads (Can Take 1-5 Seconds)",
-    Duration = 3
+    Duration = 1
 })
 
--- Create Tabs
-local Tabs = {
-    Welcome = Window:AddTab({ Title = "Welcome", Icon = "home" }),
-    Dual = Window:AddTab({ Title = "Dual", Icon = "hand" }),
-    Reverse = Window:AddTab({ Title = "Reverse", Icon = "refresh-cw" }),
-    Engineer = Window:AddTab({ Title = "Engineer", Icon = "wrench" }),
-    ElGato = Window:AddTab({ Title = "el gato", Icon = "cat" }),
-    Angler = Window:AddTab({ Title = "Angler", Icon = "fish" }),
-    Bounty = Window:AddTab({ Title = "Bounty", Icon = "target" }),
-    Debug = Window:AddTab({ Title = "Debug", Icon = "bug" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
-    Other = Window:AddTab({ Title = "Other Settings", Icon = "more-horizontal" })
-}
+-- ============================================================
+-- WELCOME TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Welcome",
+    Icon = ""
+})
 
 Window:SelectTab(1)
 
-Fluent:Notify({
-    Title = "From Scripter",
-    Content = "Good Luck!",
-    Duration = 3
-})
-
--- ===============================
--- WELCOME TAB
--- ===============================
 local player = game.Players.LocalPlayer
 
-Tabs.Welcome:AddParagraph({
+Tab:AddParagraph({
     Title = "Hello " .. player.Name .. "!",
     Content = ""
 })
 
-local bypassSection = Tabs.Welcome:AddSection("Before u will start using mine script would u like to bypass anticheat?")
+Tab:AddSection("Before u will start using mine script would u like to bypass anticheat?")
 
-Tabs.Welcome:AddButton({
+Tab:AddButton({
     Title = "Bypass All Anticheat",
-    Description = "Bypasses the game's anticheat system",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/RobScripter/Slap-Battles/main/BypassAntiCheat.lua"))()
         task.wait(1.5)
@@ -105,14 +65,13 @@ Tabs.Welcome:AddButton({
 })
 
 -- Slapples Section
-local slapplesSection = Tabs.Welcome:AddSection("Slapples")
+Tab:AddSection("Slapples")
 
-Tabs.Welcome:AddToggle("AutoCollectSlapples", {
+Tab:AddToggle("AutoCollectSlapples", {
     Title = "Auto Collect Slapples",
-    Description = "Automatically collects Slapples and Golden Slapples",
     Default = false,
     Callback = function(Value)
-        local BringSlapples = Value
+        BringSlapples = Value
         
         task.spawn(function()
             while BringSlapples do
@@ -159,44 +118,39 @@ Tabs.Welcome:AddToggle("AutoCollectSlapples", {
                 end
                 
                 task.wait(0.01)
-                if Fluent.Unloaded then break end
             end
         end)
     end
 })
 
 -- Auto Slapples ServerHop Section
-local serverhopSection = Tabs.Welcome:AddSection("Auto Slapples ServerHop")
+Tab:AddSection("Auto Slapples ServerHop")
 
-Tabs.Welcome:AddButton({
+Tab:AddButton({
     Title = "Auto Serverhop Collect Slapples",
-    Description = "Copies the auto serverhop script to clipboard",
     Callback = function()
         local loadstringCode = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/AutoFarm%20Slapples"))()'
         setclipboard(loadstringCode)
         Fluent:Notify({
             Title = "Copied Successfully",
-            Content = "Script copied. Put it in Auto Execute folder to auto work",
-            Duration = 5
+            Content = "Script copied put it in Auto Execute folder to auto work",
+            Duration = 20
         })
     end
 })
 
--- ===============================
--- DUAL GLOVE BOT (WALKING VERSION)
--- ===============================
+-- Upgraded Dual Glove Auto Slap Bot for Fluent Hub - WALKING VERSION
 local Players = game:GetService("Players")
-local localPlayer = Players.LocalPlayer
+local player = Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Control variables
 local dualBotActive = false
 local ignoreRocks = false
 local ignoreOneshots = false
 local ignoreBarzilPortal = false
-local autoCollectSlapplesDual = false
+local autoCollectSlapples = false
 local noclipEnabled = true
 local walkSpeed = 50
 local detectionSpeed = 0.5
@@ -204,6 +158,9 @@ local antiAfkEnabled = false
 local isUsingDual = false
 local dualConnection = nil
 local hasTeleportedToArena = false
+local enableJumping = false
+local jumpConnection = nil
+local nextJumpTime = 0
 
 -- Character references
 local character
@@ -212,7 +169,7 @@ local humanoidRootPart
 local noclipConnection
 local antiAfkConnection
 
--- Safe positions on islands
+-- Safe positions on islands to prevent void falls
 local safePositions = {
     ["main island"] = Vector3.new(0, 10, 0),
     ["island1"] = Vector3.new(-100, 10, -100),
@@ -231,7 +188,7 @@ local function setupAntiAfk()
     end
     
     if antiAfkEnabled then
-        antiAfkConnection = localPlayer.Idled:Connect(function()
+        antiAfkConnection = player.Idled:Connect(function()
             VirtualUser:CaptureController()
             VirtualUser:ClickButton2(Vector2.new())
         end)
@@ -245,7 +202,9 @@ local function enableNoclip()
     end
     
     noclipConnection = RunService.Stepped:Connect(function()
-        if not character then return end
+        if not character then 
+            return 
+        end
         
         for _, part in pairs(character:GetChildren()) do
             if part:IsA("BasePart") then
@@ -297,7 +256,6 @@ local function walkToPosition(targetPosition, stopDistance)
         
         humanoid:MoveTo(targetPosition)
         task.wait(0.1)
-        if Fluent.Unloaded then break end
     end
     
     humanoid:MoveTo(humanoidRootPart.Position)
@@ -306,7 +264,7 @@ end
 
 -- Update character references
 local function setupCharacter()
-    character = localPlayer.Character
+    character = player.Character
     if character then
         humanoid = character:FindFirstChild("Humanoid")
         humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
@@ -319,7 +277,7 @@ local function setupCharacter()
     end
 end
 
--- Check if player is in arena
+-- Check if player is in arena (has entered)
 local function isPlayerInArena(plr)
     if not plr.Character then return false end
     return plr.Character:FindFirstChild("entered") ~= nil
@@ -327,31 +285,33 @@ end
 
 -- Check if we are in arena
 local function amIInArena()
-    return isPlayerInArena(localPlayer)
+    return isPlayerInArena(player)
 end
 
--- Walk to Teleport1
+-- Walk to Teleport1 (for entering arena)
 local function walkToTeleport1()
     local lobby = workspace:FindFirstChild("Lobby")
-    if not lobby then return false end
+    if not lobby then 
+        print("⚠️ Lobby not found!")
+        return false 
+    end
     
     local teleport1 = lobby:FindFirstChild("Teleport1")
-    if not teleport1 or not teleport1:IsA("BasePart") then return false end
+    if not teleport1 or not teleport1:IsA("BasePart") then 
+        print("⚠️ Teleport1 not found!")
+        return false 
+    end
     
     local teleportPos = teleport1.Position + Vector3.new(0, 3, 0)
     
-    Fluent:Notify({
-        Title = "Walking",
-        Content = "Walking to Teleport1...",
-        Duration = 2
-    })
+    print("🚶 Walking to Teleport1...")
     
     return walkToPosition(teleportPos, 5)
 end
 
 -- Check if Dual glove is equipped
 local function isDualEquipped()
-    local leaderstats = localPlayer:FindFirstChild("leaderstats")
+    local leaderstats = player:FindFirstChild("leaderstats")
     if leaderstats then
         local glove = leaderstats:FindFirstChild("Glove")
         if glove then
@@ -361,7 +321,7 @@ local function isDualEquipped()
     return false
 end
 
--- Function to start auto using Dual tool
+-- Function to start auto using Dual tool (auto slaps when close)
 local function startAutoUseDual()
     if isUsingDual then return end
     
@@ -370,25 +330,29 @@ local function startAutoUseDual()
     dualConnection = RunService.Heartbeat:Connect(function()
         if not dualBotActive then return end
         
-        local character = localPlayer.Character
+        local character = player.Character
         if not character then return end
         
-        local hrp = character:FindFirstChild("HumanoidRootPart")
-        if not hrp then return end
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then return end
         
         if not amIInArena() then return end
         
         local closestPlayer = nil
-        local closestDistance = 10
+        local closestDistance = 5
         
         for _, plr in pairs(Players:GetPlayers()) do
-            if plr ~= localPlayer and plr.Character then
-                local targetHRP = plr.Character:FindFirstChild("HumanoidRootPart")
-                if targetHRP and isPlayerInArena(plr) then
+            if plr ~= player and plr.Character then
+                local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
+                if hrp and isPlayerInArena(plr) then
+                    local shouldSkip = false
+                    
                     if ignoreRocks and plr.Character:FindFirstChild("rock") then
-                        -- skip
-                    else
-                        local distance = (hrp.Position - targetHRP.Position).Magnitude
+                        shouldSkip = true
+                    end
+                    
+                    if not shouldSkip then
+                        local distance = (humanoidRootPart.Position - hrp.Position).Magnitude
                         if distance < closestDistance then
                             closestDistance = distance
                             closestPlayer = plr
@@ -398,11 +362,11 @@ local function startAutoUseDual()
             end
         end
         
-        if closestPlayer and closestDistance <= 10 then
-            local dualTool = character:FindFirstChild("Dual") or localPlayer.Backpack:FindFirstChild("Dual")
+        if closestPlayer and closestDistance <= 5 then
+            local dualTool = character:FindFirstChild("Dual") or player.Backpack:FindFirstChild("Dual")
             
             if dualTool then
-                if dualTool.Parent == localPlayer.Backpack then
+                if dualTool.Parent == player.Backpack then
                     dualTool.Parent = character
                 end
                 
@@ -416,12 +380,49 @@ local function startAutoUseDual()
     end)
 end
 
+-- Function to stop auto using Dual tool
 local function stopAutoUseDual()
     isUsingDual = false
     if dualConnection then
         dualConnection:Disconnect()
         dualConnection = nil
     end
+end
+
+-- Function to start auto jumping (random 1-10 seconds)
+local function startAutoJumping()
+    if jumpConnection then
+        jumpConnection:Disconnect()
+        jumpConnection = nil
+    end
+    
+    if not enableJumping then return end
+    
+    nextJumpTime = tick() + math.random(1, 10)
+    
+    jumpConnection = RunService.Heartbeat:Connect(function()
+        if not dualBotActive or not enableJumping then return end
+        if not character or not humanoid then return end
+        
+        if amIInArena() then
+            if tick() >= nextJumpTime then
+                pcall(function()
+                    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                end)
+                nextJumpTime = tick() + math.random(1, 10)
+                print("🦘 Jumped! Next jump in " .. math.floor(nextJumpTime - tick()) .. " seconds")
+            end
+        end
+    end)
+end
+
+-- Function to stop auto jumping
+local function stopAutoJumping()
+    if jumpConnection then
+        jumpConnection:Disconnect()
+        jumpConnection = nil
+    end
+    nextJumpTime = 0
 end
 
 -- Barzil portal control
@@ -436,7 +437,7 @@ local function controlBarzilPortal()
     end
 end
 
--- Get closest player for walking
+-- Get CLOSEST player who has entered (excluding self) for walking
 local function getClosestPlayerForWalking()
     if not character or not humanoidRootPart then return nil, math.huge end
     
@@ -444,9 +445,9 @@ local function getClosestPlayerForWalking()
     local closestDistance = math.huge
     
     for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= localPlayer and plr.Character then
-            local targetHRP = plr.Character:FindFirstChild("HumanoidRootPart")
-            if targetHRP and isPlayerInArena(plr) then
+        if plr ~= player and plr.Character then
+            local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
+            if hrp and isPlayerInArena(plr) then
                 local shouldSkip = false
                 
                 if ignoreRocks and plr.Character:FindFirstChild("rock") then
@@ -454,7 +455,7 @@ local function getClosestPlayerForWalking()
                 end
                 
                 if not shouldSkip then
-                    local distance = (humanoidRootPart.Position - targetHRP.Position).Magnitude
+                    local distance = (humanoidRootPart.Position - hrp.Position).Magnitude
                     if distance < closestDistance then
                         closestDistance = distance
                         closestPlayer = plr
@@ -467,9 +468,9 @@ local function getClosestPlayerForWalking()
     return closestPlayer, closestDistance
 end
 
--- Auto collect slapples
-local function collectSlapplesDual()
-    if not character or not humanoidRootPart or not autoCollectSlapplesDual then return end
+-- Auto collect slapples - BRING METHOD
+local function collectSlapples()
+    if not character or not humanoidRootPart or not autoCollectSlapples then return end
     
     local island5 = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("island5")
     if not island5 then return end
@@ -491,6 +492,8 @@ end
 
 -- Main Dual bot function
 local function startDualBot()
+    print("🔄 Dual Bot Started!")
+    
     Fluent:Notify({
         Title = "Dual Bot Started",
         Content = "Walking mode enabled!",
@@ -498,7 +501,12 @@ local function startDualBot()
     })
     
     hasTeleportedToArena = false
+    
     startAutoUseDual()
+    
+    if enableJumping then
+        startAutoJumping()
+    end
     
     while dualBotActive do
         if character and humanoid and humanoidRootPart then
@@ -514,48 +522,57 @@ local function startDualBot()
             
             if not amIInArena() then
                 hasTeleportedToArena = false
+                print("🚶 Not in arena, walking to Teleport1...")
                 walkToTeleport1()
-                task.wait(2)
-                if Fluent.Unloaded then break end
-                continue
+                task.wait(1)
+                task.wait(0.5)
             else
                 if not hasTeleportedToArena then
                     hasTeleportedToArena = true
+                    print("✅ Entered arena!")
+                    Fluent:Notify({
+                        Title = "Entered",
+                        Content = "Entered arena!",
+                        Duration = 2
+                    })
                 end
-            end
-            
-            if ignoreBarzilPortal then
-                controlBarzilPortal()
-            end
-            
-            if autoCollectSlapplesDual then
-                task.spawn(function()
-                    collectSlapplesDual()
-                end)
-            end
-            
-            local target, distanceToTarget = getClosestPlayerForWalking()
-            
-            if target and target.Character then
-                local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
-                if targetHRP then
-                    local targetPos = targetHRP.Position
-                    local currentDistance = (humanoidRootPart.Position - targetPos).Magnitude
-                    
-                    if currentDistance > 15 then
-                        local walkPos = Vector3.new(targetPos.X, targetPos.Y + 3, targetPos.Z)
-                        walkToPosition(walkPos, 12)
-                    else
-                        humanoid:MoveTo(humanoidRootPart.Position)
-                        local lookAt = CFrame.new(humanoidRootPart.Position, targetPos)
-                        humanoidRootPart.CFrame = lookAt
+                
+                if ignoreBarzilPortal then
+                    controlBarzilPortal()
+                end
+                
+                if autoCollectSlapples then
+                    task.spawn(function()
+                        collectSlapples()
+                    end)
+                end
+                
+                local target, distanceToTarget = getClosestPlayerForWalking()
+                
+                if target and target.Character then
+                    local targetHRP = target.Character:FindFirstChild("HumanoidRootPart")
+                    if targetHRP then
+                        local targetPos = targetHRP.Position
+                        local currentDistance = (humanoidRootPart.Position - targetPos).Magnitude
+                        
+                        if currentDistance > 8 then
+                            local walkPos = Vector3.new(targetPos.X, targetPos.Y + 3, targetPos.Z)
+                            print("🚶 Walking to: " .. target.Name .. " (" .. math.floor(currentDistance) .. " studs away)")
+                            walkToPosition(walkPos, 8)
+                        else
+                            humanoid:MoveTo(humanoidRootPart.Position)
+                            
+                            local lookAt = CFrame.new(humanoidRootPart.Position, targetPos)
+                            humanoidRootPart.CFrame = lookAt
+                        end
                     end
-                end
-            else
-                if amIInArena() then
-                    local safePos = safePositions["island5"] or safePositions["main island"]
-                    if safePos then
-                        walkToPosition(safePos, 10)
+                else
+                    if amIInArena() then
+                        local safePos = safePositions["island5"] or safePositions["main island"]
+                        if safePos then
+                            print("🚶 No players found, walking to safe island...")
+                            walkToPosition(safePos, 10)
+                        end
                     end
                 end
             end
@@ -564,22 +581,30 @@ local function startDualBot()
         end
         
         task.wait(detectionSpeed)
-        if Fluent.Unloaded then break end
     end
     
     stopAutoUseDual()
+    stopAutoJumping()
     disableNoclip()
     if humanoid then
         humanoid.WalkSpeed = 16
     end
+    
+    print("🛑 Dual Bot Stopped!")
+    
+    Fluent:Notify({
+        Title = "Dual Bot Stopped",
+        Content = "Bot is now inactive",
+        Duration = 3
+    })
 end
 
 -- Character respawn handling
-localPlayer.CharacterAdded:Connect(function(newChar)
+player.CharacterAdded:Connect(function(newChar)
     character = newChar
     hasTeleportedToArena = false
     
-    task.wait(1)
+    task.wait(0.5)
     humanoid = character:FindFirstChild("Humanoid")
     humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     
@@ -592,48 +617,53 @@ localPlayer.CharacterAdded:Connect(function(newChar)
     end
     
     if dualBotActive then
+        print("🔄 Respawned, returning to arena...")
+        hasTeleportedToArena = false
         task.spawn(function()
             walkToTeleport1()
         end)
     end
 end)
 
+-- Initial setup
 setupCharacter()
 
--- DUAL TAB UI
-local dualSection = Tabs.Dual:AddSection("Dual Glove Bot Settings")
+-- Create Fluent Hub UI Elements
+Tab:AddSection("Dual Glove Bot Settings")
 
-Tabs.Dual:AddToggle("EnableDualBot", {
+-- Main bot toggle
+Tab:AddToggle("DualBotEnable", {
     Title = "Enable Dual Bot",
-    Description = "Automatically walks to players and slaps them with Dual glove",
     Default = false,
-    Callback = function(Value)
-        if Value then
+    Callback = function(value)
+        if value then
             if not isDualEquipped() then
                 Fluent:Notify({
                     Title = "Error",
                     Content = "Equip Dual glove first!",
                     Duration = 3
                 })
-                return
+                return false
             end
+            
             dualBotActive = true
             hasTeleportedToArena = false
             task.spawn(startDualBot)
         else
             dualBotActive = false
             stopAutoUseDual()
+            stopAutoJumping()
         end
     end
 })
 
-Tabs.Dual:AddToggle("EnableNoclip", {
-    Title = "Enable Noclip (Recommended)",
-    Description = "Allows walking through walls",
-    Default = true,
-    Callback = function(Value)
-        noclipEnabled = Value
-        if Value then
+-- Noclip toggle
+Tab:AddToggle("DualNoclip", {
+    Title = "Enable Noclip",
+    Default = false,
+    Callback = function(value)
+        noclipEnabled = value
+        if value then
             enableNoclip()
         else
             disableNoclip()
@@ -641,190 +671,326 @@ Tabs.Dual:AddToggle("EnableNoclip", {
     end
 })
 
-Tabs.Dual:AddToggle("AntiAfkDual", {
+-- Anti AFK toggle
+Tab:AddToggle("DualAntiAFK", {
     Title = "Anti AFK",
-    Description = "Prevents being kicked for inactivity",
     Default = false,
-    Callback = function(Value)
-        antiAfkEnabled = Value
+    Callback = function(value)
+        antiAfkEnabled = value
         setupAntiAfk()
     end
 })
 
-local filterSection = Tabs.Dual:AddSection("Player Filters")
-
-Tabs.Dual:AddToggle("IgnoreRocks", {
-    Title = "Ignore Rocks",
-    Description = "Ignores players in rock form",
+-- Enable Jumping toggle
+Tab:AddToggle("DualJumping", {
+    Title = "Enable Jumping",
     Default = false,
-    Callback = function(Value)
-        ignoreRocks = Value
+    Callback = function(value)
+        enableJumping = value
+        if value and dualBotActive then
+            startAutoJumping()
+        else
+            stopAutoJumping()
+        end
     end
 })
 
-Tabs.Dual:AddToggle("IgnoreBarzilPortal", {
-    Title = "Ignore Barzil Portal",
-    Description = "Prevents entering the Barzil portal",
+-- Filters section
+Tab:AddSection("Player Filters")
+
+Tab:AddToggle("DualIgnoreRocks", {
+    Title = "Ignore Rocks",
     Default = false,
-    Callback = function(Value)
-        ignoreBarzilPortal = Value
+    Callback = function(value)
+        ignoreRocks = value
+    end
+})
+
+Tab:AddToggle("DualIgnoreOneshots", {
+    Title = "Ignore One-Shot Gloves",
+    Default = false,
+    Callback = function(value)
+        ignoreOneshots = value
+    end
+})
+
+-- Barzil portal toggle
+Tab:AddToggle("DualIgnoreBarzil", {
+    Title = "Ignore Barzil Portal",
+    Default = false,
+    Callback = function(value)
+        ignoreBarzilPortal = value
         controlBarzilPortal()
     end
 })
 
-Tabs.Dual:AddToggle("AutoCollectSlapplesDual", {
+-- Auto collect slapples toggle
+Tab:AddToggle("DualAutoSlapples", {
     Title = "Auto Collect Slapples",
-    Description = "Automatically collects Slapples while bot is running",
     Default = false,
-    Callback = function(Value)
-        autoCollectSlapplesDual = Value
+    Callback = function(value)
+        autoCollectSlapples = value
     end
 })
 
-local botSettingsSection = Tabs.Dual:AddSection("Bot Settings")
+-- Bot Settings
+Tab:AddSection("Bot Settings")
 
-Tabs.Dual:AddSlider("WalkSpeed", {
+Tab:AddSlider("DualWalkSpeed", {
     Title = "Walk Speed",
-    Description = "Speed at which the bot walks",
     Min = 1,
     Max = 100,
     Default = 20,
-    Rounding = 1,
-    Callback = function(Value)
-        walkSpeed = Value
+    Rounding = 0.01,
+    Callback = function(value)
+        walkSpeed = value
         if humanoid then
             humanoid.WalkSpeed = walkSpeed
         end
     end
 })
 
-Tabs.Dual:AddSlider("DetectionSpeed", {
+Tab:AddSlider("DualDetectionSpeed", {
     Title = "Detection Speed",
-    Description = "How often the bot checks for players",
     Min = 0.01,
     Max = 2,
-    Default = 0.5,
-    Rounding = 2,
-    Callback = function(Value)
-        detectionSpeed = Value
+    Default = 0.01,
+    Rounding = 0.01,
+    Callback = function(value)
+        detectionSpeed = value
     end
 })
 
-local statusLabel = Tabs.Dual:AddParagraph({
-    Title = "Status",
-    Content = "Status: Ready"
+-- Simple status update using a variable
+local statusText = "Status: Ready"
+
+-- Create the paragraph with a reference
+local statusParagraph = Tab:AddParagraph({
+    Title = "Status:",
+    Content = "Ready"
 })
 
 -- Update status periodically
 task.spawn(function()
     while true do
+        task.wait(1)
         if dualBotActive then
             if isDualEquipped() then
                 if amIInArena() then
                     local target, distance = getClosestPlayerForWalking()
                     if target then
-                        statusLabel:SetContent("Status: Active | Target: " .. target.Name .. " (" .. math.floor(distance) .. " studs)")
+                        statusParagraph:SetDesc("Status: Active | Target: " .. target.Name .. " (" .. math.floor(distance) .. " studs)")
                     else
-                        statusLabel:SetContent("Status: Active | No players in arena")
+                        statusParagraph:SetDesc("Status: Active | No players in arena")
                     end
                 else
-                    statusLabel:SetContent("Status: Walking to Teleport1...")
+                    statusParagraph:SetDesc("Status: Walking to Teleport1...")
                 end
             else
-                statusLabel:SetContent("Status: ERROR - Equip Dual glove!")
+                statusParagraph:SetDesc("Status: ERROR - Equip Dual glove!")
             end
         else
-            statusLabel:SetContent("Status: Ready")
+            statusParagraph:SetDesc("Status: Ready")
         end
-        task.wait(1)
-        if Fluent.Unloaded then break end
     end
 end)
 
--- Dual Slap Farm (Teleport Version)
-Tabs.Dual:AddToggle("DualSlapFarm", {
-    Title = "Dual Slap Farm (Teleport Version)",
-    Description = "Teleports and slaps players with Dual glove",
+end
+
+-- ============================================================
+-- HUBS TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Hubs",
+    Icon = ""
+})
+
+        Tab:AddParagraph({
+            Title = "Note",
+            Content = "If you loaded wrong hub here rest hubs..."
+        })
+
+        Tab:AddParagraph({
+            Title = "Normal Hubs",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Badges Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Badges%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Masteries Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Masteries%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Script Hub",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Script%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Main Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+            end
+        })
+
+        Tab:AddParagraph({
+            Title = "Limited Hubs",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Halloween Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Halloween%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Christmas Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Christmas%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddParagraph({
+            Title = "Universal Scripts",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Infinite Yield",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Dex Explorer",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Remote Spy",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+            end
+        })
+
+end
+
+-- ============================================================
+-- DUAL TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Dual",
+    Icon = ""
+})
+
+Tab:AddToggle("DualSlapFarm", {
+    Title = "Dual Slap Farm",
     Default = false,
-    Callback = function(State)
-        local AutoDualRunning = State
-        
+    Callback = function(state)
+        _G.DualSlapRunning = state
+
         local function teleportToRandomPlayer()
             local playerList = Players:GetPlayers()
             if #playerList > 1 then
                 local randomPlayer
                 repeat
                     randomPlayer = playerList[math.random(1, #playerList)]
-                until randomPlayer ~= localPlayer
-                
+                until randomPlayer ~= LocalPlayer
+
                 local char = randomPlayer.Character
                 if char and char:FindFirstChild("HumanoidRootPart") then
-                    local localHRP = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                     if localHRP then
                         localHRP.CFrame = char.HumanoidRootPart.CFrame
                     end
                 end
+            else
+                warn("Not enough players to teleport.")
             end
         end
-        
+
         local function fireGeneralHitForAllPlayers()
             for _, player in pairs(Players:GetPlayers()) do
                 if player.Character then
                     local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                     if rightArm then
-                        pcall(function()
-                            ReplicatedStorage:WaitForChild("GeneralHit"):FireServer(rightArm)
-                        end)
+                        ReplicatedStorage:WaitForChild("DualHit"):FireServer(rightArm)
                     end
                 end
             end
         end
-        
+
         local function runAutoDualSlapLoop()
-            local leaderstats = localPlayer:FindFirstChild("leaderstats")
+            local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
             local glove = leaderstats and leaderstats:FindFirstChild("Glove")
-            
+
             if not (glove and glove.Value == "Dual") then
                 Fluent:Notify({
                     Title = "Error",
                     Content = "Equip Dual glove.",
                     Duration = 3
                 })
+                _G.DualSlapRunning = false
                 return
             end
-            
-            while AutoDualRunning do
+
+            while _G.DualSlapRunning do
                 task.wait(0.5)
                 teleportToRandomPlayer()
                 fireGeneralHitForAllPlayers()
-                if Fluent.Unloaded then break end
             end
         end
-        
-        if State then
-            task.spawn(runAutoDualSlapLoop)
+
+        if state then
+            coroutine.wrap(runAutoDualSlapLoop)()
+        else
+            _G.DualSlapRunning = false
         end
     end
 })
 
--- ===============================
--- REVERSE TAB
--- ===============================
-Tabs.Reverse:AddSection("Slap Farmer")
+end
 
-Tabs.Reverse:AddToggle("AutoSlapReverse", {
+-- ============================================================
+-- REVERSE TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Reverse",
+    Icon = ""
+})
+
+Tab:AddSection("Slap Farmer")
+
+Tab:AddToggle("ReverseSlap", {
     Title = "Auto Slap Reverse With Default Glove",
-    Description = "Automatically slaps players who have the Reversed effect",
     Default = false,
     Callback = function(Value)
-        local AutoSlapReverse = Value
+        _G.AutoSlapReverse = Value
         
         if Value then
             task.spawn(function()
-                local ReverseLocalPlayer = game.Players.LocalPlayer
-                local ReverseReplicatedStorage = game:GetService("ReplicatedStorage")
+                local LocalPlayer = game.Players.LocalPlayer
+                local ReplicatedStorage = game:GetService("ReplicatedStorage")
                 
-                local leaderstats = ReverseLocalPlayer:FindFirstChild("leaderstats")
+                local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
                 local glove = leaderstats and leaderstats:FindFirstChild("Glove")
                 
                 if not (glove and glove.Value == "Default") then
@@ -833,6 +999,7 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                         Content = "Please equip Default glove first!",
                         Duration = 3
                     })
+                    _G.AutoSlapReverse = false
                     return
                 end
                 
@@ -840,7 +1007,7 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                     local reversedPlayers = {}
                     
                     for _, player in ipairs(game.Players:GetPlayers()) do
-                        if player ~= ReverseLocalPlayer then
+                        if player ~= LocalPlayer then
                             local playerModel = workspace:FindFirstChild(player.Name)
                             if playerModel then
                                 local reversedBool = playerModel:FindFirstChild("Reversed")
@@ -862,7 +1029,7 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                         
                         if targetPlayer and targetPlayer.Character then
                             local targetHRP = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-                            local localHRP = ReverseLocalPlayer.Character and ReverseLocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                            local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                             
                             if targetHRP and localHRP then
                                 localHRP.CFrame = targetHRP.CFrame
@@ -878,7 +1045,7 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                         local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                         if rightArm then
                             pcall(function()
-                                ReverseReplicatedStorage:WaitForChild("b"):FireServer(rightArm)
+                                ReplicatedStorage:WaitForChild("b"):FireServer(rightArm)
                             end)
                         end
                     end
@@ -886,12 +1053,13 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                 
                 local function fireGeneralHitOnAllReversedPlayers()
                     local reversedPlayers = getReversedPlayers()
+                    
                     for _, player in ipairs(reversedPlayers) do
                         fireGeneralHitOnPlayer(player)
                     end
                 end
                 
-                while AutoSlapReverse do
+                while _G.AutoSlapReverse do
                     local reversedPlayers = getReversedPlayers()
                     
                     if #reversedPlayers > 0 then
@@ -901,7 +1069,6 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                     end
                     
                     task.wait(0.05)
-                    if Fluent.Unloaded then break end
                 end
             end)
             
@@ -910,18 +1077,20 @@ Tabs.Reverse:AddToggle("AutoSlapReverse", {
                 Content = "Targeting players with Reversed!",
                 Duration = 3
             })
+        else
+            _G.AutoSlapReverse = false
         end
     end
 })
 
-local helperSection = Tabs.Reverse:AddSection("Helper")
+Tab:AddSection("Helper")
 
-Tabs.Reverse:AddToggle("AutoReverseAbility", {
+Tab:AddToggle("ReverseAbility", {
     Title = "Auto Use Reverse's Ability (Each 6.7 Sec)",
-    Description = "Automatically uses Reverse's ability",
     Default = false,
     Callback = function(Value)
-        local AutoRevAbility = Value
+        _G.AutoReverseAbility = Value
+        
         local abilityRemote = nil
         local loopConnection = nil
         
@@ -937,7 +1106,7 @@ Tabs.Reverse:AddToggle("AutoReverseAbility", {
             end)
             
             loopConnection = task.spawn(function()
-                while AutoRevAbility do
+                while _G.AutoReverseAbility do
                     task.wait(6.7)
                     pcall(function()
                         if abilityRemote then
@@ -949,66 +1118,82 @@ Tabs.Reverse:AddToggle("AutoReverseAbility", {
                             end
                         end
                     end)
-                    if Fluent.Unloaded then break end
                 end
             end)
+            
+            _G.AutoReverseAbilityConnection = loopConnection
             
             Fluent:Notify({
                 Title = "Auto Reverse Ability",
                 Content = "Auto using Reverse ability every 6 seconds!",
-                Duration = 3
+                Duration = 2
             })
         else
-            if loopConnection then
-                task.cancel(loopConnection)
+            if _G.AutoReverseAbilityConnection then
+                task.cancel(_G.AutoReverseAbilityConnection)
+                _G.AutoReverseAbilityConnection = nil
             end
         end
     end
 })
 
--- ===============================
+end
+
+-- ============================================================
 -- ENGINEER TAB
--- ===============================
-Tabs.Engineer:AddToggle("EngineerSlapFarm", {
-    Title = "Engineer Slap Farm",
-    Description = "Teleports to turret for Engineer slap farming",
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Engineer",
+    Icon = ""
+})
+
+local EngineerFarm = false
+Tab:AddToggle("EngineerFarm", {
+    Title = "Engineer Slap Farm (Someone Script/U Engineer)",
     Default = false,
     Callback = function(Value)
-        local EngineerFarm = Value
-        
+        EngineerFarm = Value
+
         if EngineerFarm then
             task.spawn(function()
                 while EngineerFarm do
-                    local turret = workspace:FindFirstChild("Turret")
+                    local turret = game.workspace:FindFirstChild("Turret")
                     if turret and turret:FindFirstChild("HingePart") and turret.HingePart:FindFirstChild("Glove") then
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = turret.HingePart.Glove.CFrame
                     end
                     task.wait()
-                    if Fluent.Unloaded then break end
                 end
             end)
         end
     end
 })
 
--- ===============================
--- EL GATO TAB
--- ===============================
-Tabs.ElGato:AddSection("Slap Farmer")
+end
 
-Tabs.ElGato:AddToggle("AutoSlapElGato", {
+-- ============================================================
+-- EL GATO TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "el gato",
+    Icon = ""
+})
+
+Tab:AddSection("Slap Farmer")
+
+Tab:AddToggle("ElGatoSlap", {
     Title = "Auto Slap el gato With Default Glove",
-    Description = "Automatically slaps players with el gato glove",
     Default = false,
     Callback = function(Value)
-        local AutoSlapElGato = Value
+        _G.AutoSlapElGato = Value
         
         if Value then
             task.spawn(function()
-                local EG_LocalPlayer = game.Players.LocalPlayer
-                local EG_ReplicatedStorage = game:GetService("ReplicatedStorage")
+                local LocalPlayer = game.Players.LocalPlayer
+                local ReplicatedStorage = game:GetService("ReplicatedStorage")
                 
-                local leaderstats = EG_LocalPlayer:FindFirstChild("leaderstats")
+                local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
                 local glove = leaderstats and leaderstats:FindFirstChild("Glove")
                 
                 if not (glove and glove.Value == "el gato") then
@@ -1017,6 +1202,7 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                         Content = "Please equip el gato glove first!",
                         Duration = 3
                     })
+                    _G.AutoSlapElGato = false
                     return
                 end
                 
@@ -1024,7 +1210,7 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                     local reversedPlayers = {}
                     
                     for _, player in ipairs(game.Players:GetPlayers()) do
-                        if player ~= EG_LocalPlayer then
+                        if player ~= LocalPlayer then
                             local playerModel = workspace:FindFirstChild(player.Name)
                             if playerModel then
                                 local reversedBool = playerModel:FindFirstChild("Reversed")
@@ -1046,7 +1232,7 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                         
                         if targetPlayer and targetPlayer.Character then
                             local targetHRP = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-                            local localHRP = EG_LocalPlayer.Character and EG_LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                            local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                             
                             if targetHRP and localHRP then
                                 localHRP.CFrame = targetHRP.CFrame
@@ -1062,7 +1248,7 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                         local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                         if rightArm then
                             pcall(function()
-                                local generalHit = EG_ReplicatedStorage:FindFirstChild("GeneralHit")
+                                local generalHit = ReplicatedStorage:FindFirstChild("GeneralHit")
                                 if generalHit then
                                     generalHit:FireServer(rightArm)
                                 end
@@ -1073,12 +1259,13 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                 
                 local function fireGeneralHitOnAllReversedPlayers()
                     local reversedPlayers = getReversedPlayers()
+                    
                     for _, player in ipairs(reversedPlayers) do
                         fireGeneralHitOnPlayer(player)
                     end
                 end
                 
-                while AutoSlapElGato do
+                while _G.AutoSlapElGato do
                     local reversedPlayers = getReversedPlayers()
                     
                     if #reversedPlayers > 0 then
@@ -1088,7 +1275,6 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                     end
                     
                     task.wait(0.05)
-                    if Fluent.Unloaded then break end
                 end
             end)
             
@@ -1097,18 +1283,20 @@ Tabs.ElGato:AddToggle("AutoSlapElGato", {
                 Content = "Targeting players with Reversed!",
                 Duration = 3
             })
+        else
+            _G.AutoSlapElGato = false
         end
     end
 })
 
-local elGatoHelperSection = Tabs.ElGato:AddSection("Helper")
+Tab:AddSection("Helper")
 
-Tabs.ElGato:AddToggle("AutoElGatoAbility", {
+Tab:AddToggle("ElGatoAbility", {
     Title = "Auto Use el gato's Ability (Each 7.1 Sec)",
-    Description = "Automatically uses el gato's ability",
     Default = false,
     Callback = function(Value)
-        local AutoEGAbility = Value
+        _G.AutoReverseAbility = Value
+        
         local abilityRemote = nil
         local loopConnection = nil
         
@@ -1124,7 +1312,7 @@ Tabs.ElGato:AddToggle("AutoElGatoAbility", {
             end)
             
             loopConnection = task.spawn(function()
-                while AutoEGAbility do
+                while _G.AutoReverseAbility do
                     task.wait(7.1)
                     pcall(function()
                         if abilityRemote then
@@ -1136,134 +1324,156 @@ Tabs.ElGato:AddToggle("AutoElGatoAbility", {
                             end
                         end
                     end)
-                    if Fluent.Unloaded then break end
                 end
             end)
+            
+            _G.AutoReverseAbilityConnection = loopConnection
             
             Fluent:Notify({
                 Title = "Auto General Ability",
                 Content = "Auto using General ability every 7.1 seconds!",
-                Duration = 3
+                Duration = 2
             })
         else
-            if loopConnection then
-                task.cancel(loopConnection)
+            if _G.AutoReverseAbilityConnection then
+                task.cancel(_G.AutoReverseAbilityConnection)
+                _G.AutoReverseAbilityConnection = nil
             end
         end
     end
 })
 
--- ===============================
+end
+
+-- ============================================================
 -- ANGLER TAB
--- ===============================
-Tabs.Angler:AddToggle("AutoFish", {
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Angler",
+    Icon = ""
+})
+
+Tab:AddToggle("AnglerFarm", {
     Title = "Angler Slap Farm (Auto Fishing)",
-    Description = "Automatically casts fishing line",
     Default = false,
     Callback = function(Value)
         local ReplicatedStorage = game:GetService("ReplicatedStorage")
         local FishermanEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Fisherman")
-        local running = Value
-        
+        local running = true
+
         local function autoFish()
             while running do
                 task.wait(8)
                 local args = { "cast" }
                 FishermanEvent:FireServer(unpack(args))
-                if Fluent.Unloaded then break end
             end
         end
-        
+
         if Value then
-            task.spawn(autoFish)
+            running = true
+            coroutine.wrap(autoFish)()
+        else
+            running = false
         end
     end
 })
 
--- ===============================
+end
+
+-- ============================================================
 -- BOUNTY TAB
--- ===============================
-Tabs.Bounty:AddToggle("BountySlapFarm", {
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Bounty",
+    Icon = ""
+})
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+_G.BountySlapRunning = false
+
+Tab:AddToggle("BountySlap", {
     Title = "Bounty Slap Farm",
-    Description = "Automatically teleports and slaps players",
     Default = false,
-    Callback = function(State)
-        local BountySlapRunning = State
-        
+    Callback = function(state)
+        _G.BountySlapRunning = state
+
         local function teleportToRandomPlayer()
             local playerList = Players:GetPlayers()
             if #playerList > 1 then
                 local randomPlayer
                 repeat
                     randomPlayer = playerList[math.random(1, #playerList)]
-                until randomPlayer ~= localPlayer
-                
+                until randomPlayer ~= LocalPlayer
+
                 local char = randomPlayer.Character
                 if char and char:FindFirstChild("HumanoidRootPart") then
-                    local localHRP = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-                    if localHRP then
-                        localHRP.CFrame = char.HumanoidRootPart.CFrame
-                    end
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame
                 end
+            else
+                warn("Not enough players to teleport.")
             end
         end
-        
+
         local function fireGeneralHitForAllPlayers()
             for _, player in pairs(Players:GetPlayers()) do
                 if player.Character then
                     local rightArm = player.Character:FindFirstChild("Right Arm") or player.Character:FindFirstChild("RightHand")
                     if rightArm then
-                        pcall(function()
-                            ReplicatedStorage.GeneralHit:FireServer(rightArm)
-                        end)
+                        ReplicatedStorage.GeneralHit:FireServer(rightArm)
                     end
                 end
             end
         end
-        
+
         local function runAutoSlapBountyLoop()
-            if localPlayer.leaderstats.Glove.Value ~= "Bounty" then
+            if LocalPlayer.leaderstats.Glove.Value ~= "Bounty" then
                 Fluent:Notify({
                     Title = "Error",
                     Content = "Equip Bounty glove.",
                     Duration = 3
                 })
+                _G.BountySlapRunning = false
                 return
             end
-            
-            while BountySlapRunning do
-                wait(0.5)
+
+            while _G.BountySlapRunning do
+                task.wait(0.5)
                 teleportToRandomPlayer()
                 fireGeneralHitForAllPlayers()
-                if Fluent.Unloaded then break end
             end
         end
-        
-        if State then
-            task.spawn(runAutoSlapBountyLoop)
+
+        if state then
+            coroutine.wrap(runAutoSlapBountyLoop)()
+        else
+            _G.BountySlapRunning = false
         end
     end
 })
 
-Tabs.Bounty:AddButton({
+Tab:AddButton({
     Title = "Bounty Slap Farm 2 (Slap Aura)",
-    Description = "Activates continuous slapping with Killstreak glove",
     Callback = function()
         if game.Players.LocalPlayer.leaderstats.Glove.Value == "Killstreak" then
-            task.spawn(function()
-                while true do
-                    for _, player in pairs(Players:GetPlayers()) do
-                        if player.Character and player.Character:FindFirstChild("Right Arm") then
-                            local args = { player.Character["Right Arm"] }
-                            pcall(function()
-                                ReplicatedStorage.GeneralHit:FireServer(unpack(args))
-                            end)
-                        end
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Right Arm") then
+                        local args = {
+                            [1] = player.Character["Right Arm"]
+                        }
+                        ReplicatedStorage.GeneralHit:FireServer(unpack(args))
                     end
-                    wait(0.5)
-                    if Fluent.Unloaded then break end
                 end
-            end)
+                wait(0.5)
+            end
         else
             Fluent:Notify({
                 Title = "Error",
@@ -1274,54 +1484,48 @@ Tabs.Bounty:AddButton({
     end
 })
 
--- Load the code from external source (you can change the URL)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Auto%20Cards%20Giver"))()
 
 -- ==========================================
--- TOGGLE: Auto Give Yourself Cards
+-- ORION HUB TOGGLE (KEPT AS ORIGINAL)
 -- ==========================================
-Tabs.Bounty:AddToggle("AutoGiveYourselfCards", {
+Tab:AddToggle("AutoCards", {
     Title = "Auto Give Yourself Cards",
     Default = false,
     Callback = function(Value)
         if Value then
-            if _G.AutoGiveCards then
-                _G.AutoGiveCards.Start()
-            end
+            _G.AutoCardsFarm.Start()
+            Fluent:Notify({
+                Title = "Auto Cards",
+                Content = "Farming started! Every 1 second.",
+                Duration = 3
+            })
         else
-            if _G.AutoGiveCards then
-                _G.AutoGiveCards.Stop()
-            end
+            _G.AutoCardsFarm.Stop()
         end
     end
 })
 
 -- ==========================================
--- PLATFORM SETTINGS (Define these first)
+-- PLATFORM SETTINGS
 -- ==========================================
 local PLATFORM_POSITION = Vector3.new(-103, 3000000, 144.5)
 local PLATFORM_SIZE = Vector3.new(500, 1, 500)
-
--- ==========================================
--- VARIABLES
--- ==========================================
 local safespotPart = nil
 
 -- ==========================================
 -- TOGGLE: Create Safespot
 -- ==========================================
-Tabs.Bounty:AddToggle("CreateSafespot", {
+Tab:AddToggle("CreateSafespot", {
     Title = "Create Safespot",
     Default = false,
     Callback = function(Value)
         if Value then
-            -- Remove existing safespot if any
             if safespotPart then
                 safespotPart:Destroy()
                 safespotPart = nil
             end
             
-            -- Create safespot at the platform position
             safespotPart = Instance.new("Part")
             safespotPart.Name = "Safespot"
             safespotPart.Size = PLATFORM_SIZE
@@ -1339,7 +1543,6 @@ Tabs.Bounty:AddToggle("CreateSafespot", {
                 Duration = 3
             })
         else
-            -- Remove safespot
             if safespotPart then
                 safespotPart:Destroy()
                 safespotPart = nil
@@ -1357,11 +1560,11 @@ Tabs.Bounty:AddToggle("CreateSafespot", {
 -- ==========================================
 -- BUTTON: Teleport To Safespot
 -- ==========================================
-Tabs.Bounty:AddButton({
+Tab:AddButton({
     Title = "Teleport To Safespot",
     Callback = function()
         if safespotPart then
-            local character = game.Players.LocalPlayer.Character
+            local character = LocalPlayer.Character
             if character then
                 local hrp = character:FindFirstChild("HumanoidRootPart")
                 if hrp then
@@ -1385,41 +1588,56 @@ Tabs.Bounty:AddButton({
 })
 
 -- ==========================================
--- CLEANUP ON CHARACTER RESPAWN
+-- CLEANUP
 -- ==========================================
-game.Players.LocalPlayer.CharacterAdded:Connect(function()
-    if _G.AutoGiveCards then
-        _G.AutoGiveCards.Stop()
+LocalPlayer.CharacterAdded:Connect(function()
+    if _G.AutoCardsFarm then
+        _G.AutoCardsFarm.Stop()
     end
 end)
 
--- Cleanup when script stops
 game.Players.LocalPlayer.OnTeleport:Connect(function()
-    if _G.AutoGiveCards then
-        _G.AutoGiveCards.Stop()
+    if _G.AutoCardsFarm then
+        _G.AutoCardsFarm.Stop()
     end
 end)
 
--- ===============================
--- DEBUG TAB
--- ===============================
-local DebugPlayersList = {}
-local DebugSelectedPlayer = nil
-local DebugActiveToggles = {}
+end
 
-local function RefreshDebugPlayersList()
-    DebugPlayersList = {}
+-- ============================================================
+-- DEBUG TAB
+-- ============================================================
+do
+local Tab = Window:AddTab({
+    Title = "Debug",
+    Icon = ""
+})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+local ActiveToggles = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
     for _, player in pairs(Players:GetPlayers()) do
-        if player ~= localPlayer then
-            table.insert(DebugPlayersList, player.Name)
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
         end
     end
-    return DebugPlayersList
+    return PlayersList
 end
 
 local function GetPlayerHitbox(playerName)
     local hitboxName = playerName .. "_hitbox"
-    local hitbox = workspace:FindFirstChild(hitboxName)
+    local hitbox = Workspace:FindFirstChild(hitboxName)
     if hitbox and hitbox:IsA("Part") then
         return hitbox
     end
@@ -1427,8 +1645,8 @@ local function GetPlayerHitbox(playerName)
 end
 
 local function GetLocalPlayerHitbox()
-    local hitboxName = localPlayer.Name .. "_hitbox"
-    local hitbox = workspace:FindFirstChild(hitboxName)
+    local hitboxName = LocalPlayer.Name .. "_hitbox"
+    local hitbox = Workspace:FindFirstChild(hitboxName)
     if hitbox and hitbox:IsA("Part") then
         return hitbox
     end
@@ -1436,7 +1654,7 @@ local function GetLocalPlayerHitbox()
 end
 
 local function GetAnyHitbox()
-    for _, obj in pairs(workspace:GetChildren()) do
+    for _, obj in pairs(Workspace:GetChildren()) do
         if obj:IsA("Part") and string.match(obj.Name, "_hitbox$") then
             return obj
         end
@@ -1444,14 +1662,15 @@ local function GetAnyHitbox()
     return nil
 end
 
+-- Ultra fast flying function
 local function FlyToTarget(targetHitbox)
-    local character = localPlayer.Character
+    local character = LocalPlayer.Character
     if not character then return end
     
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
     
-    for _, obj in pairs(hrp:GetChildren()) do
+    for _, obj in pairs(humanoidRootPart:GetChildren()) do
         if obj:IsA("BodyVelocity") then
             obj:Destroy()
         end
@@ -1460,24 +1679,21 @@ local function FlyToTarget(targetHitbox)
     local bodyVelocity = Instance.new("BodyVelocity")
     bodyVelocity.Velocity = Vector3.new(0, 0, 0)
     bodyVelocity.MaxForce = Vector3.new(50000, 50000, 50000)
-    bodyVelocity.Parent = hrp
+    bodyVelocity.Parent = humanoidRootPart
     
-    local direction = (targetHitbox.Position - hrp.Position).Unit
-    local distance = (targetHitbox.Position - hrp.Position).Magnitude
+    local direction = (targetHitbox.Position - humanoidRootPart.Position).Unit
+    local distance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
+    
     local speed = 50 + (distance * 2)
     bodyVelocity.Velocity = direction * speed
     
     local connection
     connection = RunService.Heartbeat:Connect(function()
-        local currentDistance = (targetHitbox.Position - hrp.Position).Magnitude
+        local currentDistance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
         if currentDistance < 10 then
             bodyVelocity:Destroy()
             connection:Disconnect()
-            hrp.CFrame = targetHitbox.CFrame + Vector3.new(0, 0, 0)
-        end
-        if Fluent.Unloaded then
-            bodyVelocity:Destroy()
-            if connection then connection:Disconnect() end
+            humanoidRootPart.CFrame = targetHitbox.CFrame + Vector3.new(0, 0, 0)
         end
     end)
     
@@ -1491,115 +1707,1026 @@ local function FlyToTarget(targetHitbox)
     end)
 end
 
-local debugSelectionSection = Tabs.Debug:AddSection("Player Selection")
+-- Main Tab
+Tab:AddSection("Player Selection")
 
-local debugDropdown = Tabs.Debug:AddDropdown("DebugPlayerDropdown", {
+local Dropdown = Tab:AddDropdown("DebugPlayerSelect", {
     Title = "Select Player",
-    Values = RefreshDebugPlayersList(),
-    Default = "",
+    Values = RefreshPlayersList(),
+    Default = 1,
     Callback = function(Value)
-        DebugSelectedPlayer = Value
+        SelectedPlayer = Value
     end
 })
 
-Tabs.Debug:AddButton({
+Tab:AddButton({
     Title = "Refresh Players List",
-    Description = "Updates the player dropdown list",
     Callback = function()
-        debugDropdown:SetValues(RefreshDebugPlayersList())
+        Dropdown:SetValues(RefreshPlayersList())
     end
 })
 
-Tabs.Debug:AddToggle("AutoSpawnCube", {
+Tab:AddToggle("DebugAutoSpawn", {
     Title = "Auto Spawn Cube",
-    Description = "Automatically spawns the debug cube",
     Default = false,
     Callback = function(Value)
-        DebugActiveToggles["AutoSpawn"] = Value
+        ActiveToggles["AutoSpawn"] = Value
         if Value then
-            task.spawn(function()
+            coroutine.wrap(function()
                 local DebugEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Debug")
                 
-                while DebugActiveToggles["AutoSpawn"] do
+                while ActiveToggles["AutoSpawn"] do
                     local localHitbox = GetLocalPlayerHitbox()
                     if not localHitbox then
                         DebugEvent:FireServer()
                     end
                     task.wait(0.1)
-                    if Fluent.Unloaded then break end
                 end
-            end)
+            end)()
         end
     end
 })
 
-local debugTeleportSection = Tabs.Debug:AddSection("Auto Teleport")
+-- Teleport Tab
+Tab:AddSection("Auto Teleport")
 
-Tabs.Debug:AddToggle("AutoTouchSelectedCube", {
+Tab:AddToggle("DebugTeleportSelected", {
     Title = "Auto Touch Cube's Selected Player",
-    Description = "Automatically flies to the selected player's cube",
     Default = false,
     Callback = function(Value)
-        DebugActiveToggles["TeleportToSelected"] = Value
+        ActiveToggles["TeleportToSelected"] = Value
         if Value then
-            task.spawn(function()
-                while DebugActiveToggles["TeleportToSelected"] and DebugSelectedPlayer do
-                    local targetHitbox = GetPlayerHitbox(DebugSelectedPlayer)
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToSelected"] and SelectedPlayer do
+                    local targetHitbox = GetPlayerHitbox(SelectedPlayer)
                     if targetHitbox then
                         FlyToTarget(targetHitbox)
                     end
                     task.wait(0.1)
-                    if Fluent.Unloaded then break end
                 end
-            end)
+            end)()
         end
     end
 })
 
-Tabs.Debug:AddToggle("AutoTouchAnyCube", {
+Tab:AddToggle("DebugTeleportAny", {
     Title = "Auto Touch To Any Cube",
-    Description = "Automatically flies to any available cube",
     Default = false,
     Callback = function(Value)
-        DebugActiveToggles["TeleportToAny"] = Value
+        ActiveToggles["TeleportToAny"] = Value
         if Value then
-            task.spawn(function()
-                while DebugActiveToggles["TeleportToAny"] do
+            coroutine.wrap(function()
+                while ActiveToggles["TeleportToAny"] do
                     local anyHitbox = GetAnyHitbox()
                     if anyHitbox then
                         FlyToTarget(anyHitbox)
                     end
                     task.wait(0.1)
-                    if Fluent.Unloaded then break end
                 end
-            end)
+            end)()
         end
     end
 })
 
--- ===============================
--- SETTINGS TAB (VALUE CHANGER)
--- ===============================
-local SlapChanger = nil
-local nullshardChanger = nil
+end
+do
+-- ============================================================
+-- WEBHOOK TAB
+-- ============================================================
+local Tab = Window:AddTab({
+    Title = "Webhook",
+    Icon = ""
+})
 
-local valueSection = Tabs.Settings:AddSection("Value Changer")
+Tab:AddSection(
+    "Webhook for telling u what u have gotten and ur playtime"
+)
 
-Tabs.Settings:AddInput("SlapInput", {
+Tab:AddSection(
+    "NOTE: IF U GONNA IMPORT YOUR WEBHOOK HERE THE DATA WONT GET SENT TO OWNER SO DONT WORRY ABOUT LOSING YOUR WEBHOOK"
+)
+
+-- Webhook Logging System
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+
+local username = LocalPlayer.Name
+
+-- ============================================================
+-- BADGES SYSTEM
+-- ============================================================
+
+local allBadges = {
+    -- REGULAR BADGES
+    {id = "2124743766", name = "Welcome | No Glove", category = "Regular"},
+    {id = "2124760252", name = "You met the owner | No Glove", category = "Regular"},
+    {id = "2124760875", name = "you met snow | No Glove", category = "Regular"},
+    {id = "2124760911", name = "[REDACTED] | No Glove", category = "Regular"},
+    {id = "2124760917", name = "Divine punishment | No Glove", category = "Regular"},
+    {id = "2124760923", name = "really? | No Glove", category = "Regular"},
+    {id = "2124775097", name = "barzil | No Glove", category = "Regular"},
+    {id = "2124807750", name = "The one | No Glove", category = "Regular"},
+    {id = "2124807752", name = "Ascend | No Glove", category = "Regular"},
+    {id = "2124836270", name = "1 0 0 | No Glove", category = "Regular"},
+    {id = "2124912059", name = "The 'Reverse' Incident | No Glove", category = "Regular"},
+    {id = "2147535393", name = "Clipped Wings | No Glove", category = "Regular"},
+    {id = "4414399146292319", name = "Apostle of Judgement | No Glove", category = "Regular"},
+
+    -- GLOVE-REWARDING BADGES
+    {id = "2124760254", name = "Error glove | Link Glove", category = "GloveRewarding"},
+    {id = "2124760895", name = "ez | Moon Glove", category = "GloveRewarding"},
+    {id = "2124760907", name = "court evidence | Hitman Glove", category = "GloveRewarding"},
+    {id = "2124760928", name = "the touch of midas | buddies Glove", category = "GloveRewarding"},
+    {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "GloveRewarding"},
+    {id = "2124819262", name = "Infected | Plague Glove", category = "GloveRewarding"},
+    {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "GloveRewarding"},
+    {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "GloveRewarding"},
+    {id = "2124854307", name = "250 | Bubble Glove", category = "GloveRewarding"},
+    {id = "2124858899", name = "To the moon | bus Glove", category = "GloveRewarding"},
+    {id = "2124875920", name = "Lucky Gift | Mitten Glove", category = "GloveRewarding"},
+    {id = "2124886261", name = "Unphased | Phase Glove", category = "GloveRewarding"},
+    {id = "2124914780", name = "Savior | Warp Glove", category = "GloveRewarding"},
+    {id = "2124919840", name = "Short fuse | Bomb Glove", category = "GloveRewarding"},
+    {id = "2124925929", name = "Harbinger of death | Bubble Glove", category = "GloveRewarding"},
+    {id = "2124930374", name = "Orb of flight | Jet Glove", category = "GloveRewarding"},
+    {id = "2124938910", name = "Firefighter | Shard Glove", category = "GloveRewarding"},
+    {id = "2124989121", name = "Sorry to burst your bubble | potato Glove", category = "GloveRewarding"},
+    {id = "2125850245", name = "good job | CULT Glove", category = "GloveRewarding"},
+    {id = "2125950512", name = "bob | bob Glove", category = "GloveRewarding"},
+    {id = "2126334003", name = "Death Dodger | Jupiter Glove", category = "GloveRewarding"},
+    {id = "2126450753", name = "Predator | Spy Glove", category = "GloveRewarding"},
+    {id = "2126589561", name = "Head Hunter | Detonator Glove", category = "GloveRewarding"},
+    {id = "2127132894", name = "Anticlimactic End | Rage Glove", category = "GloveRewarding"},
+    {id = "2127567042", name = "Brick Master | Trap Glove", category = "GloveRewarding"},
+    {id = "2127703232", name = "YOU MONSTER | Orbit Glove", category = "GloveRewarding"},
+    {id = "2127816588", name = "Island Conqueror | Dominance Glove", category = "GloveRewarding"},
+    {id = "2127861437", name = "Prolonged Anger | Hybrid Glove", category = "GloveRewarding"},
+    {id = "2128012376", name = "The Golden Slapple | Slapple Glove", category = "GloveRewarding"},
+    {id = "2128233612", name = "Memento Mori | Disarm Glove", category = "GloveRewarding"},
+    {id = "2128557186", name = "THE ACCIDENT | Chain Glove", category = "GloveRewarding"},
+    {id = "2128772719", name = "Candy King | Rattlebones Glove", category = "GloveRewarding"},
+    {id = "2129002959", name = "Witch Brew | Witch Glove | Slap Royale", category = "GloveRewarding"},
+    {id = "2129104684", name = "Killer | Charge Glove", category = "GloveRewarding"},
+    {id = "2129212145", name = "Plate Master | Tycoon Glove", category = "GloveRewarding"},
+    {id = "2129474790", name = "what? | Confusion Glove", category = "GloveRewarding"},
+    {id = "2129568267", name = "01010010 01010101 01001110 | Glitch Glove", category = "GloveRewarding"},
+    {id = "2129648848", name = "Engineer's Gift | Snowball Glove", category = "GloveRewarding"},
+    {id = "2129871858", name = "EXPOSED | Elude Glove", category = "GloveRewarding"},
+    {id = "2130031244", name = "RNGod | RNG Glove", category = "GloveRewarding"},
+    {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "GloveRewarding"},
+    {id = "2130155314", name = "🗿 | 🗿 Glove", category = "GloveRewarding"},
+    {id = "2130463063", name = "ULTRAROCK | Obby Glove", category = "GloveRewarding"},
+    {id = "2132544202", name = "Insanity | Voodoo Glove", category = "GloveRewarding"},
+    {id = "2133016756", name = "CHAOS | Goofy Glove", category = "GloveRewarding"},
+    {id = "2136607413", name = "Demonic Ritual | Leash Glove", category = "GloveRewarding"},
+    {id = "2140855364", name = "Underkill | Flamarang Glove", category = "GloveRewarding"},
+    {id = "2141386326", name = "Kinetically Charged | Kinetic Glove", category = "GloveRewarding"},
+    {id = "2141784233", name = "GO BERSERK | Berserk Glove", category = "GloveRewarding"},
+    {id = "2142826462", name = "Incredible Running Man | Sparkly Glove", category = "GloveRewarding"},
+    {id = "2143034526", name = "Boogie With It | Boogie Glove", category = "GloveRewarding"},
+    {id = "2143973603", name = "Repressed Memories | Recall Glove", category = "GloveRewarding"},
+    {id = "2144766764", name = "Blasting Off Again | Quake Glove", category = "GloveRewarding"},
+    {id = "2145165421", name = "Ultimate Control | Psycho Glove", category = "GloveRewarding"},
+    {id = "2145381761", name = "Escape the Abyss | Kraken Glove", category = "GloveRewarding"},
+    {id = "2146130728", name = "Da Maze Runner | Counter Glove", category = "GloveRewarding"},
+    {id = "2146540403", name = "Toolbox | Hammer Glove", category = "GloveRewarding"},
+    {id = "2147429609", name = "Emissary Of Light | rob Glove", category = "GloveRewarding"},
+    {id = "2148234934", name = "Total Rhythm | Rhythm Glove", category = "GloveRewarding"},
+    {id = "2148480065", name = "See in the dark | Rojo Glove", category = "GloveRewarding"},
+    {id = "2148934270", name = "Sharp Shooter | Hitman Glove", category = "GloveRewarding"},
+    {id = "2149637240", name = "Parkour Pwner | Retro Glove", category = "GloveRewarding"},
+    {id = "2150485950", name = "The Relic | Null Glove", category = "GloveRewarding"},
+    {id = "2151266964", name = "Catch Emm All | Lure Glove", category = "GloveRewarding"},
+    {id = "2152295593", name = "Great Escape | Tinkerer Glove", category = "GloveRewarding"},
+    {id = "2152906832", name = "Sweeth-Tooth Sovereign | Necromancer Glove", category = "GloveRewarding"},
+    {id = "2153473254", name = "Containment Breach | Alchemist Glove", category = "GloveRewarding"},
+    {id = "2153911928", name = "Gardens And Ghouls | Druid Glove", category = "GloveRewarding"},
+    {id = "2500227230783997", name = "Now You See Me | Jester Glove", category = "GloveRewarding"},
+    {id = "3318257806017965", name = "Farmland Fray | Scythe Glove", category = "GloveRewarding"},
+    {id = "2895206704788569", name = "Yuletime Might | Santa Glove", category = "GloveRewarding"},
+    {id = "2906002612987222", name = "Slap Battles: On Ice | Iceskate Glove", category = "GloveRewarding"},
+    {id = "3335299217032061", name = "G-Grandson..? | Blasphemy Glove", category = "GloveRewarding"},
+    {id = "4404799574333856", name = "Into the Crypt | Pan Glove", category = "GloveRewarding"},
+    {id = "1840188608156642", name = "CERTIFIED ADMIN | Admin Glove", category = "GloveRewarding"},
+    {id = "1662954021427606", name = "Stand your ground | Joust Glove", category = "GloveRewarding"},
+    {id = "2628581469266954", name = "Easy As Pie | Firework Glove", category = "GloveRewarding"},
+    {id = "1579276416564374", name = "It's Finally Over... | Run Glove", category = "GloveRewarding"},
+    {id = "128402905805563", name = "The Hunt | Glovel Glove", category = "GloveRewarding"},
+    {id = "342573645147372", name = "Null Piercer | Divebomb Glove", category = "GloveRewarding"},
+    {id = "490455814138437", name = "Friend of the Dark | Lamp Glove", category = "GloveRewarding"},
+    {id = "1962623816699442", name = "Code Breaker | Knockoff Glove", category = "GloveRewarding"},
+    {id = "1286358044443937", name = "Ice Essence | Frostbite Glove", category = "GloveRewarding"},
+    {id = "4031317971987872", name = "Cranking 90's | Plank Glove", category = "GloveRewarding"},
+    {id = "2236076719770808", name = "SLAP BATTLES SWEEP | Spoonful Glove", category = "GloveRewarding"},
+    {id = "1354956782555226", name = "Leap of Faith | the schlob Glove", category = "GloveRewarding"},
+    {id = "187186758930457", name = "Caution: High Voltage | Siphon Glove", category = "GloveRewarding"},
+    {id = "2240434593038483", name = "UberCharged | Wrench Glove", category = "GloveRewarding"},
+    {id = "4414076328730650", name = "Nah, I'd win | Avatar Glove", category = "GloveRewarding"},
+    {id = "154204790800271", name = "A Guiding Hand | Relude Glove", category = "GloveRewarding"},
+    {id = "3483144763925839", name = "Bounty Claimed | Hunter Glove", category = "GloveRewarding"},
+    {id = "2193861648156971", name = "How did we get here? | Water Glove", category = "GloveRewarding"},
+    {id = "2657379023348335", name = "FREE OOG! | Fan Glove", category = "GloveRewarding"},
+    {id = "1223765330375569", name = "The Glove | Boxer Glove", category = "GloveRewarding"},
+    {id = "4256352459948010", name = "Orb of Honor | MATERIALIZE Glove", category = "GloveRewarding"},
+    {id = "3199562682373814", name = "Garden of Erasure | Bind Glove", category = "GloveRewarding"},
+    {id = "868768988664040", name = "Fetch me their Souls | Poltergeist Glove", category = "GloveRewarding"},
+    {id = "2035627575374951", name = "Shattered Memories | Clock Glove", category = "GloveRewarding"},
+    {id = "2223110832777636", name = "Hurt me plenty | Untitled Tag Glove", category = "GloveRewarding"},
+    {id = "4390302507334168", name = "Fortress of Dreams | Pillow Glove", category = "GloveRewarding"},
+    {id = "2117833544213343", name = "You're gonna need a bigger glove | Angler Glove", category = "GloveRewarding"},
+    {id = "182408299845710", name = "Snow man left behind | Jerry Glove", category = "GloveRewarding"},
+    {id = "3726156327470282", name = "Insane Minds think Alike | Snowroller Glove", category = "GloveRewarding"},
+    {id = "2460702219299014", name = "Oh! That's a Baseball! | Draw4 Glove", category = "GloveRewarding"},
+    {id = "2146300368310575", name = "Rats, We're Rats, We're the Rats | Mouse Glove", category = "GloveRewarding"},
+    {id = "2090213992277846", name = "Enlightened | Hexa Glove", category = "GloveRewarding"},
+    {id = "1060832194529561", name = "Day in the life of a small Game Developer | Metaverse Glove", category = "GloveRewarding"},
+    {id = "1788920058870613", name = "Sword Fighter of The Heights | Swordfighter Glove", category = "GloveRewarding"},
+    {id = "99649310086892", name = "Pillow Fight | Tank Glove", category = "GloveRewarding"},
+    {id = "2286252038116816", name = "Egging Over It | Eggler Glove", category = "GloveRewarding"},
+    {id = "2442504376213257", name = "Collect My Pages | Slender Glove", category = "GloveRewarding"},
+    {id = "3096378656988806", name = "Captain's Orders | Swashbuckler Glove", category = "GloveRewarding"},
+    {id = "4342029848828580", name = "Banished | Silly Glove", category = "GloveRewarding"},
+    {id = "231810132716643", name = "Reawoken | Slasher Glove", category = "GloveRewarding"},
+    {id = "1294103285471925", name = "Slappy Wheels | Car Keys Glove", category = "GloveRewarding"},
+    {id = "3798851936234989", name = "Plungering Heights | Suction Glove", category = "GloveRewarding"},
+    {id = "1745844401258079", name = "Shattered Reality | Reflect Glove", category = "GloveRewarding"},
+    {id = "663807976473858", name = "Dodecacide | Dave Glove", category = "GloveRewarding"},
+    {id = "1605140663413534", name = "Die Hard | mortis Glove", category = "GloveRewarding"},
+    {id = "1133862849283260", name = "Dead or Alive | Bounty Glove", category = "GloveRewarding"},
+    {id = "117389283982009", name = "Out of Bounds | Debug Glove", category = "GloveRewarding"},
+    {id = "1035608345203235", name = "Color Splash | Paint Glove", category = "GloveRewarding"},
+    {id = "1198780403030188", name = "Ceramic Panic | Plate Glove", category = "GloveRewarding"},
+    {id = "3713925567966983", name = "2000 Ping | Lag Glove", category = "GloveRewarding"},
+    {id = "847759908824783", name = "The Cornfeared | Harvester Glove", category = "GloveRewarding"},
+    {id = "65341581701492", name = "Bullseye | Riftshot Glove", category = "GloveRewarding"},
+    {id = "1304426038175458", name = "Autumnal Conkerer | Conker Glove", category = "GloveRewarding"},
+    {id = "659930747853345", name = "Glass Bones | Wheelchair Glove", category = "GloveRewarding"},
+    {id = "2748677045206815", name = "Snowball Synergy | Elf Glove", category = "GloveRewarding"},
+    {id = "1698466561019878", name = "Minimum Wage | Shopkeeper Glove", category = "GloveRewarding"},
+    {id = "1902849233175110", name = "Find The Gloves | Collector Glove", category = "GloveRewarding"},
+    {id = "1778876340809040", name = "Cleaved in Two | Glaxe Glove", category = "GloveRewarding"},
+    {id = "217389347032866", name = "Birthday Bash | Pinata Glove", category = "GloveRewarding"},
+    {id = "996318649761767", name = "Hibernal Snowstopper | Penguin Glove", category = "GloveRewarding"},
+    {id = "1239535438142380", name = "Untimely End | Undead Glove", category = "GloveRewarding"},
+    {id = "4207775293625676", name = "Clobbering Time! | Groundbreaker Glove", category = "GloveRewarding"},
+    {id = "2604207010521588", name = "Easter Hatchastrophe | Shellbert Glove", category = "GloveRewarding"},
+    {id = "1662521369541218", name = "Genuinely how am I still alive | Lasso Glove", category = "GloveRewarding"},
+    {id = "3964935687406576", name = "Vernal Floralscence | Lotus Glove", category = "GloveRewarding"},
+    {id = "1703260768466206", name = "Fix my dang 'puter | G-X Glove", category = "GloveRewarding"},
+    {id = "3344995751929220", name = "Gum, Gummy, Gone | Elastic Glove", category = "GloveRewarding"},
+    {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "GloveRewarding"},
+    {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
+    {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
+
+    -- SCAVENGER HUNT BADGES
+    {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
+    {id = "2128220957", name = "The Lone Orange | No Glove", category = "ScavengerHunt"},
+
+    -- EVENT BADGES
+    {id = "1195935784919838", name = "The Hunt - [The Hunt Event] | No Glove", category = "Event"},
+    {id = "1801589810989890", name = "Silver 1 | No Glove", category = "Event"},
+    {id = "4120294898386541", name = "Silver 2 | No Glove", category = "Event"},
+    {id = "3549738066523709", name = "Silver 3 | No Glove", category = "Event"},
+    {id = "3260965046908987", name = "Shine 1 | No Glove", category = "Event"},
+    {id = "3021396860328632", name = "Shine 2 | No Glove", category = "Event"},
+    {id = "664912768203321", name = "Shine 3 | No Glove", category = "Event"},
+    {id = "2689428968346995", name = "Shine 4 | No Glove", category = "Event"},
+    {id = "3754491329406300", name = "Shine 5 | No Glove", category = "Event"},
+    {id = "3842447881295457", name = "Jumping Dimensions [LIVE EVENT] | No Glove", category = "Event"},
+    {id = "2817596893524677", name = "The Takeover - Paint the town Neon | No Glove", category = "Event"},
+    {id = "2887389955562389", name = "The Takeover - Canvas Conqueror | No Glove", category = "Event"},
+    {id = "3400717641283825", name = "The Takeover - Splat Battles Champion | No Glove", category = "Event"},
+    {id = "2549860075363782", name = "King of the Snowhill | No Glove", category = "Event"},
+
+    -- CHANGED/DISABLED BADGES
+    {id = "2124760254", name = "Obama glove | Link Glove", category = "ChangedOrDisabled"},
+    {id = "2124760877", name = "pog | No Glove", category = "ChangedOrDisabled"},
+    {id = "2124929812", name = "The Backrooms | No Glove", category = "ChangedOrDisabled"},
+    {id = "2148902927", name = "Sharp Shooter | Hitman Glove", category = "ChangedOrDisabled"},
+    {id = "2895206704788569", name = "Yuletime Might | Santa Glove", category = "ChangedOrDisabled"},
+    {id = "2895206704788569", name = "Snow man left behind | Jerry Glove", category = "ChangedOrDisabled"},
+
+    -- UNRELEASED BADGES
+    {id = "2124760881", name = "Slapping master | No Glove", category = "Unreleased"},
+}
+
+local ownedBadges = {}
+
+local function fetchOwnedBadges()
+    ownedBadges = {}
+    
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then return false end
+    
+    local playerFolder = playerData:FindFirstChild(username)
+    if not playerFolder then return false end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then return false end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                ownedBadges[cleanId] = true
+            end
+        end
+        return true
+    end
+    return false
+end
+
+local WebhookSettings = {
+    WebhookURL = "",
+    SendInterval = "No time",
+    LoggedObjects = {},
+    SlapsThreshold = 0,
+    NullShardsThreshold = 0,
+    Enabled = false,
+    PingType = "No Pings",
+    UserID = "",
+    RoleID = "",
+    LastSlapsValue = 0,
+    LastNullShardsValue = 0,
+    TrackedSlaps = false,
+    TrackedNullShards = false,
+    SlapsStartValue = 0,
+    NullShardsStartValue = 0,
+    IsSlapsTracking = false,
+    IsNullShardsTracking = false,
+    ObjectLogged = {},
+    SlapsLogged = false,
+    NullShardsLogged = false,
+    SlappleLogged = {},
+    GoldenSlappleLogged = false,
+    LastBadgeCheck = {},
+    BadgeLogSent = false,
+}
+
+function WebhookSettings:GetNullShards()
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if playerData then
+        local userData = playerData:FindFirstChild(username)
+        if userData then
+            local nullShards = userData:FindFirstChild("NullShards")
+            if nullShards then
+                return nullShards.Value
+            end
+        end
+    end
+    return 0
+end
+
+local function getPingPrefix()
+    if WebhookSettings.PingType == "No Pings" then
+        return ""
+    elseif WebhookSettings.PingType == "@User Ping" and WebhookSettings.UserID ~= "" then
+        return "<@" .. WebhookSettings.UserID .. "> "
+    elseif WebhookSettings.PingType == "@Role Ping" and WebhookSettings.RoleID ~= "" then
+        return "<@&" .. WebhookSettings.RoleID .. "> "
+    elseif WebhookSettings.PingType == "@Everyone Ping" then
+        return "@everyone "
+    elseif WebhookSettings.PingType == "@Here Ping" then
+        return "@here "
+    end
+    return ""
+end
+
+local function sendWebhookMessage(content)
+    if not WebhookSettings.Enabled or WebhookSettings.WebhookURL == "" then return end
+    
+    local ping = getPingPrefix()
+    local fullContent = ping .. content
+    
+    local payload = {content = fullContent or "No message provided"}
+    local jsonData = HttpService:JSONEncode(payload)
+    
+    local success, response = pcall(function()
+        if syn and syn.request then
+            return syn.request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = jsonData
+            })
+        elseif http_request then
+            return http_request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = jsonData
+            })
+        elseif request then
+            return request({
+                Url = WebhookSettings.WebhookURL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = jsonData
+            })
+        else
+            warn("No request method available for webhook!")
+            return nil, "No request method available"
+        end
+    end)
+    
+    if not success then
+        warn("Failed to send webhook: " .. tostring(response))
+    end
+end
+
+local function getBadgeName(badgeId)
+    for _, badge in pairs(allBadges) do
+        if badge.id == badgeId then
+            return badge.name
+        end
+    end
+    return "Unknown Badge"
+end
+
+-- ============================================================
+-- UI ELEMENTS
+-- ============================================================
+
+Tab:AddInput("WebhookURL", {
+    Title = "Webhook URL",
+    Default = "",
+    Placeholder = "Enter webhook URL here",
+    Callback = function(Value)
+        WebhookSettings.WebhookURL = Value
+    end
+})
+
+Tab:AddDropdown("SendInterval", {
+    Title = "Send Interval",
+    Values = {"No time", "30 Seconds", "1 Minute", "10 Minutes", "30 Minutes", "1 Hour", "5 Hours", "10 Hours", "1 Day"},
+    Default = 1,
+    Callback = function(Value)
+        WebhookSettings.SendInterval = Value
+    end
+})
+
+Tab:AddDropdown("ChooseObjectsSpawnsToLog", {
+    Title = "Choose Objects Spawns To Log",
+    Values = {"Jet Orb", "Phase Orb", "Glitch Orb", "Siphon Orb", "MATERIALIZE Orb", "Slapple", "Golden Slapple", "Toolbox"},
+    Default = {},
+    Multi = true,
+    Callback = function(Values)
+        WebhookSettings.LoggedObjects = Values
+        WebhookSettings.ObjectLogged = {}
+        WebhookSettings.SlappleLogged = {}
+        WebhookSettings.GoldenSlappleLogged = false
+        for _, obj in pairs(Values) do
+            if obj == "Slapple" then
+                WebhookSettings.SlappleLogged[obj] = {}
+            elseif obj == "Golden Slapple" then
+                WebhookSettings.GoldenSlappleLogged = false
+            else
+                WebhookSettings.ObjectLogged[obj] = false
+            end
+        end
+    end
+})
+
+Tab:AddDropdown("SlapsThreshold", {
+    Title = "Slaps Threshold",
+    Values = {"100+ Slaps", "1000+ Slaps", "10000+ Slaps", "100000+ Slaps", "1000000+ Slaps", "Custom Slaps Amount"},
+    Default = 2,
+    Callback = function(Value)
+        if Value == "Custom Slaps Amount" then
+            WebhookSettings.SlapsThreshold = 0
+        else
+            local num = tonumber(Value:match("(%d+)")) or 0
+            WebhookSettings.SlapsThreshold = num
+            WebhookSettings.TrackedSlaps = false
+            WebhookSettings.SlapsLogged = false
+        end
+    end
+})
+
+Tab:AddInput("CustomSlapsAmount", {
+    Title = "Custom Slaps Amount (e.g., 5000+)",
+    Default = "",
+    Placeholder = "Enter custom amount",
+    Callback = function(Value)
+        local num = tonumber(Value:match("(%d+)")) or 0
+        WebhookSettings.SlapsThreshold = num
+        WebhookSettings.TrackedSlaps = false
+        WebhookSettings.SlapsLogged = false
+    end
+})
+
+Tab:AddDropdown("NullShardsThreshold", {
+    Title = "Null Shards Threshold",
+    Values = {"10+ Null Shards", "100+ Null Shards", "1000+ Null Shards", "10000+ Null Shards", "Custom Null Shards Amount"},
+    Default = 2,
+    Callback = function(Value)
+        if Value == "Custom Null Shards Amount" then
+            WebhookSettings.NullShardsThreshold = 0
+        else
+            local num = tonumber(Value:match("(%d+)")) or 0
+            WebhookSettings.NullShardsThreshold = num
+            WebhookSettings.TrackedNullShards = false
+            WebhookSettings.NullShardsLogged = false
+        end
+    end
+})
+
+Tab:AddInput("CustomNullShardsAmount", {
+    Title = "Custom Null Shards Amount (e.g., 5000+)",
+    Default = "",
+    Placeholder = "Enter custom amount",
+    Callback = function(Value)
+        local num = tonumber(Value:match("(%d+)")) or 0
+        WebhookSettings.NullShardsThreshold = num
+        WebhookSettings.TrackedNullShards = false
+        WebhookSettings.NullShardsLogged = false
+    end
+})
+
+Tab:AddDropdown("PingType", {
+    Title = "Ping Type",
+    Values = {"No Pings", "@User Ping", "@Role Ping", "@Everyone Ping", "@Here Ping"},
+    Default = 1,
+    Callback = function(Value)
+        WebhookSettings.PingType = Value
+    end
+})
+
+Tab:AddInput("DiscordUserID", {
+    Title = "Discord User ID (for @User Ping)",
+    Default = "",
+    Placeholder = "Enter user ID",
+    Callback = function(Value)
+        WebhookSettings.UserID = Value
+    end
+})
+
+Tab:AddInput("DiscordRoleID", {
+    Title = "Discord Role ID (for @Role Ping)",
+    Default = "",
+    Placeholder = "Enter role ID",
+    Callback = function(Value)
+        WebhookSettings.RoleID = Value
+    end
+})
+
+Tab:AddToggle("EnableWebhookLogging", {
+    Title = "Enable Webhook Logging",
+    Default = false,
+    Callback = function(value)
+        if value then
+            WebhookSettings.Enabled = true
+            WebhookSettings.LastSlapsValue = LocalPlayer.leaderstats.Slaps.Value
+            WebhookSettings.LastNullShardsValue = WebhookSettings:GetNullShards()
+            WebhookSettings.SlapsStartValue = WebhookSettings.LastSlapsValue
+            WebhookSettings.NullShardsStartValue = WebhookSettings.LastNullShardsValue
+            WebhookSettings.IsSlapsTracking = true
+            WebhookSettings.IsNullShardsTracking = true
+            WebhookSettings.SlapsLogged = false
+            WebhookSettings.NullShardsLogged = false
+            WebhookSettings.BadgeLogSent = false
+            WebhookSettings.ObjectLogged = {}
+            WebhookSettings.SlappleLogged = {}
+            WebhookSettings.GoldenSlappleLogged = false
+            WebhookSettings.LastBadgeCheck = {}
+            
+            pcall(fetchOwnedBadges)
+            for badgeId, _ in pairs(ownedBadges) do
+                WebhookSettings.LastBadgeCheck[badgeId] = true
+            end
+            
+            for _, obj in pairs(WebhookSettings.LoggedObjects) do
+                if obj == "Slapple" then
+                    WebhookSettings.SlappleLogged[obj] = {}
+                elseif obj == "Golden Slapple" then
+                    WebhookSettings.GoldenSlappleLogged = false
+                else
+                    WebhookSettings.ObjectLogged[obj] = false
+                end
+            end
+            sendWebhookMessage("✅ Webhook logging **STARTED**!")
+        else
+            sendWebhookMessage("🛑 Webhook logging **STOPPED**!")
+            WebhookSettings.Enabled = false
+        end
+    end
+})
+
+-- ============================================================
+-- TRACKING FUNCTIONS
+-- ============================================================
+
+local function checkObjectSpawns()
+    if not WebhookSettings.Enabled then return end
+    
+    local objectsToCheck = {
+        ["Jet Orb"] = workspace:FindFirstChild("JetOrb"),
+        ["Phase Orb"] = workspace:FindFirstChild("PhaseOrb"),
+        ["Glitch Orb"] = workspace:FindFirstChild("GlitchOrb"),
+        ["Siphon Orb"] = workspace:FindFirstChild("SiphonOrb"),
+        ["MATERIALIZE Orb"] = workspace:FindFirstChild("MATERIALIZEOrb"),
+        ["Toolbox"] = workspace:FindFirstChild("Toolbox"),
+    }
+    
+    for name, object in pairs(objectsToCheck) do
+        if table.find(WebhookSettings.LoggedObjects, name) then
+            if object and not WebhookSettings.ObjectLogged[name] then
+                WebhookSettings.ObjectLogged[name] = true
+                
+                local placeName = "Unknown"
+                pcall(function()
+                    local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                    if info and info.Name then
+                        placeName = info.Name
+                    end
+                end)
+                
+                local message = string.format(
+                    "**From Webhook Log:**\n\n**Detected | Spawned:** %s\n\n**Name:** %s\n**Real Name:** %s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                    name, name, object.Name, placeName, game.PlaceId, game.JobId
+                )
+                sendWebhookMessage(message)
+            elseif not object then
+                WebhookSettings.ObjectLogged[name] = false
+            end
+        end
+    end
+    
+    if table.find(WebhookSettings.LoggedObjects, "Slapple") then
+        local slapplesFolder = workspace:FindFirstChild("Arena")
+        if slapplesFolder then
+            local island5 = slapplesFolder:FindFirstChild("island5")
+            if island5 then
+                local slapples = island5:FindFirstChild("Slapples")
+                if slapples then
+                    for _, model in ipairs(slapples:GetChildren()) do
+                        if model:IsA("Model") then
+                            local gloveMesh = model:FindFirstChild("Glove")
+                            if gloveMesh and gloveMesh:IsA("MeshPart") then
+                                local transparency = gloveMesh.Transparency
+                                local modelName = model.Name
+                                
+                                if not WebhookSettings.SlappleLogged[modelName] then
+                                    if transparency == 0 then
+                                        WebhookSettings.SlappleLogged[modelName] = true
+                                        
+                                        local placeName = "Unknown"
+                                        pcall(function()
+                                            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                                            if info and info.Name then
+                                                placeName = info.Name
+                                            end
+                                        end)
+                                        
+                                        local message = string.format(
+                                            "**From Webhook Log:**\n\n**Detected | Spawned:** Slapple\n\n**Name:** Slapple\n**Real Name:** %s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                                            modelName, placeName, game.PlaceId, game.JobId
+                                        )
+                                        sendWebhookMessage(message)
+                                    end
+                                elseif transparency == 1 then
+                                    WebhookSettings.SlappleLogged[modelName] = nil
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    if table.find(WebhookSettings.LoggedObjects, "Golden Slapple") then
+        local slapplesFolder = workspace:FindFirstChild("Arena")
+        if slapplesFolder then
+            local island5 = slapplesFolder:FindFirstChild("island5")
+            if island5 then
+                local slapples = island5:FindFirstChild("Slapples")
+                if slapples then
+                    local goldenSlapple = slapples:FindFirstChild("GoldenSlapple")
+                    if goldenSlapple and goldenSlapple:IsA("Model") then
+                        local gloveMesh = goldenSlapple:FindFirstChild("Glove")
+                        if gloveMesh and gloveMesh:IsA("MeshPart") then
+                            local transparency = gloveMesh.Transparency
+                            
+                            if transparency == 0 and not WebhookSettings.GoldenSlappleLogged then
+                                WebhookSettings.GoldenSlappleLogged = true
+                                
+                                local placeName = "Unknown"
+                                pcall(function()
+                                    local info = MarketplaceService:GetProductInfo(game.PlaceId)
+                                    if info and info.Name then
+                                        placeName = info.Name
+                                    end
+                                end)
+                                
+                                local message = string.format(
+                                    "**From Webhook Log:**\n\n**Detected | Spawned:** Golden Slapple\n\n**Name:** Golden Slapple\n**Real Name:** GoldenSlapple\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+                                    placeName, game.PlaceId, game.JobId
+                                )
+                                sendWebhookMessage(message)
+                            elseif transparency == 1 then
+                                WebhookSettings.GoldenSlappleLogged = false
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function checkSlaps()
+    if not WebhookSettings.Enabled or WebhookSettings.SlapsThreshold == 0 or not WebhookSettings.IsSlapsTracking then return end
+    
+    local currentSlaps = LocalPlayer.leaderstats.Slaps.Value
+    local previousSlaps = WebhookSettings.LastSlapsValue
+    
+    if currentSlaps >= WebhookSettings.SlapsThreshold and currentSlaps > previousSlaps then
+        WebhookSettings.LastSlapsValue = currentSlaps
+        local earnedSlaps = currentSlaps - WebhookSettings.SlapsStartValue
+        
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        local message = string.format(
+            "**Slaps Counter Log**\n\n**Name:** Slaps\n**Before Amount:** %s\n**After Amount:** %s\n**Earned Total Slaps:** +%s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+            WebhookSettings.SlapsStartValue, currentSlaps, earnedSlaps, placeName, game.PlaceId, game.JobId
+        )
+        sendWebhookMessage(message)
+        WebhookSettings.SlapsStartValue = currentSlaps
+    end
+end
+
+local function checkNullShards()
+    if not WebhookSettings.Enabled or WebhookSettings.NullShardsThreshold == 0 or not WebhookSettings.IsNullShardsTracking then return end
+    
+    local currentNullShards = WebhookSettings:GetNullShards()
+    local previousNullShards = WebhookSettings.LastNullShardsValue
+    
+    if currentNullShards >= WebhookSettings.NullShardsThreshold and currentNullShards > previousNullShards then
+        WebhookSettings.LastNullShardsValue = currentNullShards
+        local earnedNullShards = currentNullShards - WebhookSettings.NullShardsStartValue
+        
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        local message = string.format(
+            "**Null Shards Counter Log**\n\n**Name:** Null Shards\n**Before Amount:** %s\n**After Amount:** %s\n**Earned Total Null Shards:** +%s\n**Place Name:** %s\n**Place ID:** %s\n**JobID:** %s",
+            WebhookSettings.NullShardsStartValue, currentNullShards, earnedNullShards, placeName, game.PlaceId, game.JobId
+        )
+        sendWebhookMessage(message)
+        WebhookSettings.NullShardsStartValue = currentNullShards
+    end
+end
+
+local function checkBadges()
+    if not WebhookSettings.Enabled then return end
+    
+    local success = pcall(fetchOwnedBadges)
+    if not success then return end
+    
+    local newBadges = {}
+    for badgeId, _ in pairs(ownedBadges) do
+        if not WebhookSettings.LastBadgeCheck[badgeId] then
+            table.insert(newBadges, badgeId)
+            WebhookSettings.LastBadgeCheck[badgeId] = true
+        end
+    end
+    
+    if #newBadges > 0 then
+        local placeName = "Unknown"
+        pcall(function()
+            local info = MarketplaceService:GetProductInfo(game.PlaceId)
+            if info and info.Name then
+                placeName = info.Name
+            end
+        end)
+        
+        local newBadgeNames = {}
+        for _, id in pairs(newBadges) do
+            for _, badge in pairs(allBadges) do
+                if badge.id == id then
+                    table.insert(newBadgeNames, badge.name .. " (`" .. id .. "`)")
+                    break
+                end
+            end
+        end
+        
+        local ownedList = {}
+        for id, _ in pairs(WebhookSettings.LastBadgeCheck) do
+            table.insert(ownedList, id)
+        end
+        
+        local missingList = {}
+        for _, badge in pairs(allBadges) do
+            if badge.category == "GloveRewarding" and not ownedBadges[badge.id] then
+                table.insert(missingList, badge.id)
+            end
+        end
+        
+        local message = string.format(
+            "**🎉 NEW BADGE(S) UNLOCKED!**\n\n" ..
+            "**Badge(s):**\n%s\n\n" ..
+            "**Place Name:** %s\n" ..
+            "**Place ID:** %s\n" ..
+            "**JobID:** %s\n\n" ..
+            "**Total Badges Unlocked:** %s\n" ..
+            "**Missing Glove Badges:** %s",
+            table.concat(newBadgeNames, "\n"),
+            placeName,
+            game.PlaceId,
+            game.JobId,
+            #ownedList > 0 and #ownedList .. " badges" or "None",
+            #missingList > 0 and #missingList .. " badges" or "None"
+        )
+        sendWebhookMessage(message)
+    end
+end
+
+local function startWebhookLoop()
+    while true do
+        if WebhookSettings.Enabled then
+            pcall(checkObjectSpawns)
+            pcall(checkSlaps)
+            pcall(checkNullShards)
+            pcall(checkBadges)
+        end
+        
+        local waitTime = 1
+        if WebhookSettings.SendInterval == "30 Seconds" then 
+            waitTime = 30
+        elseif WebhookSettings.SendInterval == "1 Minute" then 
+            waitTime = 60
+        elseif WebhookSettings.SendInterval == "10 Minutes" then 
+            waitTime = 600
+        elseif WebhookSettings.SendInterval == "30 Minutes" then 
+            waitTime = 1800
+        elseif WebhookSettings.SendInterval == "1 Hour" then 
+            waitTime = 3600
+        elseif WebhookSettings.SendInterval == "5 Hours" then 
+            waitTime = 18000
+        elseif WebhookSettings.SendInterval == "10 Hours" then 
+            waitTime = 36000
+        elseif WebhookSettings.SendInterval == "1 Day" then 
+            waitTime = 86400
+        end
+        
+        task.wait(waitTime)
+    end
+end
+
+task.spawn(startWebhookLoop)
+end
+do
+-- ============================================================
+-- CREDITS TAB
+-- ============================================================
+local Tab = Window:AddTab({
+    Title = "Credits",
+    Icon = ""
+})
+
+Tab:AddSection(
+    "Credits Users"
+)
+
+Tab:AddParagraph({
+    Title = "Credits List:",
+    Content = [[
+Nexer - (Youtube, Discord)
+BaconScripter - (Youtube, Discord)
+Scripter - (Youtube, Discord)
+Kiet Scripter - (Youtube, Discord, Roblox Group)
+St1mlx The Scripter - (Youtube, Discord)
+]]
+})
+
+Tab:AddSection(
+    "Helpers"
+)
+
+Tab:AddParagraph({
+    Title = "Helpers List:",
+    Content = [[
+R̸o̴b̵S̸c̴r̷i̸p̷t̷e̸r̶ - rob_bloxy || Old Slap Aura Remotes
+Shadow - cool_12344321 || Pinata Badge Glove Script
+St1mlx - st1mlx || Mastery Info + Camera Badge Glove Script
+Alya (I want friends to call) - sync_nah || New Slap Aura Remotes
+]]
+})
+
+Tab:AddSection(
+    "Links"
+)
+
+Tab:AddButton({
+    Title = "Nexer (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@nexer1234")
+    end
+})
+
+Tab:AddButton({
+    Title = "Nexer (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/z5b2vhJRnF")
+    end
+})
+
+Tab:AddButton({
+    Title = "BaconScripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@BaconScripters")
+    end
+})
+
+Tab:AddButton({
+    Title = "BaconScripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/29zcq8NWBC")
+    end
+})
+
+Tab:AddButton({
+    Title = "Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@Scripter-Coder")
+    end
+})
+
+Tab:AddButton({
+    Title = "Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/v5swRqZzBG")
+    end
+})
+
+Tab:AddButton({
+    Title = "Kiet Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@TheSPRG")
+    end
+})
+
+Tab:AddButton({
+    Title = "Kiet Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/emvU4HuQFk")
+    end
+})
+
+Tab:AddButton({
+    Title = "St1mlx The Scripter (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@St1mlx-scripter")
+    end
+})
+
+Tab:AddButton({
+    Title = "St1mlx The Scripter (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/na2udBbTrc")
+    end
+})
+end
+do
+-- ============================================================
+-- SETTINGS TAB
+-- ============================================================
+local Tab = Window:AddTab({
+    Title = "Settings",
+    Icon = ""
+})
+
+-- Section: Value Changer
+Tab:AddSection(
+    "Value Changer"
+)
+
+Tab:AddInput("HowManySlaps", {
     Title = "How Many Slaps? (Visual)",
     Default = "",
     Placeholder = "Enter number",
-    Numeric = true,
-    Finished = false,
     Callback = function(Value)
         local slapNumber = tonumber(Value)
         if slapNumber and slapNumber > 0 then
             SlapChanger = slapNumber
-            Fluent:Notify({
-                Title = "Success",
-                Content = "Slap value set to: " .. slapNumber,
-                Duration = 2
-            })
         else
             Fluent:Notify({
                 Title = "Error",
@@ -1610,52 +2737,29 @@ Tabs.Settings:AddInput("SlapInput", {
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Set Slaps (Visual)",
-    Description = "Sets your slap count visually",
     Callback = function()
         if SlapChanger then
-            local success, err = pcall(function()
-                game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
-            end)
-            if success then
-                Fluent:Notify({
-                    Title = "Success",
-                    Content = "Slaps set to: " .. SlapChanger,
-                    Duration = 3
-                })
-            else
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "Failed to set slaps: " .. tostring(err),
-                    Duration = 3
-                })
-            end
+            game.Players.LocalPlayer.leaderstats.Slaps.Value = SlapChanger
         else
             Fluent:Notify({
                 Title = "Error",
-                Content = "Please enter a valid number of slaps first!",
+                Content = "Please enter a valid number of slaps!",
                 Duration = 3
             })
         end
     end
 })
 
-Tabs.Settings:AddInput("NullShardInput", {
+Tab:AddInput("HowManyNullShards", {
     Title = "How Many Null Shards? (Visual)",
     Default = "",
     Placeholder = "Enter number",
-    Numeric = true,
-    Finished = false,
     Callback = function(Value)
         local nullshardNumber = tonumber(Value)
         if nullshardNumber and nullshardNumber >= 0 then
-            nullshardChanger = tostring(nullshardNumber)
-            Fluent:Notify({
-                Title = "Success",
-                Content = "Null Shards value set to: " .. nullshardNumber,
-                Duration = 2
-            })
+            getgenv().nullshardChanger = tostring(nullshardNumber)
         else
             Fluent:Notify({
                 Title = "Error",
@@ -1666,71 +2770,23 @@ Tabs.Settings:AddInput("NullShardInput", {
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Set Null Shards (Visual)",
-    Description = "Sets your Null Shards count visually",
     Callback = function()
-        if nullshardChanger then
+        if getgenv().nullshardChanger then
             local playerName = game.Players.LocalPlayer.Name
             local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local playerData = ReplicatedStorage:WaitForChild("PlayerData", 5)
+            if not playerData then return end
+            local playerFolder = playerData:WaitForChild(playerName, 5)
+            if not playerFolder then return end
+            local nullShardsValue = playerFolder:WaitForChild("NullShards", 5)
+            if not nullShardsValue then return end
+            if nullShardsValue.ClassName ~= "StringValue" then return end
             
-            local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
-            if not playerData then
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "PlayerData folder not found!",
-                    Duration = 3
-                })
-                return
-            end
-            
-            local playerFolder = playerData:FindFirstChild(playerName)
-            if not playerFolder then
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "Player folder not found!",
-                    Duration = 3
-                })
-                return
-            end
-            
-            local nullShardsValue = playerFolder:FindFirstChild("NullShards")
-            if not nullShardsValue then
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "NullShards value not found!",
-                    Duration = 3
-                })
-                return
-            end
-            
-            if nullShardsValue.ClassName ~= "StringValue" then
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "NullShards is not a StringValue!",
-                    Duration = 3
-                })
-                return
-            end
-            
-            local success, err = pcall(function()
-                local oldValue = nullShardsValue.Value
-                nullShardsValue.Value = nullshardChanger
-            end)
-            
-            if success then
-                Fluent:Notify({
-                    Title = "Success",
-                    Content = "Null Shards set to: " .. nullshardChanger,
-                    Duration = 3
-                })
-            else
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "Failed to set Null Shards: " .. tostring(err),
-                    Duration = 3
-                })
-            end
+            local oldValue = nullShardsValue.Value
+            nullShardsValue.Value = getgenv().nullshardChanger
+            print("[Null Shards] Changed from " .. oldValue .. " to " .. getgenv().nullshardChanger)
         else
             Fluent:Notify({
                 Title = "Error",
@@ -1741,25 +2797,26 @@ Tabs.Settings:AddButton({
     end
 })
 
-local badgeSection = Tabs.Settings:AddSection("Stuff Giver")
+-- Section: Stuff Giver
+Tab:AddSection(
+    "Stuff Giver"
+)
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Give All Badges (Visual)",
-    Description = "Gives you all badges (visual only)",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro666Pro/getallbadges_fake/main/main.lua'))()
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Give All Emotes (Free + Fe)",
-    Description = "Gives you all emotes",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/KietVN02202/KietVN02202/refs/heads/main/FeFreeEmote.lua"))()
     end
 })
 
--- Death Sound Variables
+-- Death Sound Modifier
 local deathSoundEnabled = false
 local currentSoundId = ""
 local monitorConnection = nil
@@ -1770,19 +2827,14 @@ local function cleanupConnections()
         monitorConnection:Disconnect()
         monitorConnection = nil
     end
-    
     for _, conn in pairs(childAddedConnections) do
-        pcall(function()
-            conn:Disconnect()
-        end)
+        pcall(function() conn:Disconnect() end)
     end
     childAddedConnections = {}
 end
 
 local function modifyDeathSounds(character)
-    if not deathSoundEnabled then return end
-    if not character then return end
-    
+    if not deathSoundEnabled or not character then return end
     local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
     if not torso then return end
     
@@ -1802,7 +2854,6 @@ end
 
 local function setupSoundListener(character)
     if not character then return end
-    
     local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
     if not torso then return end
     
@@ -1811,32 +2862,23 @@ local function setupSoundListener(character)
             local soundName = child.Name:lower()
             if soundName:find("death") or soundName:find("die") then
                 task.wait(0.1)
-                pcall(function()
-                    child.SoundId = currentSoundId
-                end)
+                pcall(function() child.SoundId = currentSoundId end)
             end
         end
     end)
-    
     table.insert(childAddedConnections, connection)
 end
 
 local function startMonitoring()
     if monitorConnection then return end
-    
     monitorConnection = game:GetService("RunService").Heartbeat:Connect(function()
         if deathSoundEnabled then
             local character = game.Players.LocalPlayer.Character
-            if character then
-                modifyDeathSounds(character)
-            end
+            if character then modifyDeathSounds(character) end
         end
     end)
-    
     local character = game.Players.LocalPlayer.Character
-    if character then
-        setupSoundListener(character)
-    end
+    if character then setupSoundListener(character) end
 end
 
 local function stopMonitoring()
@@ -1845,7 +2887,6 @@ end
 
 local function updateAllDeathSounds()
     if not deathSoundEnabled then return end
-    
     local character = game.Players.LocalPlayer.Character
     if character then
         local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
@@ -1854,9 +2895,7 @@ local function updateAllDeathSounds()
                 if sound:IsA("Sound") then
                     local soundName = sound.Name:lower()
                     if soundName:find("death") or soundName:find("die") then
-                        pcall(function()
-                            sound.SoundId = currentSoundId
-                        end)
+                        pcall(function() sound.SoundId = currentSoundId end)
                     end
                 end
             end
@@ -1864,12 +2903,12 @@ local function updateAllDeathSounds()
     end
 end
 
-Tabs.Settings:AddParagraph({
+Tab:AddParagraph({
     Title = "Custom Sound ID:",
     Content = "Enter your sound ID below (format: rbxassetid://1234567890)"
 })
 
-Tabs.Settings:AddInput("SoundIDInput", {
+Tab:AddInput("PutCustomSoundID", {
     Title = "Put Custom Sound ID",
     Default = "",
     Placeholder = "rbxassetid://1234567890",
@@ -1880,33 +2919,27 @@ Tabs.Settings:AddInput("SoundIDInput", {
             else
                 currentSoundId = value
             end
-            
-            if deathSoundEnabled then
-                updateAllDeathSounds()
-            end
-            
+            if deathSoundEnabled then updateAllDeathSounds() end
             Fluent:Notify({
                 Title = "Sound ID Updated",
-                Content = "New sound ID set",
+                Content = "New sound ID: " .. currentSoundId,
                 Duration = 2
             })
         end
     end
 })
 
-Tabs.Settings:AddToggle("AutoApplyDeathSound", {
+Tab:AddToggle("AutoApplyDeathSound", {
     Title = "Auto Apply Death Sound",
-    Description = "Changes death sounds to your custom sound",
     Default = false,
-    Callback = function(Value)
-        deathSoundEnabled = Value
-        
-        if Value then
+    Callback = function(value)
+        deathSoundEnabled = value
+        if value then
             startMonitoring()
             updateAllDeathSounds()
             Fluent:Notify({
                 Title = "Death Sound Modifier",
-                Content = "Enabled!",
+                Content = "Enabled! Death sounds will be changed to: " .. currentSoundId,
                 Duration = 3
             })
         else
@@ -1917,7 +2950,6 @@ Tabs.Settings:AddToggle("AutoApplyDeathSound", {
 
 game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
     task.wait(0.5)
-    
     if deathSoundEnabled then
         setupSoundListener(character)
         task.wait(0.2)
@@ -1927,35 +2959,22 @@ end)
 
 startMonitoring()
 
-Tabs.Settings:AddToggle("AntiAfkSettings", {
-    Title = "Anti Afk",
-    Description = "Prevents being kicked for inactivity",
-    Default = false,
-    Callback = function(Value)
-        local VirtualUser = game:GetService('VirtualUser')
-        game:GetService('Players').LocalPlayer.Idled:Connect(function()
-            VirtualUser:CaptureController()
-            VirtualUser:ClickButton2(Vector2.new())
-        end)
-    end
-})
-
--- Nametag Variables
+-- Nametag Changer
 local nametagText = ""
 local autoNametag = false
+local player = game.Players.LocalPlayer
 
-Tabs.Settings:AddInput("NametagInput", {
-    Title = "Type Your Own Any Nametag",
+Tab:AddInput("TypeUrOwnAnyNametag", {
+    Title = "Type Ur Own Any Nametag",
     Default = "",
-    Placeholder = "Enter nametag text",
+    Placeholder = "Enter nametag",
     Callback = function(Value)
         nametagText = Value
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Change Nametag",
-    Description = "Changes your nametag text",
     Callback = function()
         if nametagText == "" then
             Fluent:Notify({
@@ -2002,9 +3021,8 @@ Tabs.Settings:AddButton({
     end
 })
 
-Tabs.Settings:AddToggle("AutoChangeNametag", {
+Tab:AddToggle("AutoChangeNametag", {
     Title = "Auto Change Nametag",
-    Description = "Automatically reapplies your nametag",
     Default = false,
     Callback = function(Value)
         autoNametag = Value
@@ -2024,7 +3042,6 @@ Tabs.Settings:AddToggle("AutoChangeNametag", {
                         end
                     end
                     task.wait(0.01)
-                    if Fluent.Unloaded then break end
                 end
             end)
         end
@@ -2052,7 +3069,6 @@ _G.BackpackV2 = false
 _G.BackpackV2Loop = true
 _G.ConnectFun = _G.ConnectFun or {}
 
--- Store original positions
 if _G.Backpack == nil then
     _G.Backpack = {
         ["Old"] = {
@@ -2075,7 +3091,6 @@ if _G.Backpack == nil then
     end
 end
 
--- Main loop for backpack styling
 spawn(function()
     while _G.BackpackV2Loop do
         if game:GetService("CoreGui").RobloxGui.Backpack:FindFirstChild("Hotbar") then
@@ -2201,7 +3216,6 @@ spawn(function()
     end
 end)
 
--- Function for backpack slot interactions
 local function BackpackV2(v)
     v.MouseEnter:Connect(function()
         if _G.BackpackV2 == true then
@@ -2242,70 +3256,343 @@ local function BackpackV2(v)
     end)
 end
 
--- Apply to existing hotbar slots
 for i, v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
     if v:IsA("TextButton") then
         BackpackV2(v)
     end
 end
 
--- Apply to new slots when added
 table.insert(_G.ConnectFun, game:GetService("CoreGui").RobloxGui.Backpack.Inventory.ScrollingFrame.UIGridFrame.ChildAdded:Connect(function(v)
     if v:IsA("TextButton") then
         BackpackV2(v)
     end
 end))
 
--- ==========================================
--- TOGGLE: Backpack V2
--- ==========================================
-Tab:AddToggle("BackpackV2Toggle", {
+Tab:AddToggle("BackpackV2", {
     Title = "Backpack V2 (Cool Style UI)",
     Default = false,
     Callback = function(Value)
         _G.BackpackV2 = Value
-        
         if Value then
             Fluent:Notify({
                 Title = "Backpack V2",
                 Content = "Backpack V2 Enabled!",
                 Duration = 2
             })
-        else
-            -- do nothing
         end
     end
 })
 
--- Slap Aura Section
-local slapAuraSection = Tabs.Settings:AddSection("Slap Aura")
+Tab:AddSection(
+    "Slap Aura"
+)
 
 -- Optimized Slap Aura
 do
+    local RunService = game:GetService("RunService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    
     local slapAuraConnection
     local lastHitTime = 0
     local currentCooldown = 0.5
     local isSlapAuraEnabled = false
-    local auraLocalPlayer = Players.LocalPlayer
+    local localPlayer = Players.LocalPlayer
     
     local gloveHits = {
         ["Default"] = ReplicatedStorage.b,
-        ["Dual"] = ReplicatedStorage.GeneralHit,
         ["Diamond"] = ReplicatedStorage.DiamondHit,
         ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
-        ["Extended"] = ReplicatedStorage.GeneralHit,
+        ["Extended"] = ReplicatedStorage.b,
+        ["Dual"] = ReplicatedStorage.DualHit,
         ["Brick"] = ReplicatedStorage.BrickHit,
         ["Snow"] = ReplicatedStorage.SnowHit,
         ["Pull"] = ReplicatedStorage.PullHit,
         ["Flash"] = ReplicatedStorage.FlashHit,
-        ["Reverse"] = ReplicatedStorage.ReverseHit,
-        ["Killstreak"] = ReplicatedStorage.KSHit,
-        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Spring"] = ReplicatedStorage.springhit,
+        ["Pinwheel"] = ReplicatedStorage.GeneralHit,
+        ["Swapper"] = ReplicatedStorage.HitSwapper,
+        ["Screwdriver"] = ReplicatedStorage.GeneralHit,
+        ["Bull"] = ReplicatedStorage.BullHit,
+        ["Dice"] = ReplicatedStorage.DiceHit,
+        ["Ghost"] = ReplicatedStorage.GhostHit,
+        ["Thanos"] = ReplicatedStorage.GeneralHit,
+        ["Stun"] = ReplicatedStorage.HtStun,
+        ["L.O.L.B.O.M.B"] = ReplicatedStorage.GeneralHit,
+        ["Za Hando"] = ReplicatedStorage.zhramt,
+        ["Fort"] = ReplicatedStorage.Fort,
+        ["Magnet"] = ReplicatedStorage.MagnetHIT,
+        ["Pusher"] = ReplicatedStorage.PusherHit,
+        ["Anchor"] = ReplicatedStorage.hitAnchor,
+        ["Space"] = ReplicatedStorage.HtSpace,
+        ["Boomerang"] = ReplicatedStorage.BoomerangH,
+        ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mail"] = ReplicatedStorage.MailHit,
+        ["T H I C K"] = ReplicatedStorage.GeneralHit,
         ["Golden"] = ReplicatedStorage.GoldenHit,
+        ["Squid"] = ReplicatedStorage.GeneralHit,
+        ["MR"] = ReplicatedStorage.MisterHit,
+        ["Hive"] = ReplicatedStorage.GeneralHit,
+        ["Reaper"] = ReplicatedStorage.ReaperHit,
+        ["Baby"] = ReplicatedStorage.GeneralHit,
+        ["Replica"] = ReplicatedStorage.ReplicaHit,
+        ["Mace"] = ReplicatedStorage.GeneralHit,
+        ["Defense"] = ReplicatedStorage.DefenseHit,
+        ["Offense"] = ReplicatedStorage.GeneralHit,
+        ["Killstreak"] = ReplicatedStorage.KSHit,
+        ["Pineslapple"] = ReplicatedStorage.GeneralHit,
+        ["Reverse"] = ReplicatedStorage.ReverseHit,
+        ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
+        ["Duelist"] = ReplicatedStorage.DuelistHit,
+        ["woah"] = ReplicatedStorage.woahHit,
+        ["Ice"] = ReplicatedStorage.IceHit,
+        ["Gummy"] = ReplicatedStorage.GeneralHit,
+        ["Adios"] = ReplicatedStorage.hitAdios,
+        ["Blocked"] = ReplicatedStorage.BlockedHit,
+        ["Divert"] = ReplicatedStorage.GeneralHit,
+        ["Engineer"] = ReplicatedStorage.engiehit,
+        ["Rocky"] = ReplicatedStorage.RockyHit,
+        ["Coil"] = ReplicatedStorage.HtStun,
+        ["Conveyor"] = ReplicatedStorage.ConvHit,
+        ["Balloony"] = ReplicatedStorage.HtStun,
+        ["Phantom"] = ReplicatedStorage.PhantomHit,
+        ["Leafblower"] = ReplicatedStorage.LeafblowerHit,
+        ["el gato"] = ReplicatedStorage.GeneralHit,
+        ["Wormhole"] = ReplicatedStorage.WormHit,
+        ["Shackle"] = ReplicatedStorage.GeneralHit,
+        ["Flick"] = ReplicatedStorage.GeneralHit,
+        ["STOP"] = ReplicatedStorage.STOP,
+        ["Daredevil"] = ReplicatedStorage.GeneralHit,
+        ["Equalizer"] = ReplicatedStorage.GeneralHit,
+        ["Track"] = ReplicatedStorage.GeneralHit,
+        ["Stalker"] = ReplicatedStorage.GeneralHit,
+        ["Prop"] = ReplicatedStorage.GeneralHit,
+        ["Cherry"] = ReplicatedStorage.GeneralHit,
+        ["Shield"] = ReplicatedStorage.GeneralHit,
+        ["Clover"] = ReplicatedStorage.GeneralHit,
+        ["5 More"] = ReplicatedStorage.GeneralHit,
+        ["Booster"] = ReplicatedStorage.GeneralHit,
+        ["Chainsaw"] = ReplicatedStorage.GeneralHit,
+        ["Ping Pong"] = ReplicatedStorage.GeneralHit,
+        ["Thumbtack"] = ReplicatedStorage.GeneralHit,
+        ["Trifecta"] = ReplicatedStorage.GeneralHit,
+        ["Baller"] = ReplicatedStorage.GeneralHit,
+        ["Architect"] = ReplicatedStorage.GeneralHit,
+        ["Home Run"] = ReplicatedStorage.GeneralHit,
+        ["Friction"] = ReplicatedStorage.GeneralHit,
+        ["Whirlwind"] = ReplicatedStorage.GeneralHit,
+        ["Disc"] = ReplicatedStorage.GeneralHit,
+        ["BONK"] = ReplicatedStorage.GeneralHit,
+        ["Grenadier"] = ReplicatedStorage.GeneralHit,
+        ["Excavator"] = ReplicatedStorage.GeneralHit,
+        ["Retribution"] = ReplicatedStorage.RetributionHit,
+        ["Nightmare"] = ReplicatedStorage.nightmarehit,
+        ["Pylon"] = ReplicatedStorage.PylonHit,
+        ["Thor"] = ReplicatedStorage.ThorHit,
+        ["Slime"] = ReplicatedStorage.GeneralHit,
+        ["Pocket"] = ReplicatedStorage.GeneralHit,
+        ["Grapple"] = ReplicatedStorage.GeneralHit,
+        ["Command"] = ReplicatedStorage.GeneralHit,
+        ["Cloud"] = ReplicatedStorage.CloudHit,
+        ["Stalagmite"] = ReplicatedStorage.GeneralHit,
+        ["Gravity"] = ReplicatedStorage.GeneralHit,
+        ["Helix"] = ReplicatedStorage.GeneralHit,
+        ["Parry"] = ReplicatedStorage.GeneralHit,
+        ["Jebaited"] = ReplicatedStorage.GeneralHit,
+        ["Meteor"] = ReplicatedStorage.GeneralHit,
+        ["Oven"] = ReplicatedStorage.GeneralHit,
+        ["Guardian Angel"] = ReplicatedStorage.GeneralHit,
+        ["Sun"] = ReplicatedStorage.GeneralHit,
+        ["Ferryman"] = ReplicatedStorage.GeneralHit,
+        ["Blackhole"] = ReplicatedStorage.GeneralHit,
+        ["Walrus"] = ReplicatedStorage.Events.WalrusHit,
+        ["Blink"] = ReplicatedStorage.GeneralHit,
+        ["Tableflip"] = ReplicatedStorage.GeneralHit,
+        ["Slapstick"] = ReplicatedStorage.GeneralHit,
+        ["Beatdown"] = ReplicatedStorage.GeneralHit,
+        ["Jockey"] = ReplicatedStorage.GeneralHit,
+        ["Chicken"] = ReplicatedStorage.GeneralHit,
+        ["Slicer"] = ReplicatedStorage.GeneralHit,
+        ["Sbeve"] = ReplicatedStorage.GeneralHit,
+        ["Golem"] = ReplicatedStorage.GeneralHit,
+        ["Doomsday"] = ReplicatedStorage.GeneralHit,
+        ["Grab"] = ReplicatedStorage.GeneralHit,
+        ["UFO"] = ReplicatedStorage.GeneralHit,
+        ["Demolition"] = ReplicatedStorage.GeneralHit,
+        ["Beachball"] = ReplicatedStorage.GeneralHit,
+        ["Shotgun"] = ReplicatedStorage.GeneralHit,
+        ["64"] = ReplicatedStorage.GeneralHit,
+        ["Roguelike"] = ReplicatedStorage.GeneralHit,
+        ["Barrel"] = ReplicatedStorage.GeneralHit,
+        ["Lawnmower"] = ReplicatedStorage.GeneralHit,
+        ["Virus"] = ReplicatedStorage.GeneralHit,
+        ["Smiler"] = ReplicatedStorage.GeneralHit,
+        ["Butcher"] = ReplicatedStorage.GeneralHit,
+        ["Infinity"] = ReplicatedStorage.GeneralHit,
+        ["Aggro"] = ReplicatedStorage.GeneralHit,
+        ["Medusa"] = ReplicatedStorage.GeneralHit,
+        ["Seal"] = ReplicatedStorage.GeneralHit,
+        ["Soul"] = ReplicatedStorage.GeneralHit,
+        ["R/C"] = ReplicatedStorage.GeneralHit,
+        ["Mushroom"] = ReplicatedStorage.GeneralHit,
+        ["Scuba"] = ReplicatedStorage.GeneralHit,
+        ["Pyromania"] = ReplicatedStorage.GeneralHit,
+        ["Automaton"] = ReplicatedStorage.GeneralHit,
+        ["Roaring"] = ReplicatedStorage.GeneralHit,
         ["God's Hand"] = ReplicatedStorage.Godshand,
-        ["GeneralHit"] = ReplicatedStorage.GeneralHit,
-        ["b"] = ReplicatedStorage.b,
-        ["HtStun"] = ReplicatedStorage.HtStun
+        ["The Flex"] = ReplicatedStorage.FlexHit,
+        ["MEGAROCK"] = ReplicatedStorage.DiamondHit,
+        ["Plague"] = ReplicatedStorage.PlagueHit,
+        ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
+        ["[REDACTED]"] = ReplicatedStorage.ReHit,
+        ["bus"] = ReplicatedStorage.hitbus,
+        ["Mitten"] = ReplicatedStorage.MittenHit,
+        ["Phase"] = ReplicatedStorage.PhaseH,
+        ["Warp"] = ReplicatedStorage.WarpHt,
+        ["Bomb"] = ReplicatedStorage.BombHit,
+        ["Bubble"] = ReplicatedStorage.BubbleHit,
+        ["Jet"] = ReplicatedStorage.JetHit,
+        ["Shard"] = ReplicatedStorage.ShardHIT,
+        ["CULT"] = ReplicatedStorage.CULTHit,
+        ["bob"] = ReplicatedStorage.bobhit,
+        ["buddies"] = ReplicatedStorage.buddiesHIT,
+        ["Moon"] = ReplicatedStorage.CelestialHit,
+        ["Jupiter"] = ReplicatedStorage.CelestialHit,
+        ["Spy"] = ReplicatedStorage.SpyHit,
+        ["Detonator"] = ReplicatedStorage.DetonatorHit,
+        ["Rage"] = ReplicatedStorage.GRRRR,
+        ["Trap"] = ReplicatedStorage.traphi,
+        ["Orbit"] = ReplicatedStorage.Orbihit,
+        ["Hybrid"] = ReplicatedStorage.HybridCLAP,
+        ["Slapple"] = ReplicatedStorage.SlappleHit,
+        ["Disarm"] = ReplicatedStorage.DisarmH,
+        ["Dominance"] = ReplicatedStorage.DominanceHit,
+        ["Link"] = ReplicatedStorage.LinkHit,
+        ["Chain"] = ReplicatedStorage.GeneralHit,
+        ["Rattlebones"] = ReplicatedStorage.GeneralHit,
+        ["Charge"] = ReplicatedStorage.GeneralHit,
+        ["Tycoon"] = ReplicatedStorage.GeneralHit,
+        ["Confusion"] = ReplicatedStorage.GeneralHit,
+        ["Glitch"] = ReplicatedStorage.GeneralHit,
+        ["Snowball"] = ReplicatedStorage.GeneralHit,
+        ["Elude"] = ReplicatedStorage.GeneralHit,
+        ["RNG"] = ReplicatedStorage.GeneralHit,
+        ["fish"] = ReplicatedStorage.GeneralHit,
+        ["🗿"] = ReplicatedStorage.GeneralHit,
+        ["Obby"] = ReplicatedStorage.GeneralHit,
+        ["Voodoo"] = ReplicatedStorage.GeneralHit,
+        ["Goofy"] = ReplicatedStorage.GeneralHit,
+        ["Leash"] = ReplicatedStorage.GeneralHit,
+        ["Flamarang"] = ReplicatedStorage.GeneralHit,
+        ["Kinetic"] = ReplicatedStorage.HtStun,
+        ["Berserk"] = ReplicatedStorage.HtStun,
+        ["Sparky"] = ReplicatedStorage.HtStun,
+        ["Boogie"] = ReplicatedStorage.HtStun,
+        ["Recall"] = ReplicatedStorage.HtStun,
+        ["Quake"] = ReplicatedStorage.GeneralHit,
+        ["Psycho"] = ReplicatedStorage.GeneralHit,
+        ["Kraken"] = ReplicatedStorage.GeneralHit,
+        ["Counter"] = ReplicatedStorage.GeneralHit,
+        ["Hammer"] = ReplicatedStorage.GeneralHit,
+        ["rob"] = ReplicatedStorage.robhit,
+        ["Rhythm"] = ReplicatedStorage.rhythmhit,
+        ["Rojo"] = ReplicatedStorage.RojoHit,
+        ["Hitman"] = ReplicatedStorage.HitmanHit,
+        ["Retro"] = ReplicatedStorage.RetroHit,
+        ["Null"] = ReplicatedStorage.NullHit,
+        ["Lure"] = ReplicatedStorage.GeneralHit,
+        ["Tinkerer"] = ReplicatedStorage.TinkererHit,
+        ["Necromancer"] = ReplicatedStorage.GeneralHit,
+        ["Alchemist"] = ReplicatedStorage.GeneralHit,
+        ["Druid"] = ReplicatedStorage.GeneralHit,
+        ["Jester"] = ReplicatedStorage.GeneralHit,
+        ["Scythe"] = ReplicatedStorage.GeneralHit,
+        ["Santa"] = ReplicatedStorage.GeneralHit,
+        ["Iceskate"] = ReplicatedStorage.GeneralHit,
+        ["Blasphemy"] = ReplicatedStorage.GeneralHit,
+        ["Pan"] = ReplicatedStorage.GeneralHit,
+        ["Admin"] = ReplicatedStorage.GeneralHit,
+        ["Joust"] = ReplicatedStorage.GeneralHit,
+        ["Firework"] = ReplicatedStorage.GeneralHit,
+        ["Run"] = ReplicatedStorage.GeneralHit,
+        ["Glovel"] = ReplicatedStorage.GeneralHit,
+        ["Divebomb"] = ReplicatedStorage.GeneralHit,
+        ["Lamp"] = ReplicatedStorage.GeneralHit,
+        ["Knockoff"] = ReplicatedStorage.GeneralHit,
+        ["Frostbite"] = ReplicatedStorage.GeneralHit,
+        ["Plank"] = ReplicatedStorage.GeneralHit,
+        ["Spoonful"] = ReplicatedStorage.GeneralHit,
+        ["the schlob"] = ReplicatedStorage.GeneralHit,
+        ["Siphon"] = ReplicatedStorage.GeneralHit,
+        ["Wrench"] = ReplicatedStorage.GeneralHit,
+        ["Hunter"] = ReplicatedStorage.GeneralHit,
+        ["Relude"] = ReplicatedStorage.GeneralHit,
+        ["Avatar"] = ReplicatedStorage.GeneralHit,
+        ["Water"] = ReplicatedStorage.GeneralHit,
+        ["Fan"] = ReplicatedStorage.GeneralHit,
+        ["Boxer"] = ReplicatedStorage.Events.Boxing,
+        ["MATERIALIZE"] = ReplicatedStorage.GeneralHit,
+        ["Bind"] = ReplicatedStorage.GeneralHit,
+        ["Poltergeist"] = ReplicatedStorage.GeneralHit,
+        ["Clock"] = ReplicatedStorage.GeneralHit,
+        ["Untitled Tag Glove"] = ReplicatedStorage.UTGHit,
+        ["Pillow"] = ReplicatedStorage.GeneralHit,
+        ["Angler"] = ReplicatedStorage.GeneralHit,
+        ["Jerry"] = ReplicatedStorage.GeneralHit,
+        ["Snowroller"] = ReplicatedStorage.GeneralHit,
+        ["Draw4"] = ReplicatedStorage.GeneralHit,
+        ["Mouse"] = ReplicatedStorage.GeneralHit,
+        ["Swordfighter"] = ReplicatedStorage.GeneralHit,
+        ["Tank"] = ReplicatedStorage.GeneralHit,
+        ["Eggler"] = ReplicatedStorage.GeneralHit,
+        ["Slender"] = ReplicatedStorage.GeneralHit,
+        ["Swashbuckler"] = ReplicatedStorage.GeneralHit,
+        ["Silly"] = ReplicatedStorage.GeneralHit,
+        ["Slasher"] = ReplicatedStorage.GeneralHit,
+        ["Car Keys"] = ReplicatedStorage.GeneralHit,
+        ["Suction"] = ReplicatedStorage.GeneralHit,
+        ["Reflect"] = ReplicatedStorage.GeneralHit,
+        ["Dave"] = ReplicatedStorage.GeneralHit,
+        ["mortis"] = ReplicatedStorage.GeneralHit,
+        ["Bounty"] = ReplicatedStorage.GeneralHit,
+        ["Debug"] = ReplicatedStorage.GeneralHit,
+        ["Paint"] = ReplicatedStorage.GeneralHit,
+        ["Plate"] = ReplicatedStorage.GeneralHit,
+        ["Lag"] = ReplicatedStorage.GeneralHit,
+        ["Harvester"] = ReplicatedStorage.GeneralHit,
+        ["Riftshot"] = ReplicatedStorage.GeneralHit,
+        ["Conker"] = ReplicatedStorage.GeneralHit,
+        ["Wheelchair"] = ReplicatedStorage.GeneralHit,
+        ["Shopkeeper"] = ReplicatedStorage.GeneralHit,
+        ["Collector"] = ReplicatedStorage.GeneralHit,
+        ["Glaxe"] = ReplicatedStorage.GeneralHit,
+        ["Piñata"] = ReplicatedStorage.GeneralHit,
+        ["Penguin"] = ReplicatedStorage.GeneralHit,
+        ["Undead"] = ReplicatedStorage.GeneralHit,
+        ["Groundbreaker"] = ReplicatedStorage.GeneralHit,
+        ["Shellbert"] = ReplicatedStorage.Events.FabergeSwing,
+        ["Lasso"] = ReplicatedStorage.GeneralHit,
+        ["Lotus"] = ReplicatedStorage.GeneralHit,
+        ["Elastic"] = ReplicatedStorage.GeneralHit,
+        ["G-X"] = ReplicatedStorage.GeneralHit,
+        ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
+        ["Camera"] = ReplicatedStorage.GeneralHit,
+        ["Grillmaster"] = ReplicatedStorage.GeneralHit,
+        ["OVERKILL"] = ReplicatedStorage.Overkillhit,
+        ["CUSTOM"] = ReplicatedStorage.CustomHit,
+        ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
+        ["spin"] = ReplicatedStorage.spinhit,
+        ["Default but Bad"] = ReplicatedStorage.dbb,
+        ["Ketchup Default"] = ReplicatedStorage.b,
+        ["Stick"] = ReplicatedStorage.GeneralHit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Error"] = ReplicatedStorage.Errorhit,
+        ["killerfish"] = ReplicatedStorage.GeneralHit,
+        ["Titan"] = ReplicatedStorage.GeneralHit,
+        ["Acrobat"] = ReplicatedStorage.AcHit,
+        ["Stilts"] = "",
+        ["Glue"] = "",
+        ["Spectator"] = "",
     }
     
     setmetatable(gloveHits, {
@@ -2314,13 +3601,19 @@ do
                 if child:IsA("RemoteEvent") then
                     local childName = child.Name:lower()
                     local gloveName = tostring(key):lower()
-                    
                     if childName == gloveName or
                        childName == gloveName .. "hit" or
-                       childName == "ht" .. gloveName then
+                       childName == "ht" .. gloveName or
+                       childName:find(gloveName, 1, true) then
                         rawset(t, key, child)
                         return child
                     end
+                end
+            end
+            for _, child in pairs(ReplicatedStorage:GetChildren()) do
+                if child:IsA("RemoteEvent") then
+                    rawset(t, key, child)
+                    return child
                 end
             end
             return nil
@@ -2329,8 +3622,8 @@ do
     
     local function getCurrentGlove()
         local success, result = pcall(function()
-            if auraLocalPlayer:FindFirstChild("leaderstats") then
-                local gloveValue = auraLocalPlayer.leaderstats:FindFirstChild("Glove")
+            if localPlayer:FindFirstChild("leaderstats") then
+                local gloveValue = localPlayer.leaderstats:FindFirstChild("Glove")
                 if gloveValue then
                     return gloveValue.Value
                 end
@@ -2348,27 +3641,23 @@ do
         return gloveHits[gloveName]
     end
     
-    Tabs.Settings:AddSlider("SlapAuraSpeed", {
+    Tab:AddSlider("SlapAuraSpeed", {
         Title = "Slap Aura Speed",
-        Description = "Delay between slaps (seconds)",
+        Description = "Adjust the speed of slap aura",
         Min = 0.1,
         Max = 2,
         Default = 0.5,
-        Rounding = 1,
+        Rounding = 0.1,
         Callback = function(Value)
             currentCooldown = Value
         end
     })
     
-    Tabs.Settings:AddToggle("SlapAura", {
+    Tab:AddToggle("SlapAura", {
         Title = "Slap Aura",
-        Description = "Automatically slaps nearby players",
         Default = false,
         Callback = function(enabled)
-            if isSlapAuraEnabled == enabled then
-                return
-            end
-            
+            if isSlapAuraEnabled == enabled then return end
             isSlapAuraEnabled = enabled
             
             if enabled then
@@ -2390,25 +3679,19 @@ do
                     return
                 end
                 
+                print("Slap Aura: Enabled with glove '" .. currentGlove .. "' using remote '" .. remote.Name .. "'")
+                
                 slapAuraConnection = RunService.Heartbeat:Connect(function()
                     local currentTime = tick()
+                    if currentTime - lastHitTime < currentCooldown then return end
+                    if not isSlapAuraEnabled or not localPlayer.Character then return end
                     
-                    if currentTime - lastHitTime < currentCooldown then
-                        return
-                    end
-                    
-                    if not isSlapAuraEnabled or not auraLocalPlayer.Character then
-                        return
-                    end
-                    
-                    local localChar = auraLocalPlayer.Character
+                    local localChar = localPlayer.Character
                     local localRoot = localChar:FindFirstChild("HumanoidRootPart")
-                    if not localRoot then
-                        return
-                    end
+                    if not localRoot then return end
                     
                     for _, player in ipairs(Players:GetPlayers()) do
-                        if player ~= auraLocalPlayer and player.Character then
+                        if player ~= localPlayer and player.Character then
                             local char = player.Character
                             local humanoid = char:FindFirstChildOfClass("Humanoid")
                             local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
@@ -2417,12 +3700,10 @@ do
                                 local playerRoot = char:FindFirstChild("HumanoidRootPart")
                                 if playerRoot then
                                     local distance = (playerRoot.Position - localRoot.Position).Magnitude
-                                    if distance > 40 then
-                                        continue
-                                    end
+                                    if distance > 40 then continue end
                                 end
                                 
-                                local success = pcall(function()
+                                local success, errorMsg = pcall(function()
                                     remote:FireServer(torso)
                                 end)
                                 
@@ -2455,19 +3736,109 @@ do
     })
 end
 
--- Ghost On/Off Section
-local ghostSection = Tabs.Settings:AddSection("Ghost On/Off")
+Tab:AddSection(
+    "Safespot Stuff"
+)
 
-Tabs.Settings:AddToggle("GhostInvisibility", {
+Tab:AddButton({
+    Title = "Create Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("Safespot") == nil then
+            local Safespot = Instance.new("Model", workspace)
+            Safespot.Name = "Safespot"
+
+            local base = Instance.new("Part")
+            base.Name = "Base"
+            base.Size = Vector3.new(500, 10, 500)
+            base.Position = Vector3.new(10000, -50, 10000)
+            base.Anchored = true
+            base.CanCollide = true
+            base.Transparency = 0.5
+            base.Parent = Safespot
+
+            local partsData = {
+                {"DefendPart",  Vector3.new(500, 117, 5),   Vector3.new(10000.2, 13, 9752.45)},
+                {"DefendPart1", Vector3.new(5, 117, 496),   Vector3.new(10248.2, 13, 10002.4)},
+                {"DefendPart2", Vector3.new(497, 117, 6),   Vector3.new(9998.13, 13, 10247.2)},
+                {"DefendPart3", Vector3.new(7, 117, 490),   Vector3.new(9752.71, 13, 9999.28)},
+                {"DefendPart4", Vector3.new(491, 10, 491),  Vector3.new(10001.1, 76, 9999.66)},
+            }
+
+            for _, partInfo in pairs(partsData) do
+                local part = Instance.new("Part")
+                part.Name = partInfo[1]
+                part.Size = partInfo[2]
+                part.Position = partInfo[3]
+                part.Anchored = true
+                part.CanCollide = true
+                part.Transparency = 0.5
+                part.Parent = Safespot
+            end
+        end
+
+        Fluent:Notify({
+            Title = "Checker",
+            Content = "Created Successfully!",
+            Duration = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Title = "Create Tournament Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotTournament") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotTournament"
+            Safespot.Position = Vector3.new(3453, 246, -20)
+            Safespot.Size = Vector3.new(1000, 1, 1000)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        Fluent:Notify({
+            Title = "Checker",
+            Content = "Created Successfully!",
+            Duration = 3
+        })
+    end
+})
+
+Tab:AddButton({
+    Title = "Create Small Safespot",
+    Callback = function()
+        if workspace:FindFirstChild("SafespotBobRojo") == nil then
+            local Safespot = Instance.new("Part", workspace)
+            Safespot.Name = "SafespotBobRojo"
+            Safespot.Position = Vector3.new(-268, 25, 0)
+            Safespot.Size = Vector3.new(50, 1, 50)
+            Safespot.Anchored = true
+            Safespot.CanCollide = true
+            Safespot.Transparency = 0.5
+        end
+
+        Fluent:Notify({
+            Title = "Checker",
+            Content = "Created Successfully!",
+            Duration = 3
+        })
+    end
+})
+
+Tab:AddSection(
+    "Ghost On/Off"
+)
+
+Tab:AddToggle("GhostInvisibility", {
     Title = "Ghost Invisibility",
-    Description = "Toggles Ghost glove invisibility",
     Default = false,
     Callback = function(Value)
         local hasGhost = game.Players.LocalPlayer:FindFirstChild("leaderstats") and
                          game.Players.LocalPlayer.leaderstats:FindFirstChild("Glove") and
                          game.Players.LocalPlayer.leaderstats.Glove.Value == "Ghost"
-        
-        if Value then
+
+        if Value == true then
             if hasGhost then
                 game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
             else
@@ -2477,32 +3848,32 @@ Tabs.Settings:AddToggle("GhostInvisibility", {
                     Duration = 3
                 })
             end
-        elseif not Value and hasGhost then
+        elseif Value == false and hasGhost then
             game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
         end
     end
 })
 
--- Server Settings Section
-local serverSection = Tabs.Settings:AddSection("Server Settings")
+Tab:AddSection(
+    "Server Settings"
+)
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Rejoin",
-    Description = "Rejoins the server",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))()
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "ServerHop (Regular Server)",
-    Description = "Hops to a different server",
     Callback = function()
         local PlaceID = game.PlaceId
         local AllIDs = {}
         local foundAnything = ""
         local actualHour = os.date("!*t").hour
-        
+        local Deleted = false
+
         local success, data = pcall(function()
             return game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
         end)
@@ -2512,7 +3883,7 @@ Tabs.Settings:AddButton({
             table.insert(AllIDs, actualHour)
             writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
         end
-        
+
         local function TPReturner()
             local Site
             if foundAnything == "" then
@@ -2520,11 +3891,11 @@ Tabs.Settings:AddButton({
             else
                 Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
             end
-            
+
             if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
                 foundAnything = Site.nextPageCursor
             end
-            
+
             for i, v in pairs(Site.data) do
                 local Possible = true
                 local ID = tostring(v.id)
@@ -2549,7 +3920,7 @@ Tabs.Settings:AddButton({
                 end
             end
         end
-        
+
         local function Teleport()
             while wait() do
                 pcall(function()
@@ -2558,54 +3929,51 @@ Tabs.Settings:AddButton({
                         TPReturner()
                     end
                 end)
-                if Fluent.Unloaded then break end
             end
         end
-        
+
         Teleport()
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "ServerHop (Small Server)",
-    Description = "Hops to a server with few players",
     Callback = function()
         local Http = game:GetService("HttpService")
         local TPS = game:GetService("TeleportService")
         local Api = "https://games.roblox.com/v1/games/"
         local place = game.PlaceId
         local serversUrl = Api .. place .. "/servers/Public?sortOrder=Asc&limit=100"
-        
+
         local function ListServers(cursor)
             local Raw = game:HttpGet(serversUrl .. ((cursor and "&cursor=" .. cursor) or ""))
             return Http:JSONDecode(Raw)
         end
-        
+
         local Server, Next
         repeat
             local Servers = ListServers(Next)
             Server = Servers.data[1]
             Next = Servers.nextPageCursor
-            if Fluent.Unloaded then break end
         until Server
-        
+
         TPS:TeleportToPlaceInstance(place, Server.id, game:GetService('Players').LocalPlayer)
     end
 })
 
-local kickSection = Tabs.Settings:AddSection("Kick/Reset If Stuck")
+Tab:AddSection(
+    "Kick/Reset If Stuck"
+)
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Kick (Yourself)",
-    Description = "Kicks yourself from the game",
     Callback = function()
         game.Players.LocalPlayer:Kick("Kicked By Script")
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Reset Player",
-    Description = "Resets your character",
     Callback = function()
         local character = game.Players.LocalPlayer.Character
         if character and character:FindFirstChild("Humanoid") then
@@ -2614,24 +3982,24 @@ Tabs.Settings:AddButton({
     end
 })
 
--- Arena Settings Section
-local arenaSection = Tabs.Settings:AddSection("Arena Settings")
+Tab:AddSection(
+    "Arena Settings"
+)
 
 local AutoEnterActive = false
 local AutoEnterMode = "Arena"
 
-Tabs.Settings:AddDropdown("EnterMode", {
+Tab:AddDropdown("EnterMode", {
     Title = "Enter",
     Values = {"Arena", "Arena Default"},
-    Default = "Arena",
+    Default = 1,
     Callback = function(Value)
         AutoEnterMode = Value
     end
 })
 
-Tabs.Settings:AddToggle("AutoEnter", {
+Tab:AddToggle("AutoEnter", {
     Title = "Auto Enter",
-    Description = "Automatically enters the arena",
     Default = false,
     Callback = function(Value)
         AutoEnterActive = Value
@@ -2666,7 +4034,6 @@ Tabs.Settings:AddToggle("AutoEnter", {
                     end
                     
                     local teleportPart = nil
-                    
                     if AutoEnterMode == "Arena" then
                         teleportPart = teleportFolder:FindFirstChild("Teleport1")
                     elseif AutoEnterMode == "Arena Default" then
@@ -2676,7 +4043,6 @@ Tabs.Settings:AddToggle("AutoEnter", {
                     if teleportPart then
                         pcall(function()
                             local touchPart = nil
-                            
                             if teleportPart:IsA("BasePart") then
                                 touchPart = teleportPart
                             else
@@ -2688,15 +4054,12 @@ Tabs.Settings:AddToggle("AutoEnter", {
                                 task.wait(0.1)
                                 hrp.CFrame = touchPart.CFrame
                                 task.wait(0.1)
-                                
                                 for i = 1, 5 do
                                     hrp.CFrame = touchPart.CFrame
                                     task.wait(0.01)
                                 end
-                                
                                 hrp.CFrame = touchPart.CFrame + touchPart.CFrame.LookVector * 3
                                 task.wait(0.1)
-                                
                                 for i = 1, 3 do
                                     hrp.CFrame = touchPart.CFrame - touchPart.CFrame.LookVector * 2
                                     task.wait(0.05)
@@ -2709,17 +4072,14 @@ Tabs.Settings:AddToggle("AutoEnter", {
                 else
                     task.wait(1)
                 end
-                
                 task.wait(0.5)
-                if Fluent.Unloaded then break end
             end
         end)
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Teleport To Arena",
-    Description = "Teleports to the arena",
     Callback = function()
         local character = game.Players.LocalPlayer.Character
         if character and character:FindFirstChild("HumanoidRootPart") then
@@ -2728,9 +4088,8 @@ Tabs.Settings:AddButton({
     end
 })
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Teleport To Default Arena",
-    Description = "Teleports to the default arena",
     Callback = function()
         local character = game.Players.LocalPlayer.Character
         if character and character:FindFirstChild("HumanoidRootPart") then
@@ -2739,48 +4098,28 @@ Tabs.Settings:AddButton({
     end
 })
 
-local destroySection = Tabs.Settings:AddSection("Destroy Script")
+Tab:AddSection(
+    "Destroy Script"
+)
 
-Tabs.Settings:AddButton({
+Tab:AddButton({
     Title = "Destroy Gui",
-    Description = "Destroys the GUI",
     Callback = function()
-        Fluent:Destroy()
+        Window:Destroy()
     end
 })
 
--- ===============================
--- OTHER SETTINGS TAB
--- ===============================
-local otherSection = Tabs.Other:AddSection("Destroy Script")
-
-Tabs.Other:AddButton({
-    Title = "Destroy Gui",
-    Description = "Destroys the GUI",
-    Callback = function()
-        Fluent:Destroy()
-    end
-})
-
--- ===============================
--- SAVE MANAGER & INTERFACE MANAGER
--- ===============================
+-- Initialize SaveManager and InterfaceManager (optional but recommended)
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-
 SaveManager:IgnoreThemeSettings()
 SaveManager:SetIgnoreIndexes({})
-
 InterfaceManager:SetFolder("ScripterHub")
-SaveManager:SetFolder("ScripterHub/SlapBattles-SlapFarm")
+SaveManager:SetFolder("ScripterHub/SlapBattles")
+InterfaceManager:BuildInterfaceSection(Tab)
+SaveManager:BuildConfigSection(Tab)
 
-InterfaceManager:BuildInterfaceSection(Tabs.Other)
-SaveManager:BuildConfigSection(Tabs.Other)
-
-SaveManager:LoadAutoloadConfig()
-
-Fluent:Notify({
-    Title = "Scripter Hub",
-    Content = "Slap Farm Hub loaded successfully!",
-    Duration = 5
-})
+end
+else
+Fluent:Notify({Title = "Error", Content = "Place is not supported", Duration = 10})
+end
