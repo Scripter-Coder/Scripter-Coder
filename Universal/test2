@@ -942,10 +942,8 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
-local UserInputService = game:GetService("UserInputService")
 
 local receiverEnabled = false
-local receiverConnection = nil
 local receiverClickConnection = nil
 
 -- Get Walkspeed
@@ -990,6 +988,17 @@ local function teleportToSafespot()
                     hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
                 end
             end
+        end
+    end
+end
+
+-- Teleport to Fixed Position (10000, -42, 9998)
+local function teleportToFixedPosition()
+    local char = LocalPlayer.Character
+    if char then
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = CFrame.new(10000, -42, 9998)
         end
     end
 end
@@ -1063,7 +1072,6 @@ local Section2 = Tab:AddSection({
 
 -- Variables for Helper
 local helperEnabled = false
-local helperConnection = nil
 
 -- Anchor Torso
 local function anchorTorso()
@@ -1084,7 +1092,7 @@ local function unanchorTorso()
     end
 end
 
--- Main Helper Loop (Fixed Order: Arena → Safespot → Anchor)
+-- Main Helper Loop (Fixed Order: Arena → Fixed Position → Anchor)
 local function helperLoop()
     while helperEnabled do
         local speed = getWalkspeed()
@@ -1105,7 +1113,7 @@ local function helperLoop()
     end
 end
 
--- Toggle: Helper (No player selection needed anymore)
+-- Toggle: Helper
 Tab:AddToggle({
     Name = "Auto Enter Arena + Auto Teleport To Receiver + Auto Anchor Yourself",
     Default = false,
