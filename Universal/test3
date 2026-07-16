@@ -1073,31 +1073,12 @@ local Section2 = Tab:AddSection({
 -- Variables for Helper
 local helperEnabled = false
 
--- Anchor Torso
-local function anchorTorso()
-    local char = LocalPlayer.Character
-    if not char then return end
-    local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
-    if torso then
-        torso.Anchored = true
-    end
-end
-
-local function unanchorTorso()
-    local char = LocalPlayer.Character
-    if not char then return end
-    local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
-    if torso then
-        torso.Anchored = false
-    end
-end
-
--- Main Helper Loop (Fixed Order: Arena → Fixed Position → Anchor)
+-- Main Helper Loop (No Anchor)
 local function helperLoop()
     while helperEnabled do
         local speed = getWalkspeed()
         
-        -- Step 1: Check speed and teleport accordingly
+        -- Check speed and teleport accordingly
         if speed >= 21 then
             -- Auto Enter Arena (teleport to portal)
             teleportToPortal()
@@ -1106,16 +1087,13 @@ local function helperLoop()
             teleportToFixedPosition()
         end
         
-        -- Step 2: Anchor yourself (always anchor after teleporting)
-        anchorTorso()
-        
         task.wait(0.1)
     end
 end
 
--- Toggle: Helper
+-- Toggle: Helper (No Anchor)
 Tab:AddToggle({
-    Name = "Auto Enter Arena + Auto Teleport To Receiver + Auto Anchor Yourself",
+    Name = "Auto Enter Arena + Auto Teleport To Receiver (No Anchor)",
     Default = false,
     Callback = function(Value)
         helperEnabled = Value
@@ -1124,15 +1102,14 @@ Tab:AddToggle({
             spawn(helperLoop)
             OrionLib:MakeNotification({
                 Name = "Helper Enabled",
-                Content = "Auto teleport + anchor started!\nTeleporting to: (10000, -42, 9998)",
+                Content = "Auto teleport started!\nTeleporting to: (10000, -42, 9998)",
                 Image = "rbxassetid://4483345998",
                 Time = 3
             })
         else
-            unanchorTorso()
             OrionLib:MakeNotification({
                 Name = "Helper Disabled",
-                Content = "Auto teleport + anchor stopped!",
+                Content = "Auto teleport stopped!",
                 Image = "rbxassetid://4483345998",
                 Time = 2
             })
