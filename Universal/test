@@ -2256,7 +2256,7 @@ Tab:AddToggle({
                         else
                             print("❌ GeneralAbility not found!")
                         end
-                        task.wait(0.1)
+                        task.wait(1)
                         
                         -- Step 3: Slap Aura (GeneralHit on all players every 0.5 seconds)
                         local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
@@ -2283,7 +2283,7 @@ Tab:AddToggle({
                                         end
                                     end
                                 end)
-                                task.wait(0.5)
+                                task.wait(1)
                             end
                         else
                             print("❌ GeneralHit not found!")
@@ -3030,46 +3030,6 @@ local Tab = Window:MakeTab({
     Name = "Space",
     Icon = "rbxassetid://7734068321",
     PremiumOnly = false
-})
-
-Section = Tab:AddSection({
-    Name = "1 Quest"
-})
-
-Tab:AddToggle({
-    Name = "Auto Use Ability",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            -- START
-            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Space" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
-                
-                getgenv().SpaceAbilityLoop = true
-                task.spawn(function()
-                    while getgenv().SpaceAbilityLoop do
-                        game:GetService("ReplicatedStorage").ZeroGSound:FireServer()
-                        task.wait()
-                    end
-                end)
-            else
-                OrionLib:MakeNotification({ 
-                    Name = "Error", 
-                    Content = "Equip Space Glove", 
-                    Image = "rbxassetid://7743878857", 
-                    Time = 3 
-                })
-                return false -- Turn toggle off
-            end
-        else
-            -- STOP
-            getgenv().SpaceAbilityLoop = false
-            
-        end
-    end
-})
-
-Section = Tab:AddSection({
-    Name = "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 })
 
 Section = Tab:AddSection({
