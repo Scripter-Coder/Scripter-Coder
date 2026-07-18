@@ -11,7 +11,7 @@ OrionLib:MakeNotification({Name = "From Scripter",Content = "Script Loads (Can T
 --If Slap Battles Then
 if game.PlaceId == 6403373529 or game.PlaceId == 9015014224 or game.PlaceId == 11520107397 or game.PlaceId == 124596094333302 then
 
-local Window = OrionLib:MakeWindow({Name = "Slap Farm Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Slap Farm Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
+local Window = OrionLib:MakeWindow({Name = "Currencies Farm Hub (Scripter Hub)",HidePremium = true,IntroEnabled = true,IntroText = "Slap Battles - Currencies Farm Hub",IntroIcon = "rbxassetid://15315284749",ToggleIcon = "assetid://7734091286"})
 
 OrionLib:MakeNotification({Name = "From Scripter",Content = "GoodLuck!",Image = "rbxassetid://7734059095",Time = 3})
 
@@ -114,6 +114,101 @@ Tab:AddButton({
             Time = 20
         })
     end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Hubs",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Section = Tab:AddSection({
+    Name = "If you loaded wrong hub here rest hubs..."
+})
+
+Section = Tab:AddSection({
+    Name = "Normal Hubs"
+})
+
+Tab:AddButton({
+    Name = "Load Badges Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Badges%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Mastery Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Masteries%20Hub.txt"))()
+ end    
+})
+
+Tab:AddButton({
+    Name = "Load Script Hub",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Script%20Hub.txt"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Main Hub Script",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Limited Hubs"
+})
+
+Tab:AddButton({
+    Name = "Load Halloween Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Halloween%20Hub.txt"))()
+  end    
+})
+
+Tab:AddButton({
+    Name = "Load Christmas Hub Script",
+    Callback = function()   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Christmas%20Hub.txt"))()
+  end    
+})
+
+Section = Tab:AddSection({
+    Name = "Universal Scripts"
+})
+
+Tab:AddButton({
+    Name = "Load Infinite Yield",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Dex Explorer",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+    end
+})
+
+Tab:AddButton({
+    Name = "Load Remote Spy",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+    Name = "Bot",
+    Icon = "rbxassetid://7733916988",
+    PremiumOnly = false
 })
 
 -- Upgraded Dual Glove Auto Slap Bot for Orion Hub - WALKING VERSION
@@ -780,87 +875,243 @@ end)
 end
 do
 Tab = Window:MakeTab({
-	Name = "Hubs",
-	Icon = "rbxassetid://7733673987",
-	PremiumOnly = false
-	})
-
-Section = Tab:AddSection({
-    Name = "If you loaded wrong hub here rest hubs..."
+    Name = "Ketchup",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
 })
 
-Section = Tab:AddSection({
-    Name = "Normal Hubs"
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
+    
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart"),
+    }
+    
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
+        end
+    end
+    
+    return validParts
+end
+
+-- Player Selection Section
+local Section = Tab:AddSection({
+    Name = "Player Selection"
 })
 
-Tab:AddButton({
-    Name = "Load Badges Hub Script",
-    Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Badges%20Hub.txt"))()
- end    
-})
-
-Tab:AddButton({
-    Name = "Load Mastery Hub Script",
-    Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Masteries%20Hub.txt"))()
- end    
-})
-
-Tab:AddButton({
-    Name = "Load Script Hub",
-    Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Script%20Hub.txt"))()
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
     end
 })
 
 Tab:AddButton({
-    Name = "Load Main Hub Script",
+    Name = "Refresh Players List",
     Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
     end
 })
 
 Section = Tab:AddSection({
-    Name = "Limited Hubs"
+    Name = "Receiver"
 })
 
-Tab:AddButton({
-    Name = "Load Halloween Hub Script",
-    Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Halloween%20Hub.txt"))()
-  end    
-})
+-- Auto Farm Ketchup Kills
+local autoKetchup = false
+local ketchupLoopThread = nil
 
-Tab:AddButton({
-    Name = "Load Christmas Hub Script",
-    Callback = function()   
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Christmas%20Hub.txt"))()
-  end    
+Tab:AddToggle({
+    Name = "Auto Farm Ketchup Slaps",
+    Default = false,
+    Callback = function(Value)
+        autoKetchup = Value
+        
+        if Value then
+            if ketchupLoopThread then
+                task.cancel(ketchupLoopThread)
+                ketchupLoopThread = nil
+            end
+            
+            ketchupLoopThread = task.spawn(function()
+                while autoKetchup do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto use 'b' remote on all players (except yourself)
+                        local bRemote = game:GetService("ReplicatedStorage"):FindFirstChild("b")
+                        if bRemote then
+                            for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                if targetPlayer ~= player and targetPlayer.Character then
+                                    local parts = GetPlayerParts(targetPlayer)
+                                    if parts and #parts > 0 then
+                                        for _, part in pairs(parts) do
+                                            bRemote:FireServer(part)
+                                        end
+                                    end
+                                end
+                            end
+                            print("💥 'b' remote fired on all players!")
+                        else
+                            print("❌ 'b' remote not found!")
+                        end
+                        
+                        -- Step 3: Wait 0.5 seconds before repeating
+                        task.wait(0.5)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Ketchup Farm",
+                Content = "Auto Ketchup farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if ketchupLoopThread then
+                task.cancel(ketchupLoopThread)
+                ketchupLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Ketchup Farm",
+                Content = "Auto Ketchup farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
 })
 
 Section = Tab:AddSection({
-    Name = "Universal Scripts"
+    Name = "Helper"
 })
 
-Tab:AddButton({
-    Name = "Load Infinite Yield",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-    end
-})
+-- Auto Help Choosed Ketchup Player
+local autoKetchupHelper = false
+local ketchupHelperThread = nil
 
-Tab:AddButton({
-    Name = "Load Dex Explorer",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
-    end
-})
-
-Tab:AddButton({
-    Name = "Load Remote Spy",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+Tab:AddToggle({
+    Name = "Auto Help Choosed Ketchup Player",
+    Default = false,
+    Callback = function(Value)
+        autoKetchupHelper = Value
+        
+        if Value then
+            if ketchupHelperThread then
+                task.cancel(ketchupHelperThread)
+                ketchupHelperThread = nil
+            end
+            
+            ketchupHelperThread = task.spawn(function()
+                while autoKetchupHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Auto Teleport To Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        
+                        -- Step 2: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Ketchup Helper",
+                Content = "Auto Ketchup helper started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if ketchupHelperThread then
+                task.cancel(ketchupHelperThread)
+                ketchupHelperThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Ketchup Helper",
+                Content = "Auto Ketchup helper stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
     end
 })
 
@@ -938,6 +1189,996 @@ Tab:AddToggle({
             coroutine.wrap(runAutoDualSlapLoop)()
         else
             _G.DualSlapRunning = false
+        end
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Brick",
+	Icon = "rbxassetid://7733955740",
+	PremiumOnly = false
+	})
+
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+-- Timer variables
+local isSpawningBricks = false
+local brickSpawnStarted = false
+local brickSpawnStopped = false
+local brickSpawnFinished = false
+local brickStartTime = nil
+local brickElapsedTime = 0
+local totalTimeNeeded = 25 * 60 -- 25 minutes in seconds (1500 seconds)
+local savedStoppedTime = nil
+
+-- Display variables for Trap Status
+local currentTimeWaiting = "Waiting for auto brick..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "Not Stopped"
+local currentTimeFinished = "Not Finished"
+
+-- Brick counting variables
+local totalBricksDropped = 0
+local isAntiAfkEnabled = false
+local ownBrickMasterBadge = false
+local isBrickGloveEquipped = false
+local brickSpawnLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- Brick Master Badge ID (as string for comparison)
+local BRICK_MASTER_BADGE_ID = "2127567042"
+
+-- Function to check if player is in arena
+local function isInArena()
+    local character = player and player.Character
+    if character then
+        local isInArenaValue = character:FindFirstChild("entered")
+        if isInArenaValue then
+            return isInArenaValue.Value == true
+        end
+    end
+    return false
+end
+
+-- Function to check if Brick glove is equipped
+local function checkBrickGlove()
+    local character = player.Character
+    if character then
+        local brickTool = character:FindFirstChild("Brick")
+        if brickTool then
+            isBrickGloveEquipped = true
+            return true
+        end
+    end
+    isBrickGloveEquipped = false
+    return false
+end
+
+-- Function to check if Brick Master badge is owned using PlayerData path
+local function checkBrickMasterBadge()
+    local playerData = replicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then
+        ownBrickMasterBadge = false
+        return false
+    end
+    
+    local playerFolder = playerData:FindFirstChild(player.Name)
+    if not playerFolder then
+        ownBrickMasterBadge = false
+        return false
+    end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then
+        ownBrickMasterBadge = false
+        return false
+    end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                if cleanId == BRICK_MASTER_BADGE_ID then
+                    ownBrickMasterBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    
+    ownBrickMasterBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownBrickMasterBadge and "✅ Yes" or "❌ No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    
+    badgeStatusText = string.format([[
+Owns Brick Master Badge: %s
+Brick Master Badge Awards Glove: Trap Glove
+Entered Arena: %s
+]],
+    badgeStatus,
+    inArenaStatus
+)
+    return badgeStatusText
+end
+
+-- Function to format time EXACTLY LIKE MEGAROCK (Hours:Minutes:Seconds:Milliseconds)
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to get brick count from UI
+local function getBrickCountFromUI()
+    local success, result = pcall(function()
+        local playerGui = player.PlayerGui
+        local brickCount = playerGui:FindFirstChild("BRICKCOUNT")
+        if brickCount then
+            local imageLabel = brickCount:FindFirstChild("ImageLabel")
+            if imageLabel then
+                local textLabel = imageLabel:FindFirstChild("TextLabel")
+                if textLabel then
+                    return tonumber(textLabel.Text) or 0
+                end
+            end
+        end
+        return 0
+    end)
+    if not success then
+        return 0
+    end
+    return result
+end
+
+-- Function to update trap status display
+local function updateTrapDisplay()
+    -- Update status texts based on current state (SAME LOGIC AS MEGAROCK)
+    if brickSpawnFinished then
+        currentTimeWaiting = "Finished!"
+        currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        currentTimeStopped = "N/A"
+        currentTimeFinished = formatTime(totalTimeNeeded, 0)
+    elseif brickSpawnStopped then
+        currentTimeWaiting = "Stopped"
+        local elapsedMs = (brickElapsedTime - math.floor(brickElapsedTime)) * 1000
+        currentTimeStarted = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeStopped = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeFinished = "Not Finished"
+    elseif brickSpawnStarted then
+        currentTimeWaiting = "Auto bricks started..."
+        local elapsedMs = (brickElapsedTime - math.floor(brickElapsedTime)) * 1000
+        currentTimeStarted = formatTime(brickElapsedTime, elapsedMs)
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    elseif not isSpawningBricks then
+        currentTimeWaiting = "Waiting for auto brick..."
+        currentTimeStarted = "Not Started"
+        currentTimeStopped = "Not Stopped"
+        currentTimeFinished = "Not Finished"
+    end
+    
+    -- Get current values
+    local uiBrickCount = getBrickCountFromUI()
+    local brickGloveStatus = isBrickGloveEquipped and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    
+    -- Build status text (SAME FORMAT AS MEGAROCK)
+    local statusText = string.format([[
+Auto Spawn Bricks Time Waiting: %s
+Auto Spawn Bricks Time Started: %s
+Auto Spawn Bricks Time Stopped: %s
+Auto Spawn Bricks Time Finished: %s
+Total Time Need: %s
+Total Bricks Dropped At Top: %d
+Total Dropped Bricks: %d
+Brick Glove Equipped: %s
+Entered Arena: %s
+Anti AFK: %s
+]],
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    uiBrickCount,
+    totalBricksDropped,
+    brickGloveStatus,
+    inArenaStatus,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local TrapStatusParagraph = Tab:AddParagraph("Trap Farm Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP 1: TRAP STATUS UPDATE (0.01 SECONDS - LIKE MEGAROCK) =====
+task.spawn(function()
+    while true do
+        local startTime = tick()
+        
+        -- Update timer if running
+        if brickSpawnStarted and not brickSpawnFinished and not brickSpawnStopped then
+            local currentTime = tick()
+            brickElapsedTime = currentTime - brickStartTime
+        end
+        
+        -- Update glove status
+        checkBrickGlove()
+        
+        -- Update the trap status paragraph
+        local statusText = updateTrapDisplay()
+        pcall(function()
+            TrapStatusParagraph:Set(statusText)
+        end)
+        
+        -- Maintain exactly 0.01 seconds like MEGAROCK
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.005, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- ===== LOOP 2: TIMER UPDATE (every frame for accuracy - LIKE MEGAROCK) =====
+task.spawn(function()
+    while true do
+        if brickSpawnStarted and not brickSpawnFinished and not brickSpawnStopped then
+            local currentTime = tick()
+            brickElapsedTime = currentTime - brickStartTime
+        end
+        task.wait() -- Every frame for precise timing
+    end
+end)
+
+-- ===== LOOP 3: BADGE STATUS UPDATE (5 SECONDS - SLOW) =====
+task.spawn(function()
+    while true do
+        -- Check badge status
+        checkBrickMasterBadge()
+        
+        -- Update badge status text
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        
+        task.wait(5) -- Update every 5 seconds (badges don't change often)
+    end
+end)
+
+-- Function to get error message based on conditions
+local function getErrorMessage()
+    local glove = player.leaderstats and player.leaderstats:FindFirstChild("Glove")
+    local hasBrick = glove and glove.Value == "Brick"
+    local inArena = isInArena()
+    
+    if hasBrick and inArena then
+        return nil -- No error
+    elseif not hasBrick and not inArena then
+        return "⚠️ Error - Equip Brick Glove First / Enter Arena First"
+    elseif hasBrick and not inArena then
+        return "⚠️ Error - Enter Arena First"
+    elseif not hasBrick and inArena then
+        return "⚠️ Error - Equip Brick Glove First"
+    end
+    
+    return "⚠️ Unknown Error"
+end
+
+-- Function to spawn bricks
+local function startBrickSpawning()
+    if brickSpawnLoop then
+        task.cancel(brickSpawnLoop)
+    end
+    
+    brickSpawnLoop = task.spawn(function()
+        while isSpawningBricks and not brickSpawnFinished do
+            pcall(function()
+                -- Check if Brick glove is equipped and player has entered
+                if player.leaderstats and player.leaderstats:FindFirstChild("Glove") and player.leaderstats.Glove.Value == "Brick" then
+                    local char = player.Character
+                    if char and char:FindFirstChild("entered") then
+                        
+                        -- Teleport to position
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            hrp.CFrame = CFrame.new(17895, -24, -3533)
+                            task.wait(0.1)
+                        end
+                        
+                        -- Fire remote to spawn brick
+                        local lbrick = replicatedStorage:FindFirstChild("lbrick")
+                        if lbrick then
+                            lbrick:FireServer()
+                            task.wait(0.1)
+                        end
+                        
+                        -- Update UI brick count
+                        pcall(function()
+                            local playerGui = player.PlayerGui
+                            local brickCount = playerGui:FindFirstChild("BRICKCOUNT")
+                            if brickCount then
+                                local imageLabel = brickCount:FindFirstChild("ImageLabel")
+                                if imageLabel then
+                                    local textLabel = imageLabel:FindFirstChild("TextLabel")
+                                    if textLabel then
+                                        local currentCount = tonumber(textLabel.Text) or 0
+                                        textLabel.Text = tostring(currentCount + 1)
+                                    end
+                                end
+                            end
+                        end)
+                        
+                        -- Add to dropped bricks counter
+                        totalBricksDropped = totalBricksDropped + 1
+                    end
+                end
+            end)
+            task.wait(1.5) -- Wait between spawns
+        end
+    end)
+end
+
+-- ===== AUTO SPAWN BRICKS TOGGLE =====
+local autoSpawnEnabled = false
+
+local autoSpawnToggle = Tab:AddToggle({
+    Name = "Auto Spawn Bricks",
+    Default = false,
+    Callback = function(Value)
+        autoSpawnEnabled = Value
+        
+        if Value then
+            -- Check conditions
+            local errorMsg = getErrorMessage()
+            if errorMsg then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = errorMsg,
+                    Image = "rbxassetid://4483345998",
+                    Time = 4
+                })
+                autoSpawnToggle:Set(false)
+                autoSpawnEnabled = false
+                return
+            end
+            
+            -- Reset and start timer (LIKE MEGAROCK)
+            isSpawningBricks = true
+            brickSpawnStarted = true
+            brickSpawnStopped = false
+            brickSpawnFinished = false
+            brickStartTime = tick()
+            brickElapsedTime = 0
+            savedStoppedTime = nil
+            totalBricksDropped = 0
+            
+            -- Start spawning
+            startBrickSpawning()
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Spawn Bricks",
+                Content = "Started! Will run for 25 minutes",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        else
+            -- Stop spawning (LIKE MEGAROCK)
+            if brickSpawnLoop then
+                task.cancel(brickSpawnLoop)
+                brickSpawnLoop = nil
+            end
+            isSpawningBricks = false
+            brickSpawnStopped = true
+            brickSpawnStarted = false
+            savedStoppedTime = brickElapsedTime
+            
+        end
+    end
+})
+
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkBrickGlove()
+checkBrickMasterBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+TrapStatusParagraph:Set(updateTrapDisplay())
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Reaper",
+	Icon = "rbxassetid://7733955740",
+	PremiumOnly = false
+	})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
+    
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart"),
+    }
+    
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
+        end
+    end
+    
+    return validParts
+end
+
+-- Player Selection Section
+local Section = Tab:AddSection({
+    Name = "Player Selection"
+})
+
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Refresh Players List",
+    Callback = function()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Farm Reaper Kills
+local autoReaper = false
+local reaperLoopThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Farm Reaper Kills",
+    Default = false,
+    Callback = function(Value)
+        autoReaper = Value
+        
+        if Value then
+            if reaperLoopThread then
+                task.cancel(reaperLoopThread)
+                reaperLoopThread = nil
+            end
+            
+            reaperLoopThread = task.spawn(function()
+                while autoReaper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto use ReaperHit on all players (except yourself)
+                        local reaperHit = game:GetService("ReplicatedStorage"):FindFirstChild("ReaperHit")
+                        if reaperHit then
+                            for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                if targetPlayer ~= player and targetPlayer.Character then
+                                    local parts = GetPlayerParts(targetPlayer)
+                                    if parts and #parts > 0 then
+                                        for _, part in pairs(parts) do
+                                            reaperHit:FireServer(part)
+                                        end
+                                    end
+                                end
+                            end
+                            print("💀 ReaperHit fired on all players!")
+                        else
+                            print("❌ ReaperHit not found!")
+                        end
+                        
+                        -- Step 3: Wait 0.5 seconds before repeating
+                        task.wait(0.5)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Reaper Farm",
+                Content = "Auto Reaper farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if reaperLoopThread then
+                task.cancel(reaperLoopThread)
+                reaperLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Reaper Farm",
+                Content = "Auto Reaper farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Help Choosed Reaper Player
+local autoReaperHelper = false
+local reaperHelperThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Help Choosed Reaper Player",
+    Default = false,
+    Callback = function(Value)
+        autoReaperHelper = Value
+        
+        if Value then
+            if reaperHelperThread then
+                task.cancel(reaperHelperThread)
+                reaperHelperThread = nil
+            end
+            
+            reaperHelperThread = task.spawn(function()
+                while autoReaperHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Auto Enter Arena (if not entered yet)
+                        local hasEntered = char:FindFirstChild("entered")
+                        if not hasEntered then
+                            print("🚶 Entering arena...")
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(1)
+                            -- Check again after teleport
+                            hasEntered = char:FindFirstChild("entered")
+                            if hasEntered then
+                                print("✅ Entered arena successfully!")
+                            else
+                                print("⚠️ Still not entered, retrying...")
+                            end
+                        else
+                            print("✅ Already in arena")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Receiver")
+                        task.wait(0.1)
+                        
+                        -- Step 3: Auto Die On Ragdoll
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                            OrionLib:MakeNotification({
+                                Name = "Ragdoll",
+                                Content = "Died due to ragdoll!",
+                                Image = "rbxassetid://7743878857",
+                                Time = 2
+                            })
+                            task.wait(1)
+                            return
+                        else
+                            print("✅ No ragdoll detected")
+                        end
+                        
+                        -- Step 4: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Reaper Helper",
+                Content = "Auto Reaper helper started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if reaperHelperThread then
+                task.cancel(reaperHelperThread)
+                reaperHelperThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Reaper Helper",
+                Content = "Auto Reaper helper stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Killstreak",
+	Icon = "rbxassetid://7733955740",
+	PremiumOnly = false
+	})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
+    
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart"),
+    }
+    
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
+        end
+    end
+    
+    return validParts
+end
+
+-- Player Selection Section
+local Section = Tab:AddSection({
+    Name = "Player Selection"
+})
+
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Refresh Players List",
+    Callback = function()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Farm Killstreak Kills
+local autoKillstreak = false
+local killstreakLoopThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Farm Killstreak Kills",
+    Default = false,
+    Callback = function(Value)
+        autoKillstreak = Value
+        
+        if Value then
+            if killstreakLoopThread then
+                task.cancel(killstreakLoopThread)
+                killstreakLoopThread = nil
+            end
+            
+            killstreakLoopThread = task.spawn(function()
+                while autoKillstreak do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto use KSHit on all players (except yourself)
+                        local ksHit = game:GetService("ReplicatedStorage"):FindFirstChild("KSHit")
+                        if ksHit then
+                            for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                if targetPlayer ~= player and targetPlayer.Character then
+                                    local parts = GetPlayerParts(targetPlayer)
+                                    if parts and #parts > 0 then
+                                        for _, part in pairs(parts) do
+                                            ksHit:FireServer(part)
+                                        end
+                                    end
+                                end
+                            end
+                            print("💀 KSHit fired on all players!")
+                        else
+                            print("❌ KSHit not found!")
+                        end
+                        
+                        -- Step 3: Wait 0.5 seconds before repeating
+                        task.wait(0.5)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Killstreak Farm",
+                Content = "Auto Killstreak farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if killstreakLoopThread then
+                task.cancel(killstreakLoopThread)
+                killstreakLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Killstreak Farm",
+                Content = "Auto Killstreak farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Help Choosed Killstreak Player
+local autoKillstreakHelper = false
+local killstreakHelperThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Help Choosed Killstreak Player",
+    Default = false,
+    Callback = function(Value)
+        autoKillstreakHelper = Value
+        
+        if Value then
+            if killstreakHelperThread then
+                task.cancel(killstreakHelperThread)
+                killstreakHelperThread = nil
+            end
+            
+            killstreakHelperThread = task.spawn(function()
+                while autoKillstreakHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Auto Enter Arena (if not entered yet)
+                        local hasEntered = char:FindFirstChild("entered")
+                        if not hasEntered then
+                            print("🚶 Entering arena...")
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(1)
+                            -- Check again after teleport
+                            hasEntered = char:FindFirstChild("entered")
+                            if hasEntered then
+                                print("✅ Entered arena successfully!")
+                            else
+                                print("⚠️ Still not entered, retrying...")
+                            end
+                        else
+                            print("✅ Already in arena")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Receiver")
+                        task.wait(0.1)
+                        
+                        -- Step 3: Auto Die On Ragdoll
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                            OrionLib:MakeNotification({
+                                Name = "Ragdoll",
+                                Content = "Died due to ragdoll!",
+                                Image = "rbxassetid://7743878857",
+                                Time = 2
+                            })
+                            task.wait(1)
+                            return
+                        else
+                            print("✅ No ragdoll detected")
+                        end
+                        
+                        -- Step 4: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Killstreak Helper",
+                Content = "Auto Killstreak helper started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if killstreakHelperThread then
+                task.cancel(killstreakHelperThread)
+                killstreakHelperThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Killstreak Helper",
+                Content = "Auto Killstreak helper stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
     end
 })
@@ -1143,6 +2384,271 @@ Tab = Window:MakeTab({
     Name = "Engineer",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
+})
+
+-- Engineer Paragraph
+Tab:AddParagraph("Set time between slapping everyone on the server", "pst.. don't make it less than 4 seconds, it probably gonna kick you!")
+
+_G.EngineerSlapTime = 5
+
+local MyTextbox = Tab:AddTextbox({
+    Name = "Time Between Slapping Everyone",
+    Default = "5",
+    TextDisappear = false,
+    Callback = function(Value)
+        _G.EngineerSlapTime = tonumber(Value) or 5
+    end
+})
+
+-- Engineer Farm Toggle
+local EngineerPeopleFarm = Tab:AddToggle({
+    Name = "Engineer",
+    Default = false,
+    Callback = function(Value)
+        _G.EngineerPeopleFarm = Value
+        
+        if _G.EngineerPeopleFarm == true then
+            -- Check if NEX exists
+            if not NEX then
+                EngineerPeopleFarm:Set(false)
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "NEX library not found!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                return
+            end
+            
+            -- Check if player has Engineer glove
+            local hasGlove = false
+            pcall(function()
+                hasGlove = NEX:HasGlove("Engineer")
+            end)
+            
+            if not hasGlove then
+                EngineerPeopleFarm:Set(false)
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "You don't have Engineer glove!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                return
+            end
+            
+            -- Start the Engineer farm loop
+            task.spawn(function()
+                while _G.EngineerPeopleFarm do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character
+                        if not char or not char.Parent then
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        -- Get character root
+                        local root = nil
+                        pcall(function()
+                            root = NEX:GetRoot(NEX:GetCharacter(player))
+                        end)
+                        
+                        -- Check if root exists, if not wait
+                        if not root then
+                            repeat 
+                                task.wait(0.1)
+                                pcall(function()
+                                    root = NEX:GetRoot(NEX:GetCharacter(player))
+                                end)
+                            until root or not _G.EngineerPeopleFarm
+                        end
+                        
+                        if not _G.EngineerPeopleFarm then return end
+                        
+                        -- Get baseplate position
+                        local Baseplate = workspace:FindFirstChild("Baseplate")
+                        if not Baseplate then
+                            print("❌ Baseplate not found!")
+                            task.wait(1)
+                            return
+                        end
+                        
+                        -- Teleport to baseplate
+                        pcall(function()
+                            NEX:SetCFrame(root, Baseplate, true, 20)
+                        end)
+                        task.wait(0.8)
+                        
+                        -- Freeze player (with fallback)
+                        pcall(function()
+                            if type(FreezePlayer) == "function" then
+                                FreezePlayer()
+                            elseif type(_G.FreezePlayer) == "function" then
+                                _G.FreezePlayer()
+                            else
+                                -- Manual freeze
+                                local hrp = char:FindFirstChild("HumanoidRootPart")
+                                if hrp then
+                                    hrp.Anchored = true
+                                end
+                                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                                if humanoid then
+                                    humanoid.PlatformStand = true
+                                end
+                            end
+                        end)
+                        
+                        -- Equip Engineer glove if not equipped
+                        pcall(function()
+                            if NEX.GetGlove and NEX.GetGlove() ~= "Engineer" then
+                                NEX:EquipGlove("Engineer")
+                            end
+                        end)
+                        
+                        -- Fire Sentry remote
+                        local sentry = game:GetService("ReplicatedStorage"):FindFirstChild("Sentry")
+                        if sentry then
+                            pcall(function()
+                                sentry:FireServer()
+                            end)
+                        end
+                        
+                        -- Wait for Turret to spawn
+                        local turretWait = 0
+                        local turretFound = false
+                        repeat
+                            task.wait(0.1)
+                            turretWait = turretWait + 1
+                            pcall(function()
+                                if workspace:FindFirstChild("Turret") and 
+                                   workspace.Turret:FindFirstChild("HingePart") and 
+                                   workspace.Turret.HingePart:FindFirstChild("Glove") then
+                                    turretFound = true
+                                end
+                            end)
+                            if turretWait > 100 then -- Timeout after ~10 seconds
+                                print("❌ Turret not found, retrying...")
+                                break
+                            end
+                        until turretFound or not _G.EngineerPeopleFarm
+                        
+                        if turretFound and _G.EngineerPeopleFarm then
+                            local TurretPlace = nil
+                            pcall(function()
+                                TurretPlace = workspace.Turret.HingePart:FindFirstChild("Glove").CFrame
+                            end)
+                            
+                            if TurretPlace then
+                                -- Teleport all players to turret for 1 second
+                                local starttime = tick()
+                                while tick() - starttime < 1 and _G.EngineerPeopleFarm do
+                                    for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+                                        if v and v ~= player and v.Character then
+                                            pcall(function()
+                                                local targetHrp = v.Character:FindFirstChild("HumanoidRootPart")
+                                                local targetHumanoid = v.Character:FindFirstChildOfClass("Humanoid")
+                                                if targetHrp and targetHumanoid and 
+                                                   targetHumanoid.Sit == false and 
+                                                   v.Character:FindFirstChild("rock") == nil and 
+                                                   v.Character:FindFirstChild("stevebody") == nil then
+                                                    targetHrp.CFrame = TurretPlace
+                                                end
+                                            end)
+                                        end
+                                    end
+                                    task.wait()
+                                end
+                                
+                                -- Teleport all players to center (0,0,0)
+                                for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+                                    if v and v ~= player and v.Character then
+                                        pcall(function()
+                                            local targetHrp = v.Character:FindFirstChild("HumanoidRootPart")
+                                            local targetHumanoid = v.Character:FindFirstChildOfClass("Humanoid")
+                                            if targetHrp and targetHumanoid and 
+                                               targetHumanoid.Sit == false and 
+                                               v.Character:FindFirstChild("rock") == nil and 
+                                               v.Character:FindFirstChild("stevebody") == nil then
+                                                targetHrp.CFrame = CFrame.new(0, 0, 0)
+                                            end
+                                        end)
+                                    end
+                                end
+                            end
+                        end
+                        
+                        -- Unfreeze player (with fallback)
+                        pcall(function()
+                            if type(UnFreezePlayer) == "function" then
+                                UnFreezePlayer()
+                            elseif type(_G.UnFreezePlayer) == "function" then
+                                _G.UnFreezePlayer()
+                            else
+                                -- Manual unfreeze
+                                local hrp = char:FindFirstChild("HumanoidRootPart")
+                                if hrp then
+                                    hrp.Anchored = false
+                                end
+                                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                                if humanoid then
+                                    humanoid.PlatformStand = false
+                                end
+                            end
+                        end)
+                        
+                        -- Wait before repeating
+                        local waitTime = _G.EngineerSlapTime or 5
+                        task.wait(waitTime)
+                    end)
+                    
+                    -- Small break to prevent crashing
+                    task.wait(0.1)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Engineer Farm",
+                Content = "Engineer farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            -- Stop farming
+            pcall(function()
+                if type(UnFreezePlayer) == "function" then
+                    UnFreezePlayer()
+                elseif type(_G.UnFreezePlayer) == "function" then
+                    _G.UnFreezePlayer()
+                else
+                    -- Manual unfreeze
+                    local char = game.Players.LocalPlayer.Character
+                    if char then
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            hrp.Anchored = false
+                        end
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        if humanoid then
+                            humanoid.PlatformStand = false
+                        end
+                    end
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Engineer Farm",
+                Content = "Engineer farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
 })
 
 local EngineerFarm = false
@@ -1362,6 +2868,1018 @@ Tab:AddToggle({
             
         end
     end
+})
+
+end
+do
+Tab = Window:MakeTab({
+    Name = "Shotgun",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
+    
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart"),
+    }
+    
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
+        end
+    end
+    
+    return validParts
+end
+
+-- Player Selection Section
+local Section = Tab:AddSection({
+    Name = "Player Selection"
+})
+
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Refresh Players List",
+    Callback = function()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Farm Shotgun Kills
+local autoShotgun = false
+local shotgunLoopThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Farm Shotgun Coins",
+    Default = false,
+    Callback = function(Value)
+        autoShotgun = Value
+        
+        if Value then
+            if shotgunLoopThread then
+                task.cancel(shotgunLoopThread)
+                shotgunLoopThread = nil
+            end
+            
+            shotgunLoopThread = task.spawn(function()
+                while autoShotgun do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto use GeneralHit on all players (except yourself)
+                        local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                        if generalHit then
+                            for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                if targetPlayer ~= player and targetPlayer.Character then
+                                    local parts = GetPlayerParts(targetPlayer)
+                                    if parts and #parts > 0 then
+                                        for _, part in pairs(parts) do
+                                            generalHit:FireServer(part)
+                                        end
+                                    end
+                                end
+                            end
+                            print("💥 GeneralHit fired on all players!")
+                        else
+                            print("❌ GeneralHit not found!")
+                        end
+                        
+                        -- Step 3: Wait 0.5 seconds before repeating
+                        task.wait(0.5)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Shotgun Farm",
+                Content = "Auto Shotgun farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if shotgunLoopThread then
+                task.cancel(shotgunLoopThread)
+                shotgunLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Shotgun Farm",
+                Content = "Auto Shotgun farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Help Choosed Shotgun Player
+local autoShotgunHelper = false
+local shotgunHelperThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Help Choosed Shotgun Player",
+    Default = false,
+    Callback = function(Value)
+        autoShotgunHelper = Value
+        
+        if Value then
+            if shotgunHelperThread then
+                task.cancel(shotgunHelperThread)
+                shotgunHelperThread = nil
+            end
+            
+            shotgunHelperThread = task.spawn(function()
+                while autoShotgunHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Auto Enter Arena (if not entered yet)
+                        local hasEntered = char:FindFirstChild("entered")
+                        if not hasEntered then
+                            print("🚶 Entering arena...")
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(1)
+                            -- Check again after teleport
+                            hasEntered = char:FindFirstChild("entered")
+                            if hasEntered then
+                                print("✅ Entered arena successfully!")
+                            else
+                                print("⚠️ Still not entered, retrying...")
+                            end
+                        else
+                            print("✅ Already in arena")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Receiver")
+                        task.wait(0.1)
+                        
+                        -- Step 3: Auto Die On Ragdoll
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                            OrionLib:MakeNotification({
+                                Name = "Ragdoll",
+                                Content = "Died due to ragdoll!",
+                                Image = "rbxassetid://7743878857",
+                                Time = 2
+                            })
+                            task.wait(1)
+                            return
+                        else
+                            print("✅ No ragdoll detected")
+                        end
+                        
+                        -- Step 4: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Shotgun Helper",
+                Content = "Auto Shotgun helper started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if shotgunHelperThread then
+                task.cancel(shotgunHelperThread)
+                shotgunHelperThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Shotgun Helper",
+                Content = "Auto Shotgun helper stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+    Name = "Roguelike",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+-- Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SelectedPlayer = nil
+local PlayersList = {}
+
+-- Functions
+local function RefreshPlayersList()
+    PlayersList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(PlayersList, player.Name)
+        end
+    end
+    return PlayersList
+end
+
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
+    
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart"),
+    }
+    
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
+        end
+    end
+    
+    return validParts
+end
+
+-- Player Selection Section
+local Section = Tab:AddSection({
+    Name = "Player Selection"
+})
+
+local Dropdown = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = RefreshPlayersList(),
+    Callback = function(Value)
+        SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Refresh Players List",
+    Callback = function()
+        Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Farm Roguelike Kills
+local autoRoguelike = false
+local roguelikeLoopThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Farm Roguelike Kills",
+    Default = false,
+    Callback = function(Value)
+        autoRoguelike = Value
+        
+        if Value then
+            if roguelikeLoopThread then
+                task.cancel(roguelikeLoopThread)
+                roguelikeLoopThread = nil
+            end
+            
+            roguelikeLoopThread = task.spawn(function()
+                while autoRoguelike do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not hrp then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto use GeneralHit on all players (except yourself)
+                        local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                        if generalHit then
+                            for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                if targetPlayer ~= player and targetPlayer.Character then
+                                    local parts = GetPlayerParts(targetPlayer)
+                                    if parts and #parts > 0 then
+                                        for _, part in pairs(parts) do
+                                            generalHit:FireServer(part)
+                                        end
+                                    end
+                                end
+                            end
+                            print("💥 GeneralHit fired on all players!")
+                        else
+                            print("❌ GeneralHit not found!")
+                        end
+                        
+                        -- Step 3: Wait 0.5 seconds before repeating
+                        task.wait(0.5)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Roguelike Farm",
+                Content = "Auto Roguelike farming started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if roguelikeLoopThread then
+                task.cancel(roguelikeLoopThread)
+                roguelikeLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Roguelike Farm",
+                Content = "Auto Roguelike farming stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Help Choosed Roguelike Player
+local autoRoguelikeHelper = false
+local roguelikeHelperThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Help Choosed Roguelike Player",
+    Default = false,
+    Callback = function(Value)
+        autoRoguelikeHelper = Value
+        
+        if Value then
+            if roguelikeHelperThread then
+                task.cancel(roguelikeHelperThread)
+                roguelikeHelperThread = nil
+            end
+            
+            roguelikeHelperThread = task.spawn(function()
+                while autoRoguelikeHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Auto Enter Arena (if not entered yet)
+                        local hasEntered = char:FindFirstChild("entered")
+                        if not hasEntered then
+                            print("🚶 Entering arena...")
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(1)
+                            -- Check again after teleport
+                            hasEntered = char:FindFirstChild("entered")
+                            if hasEntered then
+                                print("✅ Entered arena successfully!")
+                            else
+                                print("⚠️ Still not entered, retrying...")
+                            end
+                        else
+                            print("✅ Already in arena")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Receiver")
+                        task.wait(0.1)
+                        
+                        -- Step 3: Auto Die On Ragdoll
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                            OrionLib:MakeNotification({
+                                Name = "Ragdoll",
+                                Content = "Died due to ragdoll!",
+                                Image = "rbxassetid://7743878857",
+                                Time = 2
+                            })
+                            task.wait(1)
+                            return
+                        else
+                            print("✅ No ragdoll detected")
+                        end
+                        
+                        -- Step 4: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Roguelike Helper",
+                Content = "Auto Roguelike helper started!",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if roguelikeHelperThread then
+                task.cancel(roguelikeHelperThread)
+                roguelikeHelperThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Roguelike Helper",
+                Content = "Auto Roguelike helper stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Auto refresh players list every 10 seconds
+task.spawn(function()
+    while true do
+        task.wait(10)
+        pcall(function()
+            if Dropdown then
+                Dropdown:Refresh(RefreshPlayersList(), true)
+            end
+        end)
+    end
+end)
+
+end
+do
+Tab = Window:MakeTab({
+    Name = "Tycoon",
+    Icon = "rbxassetid://7733955740",
+    PremiumOnly = false
+})
+
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+-- Variables
+local isAutoClicking = false
+local pointsWaiting = false
+local pointsStarted = false
+local pointsStopped = false
+local pointsFinished = false
+local selfDestructClicks = 0
+local requiredSelfDestructClicks = 100
+local requiredPoints = 5000
+local isAntiAfkEnabled = false
+local ownSlapBattlesSweepBadge = false
+local autoClickLoop = nil
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- SLAP BATTLES SWEEP Badge ID (as string for comparison)
+local SLAP_BATTLES_SWEEP_BADGE_ID = "2236076719770808"
+
+-- Function to check if player is in arena
+local function isInArena()
+    local char = player.Character
+    if char then
+        local entered = char:FindFirstChild("entered")
+        if entered then
+            return entered.Value == true
+        end
+    end
+    return false
+end
+
+-- Get player's tycoon model name (supports both encodings)
+local function getTycoonModelNames()
+    local username = player.Name
+    return {"\195\133Tycoon" .. username, "\195\129Tycoon" .. username}
+end
+
+-- Function to find tycoon (checks both name variations)
+local function findTycoon()
+    local names = getTycoonModelNames()
+    for _, name in ipairs(names) do
+        local tycoon = workspace:FindFirstChild(name)
+        if tycoon then
+            return tycoon, name
+        end
+    end
+    return nil, nil
+end
+
+-- Function to get current points from Counter
+local function getCurrentPoints()
+    local tycoon = findTycoon()
+    if tycoon then
+        local counter = tycoon:FindFirstChild("Counter")
+        if counter then
+            local part = counter:FindFirstChild("Part")
+            if part then
+                local surfaceGui = part:FindFirstChild("SurfaceGui")
+                if surfaceGui then
+                    local textLabel = surfaceGui:FindFirstChild("TextLabel")
+                    if textLabel and textLabel:IsA("TextLabel") then
+                        local text = textLabel.Text
+                        local number = tonumber(text:match("%d+")) or 0
+                        return number
+                    end
+                end
+            end
+        end
+    end
+    return 0
+end
+
+-- Function to get self destruct clicks from SDCounter
+local function getSelfDestructClicks()
+    local tycoon = findTycoon()
+    if tycoon then
+        local sdCounter = tycoon:FindFirstChild("SDCounter")
+        if sdCounter then
+            local counter = sdCounter:FindFirstChild("Counter")
+            if counter then
+                local part = counter:FindFirstChild("Part")
+                if part then
+                    local surfaceGui = part:FindFirstChild("SurfaceGui")
+                    if surfaceGui then
+                        local textLabel = surfaceGui:FindFirstChild("TextLabel")
+                        if textLabel and textLabel:IsA("TextLabel") then
+                            local text = textLabel.Text
+                            local number = tonumber(text:match("%d+")) or 0
+                            return number
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nil
+end
+
+-- Function to check if SLAP BATTLES SWEEP badge is owned using PlayerData path
+local function checkSlapBattlesSweepBadge()
+    local playerData = replicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then
+        ownSlapBattlesSweepBadge = false
+        return false
+    end
+    
+    local playerFolder = playerData:FindFirstChild(player.Name)
+    if not playerFolder then
+        ownSlapBattlesSweepBadge = false
+        return false
+    end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then
+        ownSlapBattlesSweepBadge = false
+        return false
+    end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                if cleanId == SLAP_BATTLES_SWEEP_BADGE_ID then
+                    ownSlapBattlesSweepBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    
+    ownSlapBattlesSweepBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownSlapBattlesSweepBadge and "✅ Yes" or "❌ No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    
+    badgeStatusText = string.format([[
+Owns SLAP BATTLES SWEEP Badge: %s
+SLAP BATTLES SWEEP Badge Awards Glove: Spoonful Glove
+Entered Arena: %s
+]],
+    badgeStatus,
+    inArenaStatus
+)
+    return badgeStatusText
+end
+
+-- Function to get error message based on conditions
+local function getErrorMessage()
+    local inArena = isInArena()
+    local tycoon = findTycoon()
+    
+    if inArena and tycoon then
+        return nil -- No error
+    elseif not inArena and not tycoon then
+        return "⚠️ Error - Enter Arena First / Tycoon Not Found"
+    elseif inArena and not tycoon then
+        return "⚠️ Error - Tycoon Not Found"
+    elseif not inArena and tycoon then
+        return "⚠️ Error - Enter Arena First"
+    end
+    
+    return "⚠️ Unknown Error"
+end
+
+-- Function to update points status display
+local function updatePointsDisplay()
+    local currentPoints = getCurrentPoints()
+    local autoClickStatus = isAutoClicking and "Yes" or "No"
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    local selfDestructDisplay = "Not Found"
+    
+    local sdValue = getSelfDestructClicks()
+    if sdValue ~= nil then
+        selfDestructDisplay = sdValue .. "/" .. requiredSelfDestructClicks
+    end
+    
+    -- Points Show status logic
+    local waitingStatus = "Waiting to start..."
+    local startedStatus = "Not Started"
+    local stoppedStatus = "Not Stopped"
+    local finishedStatus = "Not Finished"
+    
+    if pointsFinished then
+        waitingStatus = "Finished!"
+        startedStatus = requiredPoints .. "/" .. requiredPoints
+        stoppedStatus = "N/A"
+        finishedStatus = requiredPoints .. "/" .. requiredPoints
+    elseif pointsStopped then
+        waitingStatus = "Stopped"
+        startedStatus = currentPoints .. "/" .. requiredPoints
+        stoppedStatus = currentPoints .. "/" .. requiredPoints
+        finishedStatus = "Not Finished"
+    elseif pointsStarted then
+        waitingStatus = "Running..."
+        startedStatus = currentPoints .. "/" .. requiredPoints
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    elseif not isAutoClicking then
+        waitingStatus = "Ready to start"
+        startedStatus = "Not Started"
+        stoppedStatus = "Not Stopped"
+        finishedStatus = "Not Finished"
+    end
+    
+    local statusText = string.format([[
+Points Show Waiting: %s
+Points Show Started: %s
+Points Show Stopped: %s
+Points Show Finished: %s
+AutoClick: %s
+Self Destruct Button Clicked Times: %s
+Entered Arena: %s
+Anti AFK: %s
+]],
+    waitingStatus,
+    startedStatus,
+    stoppedStatus,
+    finishedStatus,
+    autoClickStatus,
+    selfDestructDisplay,
+    inArenaStatus,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Create the TWO paragraphs
+local TycoonStatusParagraph = Tab:AddParagraph("Tycoon Status:", "Loading...")
+local BadgeStatusParagraph = Tab:AddParagraph("Badge Status:", "Loading badge info...")
+
+-- ===== LOOP: TYCOON STATUS UPDATE =====
+task.spawn(function()
+    while true do
+        local statusText = updatePointsDisplay()
+        pcall(function()
+            TycoonStatusParagraph:Set(statusText)
+        end)
+        task.wait(0.5)
+    end
+end)
+
+-- ===== LOOP: BADGE STATUS UPDATE (5 SECONDS) =====
+task.spawn(function()
+    while true do
+        checkSlapBattlesSweepBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:Set(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- ===== AUTO CLICK TYCOON TOGGLE =====
+_G.AutoTycoon = false
+
+AutoClickTycoon = Tab:AddToggle({
+    Name = "Auto Click Tycoon",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoTycoon = Value
+        isAutoClicking = Value
+        
+        if Value then
+            -- Check conditions
+            local errorMsg = getErrorMessage()
+            if errorMsg then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = errorMsg,
+                    Image = "rbxassetid://4483345998",
+                    Time = 4
+                })
+                AutoClickTycoon:Set(false)
+                _G.AutoTycoon = false
+                isAutoClicking = false
+                return
+            end
+            
+            pointsStarted = true
+            pointsStopped = false
+            pointsFinished = false
+            pointsWaiting = false
+            
+            if autoClickLoop then
+                task.cancel(autoClickLoop)
+                autoClickLoop = nil
+            end
+            
+            autoClickLoop = task.spawn(function()
+                while _G.AutoTycoon do
+                    -- Check conditions
+                    local errorMsg = getErrorMessage()
+                    if errorMsg then
+                        OrionLib:MakeNotification({
+                            Name = "Auto Click Tycoon",
+                            Content = errorMsg,
+                            Image = "rbxassetid://4483345998",
+                            Time = 3
+                        })
+                        _G.AutoTycoon = false
+                        AutoClickTycoon:Set(false)
+                        isAutoClicking = false
+                        pointsStopped = true
+                        pointsStarted = false
+                        break
+                    end
+                    
+                    -- Check if points reached required amount
+                    local currentPoints = getCurrentPoints()
+                    if currentPoints >= requiredPoints then
+                        pointsFinished = true
+                        pointsStarted = false
+                        _G.AutoTycoon = false
+                        AutoClickTycoon:Set(false)
+                        isAutoClicking = false
+                        
+                        OrionLib:MakeNotification({
+                            Name = "Tycoon",
+                            Content = "Goal reached! " .. currentPoints .. "/" .. requiredPoints .. " points!",
+                            Image = "rbxassetid://7743878857",
+                            Time = 5
+                        })
+                        break
+                    end
+                    
+                    pcall(function()
+                        local tycoon = findTycoon()
+                        if tycoon then
+                            local clickPart = tycoon:FindFirstChild("Click")
+                            if clickPart and clickPart:IsA("BasePart") then
+                                local detector = clickPart:FindFirstChildOfClass("ClickDetector")
+                                if detector then
+                                    fireclickdetector(detector)
+                                end
+                            end
+                        end
+                    end)
+                    task.wait()
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Click Tycoon",
+                Content = "Started! Need " .. requiredPoints .. " points",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+        else
+            if autoClickLoop then
+                task.cancel(autoClickLoop)
+                autoClickLoop = nil
+            end
+            pointsStopped = true
+            pointsStarted = false
+            isAutoClicking = false
+            
+            local currentPoints = getCurrentPoints()
+        end
+    end
+})
+
+-- ===== ANTI AFK TOGGLE =====
+AntiAfk = Tab:AddToggle({
+    Name = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end    
+})
+
+-- Initial updates
+checkSlapBattlesSweepBadge()
+BadgeStatusParagraph:Set(updateBadgeStatusText())
+TycoonStatusParagraph:Set(updatePointsDisplay())
+
+Tab:AddButton({
+    Name = "Equip Tycoon (Plate Master Badge Need)",
+    Callback = function()
+fireclickdetector(workspace.Lobby["Tycoon"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+	Name = "Place Tycoon",
+	Callback = function()  
+if game.Players.LocalPlayer.leaderstats.Glove.Value == "Tycoon" and game.Players.LocalPlayer.Character:FindFirstChild("entered") then
+task.wait(0.1)
+local button = script.Parent
+local teleportPosition = Vector3.new(17884, -24, -3539)
+
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+    end
+task.wait(0.1)
+local args = {
+    [1] = CFrame.new(17893.552734375, -26.257728576660156, -3535.35888671875, 0.00862560048699379, 3.3499091500743816e-08, -0.9999628067016602, 8.43312697451637e-10, 1, 3.350761090814558e-08, 0.9999628067016602, -1.1323045834288337e-09, 0.00862560048699379)
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility"):FireServer(unpack(args))
+else
+OrionLib:MakeNotification({Name = "Error",Content = "Equip Tycoon/Enter Arena",Image = "rbxassetid://7743878857",Time = 3})
+end
+end
 })
 
 end
@@ -1638,21 +4156,22 @@ end)
 end
 do
 Tab = Window:MakeTab({
-    Name = "Debug",
+    Name = "Lag",
     Icon = "rbxassetid://7733955740",
     PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "Slap Controls"
 })
 
 -- Variables
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
 
 local SelectedPlayer = nil
 local PlayersList = {}
-local ActiveToggles = {}
 
 -- Functions
 local function RefreshPlayersList()
@@ -1665,96 +4184,63 @@ local function RefreshPlayersList()
     return PlayersList
 end
 
-local function GetPlayerHitbox(playerName)
-    local hitboxName = playerName .. "_hitbox"
-    local hitbox = Workspace:FindFirstChild(hitboxName)
-    if hitbox and hitbox:IsA("Part") then
-        return hitbox
-    end
-    return nil
+local function GetGeneralHit()
+    return ReplicatedStorage:FindFirstChild("GeneralHit")
 end
 
-local function GetLocalPlayerHitbox()
-    local hitboxName = LocalPlayer.Name .. "_hitbox"
-    local hitbox = Workspace:FindFirstChild(hitboxName)
-    if hitbox and hitbox:IsA("Part") then
-        return hitbox
+local function SlapTarget(targetPart)
+    local generalHit = GetGeneralHit()
+    if generalHit and targetPart then
+        generalHit:FireServer(targetPart)
+        return true
     end
-    return nil
+    return false
 end
 
-local function GetAnyHitbox()
-    for _, obj in pairs(Workspace:GetChildren()) do
-        if obj:IsA("Part") and string.match(obj.Name, "_hitbox$") then
-            return obj
-        end
-    end
-    return nil
-end
-
--- Ultra fast flying function
-local function FlyToTarget(targetHitbox)
-    local character = LocalPlayer.Character
-    if not character then return end
+local function GetPlayerParts(player)
+    if not player or not player.Character then return nil end
     
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRootPart then return end
+    local parts = {
+        player.Character:FindFirstChild("Right Arm"),
+        player.Character:FindFirstChild("Left Arm"),
+        player.Character:FindFirstChild("Head"),
+        player.Character:FindFirstChild("Torso"),
+        player.Character:FindFirstChild("HumanoidRootPart")
+    }
     
-    -- Remove any existing velocity
-    for _, obj in pairs(humanoidRootPart:GetChildren()) do
-        if obj:IsA("BodyVelocity") then
-            obj:Destroy()
+    -- Filter out nil parts
+    local validParts = {}
+    for _, part in pairs(parts) do
+        if part then
+            table.insert(validParts, part)
         end
     end
     
-    -- Create super fast BodyVelocity
-    local bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.MaxForce = Vector3.new(50000, 50000, 50000) -- Massive force
-    bodyVelocity.Parent = humanoidRootPart
-    
-    -- Calculate direction and distance
-    local direction = (targetHitbox.Position - humanoidRootPart.Position).Unit
-    local distance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
-    
-    -- Extreme speed - fly really fast!
-    local speed = 50 + (distance * 2) -- Base speed + distance multiplier
-    bodyVelocity.Velocity = direction * speed
-    
-    -- Stop when close to target
-    local connection
-    connection = RunService.Heartbeat:Connect(function()
-        local currentDistance = (targetHitbox.Position - humanoidRootPart.Position).Magnitude
-        if currentDistance < 10 then
-            bodyVelocity:Destroy()
-            connection:Disconnect()
-            -- Final position adjustment
-            humanoidRootPart.CFrame = targetHitbox.CFrame + Vector3.new(0, 0, 0)
+    -- Also search for any child named DOLLPART
+    if player.Character then
+        for _, child in pairs(player.Character:GetChildren()) do
+            if child.Name == "DOLLPART" and child:IsA("BasePart") then
+                table.insert(validParts, child)
+            end
         end
-    end)
+    end
     
-    -- Safety cleanup after 3 seconds
-    delay(3, function()
-        if bodyVelocity and bodyVelocity.Parent then
-            bodyVelocity:Destroy()
-        end
-        if connection then
-            connection:Disconnect()
-        end
-    end)
+    return validParts
 end
 
--- Main Tab
-local Section = Tab:AddSection({
-    Name = "Player Selection"
-})
-
+-- Dropdown for player selection
 local Dropdown = Tab:AddDropdown({
     Name = "Select Player",
     Default = "",
     Options = RefreshPlayersList(),
     Callback = function(Value)
         SelectedPlayer = Value
+        OrionLib:MakeNotification({
+            Name = "Player Selected",
+            Content = "Selected: " .. (Value or "None"),
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
     end
 })
 
@@ -1762,70 +4248,450 @@ Tab:AddButton({
     Name = "Refresh Players List",
     Callback = function()
         Dropdown:Refresh(RefreshPlayersList(), true)
+        OrionLib:MakeNotification({
+            Name = "Refreshed",
+            Content = "Player list updated!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
     end
 })
 
+Section = Tab:AddSection({
+    Name = "Slap Selected Player"
+})
+
+-- Slap Selected Player (Once)
+Tab:AddButton({
+    Name = "Slap Selected Player (Once)",
+    Callback = function()
+        if not SelectedPlayer or SelectedPlayer == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please select a player first!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local targetPlayer = Players:FindFirstChild(SelectedPlayer)
+        if not targetPlayer then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Player not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local parts = GetPlayerParts(targetPlayer)
+        if not parts or #parts == 0 then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No valid parts found for " .. SelectedPlayer,
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local slapped = 0
+        for _, part in pairs(parts) do
+            if SlapTarget(part) then
+                slapped = slapped + 1
+            end
+        end
+        
+        OrionLib:MakeNotification({
+            Name = "Slap",
+            Content = "Slapped " .. SelectedPlayer .. " (" .. slapped .. " parts)",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+-- Auto Slap Selected Player (Every 0.2 seconds)
+local autoSlapSelected = false
+local autoSlapSelectedThread = nil
+
 Tab:AddToggle({
-    Name = "Auto Spawn Cube",
+    Name = "Auto Slap Selected Player (0.2s)",
     Default = false,
     Callback = function(Value)
-        ActiveToggles["AutoSpawn"] = Value
+        autoSlapSelected = Value
+        
         if Value then
-            coroutine.wrap(function()
-                local DebugEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("Debug")
-                
-                while ActiveToggles["AutoSpawn"] do
-                    local localHitbox = GetLocalPlayerHitbox()
-                    if not localHitbox then
-                        DebugEvent:FireServer()
-                    end
-                    task.wait(0.1)
+            if not SelectedPlayer or SelectedPlayer == "" then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Please select a player first!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoSlapSelected = false
+                return
+            end
+            
+            if autoSlapSelectedThread then
+                task.cancel(autoSlapSelectedThread)
+                autoSlapSelectedThread = nil
+            end
+            
+            autoSlapSelectedThread = task.spawn(function()
+                while autoSlapSelected do
+                    pcall(function()
+                        local targetPlayer = Players:FindFirstChild(SelectedPlayer)
+                        if not targetPlayer then
+                            return
+                        end
+                        
+                        local parts = GetPlayerParts(targetPlayer)
+                        if parts and #parts > 0 then
+                            for _, part in pairs(parts) do
+                                SlapTarget(part)
+                            end
+                        end
+                    end)
+                    task.wait(0.2)
                 end
-            end)()
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slapping " .. SelectedPlayer .. " every 0.2s",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if autoSlapSelectedThread then
+                task.cancel(autoSlapSelectedThread)
+                autoSlapSelectedThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slap stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
     end
 })
 
--- Teleport Tab
-local Section = Tab:AddSection({
-    Name = "Auto Teleport"
+Section = Tab:AddSection({
+    Name = "Slap Yourself"
 })
 
+-- Slap Yourself (Once)
+Tab:AddButton({
+    Name = "Slap Yourself (Once)",
+    Callback = function()
+        local parts = GetPlayerParts(LocalPlayer)
+        if not parts or #parts == 0 then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "No valid parts found for yourself!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local slapped = 0
+        for _, part in pairs(parts) do
+            if SlapTarget(part) then
+                slapped = slapped + 1
+            end
+        end
+        
+        OrionLib:MakeNotification({
+            Name = "Slap Yourself",
+            Content = "Slapped yourself (" .. slapped .. " parts)",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+-- Auto Slap Yourself (Every 0.2 seconds)
+local autoSlapSelf = false
+local autoSlapSelfThread = nil
+
 Tab:AddToggle({
-    Name = "Auto Touch Cube's Selected Player",
+    Name = "Auto Slap Yourself (0.2s)",
     Default = false,
     Callback = function(Value)
-        ActiveToggles["TeleportToSelected"] = Value
+        autoSlapSelf = Value
+        
         if Value then
-            coroutine.wrap(function()
-                while ActiveToggles["TeleportToSelected"] and SelectedPlayer do
-                    local targetHitbox = GetPlayerHitbox(SelectedPlayer)
-                    if targetHitbox then
-                        FlyToTarget(targetHitbox)
-                    end
-                    task.wait(0.1) -- Very short delay for rapid flying
+            if autoSlapSelfThread then
+                task.cancel(autoSlapSelfThread)
+                autoSlapSelfThread = nil
+            end
+            
+            autoSlapSelfThread = task.spawn(function()
+                while autoSlapSelf do
+                    pcall(function()
+                        local parts = GetPlayerParts(LocalPlayer)
+                        if parts and #parts > 0 then
+                            for _, part in pairs(parts) do
+                                SlapTarget(part)
+                            end
+                        end
+                    end)
+                    task.wait(0.2)
                 end
-            end)()
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slapping yourself every 0.2s",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if autoSlapSelfThread then
+                task.cancel(autoSlapSelfThread)
+                autoSlapSelfThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slap self stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
     end
 })
 
+Section = Tab:AddSection({
+    Name = "Slap Everyone"
+})
+
+-- Slap Everyone Except Yourself (Once)
+Tab:AddButton({
+    Name = "Slap Everyone Except You (Once)",
+    Callback = function()
+        local totalSlapped = 0
+        local playersSlapped = 0
+        
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer then
+                local parts = GetPlayerParts(player)
+                if parts and #parts > 0 then
+                    playersSlapped = playersSlapped + 1
+                    for _, part in pairs(parts) do
+                        if SlapTarget(part) then
+                            totalSlapped = totalSlapped + 1
+                        end
+                    end
+                end
+            end
+        end
+        
+        OrionLib:MakeNotification({
+            Name = "Slap Everyone",
+            Content = "Slapped " .. playersSlapped .. " players (" .. totalSlapped .. " parts)",
+            Image = "rbxassetid://7743878857",
+            Time = 3
+        })
+    end
+})
+
+-- Auto Slap Everyone Except Yourself (Every 0.2 seconds)
+local autoSlapEveryone = false
+local autoSlapEveryoneThread = nil
+
 Tab:AddToggle({
-    Name = "Auto Touch To Any Cube",
+    Name = "Auto Slap Everyone Except You (0.2s)",
     Default = false,
     Callback = function(Value)
-        ActiveToggles["TeleportToAny"] = Value
+        autoSlapEveryone = Value
+        
         if Value then
-            coroutine.wrap(function()
-                while ActiveToggles["TeleportToAny"] do
-                    local anyHitbox = GetAnyHitbox()
-                    if anyHitbox then
-                        FlyToTarget(anyHitbox)
-                    end
-                    task.wait(0.1) -- Very short delay for rapid flying
+            if autoSlapEveryoneThread then
+                task.cancel(autoSlapEveryoneThread)
+                autoSlapEveryoneThread = nil
+            end
+            
+            autoSlapEveryoneThread = task.spawn(function()
+                while autoSlapEveryone do
+                    pcall(function()
+                        for _, player in pairs(Players:GetPlayers()) do
+                            if player ~= LocalPlayer then
+                                local parts = GetPlayerParts(player)
+                                if parts and #parts > 0 then
+                                    for _, part in pairs(parts) do
+                                        SlapTarget(part)
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.2)
                 end
-            end)()
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slapping everyone except you every 0.2s",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if autoSlapEveryoneThread then
+                task.cancel(autoSlapEveryoneThread)
+                autoSlapEveryoneThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slap everyone stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Slap Everyone (Including Yourself)"
+})
+
+-- Slap Everyone Including Yourself (Once)
+Tab:AddButton({
+    Name = "Slap Everyone Including You (Once)",
+    Callback = function()
+        local totalSlapped = 0
+        local playersSlapped = 0
+        
+        for _, player in pairs(Players:GetPlayers()) do
+            local parts = GetPlayerParts(player)
+            if parts and #parts > 0 then
+                playersSlapped = playersSlapped + 1
+                for _, part in pairs(parts) do
+                    if SlapTarget(part) then
+                        totalSlapped = totalSlapped + 1
+                    end
+                end
+            end
+        end
+        
+        OrionLib:MakeNotification({
+            Name = "Slap Everyone",
+            Content = "Slapped " .. playersSlapped .. " players (" .. totalSlapped .. " parts) including you!",
+            Image = "rbxassetid://7743878857",
+            Time = 3
+        })
+    end
+})
+
+-- Auto Slap Everyone Including Yourself (Every 0.2 seconds)
+local autoSlapEveryoneIncludingSelf = false
+local autoSlapEveryoneIncludingSelfThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Slap Everyone Including You (0.2s)",
+    Default = false,
+    Callback = function(Value)
+        autoSlapEveryoneIncludingSelf = Value
+        
+        if Value then
+            if autoSlapEveryoneIncludingSelfThread then
+                task.cancel(autoSlapEveryoneIncludingSelfThread)
+                autoSlapEveryoneIncludingSelfThread = nil
+            end
+            
+            autoSlapEveryoneIncludingSelfThread = task.spawn(function()
+                while autoSlapEveryoneIncludingSelf do
+                    pcall(function()
+                        for _, player in pairs(Players:GetPlayers()) do
+                            local parts = GetPlayerParts(player)
+                            if parts and #parts > 0 then
+                                for _, part in pairs(parts) do
+                                    SlapTarget(part)
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(0.2)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slapping everyone including you every 0.2s",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if autoSlapEveryoneIncludingSelfThread then
+                task.cancel(autoSlapEveryoneIncludingSelfThread)
+                autoSlapEveryoneIncludingSelfThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Slap",
+                Content = "Auto slap everyone including you stopped!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+-- Auto refresh players list every 10 seconds
+task.spawn(function()
+    while true do
+        task.wait(10)
+        pcall(function()
+            if Dropdown then
+                Dropdown:Refresh(RefreshPlayersList(), true)
+            end
+        end)
+    end
+end)
+end
+do
+local Tab = Window:MakeTab({
+    Name = "Null Shards",
+    Icon = "rbxassetid://7743868527",
+    PremiumOnly = false
+})
+
+Tab:AddButton({
+    Name = "Equip Ghost Glove",
+    Callback = function()
+fireclickdetector(workspace.Lobby.Ghost.ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Name = "Activate Ghost Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage").Ghostinvisibilityactivated:FireServer()
+    end
+})
+
+Tab:AddButton({
+    Name = "Deactivate Ghost Ability",
+    Callback = function()
+game:GetService("ReplicatedStorage").Ghostinvisibilitydeactivated:FireServer()
+    end
+})
+
+Tab:AddButton({
+    Name = "Join Tournament",
+    Callback = function()
+game:GetService("ReplicatedStorage").Remotes.JoinedTournament:FireServer()
     end
 })
 
@@ -3621,6 +6487,7 @@ do
         ["Helix"] = ReplicatedStorage.GeneralHit,
         ["Parry"] = ReplicatedStorage.GeneralHit,
         ["Jebaited"] = ReplicatedStorage.GeneralHit,
+        ["Coconut"] = ReplicatedStorage.GeneralHit,
         ["Meteor"] = ReplicatedStorage.GeneralHit,
         ["Oven"] = ReplicatedStorage.GeneralHit,
         ["Guardian Angel"] = ReplicatedStorage.GeneralHit,
