@@ -2323,12 +2323,12 @@ Section = Tab:AddSection({
     Name = "Helper"
 })
 
--- Auto Teleport To Receiver + Auto Die On Ragdoll
+-- Auto Teleport To Receiver + Auto Die On Ragdoll + Auto Enter Arena
 local autoHelper = false
 local helperLoopThread = nil
 
 Tab:AddToggle({
-    Name = "Auto Teleport To Receiver + Auto Die On Ragdoll",
+    Name = "Auto Teleport To Receiver + Auto Die On Ragdoll + Auto Enter Arena",
     Default = false,
     Callback = function(Value)
         autoHelper = Value
@@ -2359,12 +2359,30 @@ Tab:AddToggle({
                         
                         if not hrp or not humanoid then return end
                         
-                        -- Step 1: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        -- Step 1: Auto Enter Arena (if not entered yet)
+                        local hasEntered = char:FindFirstChild("entered")
+                        if not hasEntered then
+                            print("🚶 Entering arena...")
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(1)
+                            -- Check again after teleport
+                            hasEntered = char:FindFirstChild("entered")
+                            if hasEntered then
+                                print("✅ Entered arena successfully!")
+                            else
+                                print("⚠️ Still not entered, retrying...")
+                            end
+                        else
+                            print("✅ Already in arena")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Teleport To Receiver (position 10000, -42, 9996)
                         hrp.CFrame = CFrame.new(10000, -42, 9996)
                         print("📍 Teleported to Receiver")
                         task.wait(0.1)
                         
-                        -- Step 2: Auto Die On Ragdoll
+                        -- Step 3: Auto Die On Ragdoll
                         local ragdolled = char:FindFirstChild("Ragdolled")
                         if ragdolled and ragdolled.Value == true then
                             humanoid.Health = 0
@@ -2381,7 +2399,7 @@ Tab:AddToggle({
                             print("✅ No ragdoll detected")
                         end
                         
-                        -- Step 3: Small wait before repeating
+                        -- Step 4: Small wait before repeating
                         task.wait(0.1)
                     end)
                 end
@@ -2389,7 +2407,7 @@ Tab:AddToggle({
             
             OrionLib:MakeNotification({
                 Name = "Helper",
-                Content = "Auto Helper Enabled! (Receiver + Die On Ragdoll)",
+                Content = "Auto Helper Enabled! (Receiver + Die On Ragdoll + Enter Arena)",
                 Image = "rbxassetid://7743878857",
                 Time = 3
             })
