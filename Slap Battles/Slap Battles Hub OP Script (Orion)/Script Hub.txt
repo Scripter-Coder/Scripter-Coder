@@ -106,7 +106,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Script
 })
 
 Tab:AddButton({
-    Name = "Load Slap Farm Hub Script",
+    Name = "Load Currencies Farm Hub Script",
     Callback = function()   
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Orion)/Slap%20Farm%20Hub.txt"))()
  end    
@@ -6222,6 +6222,7 @@ do
         ["Helix"] = ReplicatedStorage.GeneralHit,
         ["Parry"] = ReplicatedStorage.GeneralHit,
         ["Jebaited"] = ReplicatedStorage.GeneralHit,
+        ["Coconut"] = ReplicatedStorage.GeneralHit,
         ["Meteor"] = ReplicatedStorage.GeneralHit,
         ["Oven"] = ReplicatedStorage.GeneralHit,
         ["Guardian Angel"] = ReplicatedStorage.GeneralHit,
