@@ -41,7 +41,7 @@ end
 Tab:AddParagraph("Info About Mastery Gloves That Are Coming Soon...", [[
 The glove masteries that coming soon are:
 
-(Obby, Run, Car Keys, and Pinwheel) 
+(Obby, Run and Car Keys) 
 ]])
 
 end
@@ -377,7 +377,7 @@ Section = Tab:AddSection({
 
 -- Create dropdown for Mastery selection
 local masteryNames = {
-    "spin", "Stick", "Brick", "Flash", "Spring", "Dice", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak", "Gummy",
+    "spin", "Stick", "Brick", "Flash", "Spring", "Pinwheel", "Dice", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak", "Gummy",
     "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Soul", 
     "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", 
     "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel", "Firework", "Run", "Frostbite", "Plank", "Hexa", "Eggler", "Car Keys", 
@@ -2183,6 +2183,229 @@ Tab:AddToggle({
                 helperReceiverLoop = nil
             end
             
+        end
+    end
+})
+
+end
+do
+
+local Tab = Window:MakeTab({
+    Name = "Pinwheel",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3 Quest"
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Teleport To Safespot + Auto Use Ability + Slap Aura
+local autoReceiver = false
+local receiverLoopThread = nil
+local slapAuraConnection = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Safespot + Auto Use Ability + Slap Aura",
+    Default = false,
+    Callback = function(Value)
+        autoReceiver = Value
+        
+        if Value then
+            -- Stop existing loop if any
+            if receiverLoopThread then
+                task.cancel(receiverLoopThread)
+                receiverLoopThread = nil
+            end
+            
+            -- Start the main receiver loop
+            receiverLoopThread = task.spawn(function()
+                while autoReceiver do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Teleport to Safespot (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Safespot")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Use Ability (GeneralAbility every 0.1 seconds)
+                        local generalAbility = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralAbility")
+                        if generalAbility then
+                            generalAbility:FireServer()
+                            print("💨 GeneralAbility fired!")
+                        else
+                            print("❌ GeneralAbility not found!")
+                        end
+                        task.wait(0.1)
+                        
+                        -- Step 3: Slap Aura (GeneralHit on all players every 0.5 seconds)
+                        local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                        if generalHit then
+                            local startTime = tick()
+                            while autoReceiver and (tick() - startTime) < 0.5 do
+                                pcall(function()
+                                    for _, targetPlayer in pairs(game:GetService("Players"):GetPlayers()) do
+                                        if targetPlayer.Character then
+                                            local targetParts = {
+                                                targetPlayer.Character:FindFirstChild("Right Arm"),
+                                                targetPlayer.Character:FindFirstChild("Left Arm"),
+                                                targetPlayer.Character:FindFirstChild("Head"),
+                                                targetPlayer.Character:FindFirstChild("Torso"),
+                                                targetPlayer.Character:FindFirstChild("HumanoidRootPart"),
+                                                targetPlayer.Character:FindFirstChild("DOLLPART")
+                                            }
+                                            
+                                            for _, part in pairs(targetParts) do
+                                                if part then
+                                                    generalHit:FireServer(part)
+                                                end
+                                            end
+                                        end
+                                    end
+                                end)
+                                task.wait(0.5)
+                            end
+                        else
+                            print("❌ GeneralHit not found!")
+                        end
+                        
+                        -- Step 4: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Receiver",
+                Content = "Auto Receiver Enabled! (Safespot + Ability + Slap Aura)",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            -- Stop the loop
+            if receiverLoopThread then
+                task.cancel(receiverLoopThread)
+                receiverLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Receiver",
+                Content = "Auto Receiver Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Teleport To Receiver + Auto Die On Ragdoll
+local autoHelper = false
+local helperLoopThread = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Receiver + Auto Die On Ragdoll",
+    Default = false,
+    Callback = function(Value)
+        autoHelper = Value
+        
+        if Value then
+            if helperLoopThread then
+                task.cancel(helperLoopThread)
+                helperLoopThread = nil
+            end
+            
+            helperLoopThread = task.spawn(function()
+                while autoHelper do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        -- Wait for character if dead
+                        if not char or not char.Parent then
+                            print("⏳ Waiting for respawn...")
+                            char = player.CharacterAdded:Wait()
+                            task.wait(1)
+                        end
+                        
+                        if not char then return end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then return end
+                        
+                        -- Step 1: Auto Teleport To Receiver (position 10000, -42, 9996)
+                        hrp.CFrame = CFrame.new(10000, -42, 9996)
+                        print("📍 Teleported to Receiver")
+                        task.wait(0.1)
+                        
+                        -- Step 2: Auto Die On Ragdoll
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                            print("💀 Died due to ragdoll!")
+                            OrionLib:MakeNotification({
+                                Name = "Ragdoll",
+                                Content = "Died due to ragdoll!",
+                                Image = "rbxassetid://7743878857",
+                                Time = 2
+                            })
+                            task.wait(1)
+                            return
+                        else
+                            print("✅ No ragdoll detected")
+                        end
+                        
+                        -- Step 3: Small wait before repeating
+                        task.wait(0.1)
+                    end)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Helper",
+                Content = "Auto Helper Enabled! (Receiver + Die On Ragdoll)",
+                Image = "rbxassetid://7743878857",
+                Time = 3
+            })
+            
+        else
+            if helperLoopThread then
+                task.cancel(helperLoopThread)
+                helperLoopThread = nil
+            end
+            
+            OrionLib:MakeNotification({
+                Name = "Helper",
+                Content = "Auto Helper Disabled!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
         end
     end
 })
@@ -8632,14 +8855,6 @@ local Tab = Window:MakeTab({
 })
 
 Section = Tab:AddSection({
-    Name = "1-2-3 Quest (SOON REWORK)"
-})
-
-Section = Tab:AddSection({
-    Name = "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-})
-
-Section = Tab:AddSection({
     Name = "1 Quest"
 })
 
@@ -9783,14 +9998,6 @@ local Tab = Window:MakeTab({
 })
 
 Section = Tab:AddSection({
-    Name = "1-2-3 Quests (SOON REWORK)"
-})
-
-Section = Tab:AddSection({
-    Name = "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-})
-
-Section = Tab:AddSection({
     Name = "1-2 Quests"
 })
 
@@ -10461,6 +10668,10 @@ Section = Tab:AddSection({
     Name = "2-3 Quests"
 })
 
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
 -- Variables
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -10504,16 +10715,13 @@ Tab:AddButton({
     end
 })
 
-Section = Tab:AddSection({
-    Name = "Receiver"
-})
-
 -- Auto Teleport To Safespot + Auto Use Ability + Ride Into Choosed Player
 local autoReceiver = false
 local receiverLoopThread = nil
+local abilityTimer = 0
 
 Tab:AddToggle({
-    Name = "Auto Teleport To Safespot + Auto Use Ability + Ride Into Choosed Player",
+    Name = "Auto Receiver (Safespot + Ability + Ride Player)",
     Default = false,
     Callback = function(Value)
         autoReceiver = Value
@@ -10559,20 +10767,18 @@ Tab:AddToggle({
                         print("📍 Teleported to Safespot")
                         task.wait(0.1)
                         
-                        -- Step 2: Auto Use Ability (find any ability remote)
-                        local abilityFound = false
-                        for _, obj in pairs(ReplicatedStorage:GetChildren()) do
-                            if obj:IsA("RemoteEvent") and string.find(obj.Name, "Ability") then
-                                obj:FireServer()
-                                print("💨 Ability fired: " .. obj.Name)
-                                abilityFound = true
-                                break
+                        -- Step 2: Auto Use Ability (GeneralAbility every 10 seconds)
+                        abilityTimer = abilityTimer + 0.5
+                        if abilityTimer >= 10 then
+                            local generalAbility = ReplicatedStorage:FindFirstChild("GeneralAbility")
+                            if generalAbility then
+                                generalAbility:FireServer(false)
+                                print("💨 GeneralAbility fired! (false)")
+                                abilityTimer = 0
+                            else
+                                print("❌ GeneralAbility not found!")
                             end
                         end
-                        if not abilityFound then
-                            print("❌ No ability remote found")
-                        end
-                        task.wait(0.3)
                         
                         -- Step 3: Ride Into Choosed Player (follow selected player)
                         local targetPlayer = Players:FindFirstChild(SelectedPlayer)
@@ -10587,8 +10793,7 @@ Tab:AddToggle({
                                 -- Walk towards the player (since you're a car)
                                 if distance > 10 then
                                     -- Move forward towards player
-                                    local walkSpeed = 16
-                                    humanoid.WalkSpeed = walkSpeed
+                                    humanoid.WalkSpeed = 16
                                     
                                     -- Set the humanoid to walk towards target
                                     humanoid:MoveTo(targetHrp.Position)
@@ -10627,6 +10832,8 @@ Tab:AddToggle({
                 receiverLoopThread = nil
             end
             
+            abilityTimer = 0
+            
             OrionLib:MakeNotification({
                 Name = "Receiver",
                 Content = "Auto Receiver Disabled!",
@@ -10646,7 +10853,7 @@ local autoHelper = false
 local helperLoopThread = nil
 
 Tab:AddToggle({
-    Name = "Auto Teleport To Receiver + Auto Teleport To Car Player",
+    Name = "Auto Helper (Receiver + Car Player)",
     Default = false,
     Callback = function(Value)
         autoHelper = Value
@@ -10691,9 +10898,9 @@ Tab:AddToggle({
                         task.wait(0.1)
                         
                         -- Step 2: Auto Teleport To Car Player
-                        -- Find the selected player's CarKeysXP
                         local targetPlayer = Players:FindFirstChild(SelectedPlayer)
                         if targetPlayer and targetPlayer.Character then
+                            -- Check for CarKeysXP inside the player's character
                             local carKeys = targetPlayer.Character:FindFirstChild("CarKeysXP")
                             if carKeys and carKeys:IsA("IntValue") then
                                 -- Teleport to the car player's position
@@ -10709,20 +10916,23 @@ Tab:AddToggle({
                                     })
                                 end
                             else
-                                print("❌ " .. SelectedPlayer .. " has no CarKeysXP")
+                                print("❌ " .. SelectedPlayer .. " has no CarKeysXP in character")
                                 
-                                -- Try to find CarKeysXP in the player's Backpack or anywhere
-                                local found = false
-                                for _, child in pairs(targetPlayer:GetChildren()) do
-                                    if child:IsA("IntValue") and child.Name == "CarKeysXP" then
-                                        -- Found it outside character
-                                        print("🔑 Found CarKeysXP in player (not character)")
-                                        found = true
-                                        break
+                                -- Search in player's Backpack
+                                local backpack = targetPlayer:FindFirstChild("Backpack")
+                                if backpack then
+                                    local carKeysInBackpack = backpack:FindFirstChild("CarKeysXP")
+                                    if carKeysInBackpack and carKeysInBackpack:IsA("IntValue") then
+                                        local targetHrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                                        if targetHrp then
+                                            hrp.CFrame = CFrame.new(targetHrp.Position + Vector3.new(0, 5, 0))
+                                            print("🚗 Teleported to " .. SelectedPlayer .. "'s car (from backpack)")
+                                        end
                                     end
                                 end
                                 
-                                -- Also search in workspace for car parts
+                                -- Also search in workspace for car models
+                                local foundCar = false
                                 for _, obj in pairs(Workspace:GetChildren()) do
                                     if obj:IsA("Model") and string.find(obj.Name, SelectedPlayer) and string.find(obj.Name, "Car") then
                                         local targetPart = obj:FindFirstChild("HumanoidRootPart") or 
@@ -10731,10 +10941,14 @@ Tab:AddToggle({
                                         if targetPart then
                                             hrp.CFrame = CFrame.new(targetPart.Position + Vector3.new(0, 5, 0))
                                             print("🚗 Teleported to " .. SelectedPlayer .. "'s car model")
-                                            found = true
+                                            foundCar = true
                                             break
                                         end
                                     end
+                                end
+                                
+                                if not foundCar then
+                                    print("❌ No car found for " .. SelectedPlayer)
                                 end
                             end
                         else
@@ -10769,6 +10983,129 @@ Tab:AddToggle({
         end
     end
 })
+
+-- Individual Helper Buttons
+Tab:AddButton({
+    Name = "Teleport To Safespot (Once)",
+    Callback = function()
+        local char = game.Players.LocalPlayer.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        hrp.CFrame = CFrame.new(10000, -42, 9996)
+        OrionLib:MakeNotification({
+            Name = "Teleport",
+            Content = "Teleported to Safespot!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Receiver (Once)",
+    Callback = function()
+        local char = game.Players.LocalPlayer.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        hrp.CFrame = CFrame.new(10000, -42, 9996)
+        OrionLib:MakeNotification({
+            Name = "Teleport",
+            Content = "Teleported to Receiver!",
+            Image = "rbxassetid://7743878857",
+            Time = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Use GeneralAbility (Once)",
+    Callback = function()
+        local generalAbility = ReplicatedStorage:FindFirstChild("GeneralAbility")
+        if generalAbility then
+            generalAbility:FireServer(false)
+            OrionLib:MakeNotification({
+                Name = "Ability",
+                Content = "GeneralAbility fired with false!",
+                Image = "rbxassetid://7743878857",
+                Time = 2
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "GeneralAbility not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To Car Player (Once)",
+    Callback = function()
+        if not SelectedPlayer or SelectedPlayer == "" then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Please select a player first!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local char = game.Players.LocalPlayer.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        local targetPlayer = Players:FindFirstChild(SelectedPlayer)
+        if targetPlayer and targetPlayer.Character then
+            local carKeys = targetPlayer.Character:FindFirstChild("CarKeysXP")
+            if carKeys and carKeys:IsA("IntValue") then
+                local targetHrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if targetHrp then
+                    hrp.CFrame = CFrame.new(targetHrp.Position + Vector3.new(0, 5, 0))
+                    OrionLib:MakeNotification({
+                        Name = "Teleport",
+                        Content = "Teleported to " .. SelectedPlayer .. "'s car!",
+                        Image = "rbxassetid://7743878857",
+                        Time = 2
+                    })
+                end
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "No CarKeysXP found for " .. SelectedPlayer,
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+            end
+        else
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Selected player not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+-- Auto refresh players list every 10 seconds
+task.spawn(function()
+    while true do
+        task.wait(10)
+        pcall(function()
+            if Dropdown then
+                Dropdown:Refresh(RefreshPlayersList(), true)
+            end
+        end)
+    end
+end)
 
 -- ===== ULTRA INSTINCT TAB =====
 end
