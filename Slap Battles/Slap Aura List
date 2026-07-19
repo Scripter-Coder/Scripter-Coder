@@ -99,6 +99,7 @@
         ["Helix"] = ReplicatedStorage.GeneralHit,
         ["Parry"] = ReplicatedStorage.GeneralHit,
         ["Jebaited"] = ReplicatedStorage.GeneralHit,
+        ["Coconut"] = ReplicatedStorage.GeneralHit,
         ["Meteor"] = ReplicatedStorage.GeneralHit,
         ["Oven"] = ReplicatedStorage.GeneralHit,
         ["Guardian Angel"] = ReplicatedStorage.GeneralHit,
