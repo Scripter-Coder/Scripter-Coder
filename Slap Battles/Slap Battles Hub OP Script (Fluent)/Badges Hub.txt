@@ -6,7 +6,6 @@ local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubuserconten
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-local Options = Fluent.Options
 
 --Startup Script Notification
 Fluent:Notify({Title = "From Scripter", Content = "Script Loads (Can Take 1-5 Seconds)", Duration = 1})
@@ -27,7 +26,7 @@ local Window = Fluent:CreateWindow({
 Fluent:Notify({Title = "From Scripter", Content = "GoodLuck!", Duration = 3})
 
 do
-Tab = Window:AddTab({ Title = "Welcome" })
+Tab = Window:AddTab({ Title = "Welcome", Icon = "rbxassetid://7734059095"})
 
 Window:SelectTab(1)
 
@@ -68,84 +67,6 @@ fireclickdetector(game.Workspace.Lobby.Scene.knofe.ClickDetector)
 end
 })
 
-Section = Tab:AddSection("Messages For Badges")
-
-Tab:AddDropdown("SelectGloveHelpToSendMessage", {
-    Title = "Select Glove Help To Send Message",
-    Default = 1,
-    Values = {
-        "Plague", "Bus", "Shard", "Potato", "Moon", "Jupiter", "Rage", "Orbit",
-        "Confusion", "Glitch", "Obby", "Goofy", "Leash", "Flamarang", "Berserk",
-        "Sparky", "Boogie", "Recall", "Quake", "Psycho", "Kraken", "Hammer",
-        "Rob", "Rhytnm", "Rojo", "Retro", "Null", "Lure", "Tinkerer", "Jester",
-        "Blasphemy", "Admin", "Joust", "Firework", "Run", "Divebomb", "Knockoff",
-        "Siphon", "Hunter", "Relude", "Avatar", "Pillow", "Angler", "Snowroller",
-        "Draw4", "Mouse", "Swashbuckler", "Silly", "CarKeys", "Debug"
-    },
-    Callback = function(Value)
-        local messages = {
-            Plague = "can anyone use plague on me?",
-            Bus = "can anyone use bus on me?",
-            Shard = "can i slap someone 5 times with snow glove?",
-            Potato = "can anyone use bubble on me?",
-            Moon = "can i win this tournament?",
-            Jupiter = "can anyone use god hand on me?",
-            Rage = "can i kill someone with 50 kills?",
-            Orbit = "can anyone use bob on me?",
-            Confusion = "can anyone help me with getting confusion glove?",
-            Glitch = "can anyone error orb that spawned?",
-            Obby = "can someone use rocky to turn me into megarock?",
-            Goofy = "can anyone use confusion and goofy at me?",
-            Leash = "can anyone help me with leash?",
-            Flamarang = "can anyone help me with flamarang?",
-            Berserk = "can anyone help me with berserk?",
-            Sparky = "can anyone help me with sparky?",
-            Boogie = "can anyone help me with boogie?",
-            Recall = "can anyone help me with recall?",
-            Quake = "can anyone help me with quake?",
-            Psycho = "can anyone help me with psycho?",
-            Kraken = "can anyone help me with kraken?",
-            Hammer = "can anyone help me with hammer?",
-            Rob = "can anyone help me with rob?",
-            Rhytnm = "can anyone help me with rhytnm?",
-            Rojo = "can anyone help me with rojo?",
-            Retro = "can anyone help me with retro?",
-            Null = "can anyone help me with null?",
-            Lure = "can anyone help me with lure?",
-            Tinkerer = "can anyone help me with tinkerer?",
-            Jester = "can anyone help me with jester?",
-            Blasphemy = "can anyone help me get blasphemy?",
-            Admin = "can anyone send me to retro world?",
-            Joust = "can anyone use joust on me?",
-            Firework = "can anyone use oven on me?",
-            Run = "can you help me to get run glove?",
-            Divebomb = "can anyone help me with divebomb?",
-            Knockoff = "can someone use pocket?",
-            Siphon = "can anyone spawn siphon orb?",
-            Hunter = "can anyone help me get hunter?",
-            Relude = "can anyone help me get relude?",
-            Avatar = "can anyone help me get avatar?",
-            Pillow = "can anyone help me get pillow?",
-            Angler = "can anyone help me get angler?",
-            Snowroller = "can anyone help me get snowroller?",
-            Draw4 = "can anyone use ping pong with me?",
-            Mouse = "can anyone help me using cloud to get me mouse?",
-            Swashbuckler = "can anyone help me to get swashbuckler?",
-            Silly = "can anyone help me to get silly?",
-            CarKeys = "can anyone help me to get car keys?",
-            Debug = "can anyone help me with code to get debug glove?"
-        }
-
-        local TextChatService = game:GetService("TextChatService")
-        local channel = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
-        local message = messages[Value]
-
-        if message then
-            channel:SendAsync(message)
-        end
-    end
-})
-
 Section = Tab:AddSection("Badges Info")
 
 -- Get local player username
@@ -172,7 +93,7 @@ local allBadges = {
     {id = "2124760875", name = "you met snow | No Glove", category = "Regular"},
     {id = "2124760911", name = "[REDACTED] | No Glove", category = "Regular"},
     {id = "2124760917", name = "Divine punishment | No Glove", category = "Regular"},
-    {id = "2124760923", name = "really? | No Glove", category = "Regular"},
+    {id = "2124760923", name = "really? | Pebble Glove", category = "Regular"},
     {id = "2124775097", name = "barzil | No Glove", category = "Regular"},
     {id = "2124807750", name = "The one | No Glove", category = "Regular"},
     {id = "2124807752", name = "Ascend | No Glove", category = "Regular"},
@@ -186,7 +107,7 @@ local allBadges = {
     {id = "2124760895", name = "ez | Moon Glove", category = "GloveRewarding"},
     {id = "2124760907", name = "court evidence | Hitman Glove", category = "GloveRewarding"},
     {id = "2124760928", name = "the touch of midas | buddies Glove", category = "GloveRewarding"},
-    {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "GloveRewarding"},
+    {id = "2124807768", name = "WHY | MEGAROCK + Pebble Glove", category = "GloveRewarding"},
     {id = "2124819262", name = "Infected | Plague Glove", category = "GloveRewarding"},
     {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "GloveRewarding"},
     {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "GloveRewarding"},
@@ -224,7 +145,7 @@ local allBadges = {
     {id = "2130031244", name = "RNGod | RNG Glove", category = "GloveRewarding"},
     {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "GloveRewarding"},
     {id = "2130155314", name = "🗿 | 🗿 Glove", category = "GloveRewarding"},
-    {id = "2130463063", name = "ULTRAROCK | Obby Glove", category = "GloveRewarding"},
+    {id = "2130463063", name = "ULTRAROCK | Obby + Pebble Glove", category = "GloveRewarding"},
     {id = "2132544202", name = "Insanity | Voodoo Glove", category = "GloveRewarding"},
     {id = "2133016756", name = "CHAOS | Goofy Glove", category = "GloveRewarding"},
     {id = "2136607413", name = "Demonic Ritual | Leash Glove", category = "GloveRewarding"},
@@ -326,6 +247,7 @@ local allBadges = {
     {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "GloveRewarding"},
     {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
     {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
+    {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
@@ -541,7 +463,94 @@ end)
 
 end
 do
-Tab = Window:AddTab({ Title = "Other Badges" })
+Tab = Window:AddTab({ Title = "Hubs", Icon = "rbxassetid://7733673987"})
+
+        Tab:AddParagraph({
+            Title = "Note",
+            Content = "If you loaded wrong hub here rest hubs..."
+        })
+        
+        Tab:AddParagraph({
+            Title = "Normal Hubs",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Masteries Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Masteries%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Currencies Farm Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Farm%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Script Hub",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Script%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Main Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
+            end
+        })
+
+        Tab:AddParagraph({
+            Title = "Limited Hubs",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Halloween Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Halloween%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Christmas Hub Script",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Christmas%20Hub.txt"))()
+            end
+        })
+
+        Tab:AddParagraph({
+            Title = "Universal Scripts",
+            Content = ""
+        })
+
+        Tab:AddButton({
+            Title = "Load Infinite Yield",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Dex Explorer",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+            end
+        })
+
+        Tab:AddButton({
+            Title = "Load Remote Spy",
+            Callback = function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
+            end
+        })
+
+end
+do
+Tab = Window:AddTab({ Title = "Other Badges", Icon = "rbxassetid://7733673987"})
 
 -- ==================== MAIN TAB ====================
 Tab:AddSection("Instant Badges")
@@ -3966,94 +3975,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hubs" })
-
-        Tab:AddParagraph({
-            Title = "Note",
-            Content = "If you loaded wrong hub here rest hubs..."
-        })
-        
-        Tab:AddParagraph({
-            Title = "Normal Hubs",
-            Content = ""
-        })
-
-        Tab:AddButton({
-            Title = "Load Masteries Hub Script",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Masteries%20Hub.txt"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Currencies Farm Hub Script",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Farm%20Hub.txt"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Script Hub",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Script%20Hub.txt"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Main Hub Script",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Slap%20Battles%20Hub%20OP%20Script.txt"))()
-            end
-        })
-
-        Tab:AddParagraph({
-            Title = "Limited Hubs",
-            Content = ""
-        })
-
-        Tab:AddButton({
-            Title = "Load Halloween Hub Script",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Halloween%20Hub.txt"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Christmas Hub Script",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Slap%20Battles%20Hub%20OP%20Script%20(Fluent)/Christmas%20Hub.txt"))()
-            end
-        })
-
-        Tab:AddParagraph({
-            Title = "Universal Scripts",
-            Content = ""
-        })
-
-        Tab:AddButton({
-            Title = "Load Infinite Yield",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Dex Explorer",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
-            end
-        })
-
-        Tab:AddButton({
-            Title = "Load Remote Spy",
-            Callback = function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
-            end
-        })
-
-end
-do
-Tab = Window:AddTab({ Title = "MEGAROCK" })
+Tab = Window:AddTab({ Title = "MEGAROCK", Icon = "rbxassetid://7733673987"})
 
 -- Variables for tracking
 local timeStarted = nil
@@ -4399,7 +4321,7 @@ end)
 
 end
 do
-Tab = Window:AddTab({ Title = "Plague" })
+Tab = Window:AddTab({ Title = "Plague", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Plague?",
@@ -4456,7 +4378,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hallow Jack" })
+Tab = Window:AddTab({ Title = "Hallow Jack", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Killstreak (5k+ Slaps Need)",
@@ -4602,7 +4524,7 @@ Tab:AddToggle("GraveESP", {
 
 end
 do
-Tab = Window:AddTab({ Title = "[REDACTED]" })
+Tab = Window:AddTab({ Title = "[REDACTED]", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Get [REDACTED] Glove",
@@ -4667,7 +4589,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "bus" })
+Tab = Window:AddTab({ Title = "bus", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Space (1.5k+ Slaps Need)",
@@ -4794,7 +4716,7 @@ Tab:AddToggle("AutoBringBus", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Mitten" })
+Tab = Window:AddTab({ Title = "Mitten", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringGift", {
     Title = "Auto Bring Gift",
@@ -4857,7 +4779,7 @@ Tab:AddToggle("AutoBringGift", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Phase" })
+Tab = Window:AddTab({ Title = "Phase", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringPhaseOrb", {
 	Title = "Auto Bring Phase Orb",
@@ -4920,7 +4842,7 @@ Tab:AddToggle("AutoBringPhaseOrb", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Warp" })
+Tab = Window:AddTab({ Title = "Warp", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Get Warp Glove",
@@ -4972,7 +4894,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Bomb" })
+Tab = Window:AddTab({ Title = "Bomb", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Get Bomb Glove",
@@ -5003,7 +4925,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Bubble" })
+Tab = Window:AddTab({ Title = "Bubble", Icon = "rbxassetid://7733673987"})
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -5207,7 +5129,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Jet" })
+Tab = Window:AddTab({ Title = "Jet", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringJetOrb", {
 	Title = "Auto Bring Jet Orb",
@@ -5270,7 +5192,7 @@ Tab:AddToggle("AutoBringJetOrb", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Shard" })
+Tab = Window:AddTab({ Title = "Shard", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using OVERKILL?",
@@ -5447,7 +5369,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "potato" })
+Tab = Window:AddTab({ Title = "potato", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Reverse (5.5k+ Slaps Need)",
@@ -5534,7 +5456,7 @@ Tab:AddToggle("AutoBringBubble", {
 
 end
 do
-Tab = Window:AddTab({ Title = "CULT" })
+Tab = Window:AddTab({ Title = "CULT", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Auto potato Slap Aura",
@@ -5571,7 +5493,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "bob" })
+Tab = Window:AddTab({ Title = "bob", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -6138,7 +6060,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "buddies" })
+Tab = Window:AddTab({ Title = "buddies", Icon = "rbxassetid://7733673987"})
 
 -- Global flag to control loop
 _G.GoldenSlapRunning = false
@@ -6244,7 +6166,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Moon" })
+Tab = Window:AddTab({ Title = "Moon", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Use Ghost Glove + Teleport To Safespot",
@@ -6263,7 +6185,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Jupiter" })
+Tab = Window:AddTab({ Title = "Jupiter", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using God's Hand?",
@@ -6343,7 +6265,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Spy" })
+Tab = Window:AddTab({ Title = "Spy", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Slap Royale (1)",
@@ -6369,7 +6291,7 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
 
 end
 do
-Tab = Window:AddTab({ Title = "Detonator" })
+Tab = Window:AddTab({ Title = "Detonator", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Slap Royale (1)",
@@ -6395,7 +6317,7 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
 
 end
 do
-Tab = Window:AddTab({ Title = "Rage" })
+Tab = Window:AddTab({ Title = "Rage", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Default (0+ Slaps Need)",
@@ -6551,7 +6473,7 @@ Tab:AddToggle("AutoSlapPlayers50KillstreakUsersOnly", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Trap" })
+Tab = Window:AddTab({ Title = "Trap", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -6902,7 +6824,7 @@ TrapStatusParagraph:SetDesc(updateTrapDisplay())
 
 end
 do
-Tab = Window:AddTab({ Title = "Orbit" })
+Tab = Window:AddTab({ Title = "Orbit", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Teleport To Small Safespot",
@@ -6917,7 +6839,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hybrid" })
+Tab = Window:AddTab({ Title = "Hybrid", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Auto Slap Aura Players",
@@ -6955,7 +6877,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Slapple" })
+Tab = Window:AddTab({ Title = "Slapple", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoCollectSlapples", {
     Title = "Auto Collect Slapples",
@@ -7018,7 +6940,7 @@ Tab:AddToggle("AutoCollectSlapples", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Disarm" })
+Tab = Window:AddTab({ Title = "Disarm", Icon = "rbxassetid://7733673987"})
 
     -- Global flag to control loop
 _G.DisarmSlapRunning = false
@@ -7123,7 +7045,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Dominance" })
+Tab = Window:AddTab({ Title = "Dominance", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Slap Royale (1)",
@@ -7149,7 +7071,7 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
 
 end
 do
-Tab = Window:AddTab({ Title = "Link" })
+Tab = Window:AddTab({ Title = "Link", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Error (50k+ Slaps Need)",
@@ -7160,7 +7082,7 @@ fireclickdetector(workspace.Lobby["Error"].ClickDetector)
 
 end
 do
-Tab = Window:AddTab({ Title = "Chain" })
+Tab = Window:AddTab({ Title = "Chain", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Auto Teleport To SR Place + Get Chain",
@@ -7406,7 +7328,7 @@ local targetPlaceId = 9431156611
 
 end
 do
-Tab = Window:AddTab({ Title = "Rattlebones" })
+Tab = Window:AddTab({ Title = "Rattlebones", Icon = "rbxassetid://7733673987"})
 
 local CandyCornCollector = "Teleport" -- Default fallback
 local AutoCollectCandyCorns = false
@@ -7505,7 +7427,7 @@ Tab:AddToggle("AutoCollectCandyCorns", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Charge" })
+Tab = Window:AddTab({ Title = "Charge", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Slap Royale (1)",
@@ -7531,7 +7453,7 @@ if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 1000 then
 
 end
 do
-Tab = Window:AddTab({ Title = "Tycoon" })
+Tab = Window:AddTab({ Title = "Tycoon", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -7857,7 +7779,7 @@ PlateStatusParagraph:SetDesc(updatePlateDisplay())
 
 end
 do
-Tab = Window:AddTab({ Title = "Confusion" })
+Tab = Window:AddTab({ Title = "Confusion", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip spin (-3+ Slaps Need)",
@@ -8107,7 +8029,7 @@ Tab:AddToggle("AutoBringBus1", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Glitch" })
+Tab = Window:AddTab({ Title = "Glitch", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoSlapPhaseJetOrbAutoTouchGlitchOrb", {
     Title = "Auto Slap Phase/Jet Orb + Auto Touch Glitch Orb",
@@ -8147,7 +8069,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Snowball" })
+Tab = Window:AddTab({ Title = "Snowball", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringGift1", {
     Title = "Auto Bring Gift",
@@ -8210,7 +8132,7 @@ Tab:AddToggle("AutoBringGift1", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Elude" })
+Tab = Window:AddTab({ Title = "Elude", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Auto Teleport To ? Place + Auto TP To Glove",
@@ -8295,7 +8217,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "RNG" })
+Tab = Window:AddTab({ Title = "RNG", Icon = "rbxassetid://7733673987"})
 
 -- Global flag to control loop
 _G.DiceSlapRunning = false
@@ -8400,7 +8322,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "fish" })
+Tab = Window:AddTab({ Title = "fish", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -8709,7 +8631,7 @@ FishStatusParagraph:SetDesc(updateFishDisplay())
 
 end
 do
-Tab = Window:AddTab({ Title = "🗿" })
+Tab = Window:AddTab({ Title = "🗿", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Auto Spawn/Teleport Trap",
@@ -8729,7 +8651,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Obby" })
+Tab = Window:AddTab({ Title = "Obby", Icon = "rbxassetid://7733673987"})
 
 Section = Tab:AddSection("Obby's Status Counter")
 
@@ -9066,7 +8988,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Voodoo" })
+Tab = Window:AddTab({ Title = "Voodoo", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -9380,7 +9302,7 @@ VoodooStatusParagraph:SetDesc(updateVoodooDisplay())
 
 end
 do
-Tab = Window:AddTab({ Title = "Goofy" })
+Tab = Window:AddTab({ Title = "Goofy", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Confusion?",
@@ -9490,7 +9412,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Leash" })
+Tab = Window:AddTab({ Title = "Leash", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip CULT (Good Job Badge Need)",
@@ -9554,7 +9476,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Flamarang" })
+Tab = Window:AddTab({ Title = "Flamarang", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Boomerang (1625+ Slaps Need)",
@@ -9738,7 +9660,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Kinetic" })
+Tab = Window:AddTab({ Title = "Kinetic", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Stun (870+ Slaps Need)",
@@ -10055,7 +9977,7 @@ KineticStatusParagraph:SetDesc(updateKineticDisplay())
 
 end
 do
-Tab = Window:AddTab({ Title = "Berserk" })
+Tab = Window:AddTab({ Title = "Berserk", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Kinetic?",
@@ -10135,7 +10057,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Sparky" })
+Tab = Window:AddTab({ Title = "Sparky", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Speedrun (1750+ Slaps Need)",
@@ -10278,7 +10200,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Boogie" })
+    local Tab = Window:AddTab({ Title = "Boogie", Icon = "rbxassetid://7733673987"})
 
     -- Equip Boogie Button
     Tab:AddButton({
@@ -10378,7 +10300,7 @@ do
 
 end
 do
-Tab = Window:AddTab({ Title = "Recall" })
+Tab = Window:AddTab({ Title = "Recall", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Get Recall Glove (Instant)",
@@ -10907,7 +10829,7 @@ AnswersSection:AddParagraph({
 
 end
 do
-Tab = Window:AddTab({ Title = "Quake" })
+Tab = Window:AddTab({ Title = "Quake", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Berserk (Go Berserk Badge Need)",
@@ -11052,7 +10974,7 @@ Tab:AddToggle("AutoBerserkCharge", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Psycho" })
+Tab = Window:AddTab({ Title = "Psycho", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Reverse (5.5k+ Slaps Need)",
@@ -11175,7 +11097,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Kraken" })
+Tab = Window:AddTab({ Title = "Kraken", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Squid (2750+ Slaps Need)",
@@ -11239,7 +11161,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Counter" })
+Tab = Window:AddTab({ Title = "Counter", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Auto Teleport To ? Place + Auto Get Counter",
@@ -11378,7 +11300,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hammer" })
+Tab = Window:AddTab({ Title = "Hammer", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoClickOnToolbox", {
 	Title = "Auto Click On Toolbox",
@@ -11401,7 +11323,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "rob" })
+Tab = Window:AddTab({ Title = "rob", Icon = "rbxassetid://7733673987"})
 
 Section = Tab:AddSection("Equip Gloves")
 
@@ -11806,7 +11728,7 @@ Tab:AddToggle("AutoClickTycoon", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Rhythm" })
+Tab = Window:AddTab({ Title = "Rhythm", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Boogie (Boogie With It Badge Need)",
@@ -11856,7 +11778,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Rojo" })
+Tab = Window:AddTab({ Title = "Rojo", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Teleport To Small Safespot",
@@ -11871,7 +11793,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hitman" })
+Tab = Window:AddTab({ Title = "Hitman", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Get Court Evidence",
@@ -11914,7 +11836,7 @@ Tab:AddToggle("AutoUseTrackAbility", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Retro" })
+Tab = Window:AddTab({ Title = "Retro", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Teleport To Portal (Finish)",
@@ -11929,7 +11851,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Null" })
+Tab = Window:AddTab({ Title = "Null", Icon = "rbxassetid://7733673987"})
 
 -- Auto Teleport to Null Position + Get Null
 Tab:AddButton({
@@ -12008,7 +11930,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Lure" })
+Tab = Window:AddTab({ Title = "Lure", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Leash (Demonic Ritual Badge Need)",
@@ -12252,7 +12174,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Tinkerer" })
+Tab = Window:AddTab({ Title = "Tinkerer", Icon = "rbxassetid://7733673987"})
 
 -- Auto Teleport to Tinkerer Position + Get Tinkerer
 Tab:AddButton({
@@ -12337,7 +12259,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Necromancer" })
+Tab = Window:AddTab({ Title = "Necromancer", Icon = "rbxassetid://7733673987"})
 
     local CandyCornCollector = "Teleport" -- Default fallback
 local AutoCollectCandyCorns = false
@@ -12436,7 +12358,7 @@ Tab:AddToggle("AutoCollectCandyCorns1", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Alchemist" })
+Tab = Window:AddTab({ Title = "Alchemist", Icon = "rbxassetid://7733673987"})
 
 -- Global flag to control loop
 _G.PlagueSlapRunning = false
@@ -12635,7 +12557,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Druid" })
+Tab = Window:AddTab({ Title = "Druid", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport to Gardens And Ghouls Place (NOT AUTO GET GLOVE)",
@@ -12673,7 +12595,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Jester" })
+Tab = Window:AddTab({ Title = "Jester", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Random Player",
@@ -12708,7 +12630,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Scythe" })
+Tab = Window:AddTab({ Title = "Scythe", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport to Farmland Fray Place (NOT AUTO GET GLOVE)",
@@ -12743,7 +12665,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Santa" })
+Tab = Window:AddTab({ Title = "Santa", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Jerry Boss Fight Place + Auto Get Santa",
@@ -12851,7 +12773,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Iceskate" })
+Tab = Window:AddTab({ Title = "Iceskate", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Get Iceskate Glove",
@@ -12864,7 +12786,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Blasphemy" })
+Tab = Window:AddTab({ Title = "Blasphemy", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringBus2", {
     Title = "Auto Bring Bus",
@@ -12931,7 +12853,7 @@ Tab:AddToggle("AutoBringBus2", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Pan" })
+Tab = Window:AddTab({ Title = "Pan", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Enable Limbo Map For Bob Plushie",
@@ -13137,7 +13059,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Admin" })
+Tab = Window:AddTab({ Title = "Admin", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To The Staff Application Place (NOT AUTO GET GLOVE)",
@@ -13269,7 +13191,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Joust" })
+Tab = Window:AddTab({ Title = "Joust", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Parry (30k+ Slaps Need)",
@@ -13361,7 +13283,7 @@ Tab:AddToggle("AutoParryAbility", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Firework" })
+Tab = Window:AddTab({ Title = "Firework", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Oven?",
@@ -13427,7 +13349,7 @@ game:GetService("ReplicatedStorage").AlchemistEvent:FireServer("EquipItem", "Cak
 
 end
 do
-Tab = Window:AddTab({ Title = "Run" })
+Tab = Window:AddTab({ Title = "Run", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Someone Using Run?",
@@ -13555,7 +13477,7 @@ Tab:AddToggle("AutoTouchLabyrinthDoors", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Glovel" })
+Tab = Window:AddTab({ Title = "Glovel", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Collect Treasure",
@@ -13579,7 +13501,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Divebomb" })
+Tab = Window:AddTab({ Title = "Divebomb", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip bob (Bob Badge Need)",
@@ -13793,7 +13715,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Lamp" })
+Tab = Window:AddTab({ Title = "Lamp", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "INSTANT Get Lamp Glove",
@@ -13810,7 +13732,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Knockoff" })
+Tab = Window:AddTab({ Title = "Knockoff", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Pocket?",
@@ -13918,7 +13840,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Frostbite" })
+Tab = Window:AddTab({ Title = "Frostbite", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Auto Teleport To Ice Trials Place + Get Ice Essence",
@@ -14055,7 +13977,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Plank" })
+Tab = Window:AddTab({ Title = "Plank", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Fort (1075+ Slaps Need)",
@@ -14088,7 +14010,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Spoonful" })
+Tab = Window:AddTab({ Title = "Spoonful", Icon = "rbxassetid://7733673987"})
 
 -- ===== VARIABLES =====
 local player = game.Players.LocalPlayer
@@ -14430,7 +14352,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "the schlob" })
+Tab = Window:AddTab({ Title = "the schlob", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip fish (Deep Slumber Badge Need)",
@@ -14459,7 +14381,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Siphon" })
+Tab = Window:AddTab({ Title = "Siphon", Icon = "rbxassetid://7733673987"})
 
 local G_ = {}
 G_.SiphonAuto = false
@@ -14540,7 +14462,7 @@ Tab:AddToggle("AutoBringSiphonOrb", {
 
 end
 do
-Tab = Window:AddTab({ Title = "Wrench" })
+Tab = Window:AddTab({ Title = "Wrench", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Engineer (9k+ Slaps Need)",
@@ -14625,7 +14547,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Hunter" })
+Tab = Window:AddTab({ Title = "Hunter", Icon = "rbxassetid://7733673987"})
 
 -- First Button
 Tab:AddButton({
@@ -14944,7 +14866,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Relude" })
+    Tab = Window:AddTab({ Title = "Relude", Icon = "rbxassetid://7733673987"})
 
 -- Second Button (Version 2 with "Spare" enabled)
 Tab:AddButton({
@@ -15263,7 +15185,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Avatar" })
+    Tab = Window:AddTab({ Title = "Avatar", Icon = "rbxassetid://7733673987"})
 
 -- Third Button (Version 3 with DontGetAvatar = false)
 Tab:AddButton({
@@ -15582,7 +15504,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Water" })
+Tab = Window:AddTab({ Title = "Water", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Alchemist (Containment Breach Badge Need)",
@@ -15941,7 +15863,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Fan" })
+Tab = Window:AddTab({ Title = "Fan", Icon = "rbxassetid://7733673987"})
     
 -- Fan Button
 Tab:AddButton({
@@ -16022,7 +15944,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Boxer" })
+Tab = Window:AddTab({ Title = "Boxer", Icon = "rbxassetid://7733673987"})
 
 -- Boxer Button
 Tab:AddButton({
@@ -16072,7 +15994,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "MATERIALIZE" })
+Tab = Window:AddTab({ Title = "MATERIALIZE", Icon = "rbxassetid://7733673987"})
 
 Tab:AddToggle("AutoBringMATERIALIZEOrb", {
 	Title = "Auto Bring MATERIALIZE Orb",
@@ -16143,7 +16065,7 @@ Tab:AddToggle("AutoBringMATERIALIZEOrb", {
 
 end
 do
-    Tab = Window:AddTab({ Title = "Bind" })
+    Tab = Window:AddTab({ Title = "Bind", Icon = "rbxassetid://7733673987"})
 
 -- Bind Button
 Tab:AddButton({
@@ -16191,7 +16113,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Poltergeist" })
+    Tab = Window:AddTab({ Title = "Poltergeist", Icon = "rbxassetid://7733673987"})
 
 -- Poltergeist Button with Auto-Execute
 Tab:AddButton({
@@ -16239,7 +16161,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Clock" })
+    Tab = Window:AddTab({ Title = "Clock", Icon = "rbxassetid://7733673987"})
 
 -- Clock Button
 Tab:AddButton({
@@ -16383,7 +16305,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Untitled Tag Glove" })
+    Tab = Window:AddTab({ Title = "Untitled Tag Glove", Icon = "rbxassetid://7733673987"})
 
 -- Untitled Tag Button
 Tab:AddButton({
@@ -16431,7 +16353,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Pillow" })
+    Tab = Window:AddTab({ Title = "Pillow", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip ZZZZZZZ (25+ Slaps Need)",
@@ -16509,7 +16431,7 @@ end
 
 end
 do
-    Tab = Window:AddTab({ Title = "Angler" })
+    Tab = Window:AddTab({ Title = "Angler", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Lure (Catch Emm All Badge Need)",
@@ -16554,7 +16476,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Jerry" })
+Tab = Window:AddTab({ Title = "Jerry", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Jerry Boss Fight Place + Auto Get Jerry",
@@ -16698,7 +16620,7 @@ end
 
 end
 do
-    Tab = Window:AddTab({ Title = "Snowroller" })
+    Tab = Window:AddTab({ Title = "Snowroller", Icon = "rbxassetid://7733673987"})
 
 -- Snowroller Button
 Tab:AddButton({
@@ -16772,7 +16694,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Draw4" })
+    local Tab = Window:AddTab({ Title = "Draw4", Icon = "rbxassetid://7733673987"})
 
     getgenv().AutoPingPongReal = false
     local autoPingPongLoop = nil
@@ -16832,7 +16754,7 @@ do
 
 end
 do
-    Tab = Window:AddTab({ Title = "Mouse" })
+    Tab = Window:AddTab({ Title = "Mouse", Icon = "rbxassetid://7733673987"})
 
 -- Mouse Button
 Tab:AddButton({
@@ -16939,7 +16861,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Hexa" })
+    Tab = Window:AddTab({ Title = "Hexa", Icon = "rbxassetid://7733673987"})
 
 -- Hexa Button
 Tab:AddButton({
@@ -17073,7 +16995,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Metaverse" })
+    Tab = Window:AddTab({ Title = "Metaverse", Icon = "rbxassetid://7733673987"})
 
 -- Metaverse Button
 Tab:AddButton({
@@ -17283,7 +17205,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Swordfighter" })
+    Tab = Window:AddTab({ Title = "Swordfighter", Icon = "rbxassetid://7733673987"})
 
 -- Swordfighter Button
 Tab:AddButton({
@@ -17409,7 +17331,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Tank" })
+    Tab = Window:AddTab({ Title = "Tank", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Auto Get Tank Glove",
@@ -17531,7 +17453,7 @@ end
 
 end
 do
-        Tab = Window:AddTab({ Title = "Eggler" })
+        Tab = Window:AddTab({ Title = "Eggler", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Collect All 10 Eggs",
@@ -17632,7 +17554,7 @@ end
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Slender" })
+    local Tab = Window:AddTab({ Title = "Slender", Icon = "rbxassetid://7733673987"})
 
 Tab:AddParagraph({
     Title = "Helper:",
@@ -17918,7 +17840,7 @@ Tab:AddParagraph({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Swashbuckler" })
+    local Tab = Window:AddTab({ Title = "Swashbuckler", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
         Title = "Equip Kraken (Escape the Abyss Badge Need)",
@@ -18074,7 +17996,7 @@ do
 
 end
 do
-    Tab = Window:AddTab({ Title = "Silly" })
+    Tab = Window:AddTab({ Title = "Silly", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Baby (3750+ Slaps Need)",
@@ -18191,7 +18113,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Slasher" })
+    local Tab = Window:AddTab({ Title = "Slasher", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
         Title = "Find & Teleport To Painting",
@@ -18244,7 +18166,7 @@ do
 
 end
 do
-Tab = Window:AddTab({ Title = "Car Keys" })
+Tab = Window:AddTab({ Title = "Car Keys", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Adios (8000+ Slaps Need)",
@@ -18315,7 +18237,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("AdiosActivated"):FireServer()
 
 end
 do
-    Tab = Window:AddTab({ Title = "Suction" })
+    Tab = Window:AddTab({ Title = "Suction", Icon = "rbxassetid://7733673987"})
 
 -- Suction Button with Auto-Execute
 Tab:AddButton({
@@ -18400,7 +18322,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Reflect" })
+    local Tab = Window:AddTab({ Title = "Reflect", Icon = "rbxassetid://7733673987"})
 
     -- The Suction Trials (Teleport)
     Tab:AddButton({
@@ -18431,7 +18353,7 @@ do
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Dave" })
+    local Tab = Window:AddTab({ Title = "Dave", Icon = "rbxassetid://7733673987"})
 
     -- Barzil (Teleport)
     Tab:AddButton({
@@ -18451,7 +18373,7 @@ do
 
 end
 do
-    local Tab = Window:AddTab({ Title = "mortis" })
+    local Tab = Window:AddTab({ Title = "mortis", Icon = "rbxassetid://7733673987"})
 
     -- Barzil (Teleport)
     Tab:AddButton({
@@ -18471,7 +18393,7 @@ do
 
 end
 do
-    Tab = Window:AddTab({ Title = "Bounty" })
+    Tab = Window:AddTab({ Title = "Bounty", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Hitman (Sharp Shooter/Court Evidence Badges Need)",
@@ -18516,7 +18438,7 @@ end
 
 end
 do
-    Tab = Window:AddTab({ Title = "Debug" })
+    Tab = Window:AddTab({ Title = "Debug", Icon = "rbxassetid://7733673987"})
 
 -- Shared variable to store the code
 local debugCode = nil
@@ -18611,7 +18533,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Paint" })
+    local Tab = Window:AddTab({ Title = "Paint", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
         Title = "Teleport To Splatbattles Place (1)",
@@ -18631,7 +18553,7 @@ do
 
 end
 do
-    Tab = Window:AddTab({ Title = "Plate" })
+    Tab = Window:AddTab({ Title = "Plate", Icon = "rbxassetid://7733673987"})
 
 -- Plate Button with Auto-Execute
 Tab:AddButton({
@@ -18707,7 +18629,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Lag" })
+    Tab = Window:AddTab({ Title = "Lag", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
 	Title = "Get Lag Glove",
@@ -18728,7 +18650,7 @@ end
 
 end
 do
-    Tab = Window:AddTab({ Title = "Harvester" })
+    Tab = Window:AddTab({ Title = "Harvester", Icon = "rbxassetid://7733673987"})
 
 -- Harvester Button with Auto-Execute
 Tab:AddButton({
@@ -18804,7 +18726,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Riftshot" })
+    Tab = Window:AddTab({ Title = "Riftshot", Icon = "rbxassetid://7733673987"})
 
 -- Riftshot Button with Auto-Execute
 Tab:AddButton({
@@ -18880,7 +18802,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Conker" })
+    Tab = Window:AddTab({ Title = "Conker", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Eggler (Egging Over It Badge Need)",
@@ -19027,7 +18949,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Wheelchair" })
+    Tab = Window:AddTab({ Title = "Wheelchair", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Someone Using Tableflip?",
@@ -19394,7 +19316,7 @@ end
 
 end
 do
-    Tab = Window:AddTab({ Title = "Elf" })
+    Tab = Window:AddTab({ Title = "Elf", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Snowball Smash 2025 Place",
@@ -19405,7 +19327,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Shopkeeper" })
+    Tab = Window:AddTab({ Title = "Shopkeeper", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Extended (25+ Slaps Need)",
@@ -19437,7 +19359,7 @@ fireclickdetector(workspace.JobApplication.paper.ClickDetector)
 
 end
 do
-    Tab = Window:AddTab({ Title = "Collector" })
+    Tab = Window:AddTab({ Title = "Collector", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Click FindTheGlovesTeleport Display Island",
@@ -19448,7 +19370,7 @@ fireclickdetector(workspace.FindTheGlovesTeleport.ClickDetector)
 
 end
 do
-    Tab = Window:AddTab({ Title = "Glaxe" })
+    Tab = Window:AddTab({ Title = "Glaxe", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Slap Royale Place",
@@ -19459,7 +19381,7 @@ Tab:AddButton({
 
 end
 do
-    Tab = Window:AddTab({ Title = "Piñata" })
+    Tab = Window:AddTab({ Title = "Piñata", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Get Instant Cake Mix",
@@ -19637,7 +19559,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pinata.CF
 
 end
 do
-    Tab = Window:AddTab({ Title = "Penguin" })
+    Tab = Window:AddTab({ Title = "Penguin", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Teleport To Penguin Teleport Place",
@@ -19648,7 +19570,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Undead" })
+Tab = Window:AddTab({ Title = "Undead", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Clock (Untimely End Badge Need)",
@@ -19676,7 +19598,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =CFrame.new(-82, -30,
 
 end
 do
-Tab = Window:AddTab({ Title = "Groundbreaker" })
+Tab = Window:AddTab({ Title = "Groundbreaker", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
     Title = "Equip Quake (Blasting Off Again Badge Need)",
@@ -19750,7 +19672,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Shellbert" })
+Tab = Window:AddTab({ Title = "Shellbert", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Collect All 10 Eggs",
@@ -19851,7 +19773,7 @@ end
 
 end
 do
-Tab = Window:AddTab({ Title = "Lasso" })
+Tab = Window:AddTab({ Title = "Lasso", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Trap (🗿 Badge Need)",
@@ -19996,7 +19918,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Bear
 
 end
 do
-Tab = Window:AddTab({ Title = "Lotus" })
+Tab = Window:AddTab({ Title = "Lotus", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Lotus Obtainment",
@@ -20007,7 +19929,7 @@ Tab:AddButton({
 
 end
 do
-Tab = Window:AddTab({ Title = "Elastic" })
+Tab = Window:AddTab({ Title = "Elastic", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "Equip Gummy (7750+ Slaps Need)",
@@ -20142,7 +20064,7 @@ Tab:AddToggle("WalkFling", {
 
 end
 do
-Tab = Window:AddTab({ Title = "G-X" })
+Tab = Window:AddTab({ Title = "G-X", Icon = "rbxassetid://7733673987"})
 
 Tab:AddButton({
     Title = "operation genius",
@@ -20153,7 +20075,7 @@ Tab:AddButton({
 
 end
 do
-    local Tab = Window:AddTab({ Title = "Doorkeeper" })
+    local Tab = Window:AddTab({ Title = "Doorkeeper", Icon = "rbxassetid://7733673987"})
 
     Tab:AddButton({
         Title = "Equip Elude (EXPOSED Badge Need)",
@@ -20331,12 +20253,1556 @@ do
     })
 end
 do
+local Tab = Window:AddTab({ Title = "Camera", Icon = "rbxassetid://7733673987"})
+
+Tab:AddParagraph({
+    Title = "Credits",
+    Content = "Credits To: St1mlx for helping making this script for Camera Glove"
+})
+
+Tab:AddButton({
+    Title = "Get Camera Glove",
+    Description = "Automatically obtains the Camera Glove",
+    Callback = function()
+        if not game:IsLoaded() then game.Loaded:Wait() end
+
+        local Players = game:GetService("Players")
+        local UserInputService = game:GetService("UserInputService")
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local StarterGui = game:GetService("StarterGui")
+        local Lighting = game:GetService("Lighting")
+        local RunService = game:GetService("RunService")
+
+        local player = Players.LocalPlayer
+        local camera = workspace.CurrentCamera
+
+        local zoom = 30
+        local minZoom = 2
+        local maxZoom = 70
+        local zoomSpeed = 2
+        local photoDistance = 11
+        local driftRadius = 0.0061
+        local focusedPart
+
+        local oldCameraType = camera.CameraType
+        local oldCameraSubject = camera.CameraSubject
+        local oldMinZoom = player.CameraMinZoomDistance
+        local oldMaxZoom = player.CameraMaxZoomDistance
+        local oldCameraMode = player.CameraMode
+
+        local function notify(title, text, duration)
+            pcall(function()
+                StarterGui:SetCore("SendNotification", {
+                    Title = title,
+                    Text = text,
+                    Duration = duration or 3,
+                })
+            end)
+        end
+
+        local function character()
+            return player.Character or player.CharacterAdded:Wait()
+        end
+
+        local function rootPart()
+            return character():WaitForChild("HumanoidRootPart", 5)
+        end
+
+        local function humanoid()
+            return character():FindFirstChildOfClass("Humanoid")
+        end
+
+        local function hasGhost()
+            local stats = player:FindFirstChild("leaderstats")
+            local glove = stats and stats:FindFirstChild("Glove")
+            return glove and glove.Value == "Ghost"
+        end
+
+        local function hasEntered()
+            local entered = character():FindFirstChild("entered")
+            if not entered then return false end
+            if entered:IsA("BoolValue") then return entered.Value == true end
+            return true
+        end
+
+        local function setNormalZoom()
+            player.CameraMode = Enum.CameraMode.Classic
+            player.CameraMinZoomDistance = math.clamp(zoom, minZoom, maxZoom)
+            player.CameraMaxZoomDistance = math.clamp(zoom, minZoom, maxZoom)
+        end
+
+        local function setCameraToPart(part)
+            local root = rootPart()
+            if not root or not part then return end
+
+            focusedPart = part
+            player.CameraMode = Enum.CameraMode.Classic
+            player.CameraMinZoomDistance = minZoom
+            player.CameraMaxZoomDistance = maxZoom
+
+            local target = part.Position
+            local dir = (target - root.Position)
+            if dir.Magnitude < 1 then dir = part.CFrame.LookVector end
+            dir = dir.Unit
+
+            local height = Vector3.new(0, math.max(1.5, part.Size.Y * 0.2), 0)
+            local camPos = root.Position - dir * zoom + height
+
+            camera.CameraType = Enum.CameraType.Scriptable
+            camera.CFrame = CFrame.lookAt(camPos, target)
+        end
+
+        local function pressOFor(seconds)
+            zoom = math.clamp(math.max(zoom, 30), minZoom, maxZoom)
+            pcall(function()
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.O, false, game)
+                task.wait(seconds or 3.5)
+                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.O, false, game)
+            end)
+        end
+
+        UserInputService.InputChanged:Connect(function(input, gameProcessed)
+            if gameProcessed then return end
+            if input.UserInputType ~= Enum.UserInputType.MouseWheel then return end
+
+            zoom = math.clamp(zoom - input.Position.Z * zoomSpeed, minZoom, maxZoom)
+
+            if focusedPart and focusedPart.Parent then
+                setCameraToPart(focusedPart)
+            else
+                setNormalZoom()
+            end
+        end)
+
+        local function restoreCamera()
+            focusedPart = nil
+            camera.CameraType = oldCameraType
+            camera.CameraSubject = oldCameraSubject
+            player.CameraMinZoomDistance = oldMinZoom
+            player.CameraMaxZoomDistance = oldMaxZoom
+            player.CameraMode = oldCameraMode
+        end
+
+        local function equipCamera()
+            local char = character()
+            local tool = char:FindFirstChild("Camera")
+
+            if tool then return tool end
+
+            local backpack = player:FindFirstChild("Backpack")
+            tool = backpack and backpack:FindFirstChild("Camera")
+            if tool then
+                local hum = humanoid()
+                if hum then
+                    hum:EquipTool(tool)
+                else
+                    tool.Parent = char
+                end
+            end
+
+            return char:FindFirstChild("Camera")
+        end
+
+        local function activateGhost()
+            local remote = ReplicatedStorage:FindFirstChild("Ghostinvisibilityactivated")
+            if remote then
+                remote:FireServer()
+            end
+        end
+
+        local function clearGhostSky()
+            local sky = Lighting:FindFirstChild("Creepysky")
+            if sky then sky:Destroy() end
+
+            local color = Lighting:FindFirstChild("dimensioncolor")
+            if color then color:Destroy() end
+        end
+
+        local function pickupCamera()
+            local model = workspace:FindFirstChild("CameraModel")
+            local handle = model and model:FindFirstChild("Handle")
+            local prompt = handle and handle:FindFirstChildOfClass("ProximityPrompt")
+
+            if prompt then
+                fireproximityprompt(prompt)
+            end
+
+            local untilAt = os.clock() + 3
+            repeat
+                local tool = equipCamera()
+                if tool then return tool end
+                task.wait(0.1)
+            until os.clock() > untilAt
+        end
+
+        local function anchorHead(value)
+            local head = character():FindFirstChild("Head")
+            if head then
+                head.Anchored = value
+            end
+        end
+
+        local function setLevitation(value)
+            local root = rootPart()
+            if not root then return end
+
+            root.AssemblyLinearVelocity = Vector3.zero
+            root.AssemblyAngularVelocity = Vector3.zero
+            root.Anchored = false
+        end
+
+        local function cameraRemote()
+            return ReplicatedStorage
+                :WaitForChild("Assets")
+                :WaitForChild("Obtainments")
+                :WaitForChild("Camera")
+                :WaitForChild("Remotes")
+                :WaitForChild("IsPhotoValid")
+        end
+
+        local teleportForPhoto
+
+        local function takePhoto(part)
+            local tool = equipCamera()
+            if not tool then
+                warn("Camera tool not found")
+                return false
+            end
+
+            task.spawn(function()
+                pressOFor(3.5)
+            end)
+            local untilAt = os.clock() + 3.7
+            while os.clock() < untilAt do
+                teleportForPhoto(part)
+                RunService.Heartbeat:Wait()
+            end
+
+            local viewport = camera.ViewportSize
+            local x = math.floor(viewport.X * 0.5)
+            local y = math.floor(viewport.Y * 0.5)
+
+            pcall(function()
+                VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, game, 0)
+                task.wait(0.08)
+                VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, game, 0)
+            end)
+
+            pcall(function()
+                tool:Activate()
+            end)
+
+            local ok, valid = pcall(function()
+                return cameraRemote():InvokeServer(part)
+            end)
+
+            if not ok then
+                warn("PNG " .. tostring(part.Name) .. " IsPhotoValid error:", valid)
+            end
+            print("PNG " .. tostring(part.Name) .. " photo valid =", ok and valid == true)
+            return ok and valid == true
+        end
+
+        function teleportForPhoto(part)
+            local root = rootPart()
+            if not root or not part then return false end
+
+            local target = part.Position
+            local frontDir = part.CFrame.LookVector
+            local drift = os.clock() * 12
+            local offset = Vector3.new(math.cos(drift) * driftRadius, 0, math.sin(drift) * driftRadius)
+            local place = target + frontDir * photoDistance
+            place = Vector3.new(place.X, target.Y, place.Z) + offset
+
+            root.AssemblyLinearVelocity = Vector3.zero
+            root.AssemblyAngularVelocity = Vector3.zero
+            root.Anchored = false
+            root.CFrame = CFrame.lookAt(place, target)
+            setCameraToPart(part)
+
+            return true
+        end
+
+        local function findPNG(name)
+            local folder = workspace:FindFirstChild("Camera_Obtainment_PNGS")
+            local part = folder and folder:FindFirstChild(name)
+            if part and part:IsA("BasePart") then return part end
+
+            part = workspace:FindFirstChild(name)
+            if part and part:IsA("BasePart") then return part end
+
+            for _, obj in ipairs(workspace:GetDescendants()) do
+                if obj:IsA("BasePart") and obj.Name == name then
+                    return obj
+                end
+            end
+        end
+
+        if not (hasGhost() and hasEntered()) then
+            notify("Camera Obtainment", "Equip Ghost and enter arena first", 4)
+            return
+        end
+
+        notify("Camera Obtainment", "Starting", 3)
+
+        rootPart().CFrame = CFrame.new(-17921, 60, 3584)
+        task.wait(0.8)
+
+        activateGhost()
+        task.wait(0.8)
+        clearGhostSky()
+
+        rootPart().CFrame = CFrame.new(-388, 52, 0)
+        task.wait(0.8)
+
+        pickupCamera()
+        task.wait(0.5)
+        anchorHead(false)
+
+        local pngNames = { "7", "6", "5", "4", "3", "2", "1" }
+
+        for _, name in ipairs(pngNames) do
+            local part = findPNG(name)
+            if part and teleportForPhoto(part) then
+                task.wait(0.45)
+                takePhoto(part)
+                task.wait(0.35)
+            else
+                warn("PNG not found:", name)
+            end
+        end
+
+        local root = rootPart()
+        if root then
+            root.AssemblyLinearVelocity = Vector3.zero
+            root.AssemblyAngularVelocity = Vector3.zero
+            root.CFrame = CFrame.new(0, 0, 0)
+        end
+
+        setLevitation(false)
+        anchorHead(false)
+        restoreCamera()
+        notify("Camera Obtainment", "Finished", 4)
+    end
+})
+
+end
+do
+local Tab = Window:AddTab({ Title = "Grillmaster", Icon = "rbxassetid://7733673987"})
+
+-- Hot Dogs Quests Info Paragraph
+local HotDogParagraph = Tab:AddParagraph({
+    Title = "Hot Dogs Quests Info",
+    Content = "Loading..."
+})
+
+-- Get local player username
+local localPlayer = game.Players.LocalPlayer
+
+-- Function to check if HotdogUI exists
+local function hasHotdogUI()
+    local playerGui = localPlayer:FindFirstChild("PlayerGui")
+    if playerGui then
+        return playerGui:FindFirstChild("HotdogUI") ~= nil
+    end
+    return false
+end
+
+-- Function to get quest description text
+local function getQuestDescription(questFrame)
+    local description = questFrame:FindFirstChild("Description")
+    if description and description:IsA("TextLabel") then
+        return description.Text
+    end
+    return ""
+end
+
+-- Function to parse quest text into description and progress
+local function parseQuestText(text)
+    local description = text
+    local progress = ""
+    
+    local startParen = text:find("%(")
+    local endParen = text:find("%)")
+    
+    if startParen and endParen and startParen < endParen then
+        description = text:sub(1, startParen - 1):gsub("%s+$", "")
+        progress = text:sub(startParen, endParen)
+    end
+    
+    return description, progress
+end
+
+-- Function to get reward text
+local function getRewardText(questFrame)
+    local reward = questFrame:FindFirstChild("Reward")
+    if reward and reward:IsA("TextLabel") then
+        return reward.Text
+    end
+    return "N/A"
+end
+
+-- Function to update Hot Dogs Quests Info
+local function updateHotDogQuestsInfo()
+    if not hasHotdogUI() then
+        HotDogParagraph:SetDesc("❌ Equip 'Ketchup Default' Glove First Before Loading Quests Info")
+        return
+    end
+    
+    local playerGui = localPlayer:FindFirstChild("PlayerGui")
+    if not playerGui then return end
+    
+    local hotdogUI = playerGui:FindFirstChild("HotdogUI")
+    if not hotdogUI then return end
+    
+    local frame = hotdogUI:FindFirstChild("Frame")
+    if not frame then return end
+    
+    local ordersFrame = frame:FindFirstChild("OrdersFrame")
+    if not ordersFrame then return end
+    
+    local orderContainer = ordersFrame:FindFirstChild("OrderContainer")
+    if not orderContainer then return end
+    
+    local lines = {}
+    table.insert(lines, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    table.insert(lines, "                🌭 HOT DOGS QUESTS 🌭")
+    table.insert(lines, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    table.insert(lines, "")
+    
+    local hasQuests = false
+    for i = 1, 6 do
+        local questImage = orderContainer:FindFirstChild(tostring(i))
+        if questImage and questImage:IsA("ImageLabel") then
+            local descriptionText = getQuestDescription(questImage)
+            
+            if descriptionText ~= "" then
+                hasQuests = true
+                local questName = questImage.Name
+                local desc, progress = parseQuestText(descriptionText)
+                local reward = getRewardText(questImage)
+                
+                table.insert(lines, "━━━ Quest " .. i .. " ━━━")
+                table.insert(lines, "Name: " .. questName)
+                table.insert(lines, "Description: " .. desc)
+                if progress ~= "" then
+                    table.insert(lines, "Progress: " .. progress)
+                end
+                if reward ~= "N/A" then
+                    table.insert(lines, "Reward: " .. reward)
+                end
+                table.insert(lines, "")
+            end
+        end
+    end
+    
+    if not hasQuests then
+        table.insert(lines, "No quests found or all quests completed!")
+    end
+    
+    table.insert(lines, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    table.insert(lines, "                🎯 QUESTS PROGRESS 🎯")
+    table.insert(lines, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    
+    local completed = 0
+    local total = 0
+    for i = 1, 6 do
+        local questImage = orderContainer:FindFirstChild(tostring(i))
+        if questImage and questImage:IsA("ImageLabel") then
+            total = total + 1
+            local desc = getQuestDescription(questImage)
+            if desc == "" then
+                completed = completed + 1
+            end
+        end
+    end
+    
+    local progressPercent = total > 0 and math.floor((completed / total) * 100) or 0
+    table.insert(lines, "✅ Completed: " .. completed .. "/" .. total)
+    table.insert(lines, "📈 Progress: " .. progressPercent .. "%")
+    
+    HotDogParagraph:SetDesc(table.concat(lines, "\n"))
+end
+
+-- ============================================================
+-- HOT DOGS BUY SYSTEM
+-- ============================================================
+
+-- Multi Dropdown for Hot Dogs
+local HotDogMultiDropdown = Tab:AddDropdown("SelectHotDogsToBuy", {
+    Title = "Select Hot Dog(s) To Buy",
+    Description = "Choose hot dogs to purchase",
+    Values = {"Chillydog", "Rockdog", "Dynamitedog", "Spicydog", "Jetpackdog", "Ghostdog"},
+    Multi = true,
+    Default = {},
+    Callback = function(Values)
+        -- Just store the selection
+    end
+})
+
+-- Button to buy selected hot dogs
+Tab:AddButton({
+    Title = "Buy Selected Hot Dog(s)",
+    Description = "Purchases the selected hot dogs",
+    Callback = function()
+        local selected = HotDogMultiDropdown:GetValue()
+        
+        if not selected or #selected == 0 then
+            Fluent:Notify({
+                Title = "Hot Dogs",
+                Content = "Please select at least one hot dog to buy!",
+                Duration = 3
+            })
+            return
+        end
+        
+        Fluent:Notify({
+            Title = "Hot Dogs",
+            Content = "Attempting to buy: " .. table.concat(selected, ", "),
+            Duration = 3
+        })
+        
+        for _, hotdogName in ipairs(selected) do
+            local success, err = pcall(function()
+                local remote = ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Obtainments"):WaitForChild("Grillmaster"):WaitForChild("Remotes"):WaitForChild("BuyHotdog")
+                remote:FireServer(hotdogName)
+                task.wait(0.3)
+            end)
+            
+            if not success then
+                warn("Failed to buy " .. hotdogName .. ": " .. tostring(err))
+            end
+        end
+        
+        task.wait(1)
+        updateHotDogQuestsInfo()
+        
+        Fluent:Notify({
+            Title = "Hot Dogs",
+            Content = "Purchase attempt completed for: " .. table.concat(selected, ", "),
+            Duration = 3
+        })
+    end
+})
+
+-- Auto-update for Hot Dogs Quests
+task.spawn(function()
+    task.wait(0.01)
+    updateHotDogQuestsInfo()
+end)
+
+task.spawn(function()
+    while true do
+        task.wait(0.01)
+        pcall(updateHotDogQuestsInfo)
+    end
+end)
+
+Tab:AddButton({
+    Title = "Auto Slap Aura Players",
+    Description = "Automatically slaps players with Rage glove",
+    Callback = function()
+        if game.Players.LocalPlayer.leaderstats.Glove.Value == "Rage" then
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            
+            while true do
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("Left Leg") then
+                        local args = {
+                            player.Character["Left Leg"],
+                            false
+                        }
+                        ReplicatedStorage.GRRRR:FireServer(unpack(args))
+                    end
+                end
+                wait(0.5)
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Equip Rage glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+end
+do
+local Tab = Window:AddTab({ Title = "Pool Noodle", Icon = "rbxassetid://7733673987"})
+
+Tab:AddButton({
+    Title = "Equip Beachball (49k+ Slaps Need)",
+    Description = "Equips the Beachball glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Beachball"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Equip Reverse (5.5k+ Slaps Need)",
+    Description = "Equips the Reverse glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Reverse"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Someone Using Beachball?",
+    Description = "Checks if anyone has Beachball equipped",
+    Callback = function()
+        local found = false
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Beachball" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the Beachball glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Beachball glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Someone Using Reverse?",
+    Description = "Checks if anyone has Reverse equipped",
+    Callback = function()
+        local found = false
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local leaderstats = player:FindFirstChild("leaderstats")
+            if leaderstats then
+                local glove = leaderstats:FindFirstChild("Glove")
+                if glove and glove.Value == "Reverse" then
+                    found = true
+                    Fluent:Notify({
+                        Title = "Detected!",
+                        Content = player.Name .. " has equipped the Reverse glove.",
+                        Duration = 3
+                    })
+                end
+            end
+        end
+        if not found then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "No one has equipped the Reverse glove",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Teleport To Beachball Player",
+    Description = "Teleports you to a Beachball user",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Beachball" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Beachball Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Teleport To Reverse Player",
+    Description = "Teleports you to a Reverse user",
+    Callback = function()
+        local localPlayer = game.Players.LocalPlayer
+        local foundPlayer = nil
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= localPlayer then
+                local stats = player:FindFirstChild("leaderstats")
+                if stats and stats:FindFirstChild("Glove") and stats.Glove.Value == "Reverse" then
+                    foundPlayer = player
+                    break
+                end
+            end
+        end
+        if foundPlayer and foundPlayer.Character and foundPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = foundPlayer.Character.HumanoidRootPart
+            localPlayer.Character:PivotTo(hrp.CFrame + Vector3.new(0, 5, 0))
+            Fluent:Notify({
+                Title = "Success!",
+                Content = "Teleported To: " .. foundPlayer.Name,
+                Duration = 3
+            })
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Reverse Player Not Found",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Use Beachball Ability",
+    Description = "Activates Beachball ability",
+    Callback = function()
+        game.ReplicatedStorage.GeneralAbility:FireServer()
+    end
+})
+
+Tab:AddButton({
+    Title = "Use Reverse Ability",
+    Description = "Activates Reverse ability",
+    Callback = function()
+        game.ReplicatedStorage.ReverseAbility:FireServer()
+    end
+})
+
+end
+do
+local Tab = Window:AddTab({ Title = "Pebble", Icon = "rbxassetid://7733673987"})
+
+Tab:AddSection("really? / WHY")
+
+-- Variables for tracking
+local timeStarted = nil
+local timeStopped = nil
+local isCounting = false
+local isRockActive = false
+local totalTimeNeeded = 10 * 60 * 60 -- 10 hours in seconds
+local rockStartTime = nil
+local isTimerFinished = false
+local updateConnection = nil
+local currentTimeWaiting = "Waiting for Rock..."
+local currentTimeStarted = "Not Started"
+local currentTimeStopped = "N/A"
+local currentTimeFinished = "Not Finished"
+local savedStoppedTime = nil
+local isAntiAfkEnabled = false
+local autoMegarockEnabled = false
+local autoMegarockLoop = nil
+local isProcessing = false
+
+-- Badge tracking variables
+local ownsReallyBadge = false
+local ownsWHYBadge = false
+local reallyBadgeAward = "No Glove"
+local whyBadgeAward = "MEGAROCK Glove"
+
+-- Badge IDs
+local REALLY_BADGE_ID = "2124760923"
+local WHY_BADGE_ID = "2124807768"
+
+-- SERVICES
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Function to format time
+local function formatTime(seconds, milliseconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    local ms = math.floor(milliseconds or 0)
+    return string.format("%02d:%02d:%02d:%03d", hours, minutes, secs, ms)
+end
+
+-- Function to fetch badges from ReplicatedStorage.PlayerData
+local function fetchBadgesFromPlayerData()
+    local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then return false end
+    
+    local playerFolder = playerData:FindFirstChild(localPlayer.Name)
+    if not playerFolder then return false end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then return false end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            local badgeIds = {}
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                table.insert(badgeIds, cleanId)
+            end
+            
+            ownsReallyBadge = false
+            ownsWHYBadge = false
+            
+            for _, id in ipairs(badgeIds) do
+                if id == REALLY_BADGE_ID then
+                    ownsReallyBadge = true
+                elseif id == WHY_BADGE_ID then
+                    ownsWHYBadge = true
+                end
+            end
+            return true
+        end
+    end
+    return false
+end
+
+-- Function to update badge statuses
+local function updateBadgeStatuses()
+    fetchBadgesFromPlayerData()
+end
+
+-- Optimized function to check for rock
+local function hasRock()
+    local character = localPlayer and localPlayer.Character
+    if character then
+        return character:FindFirstChild("rock") ~= nil
+    end
+    return false
+end
+
+-- Function to check if diamond glove is EQUIPPED
+local function isDiamondEquipped()
+    local character = localPlayer and localPlayer.Character
+    if character then
+        local diamondTool = character:FindFirstChild("Diamond")
+        if diamondTool then
+            return true
+        end
+    end
+    return false
+end
+
+-- Function to check if player is in arena
+local function isInArena()
+    local character = localPlayer and localPlayer.Character
+    if character then
+        local isInArenaValue = character:FindFirstChild("isInArena")
+        if isInArenaValue then
+            return isInArenaValue.Value == true
+        end
+    end
+    return false
+end
+
+-- Function to get error message based on conditions
+local function getErrorMessage()
+    local diamondEquipped = isDiamondEquipped()
+    local inArena = isInArena()
+    
+    if ownsWHYBadge then
+        return "You already have MEGAROCK Glove! (WHY Badge Owned)"
+    end
+    
+    if hasRock() then
+        return "Rock is active! Timer is running..."
+    end
+    
+    if diamondEquipped and inArena then
+        return nil
+    elseif not diamondEquipped and not inArena then
+        return "Error - Equip Diamond Glove First / Enter Arena First"
+    elseif diamondEquipped and not inArena then
+        return "Error - Enter Arena First"
+    elseif not diamondEquipped and inArena then
+        return "Error - Equip Diamond Glove First"
+    end
+    
+    return "Unknown Error"
+end
+
+-- Timer update function
+local function updateTimerDisplay(paragraph)
+    local currentTime = tick()
+    local hasRockNow = hasRock()
+    local diamondEquipped = isDiamondEquipped()
+    local inArena = isInArena()
+    local errorMsg = getErrorMessage()
+    
+    if not hasRockNow then
+        currentTimeWaiting = "Waiting for Rock..."
+    else
+        currentTimeWaiting = "Rock Found!"
+    end
+    
+    if hasRockNow then
+        if not isRockActive then
+            isRockActive = true
+            rockStartTime = currentTime
+            isCounting = true
+            isTimerFinished = false
+            timeStarted = rockStartTime
+            savedStoppedTime = nil
+            currentTimeStopped = "N/A"
+            currentTimeStarted = formatTime(0, 0)
+        end
+        
+        if isCounting and not isTimerFinished then
+            local elapsed = currentTime - rockStartTime
+            local milliseconds = (elapsed - math.floor(elapsed)) * 1000
+            currentTimeStarted = formatTime(elapsed, milliseconds)
+            
+            if elapsed >= totalTimeNeeded then
+                isTimerFinished = true
+                isCounting = false
+                currentTimeFinished = formatTime(totalTimeNeeded, 0)
+            end
+        elseif isTimerFinished then
+            currentTimeFinished = formatTime(totalTimeNeeded, 0)
+            currentTimeStarted = formatTime(totalTimeNeeded, 0)
+        end
+    else
+        if isRockActive then
+            isRockActive = false
+            isCounting = false
+            savedStoppedTime = currentTimeStarted
+            currentTimeStopped = savedStoppedTime
+        end
+        if savedStoppedTime then
+            currentTimeStopped = savedStoppedTime
+        end
+        if not isRockActive and not hasRockNow then
+            isCounting = false
+        end
+    end
+    
+    local paragraphContent = string.format([[
+        MEGAROCK TIMER
+
+Rock Status: %s
+Time Started: %s
+Time Stopped: %s
+Time Finished: %s
+Total Time Need: %s
+Diamond Equipped: %s
+Entered Arena: %s
+Anti AFK: %s
+
+        BADGE STATUS
+
+really? Badge: %s
+WHY Badge (MEGAROCK): %s
+
+        ERROR STATUS
+
+%s
+]], 
+    currentTimeWaiting,
+    currentTimeStarted,
+    currentTimeStopped,
+    currentTimeFinished,
+    formatTime(totalTimeNeeded, 0),
+    diamondEquipped and "✅ Yes" or "❌ No",
+    inArena and "✅ Yes" or "❌ No",
+    isAntiAfkEnabled and "✅ Yes" or "❌ No",
+    ownsReallyBadge and "✅ Yes" or "❌ No",
+    ownsWHYBadge and "✅ Yes" or "❌ No",
+    errorMsg or "✅ No Errors - Ready!"
+)
+    
+    pcall(function()
+        paragraph:SetDesc(paragraphContent)
+    end)
+end
+
+-- Create the paragraphs
+local RestStatusParagraph = Tab:AddParagraph({
+    Title = "MEGAROCK Status",
+    Content = "Loading..."
+})
+
+-- FAST update loop for timer AND badges
+local isUpdating = true
+task.spawn(function()
+    while isUpdating do
+        local startTime = tick()
+        fetchBadgesFromPlayerData()
+        updateTimerDisplay(RestStatusParagraph)
+        local elapsed = tick() - startTime
+        local waitTime = math.max(0.001, 0.01 - elapsed)
+        task.wait(waitTime)
+    end
+end)
+
+-- Function to fire rock remote
+local function fireRockRemote()
+    if isProcessing then
+        return false
+    end
+    isProcessing = true
+    pcall(function()
+        local rockmode = ReplicatedStorage:FindFirstChild("Rockmode")
+        if rockmode then
+            rockmode:FireServer()
+            task.wait(0.5)
+        end
+    end)
+    task.wait(1)
+    isProcessing = false
+    return true
+end
+
+-- Auto Megarock Loop
+local function startAutoMegarockLoop()
+    autoMegarockLoop = task.spawn(function()
+        while autoMegarockEnabled do
+            pcall(function()
+                local hasRockNow = hasRock()
+                local errorMsg = getErrorMessage()
+                
+                if errorMsg == nil then
+                    if not hasRockNow then
+                        if localPlayer and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                            localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                            task.wait(0.5)
+                            fireRockRemote()
+                            task.wait(0.5)
+                        end
+                    end
+                end
+            end)
+            task.wait(3)
+        end
+    end)
+end
+
+-- Auto Megarock Toggle
+Tab:AddToggle("AutoGetMEGAROCKGlove", {
+    Title = "Auto Get MEGAROCK Glove",
+    Default = false,
+    Callback = function(Value)
+        if autoMegarockEnabled == Value then
+            return
+        end
+        
+        autoMegarockEnabled = Value
+        
+        if Value then
+            if hasRock() then
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "You already have Rock! Disable when you want to remove it.",
+                    Duration = 3
+                })
+            else
+                local errorMsg = getErrorMessage()
+                if errorMsg then
+                    Fluent:Notify({
+                        Title = "MEGAROCK Error!",
+                        Content = errorMsg,
+                        Duration = 5
+                    })
+                    -- Can't directly set toggle false, need to handle differently
+                    autoMegarockEnabled = false
+                    return
+                end
+                
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "Auto Get MEGAROCK Enabled! Teleporting to position...",
+                    Duration = 3
+                })
+                
+                if localPlayer and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-17926, 60, 3531)
+                    task.wait(0.5)
+                    fireRockRemote()
+                end
+                
+                if autoMegarockLoop then
+                    task.cancel(autoMegarockLoop)
+                    autoMegarockLoop = nil
+                end
+                
+                if autoMegarockEnabled then
+                    startAutoMegarockLoop()
+                end
+            end
+        else
+            if hasRock() then
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "Disabling MEGAROCK...",
+                    Duration = 2
+                })
+                fireRockRemote()
+            else
+                Fluent:Notify({
+                    Title = "MEGAROCK",
+                    Content = "MEGAROCK Disabled.",
+                    Duration = 2
+                })
+            end
+            
+            if autoMegarockLoop then
+                task.cancel(autoMegarockLoop)
+                autoMegarockLoop = nil
+            end
+        end
+    end
+})
+
+-- Anti AFK Toggle
+Tab:AddToggle("Anti Afk", {
+    Title = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end
+})
+
+-- Cleanup
+game.Players.LocalPlayer.OnTeleport:Connect(function()
+    isUpdating = false
+    if autoMegarockLoop then
+        task.cancel(autoMegarockLoop)
+    end
+end)
+
+Tab:AddSection("|||||||||||||||||||||||||||||||||||||||||||||||")
+Tab:AddSection("ULTRAROCK")
+Tab:AddSection("Obby's Status Counter")
+
+-- ===== VARIABLES =====
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Touch counting variables
+local touchedPlayers = {}
+local totalPeopleTouched = 0
+local totalPeopleNeeded = 10
+local isTracking = false
+
+-- Variables
+local isAntiAfkEnabled = false
+local ownUltrarockBadge = false
+local isTrackingActive = false
+
+-- Badge display variables
+local badgeStatusText = "Loading..."
+
+-- ULTRAROCK Badge ID
+local ULTRAROCK_BADGE_ID = "2130463063"
+
+-- Valid gloves for tracking
+local validGloves = {
+    "Diamond",
+    "MEGAROCK",
+    "CUSTOM"
+}
+
+-- Function to check if player has valid glove
+local function hasValidGlove()
+    if player.leaderstats and player.leaderstats:FindFirstChild("Glove") then
+        local currentGlove = player.leaderstats.Glove.Value
+        for _, glove in ipairs(validGloves) do
+            if currentGlove == glove then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- Function to check if player has entered arena
+local function hasEntered()
+    local char = player.Character
+    if char then
+        local entered = char:FindFirstChild("entered")
+        if entered then
+            return entered.Value == true
+        end
+    end
+    return false
+end
+
+-- Function to check if player is in arena
+local function isInArena()
+    local char = player.Character
+    if char then
+        local entered = char:FindFirstChild("entered")
+        if entered then
+            return entered.Value == true
+        end
+    end
+    return false
+end
+
+-- Function to check if player has rock
+local function hasRock()
+    local char = player.Character
+    if char then
+        return char:FindFirstChild("rock") ~= nil
+    end
+    return false
+end
+
+-- Function to check if ULTRAROCK badge is owned
+local function checkUltrarockBadge()
+    local playerData = replicatedStorage:FindFirstChild("PlayerData")
+    if not playerData then
+        ownUltrarockBadge = false
+        return false
+    end
+    
+    local playerFolder = playerData:FindFirstChild(player.Name)
+    if not playerFolder then
+        ownUltrarockBadge = false
+        return false
+    end
+    
+    local unlockedBadges = playerFolder:FindFirstChild("UnlockedBadges")
+    if not unlockedBadges then
+        ownUltrarockBadge = false
+        return false
+    end
+    
+    if unlockedBadges:IsA("StringValue") then
+        local badgeIdsString = unlockedBadges.Value
+        if badgeIdsString and badgeIdsString ~= "" then
+            local trimmed = badgeIdsString:sub(2, -2)
+            for id in string.gmatch(trimmed, "[^,]+") do
+                local cleanId = id:match("^%s*(.-)%s*$")
+                if cleanId == ULTRAROCK_BADGE_ID then
+                    ownUltrarockBadge = true
+                    return true
+                end
+            end
+        end
+    end
+    
+    ownUltrarockBadge = false
+    return false
+end
+
+-- Function to update badge status text
+local function updateBadgeStatusText()
+    local badgeStatus = ownUltrarockBadge and "✅ Yes" or "❌ No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    
+    badgeStatusText = string.format([[
+Owns ULTRAROCK Badge: %s
+ULTRAROCK Badge Awards Glove: Obby Glove
+Entered Arena: %s
+]],
+    badgeStatus,
+    inArenaStatus
+)
+    return badgeStatusText
+end
+
+-- Function to update tracking display
+local function updateTrackingDisplay()
+    local antiAfkStatus = isAntiAfkEnabled and "Yes" or "No"
+    local inArenaStatus = isInArena() and "✅ Yes" or "❌ No"
+    local rockStatus = hasRock() and "✅ Yes" or "❌ No"
+    
+    local statusText = string.format([[
+Total People Touched You: %d/%d
+Total People Need To Touch You: %d
+Rock Form Active: %s
+Entered Arena: %s
+Anti AFK: %s
+]],
+    totalPeopleTouched,
+    totalPeopleNeeded,
+    totalPeopleNeeded,
+    rockStatus,
+    inArenaStatus,
+    antiAfkStatus
+    )
+    
+    return statusText
+end
+
+-- Function to get error message based on conditions
+local function getErrorMessage()
+    local hasGlove = hasValidGlove()
+    local inArena = isInArena()
+    local hasRockForm = hasRock()
+    
+    if hasGlove and inArena and hasRockForm then
+        return nil
+    elseif not hasGlove and not inArena and not hasRockForm then
+        return "⚠️ Error - Equip Diamond/MEGAROCK/CUSTOM / Enter Arena / Get Rock Form"
+    elseif hasGlove and not inArena and not hasRockForm then
+        return "⚠️ Error - Enter Arena / Get Rock Form"
+    elseif hasGlove and inArena and not hasRockForm then
+        return "⚠️ Error - Get Rock Form First (Use MEGAROCK ability)"
+    elseif hasGlove and not inArena and hasRockForm then
+        return "⚠️ Error - Enter Arena First"
+    elseif not hasGlove and inArena and hasRockForm then
+        return "⚠️ Error - Equip Diamond/MEGAROCK/CUSTOM Glove"
+    elseif not hasGlove and not inArena and hasRockForm then
+        return "⚠️ Error - Equip Diamond/MEGAROCK/CUSTOM / Enter Arena"
+    elseif not hasGlove and inArena and not hasRockForm then
+        return "⚠️ Error - Equip Diamond/MEGAROCK/CUSTOM / Get Rock Form"
+    end
+    
+    return "⚠️ Unknown Error"
+end
+
+-- Function to check for players touching the rock
+local function startTouchTracking()
+    isTrackingActive = true
+    
+    local function onPartTouched(otherPart)
+        if not isTracking then return end
+        
+        local character = otherPart.Parent
+        if not character then return end
+        
+        local humanoid = character:FindFirstChild("Humanoid")
+        if not humanoid then return end
+        
+        local otherPlayer = game.Players:GetPlayerFromCharacter(character)
+        if not otherPlayer then return end
+        
+        if otherPlayer == player then return end
+        
+        local playerName = otherPlayer.Name
+        
+        if not touchedPlayers[playerName] then
+            touchedPlayers[playerName] = true
+            totalPeopleTouched = totalPeopleTouched + 1
+            
+            Fluent:Notify({
+                Title = "ULTRAROCK",
+                Content = playerName .. " touched your rock! (" .. totalPeopleTouched .. "/" .. totalPeopleNeeded .. ")",
+                Duration = 2
+            })
+            
+            UltrarockStatusParagraph:SetDesc(updateTrackingDisplay())
+            
+            if totalPeopleTouched >= totalPeopleNeeded then
+                isTracking = false
+                Fluent:Notify({
+                    Title = "ULTRAROCK",
+                    Content = "Goal reached! " .. totalPeopleTouched .. "/" .. totalPeopleNeeded .. " players touched you!",
+                    Duration = 5
+                })
+            end
+        end
+    end
+    
+    local function waitForRock()
+        while isTracking do
+            local char = player.Character
+            if char then
+                local rock = char:FindFirstChild("rock")
+                if rock and rock:IsA("BasePart") then
+                    rock.Touched:Connect(onPartTouched)
+                    break
+                end
+            end
+            task.wait(0.5)
+        end
+    end
+    
+    task.spawn(waitForRock)
+end
+
+-- Create the TWO paragraphs
+local UltrarockStatusParagraph = Tab:AddParagraph({
+    Title = "ULTRAROCK Status",
+    Content = "Loading..."
+})
+
+local BadgeStatusParagraph = Tab:AddParagraph({
+    Title = "Badge Status",
+    Content = "Loading badge info..."
+})
+
+-- Status update loops
+task.spawn(function()
+    while true do
+        local statusText = updateTrackingDisplay()
+        pcall(function()
+            UltrarockStatusParagraph:SetDesc(statusText)
+        end)
+        task.wait(0.5)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        checkUltrarockBadge()
+        local badgeText = updateBadgeStatusText()
+        pcall(function()
+            BadgeStatusParagraph:SetDesc(badgeText)
+        end)
+        task.wait(5)
+    end
+end)
+
+-- ULTRAROCK TRACKING TOGGLE
+Tab:AddToggle("ULTRAROCK Badge Tracker", {
+    Title = "ULTRAROCK Badge Tracker",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local errorMsg = getErrorMessage()
+            if errorMsg then
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = errorMsg,
+                    Duration = 4
+                })
+                return
+            end
+            
+            touchedPlayers = {}
+            totalPeopleTouched = 0
+            isTracking = true
+            
+            startTouchTracking()
+            
+            Fluent:Notify({
+                Title = "ULTRAROCK",
+                Content = "Tracking started! Need " .. totalPeopleNeeded .. " different players to touch your rock.",
+                Duration = 4
+            })
+        else
+            isTracking = false
+            isTrackingActive = false
+        end
+    end
+})
+
+-- Anti AFK Toggle for ULTRAROCK section
+Tab:AddToggle("Anti Afk", {
+    Title = "Anti Afk",
+    Default = false,
+    Callback = function(Value)
+        isAntiAfkEnabled = Value
+        if Value then
+            local VirtualUser = game:GetService('VirtualUser')
+            game:GetService('Players').LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end
+})
+
+-- Initial updates
+checkUltrarockBadge()
+BadgeStatusParagraph:SetDesc(updateBadgeStatusText())
+UltrarockStatusParagraph:SetDesc(updateTrackingDisplay())
+
+Tab:AddSection("Diamond/MEGAROCK/CUSTOM")
+
+Tab:AddButton({
+    Title = "Equip Diamond (15+ Slaps Need)",
+    Description = "Equips the Diamond glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Diamond"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Equip MEGAROCK (WHY Badge Need)",
+    Description = "Equips the MEGAROCK glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["MEGAROCK"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Equip CUSTOM (394 Robux Need)",
+    Description = "Equips the CUSTOM glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["CUSTOM"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Use Rock Ability",
+    Description = "Activates the Rock ability",
+    Callback = function()
+        game:GetService("ReplicatedStorage"):WaitForChild("Rockmode"):FireServer()
+    end
+})
+
+Tab:AddSection("Rocky (Diamond's Helper)")
+
+Tab:AddButton({
+    Title = "Equip Rocky (9500+ Slaps Need)",
+    Description = "Equips the Rocky glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Rocky"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Use Rocky Ability",
+    Description = "Activates the Rocky ability",
+    Callback = function()
+        game:GetService("ReplicatedStorage"):WaitForChild("RockyShoot"):FireServer()
+    end
+})
+
+Tab:AddSection("Za Hando (Diamond/MEGAROCK/CUSTOM's Helper)")
+
+Tab:AddButton({
+    Title = "Equip Za Hando (1000+ Slaps Need)",
+    Description = "Equips the Za Hando glove",
+    Callback = function()
+        fireclickdetector(workspace.Lobby["Za Hando"].ClickDetector)
+    end
+})
+
+Tab:AddButton({
+    Title = "Use Za Hando Ability",
+    Description = "Activates the Za Hando ability",
+    Callback = function()
+        game:GetService("ReplicatedStorage"):WaitForChild("Erase"):FireServer()
+    end
+})
+
+end
+do
 -- ============================================================
 -- WEBHOOK TAB
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Webhook",
-    Icon = ""
+    Icon = "rbxassetid://7733978098"
 })
 
 Tab:AddSection(
@@ -21140,7 +22606,7 @@ do
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Credits",
-    Icon = ""
+    Icon = "rbxassetid://7743875759"
 })
 
 Tab:AddSection(
@@ -21252,7 +22718,7 @@ do
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Settings",
-    Icon = ""
+    Icon = "rbxassetid://7734053495"
 })
 
 -- Section: Value Changer
@@ -21332,6 +22798,62 @@ Tab:AddButton({
             Fluent:Notify({
                 Title = "Error",
                 Content = "Please enter a valid number first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Set Inf Slaps (1 Quintillion Max) (Visual)",
+    Callback = function()
+        game.Players.LocalPlayer.leaderstats.Slaps.Value = 1000000000000000000
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Slaps set to 1 Quintillion!",
+            Duration = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Title = "Set Inf Null Shards (Visual)",
+    Callback = function()
+        local LocalPlayer = game.Players.LocalPlayer
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+        local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+        if playerData then
+            local playerFolder = playerData:FindFirstChild(LocalPlayer.Name)
+            if playerFolder then
+                local nullShards = playerFolder:FindFirstChild("NullShards")
+                if nullShards then
+                    if nullShards:IsA("StringValue") then
+                        nullShards.Value = math.huge
+                        Fluent:Notify({
+                            Title = "Success",
+                            Content = "Null Shards set to Infinity!",
+                            Duration = 2
+                        })
+                    end
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "NullShards not found!",
+                        Duration = 3
+                    })
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Player folder not found!",
+                    Duration = 3
+                })
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "PlayerData not found!",
                 Duration = 3
             })
         end
@@ -21591,12 +23113,173 @@ Tab:AddToggle("AutoChangeNametag", {
 
 player.CharacterAdded:Connect(function(character)
     if autoNametag and nametagText ~= "" then
-        wait(2)
+        task.wait(0.01)
         local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
         if nametag then
             local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
             if topLabel then
                 topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tab:AddButton({
+    Title = "Show/Hide Device Icon",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        
+        if not character then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local head = character:FindFirstChild("Head")
+        if not head then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Head not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local nametag = head:FindFirstChild("Nametag")
+        if not nametag then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Nametag not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local deviceImage = nametag:FindFirstChild("deviceImage")
+        if not deviceImage then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "deviceImage not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        -- Toggle visibility
+        deviceImage.Visible = not deviceImage.Visible
+        
+        Fluent:Notify({
+            Title = "Device Icon",
+            Content = deviceImage.Visible and "Icon Shown" or "Icon Hidden",
+            Duration = 2
+        })
+    end
+})
+
+local autoHideDeviceIcon = false
+local autoHideDeviceConnection = nil
+local characterAddedConnection = nil
+
+Tab:AddToggle("AutoHideDeviceIcon", {
+    Title = "Auto Hide Device Icon",
+    Default = false,
+    Callback = function(Value)
+        autoHideDeviceIcon = Value
+        
+        if Value then
+            -- Hide current device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = false
+                        end
+                    end
+                end
+            end
+            
+            -- Connection to hide device icon when character respawns
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+            characterAddedConnection = game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+                task.wait(0.5) -- Wait for character to fully load
+                
+                if autoHideDeviceIcon then
+                    local head = character:FindFirstChild("Head")
+                    if head then
+                        local nametag = head:FindFirstChild("Nametag")
+                        if nametag then
+                            local deviceImage = nametag:FindFirstChild("deviceImage")
+                            if deviceImage then
+                                deviceImage.Visible = false
+                                print("✅ Device icon hidden on respawn")
+                            end
+                        end
+                    end
+                end
+            end)
+            
+            Fluent:Notify({
+                Title = "Auto Hide",
+                Content = "Device icon will be hidden automatically!",
+                Duration = 3
+            })
+            
+        else
+            -- Show device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = true
+                        end
+                    end
+                end
+            end
+            
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+            Fluent:Notify({
+                Title = "Auto Hide",
+                Content = "Auto hide disabled!",
+                Duration = 2
+            })
+        end
+    end
+})
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    -- This will handle the toggle state if autoHideDeviceIcon is true
+    if autoHideDeviceIcon then
+        task.wait(0.01)
+        local head = character:FindFirstChild("Head")
+        if head then
+            local nametag = head:FindFirstChild("Nametag")
+            if nametag then
+                local deviceImage = nametag:FindFirstChild("deviceImage")
+                if deviceImage then
+                    deviceImage.Visible = false
+                end
             end
         end
     end
@@ -21841,6 +23524,7 @@ do
     local localPlayer = Players.LocalPlayer
     
     local gloveHits = {
+        -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
         ["Diamond"] = ReplicatedStorage.DiamondHit,
         ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
@@ -21983,6 +23667,8 @@ do
         ["Roaring"] = ReplicatedStorage.GeneralHit,
         ["God's Hand"] = ReplicatedStorage.Godshand,
         ["The Flex"] = ReplicatedStorage.FlexHit,
+
+        -- Badge Gloves
         ["MEGAROCK"] = ReplicatedStorage.DiamondHit,
         ["Plague"] = ReplicatedStorage.PlagueHit,
         ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
@@ -22057,7 +23743,8 @@ do
         ["Joust"] = ReplicatedStorage.GeneralHit,
         ["Firework"] = ReplicatedStorage.GeneralHit,
         ["Run"] = ReplicatedStorage.GeneralHit,
-        ["Glovel"] = ReplicatedStorage.GeneralHit,
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Normal
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Critical
         ["Divebomb"] = ReplicatedStorage.GeneralHit,
         ["Lamp"] = ReplicatedStorage.GeneralHit,
         ["Knockoff"] = ReplicatedStorage.GeneralHit,
@@ -22120,18 +23807,26 @@ do
         ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
         ["Camera"] = ReplicatedStorage.GeneralHit,
         ["Grillmaster"] = ReplicatedStorage.GeneralHit,
+        ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
+
+        -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
+        
+        -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
         ["Default but Bad"] = ReplicatedStorage.dbb,
         ["Ketchup Default"] = ReplicatedStorage.b,
         ["Stick"] = ReplicatedStorage.GeneralHit,
-        ["potato"] = ReplicatedStorage.potatohit,
         ["Error"] = ReplicatedStorage.Errorhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Pebble"] = ReplicatedStorage.PebbleHit,
         ["killerfish"] = ReplicatedStorage.GeneralHit,
         ["Titan"] = ReplicatedStorage.GeneralHit,
         ["Acrobat"] = ReplicatedStorage.AcHit,
+
+        -- No Hit Remote Gloves + Ignore Those Gloves
         ["Stilts"] = "",
         ["Glue"] = "",
         ["Spectator"] = "",
