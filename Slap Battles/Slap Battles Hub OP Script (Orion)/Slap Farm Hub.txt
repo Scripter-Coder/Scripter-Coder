@@ -1034,12 +1034,6 @@ Tab:AddToggle({
                 ketchupLoopThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Ketchup Farm",
-                Content = "Auto Ketchup farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -1105,12 +1099,6 @@ Tab:AddToggle({
                 ketchupHelperThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Ketchup Helper",
-                Content = "Auto Ketchup helper stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -1783,12 +1771,6 @@ Tab:AddToggle({
                 reaperLoopThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Reaper Farm",
-                Content = "Auto Reaper farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -1892,12 +1874,6 @@ Tab:AddToggle({
                 reaperHelperThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Reaper Helper",
-                Content = "Auto Reaper helper stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -2064,12 +2040,6 @@ Tab:AddToggle({
                 killstreakLoopThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Killstreak Farm",
-                Content = "Auto Killstreak farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -2173,12 +2143,6 @@ Tab:AddToggle({
                 killstreakHelperThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Killstreak Helper",
-                Content = "Auto Killstreak helper stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -2641,12 +2605,6 @@ local EngineerPeopleFarm = Tab:AddToggle({
                 end
             end)
             
-            OrionLib:MakeNotification({
-                Name = "Engineer Farm",
-                Content = "Engineer farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -3032,12 +2990,6 @@ Tab:AddToggle({
                 shotgunLoopThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Shotgun Farm",
-                Content = "Auto Shotgun farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -3141,12 +3093,6 @@ Tab:AddToggle({
                 shotgunHelperThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Shotgun Helper",
-                Content = "Auto Shotgun helper stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -3313,12 +3259,6 @@ Tab:AddToggle({
                 roguelikeLoopThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Roguelike Farm",
-                Content = "Auto Roguelike farming stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -3422,12 +3362,6 @@ Tab:AddToggle({
                 roguelikeHelperThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Roguelike Helper",
-                Content = "Auto Roguelike helper stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -4372,12 +4306,6 @@ Tab:AddToggle({
                 autoSlapSelectedThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Auto Slap",
-                Content = "Auto slap stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -4460,12 +4388,6 @@ Tab:AddToggle({
                 autoSlapSelfThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Auto Slap",
-                Content = "Auto slap self stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -4551,12 +4473,6 @@ Tab:AddToggle({
                 autoSlapEveryoneThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Auto Slap",
-                Content = "Auto slap everyone stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -4638,12 +4554,6 @@ Tab:AddToggle({
                 autoSlapEveryoneIncludingSelfThread = nil
             end
             
-            OrionLib:MakeNotification({
-                Name = "Auto Slap",
-                Content = "Auto slap everyone including you stopped!",
-                Image = "rbxassetid://7743878857",
-                Time = 2
-            })
         end
     end
 })
@@ -4733,7 +4643,7 @@ local allBadges = {
     {id = "2124760875", name = "you met snow | No Glove", category = "Regular"},
     {id = "2124760911", name = "[REDACTED] | No Glove", category = "Regular"},
     {id = "2124760917", name = "Divine punishment | No Glove", category = "Regular"},
-    {id = "2124760923", name = "really? | No Glove", category = "Regular"},
+    {id = "2124760923", name = "really? | Pebble Glove", category = "Regular"},
     {id = "2124775097", name = "barzil | No Glove", category = "Regular"},
     {id = "2124807750", name = "The one | No Glove", category = "Regular"},
     {id = "2124807752", name = "Ascend | No Glove", category = "Regular"},
@@ -4747,7 +4657,7 @@ local allBadges = {
     {id = "2124760895", name = "ez | Moon Glove", category = "GloveRewarding"},
     {id = "2124760907", name = "court evidence | Hitman Glove", category = "GloveRewarding"},
     {id = "2124760928", name = "the touch of midas | buddies Glove", category = "GloveRewarding"},
-    {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "GloveRewarding"},
+    {id = "2124807768", name = "WHY | MEGAROCK + Pebble Glove", category = "GloveRewarding"},
     {id = "2124819262", name = "Infected | Plague Glove", category = "GloveRewarding"},
     {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "GloveRewarding"},
     {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "GloveRewarding"},
@@ -4785,7 +4695,7 @@ local allBadges = {
     {id = "2130031244", name = "RNGod | RNG Glove", category = "GloveRewarding"},
     {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "GloveRewarding"},
     {id = "2130155314", name = "🗿 | 🗿 Glove", category = "GloveRewarding"},
-    {id = "2130463063", name = "ULTRAROCK | Obby Glove", category = "GloveRewarding"},
+    {id = "2130463063", name = "ULTRAROCK | Obby + Pebble Glove", category = "GloveRewarding"},
     {id = "2132544202", name = "Insanity | Voodoo Glove", category = "GloveRewarding"},
     {id = "2133016756", name = "CHAOS | Goofy Glove", category = "GloveRewarding"},
     {id = "2136607413", name = "Demonic Ritual | Leash Glove", category = "GloveRewarding"},
@@ -4887,6 +4797,7 @@ local allBadges = {
     {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "GloveRewarding"},
     {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
     {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
+    {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
@@ -5809,6 +5720,36 @@ Tab:AddButton({
     end
 })
 
+Tab:AddButton({
+    Name = "Set Inf Slaps (1 Quintillion Max) (Visual)",
+    Callback = function()
+        game.Players.LocalPlayer.leaderstats.Slaps.Value = 1000000000000000000
+    end
+})
+
+Tab:AddButton({
+    Name = "Set Inf Null Shards (Visual)",
+    Callback = function()
+local LocalPlayer = game.Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Find the NullShards value
+local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+if playerData then
+    local playerFolder = playerData:FindFirstChild(LocalPlayer.Name)
+    if playerFolder then
+        local nullShards = playerFolder:FindFirstChild("NullShards")
+        if nullShards then
+            -- If it's a NumberValue
+            if nullShards:IsA("StringValue") then
+                nullShards.Value = math.huge
+            end
+        end
+    end
+end
+    end
+})
+
 -- Section: Badge Giver
 Section = Tab:AddSection({
     Name = "Stuff Giver"
@@ -6124,12 +6065,174 @@ Tab:AddToggle({
 player.CharacterAdded:Connect(function(character)
     if autoNametag and nametagText ~= "" then
         -- Wait for character to fully load
-        wait(2)
+        task.wait(0.01)
         local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
         if nametag then
             local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
             if topLabel then
                 topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tab:AddButton({
+    Name = "Show/Hide Device Icon",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        
+        if not character then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Character not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local head = character:FindFirstChild("Head")
+        if not head then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Head not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local nametag = head:FindFirstChild("Nametag")
+        if not nametag then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "Nametag not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        local deviceImage = nametag:FindFirstChild("deviceImage")
+        if not deviceImage then
+            OrionLib:MakeNotification({
+                Name = "Error",
+                Content = "deviceImage not found!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            return
+        end
+        
+        -- Toggle visibility
+        deviceImage.Visible = not deviceImage.Visible
+        
+        OrionLib:MakeNotification({
+            Name = "Device Icon",
+            Content = deviceImage.Visible and "Icon Shown" or "Icon Hidden",
+            Image = "rbxassetid://7734059095",
+            Time = 2
+        })
+    end
+})
+
+local autoHideDeviceIcon = false
+local autoHideDeviceConnection = nil
+local characterAddedConnection = nil
+
+Tab:AddToggle({
+    Name = "Auto Hide Device Icon",
+    Default = false,
+    Callback = function(Value)
+        autoHideDeviceIcon = Value
+        
+        if Value then
+            -- Hide current device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = false
+                        end
+                    end
+                end
+            end
+            
+            -- Connection to hide device icon when character respawns
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+            characterAddedConnection = game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+                task.wait(0.5) -- Wait for character to fully load
+                
+                if autoHideDeviceIcon then
+                    local head = character:FindFirstChild("Head")
+                    if head then
+                        local nametag = head:FindFirstChild("Nametag")
+                        if nametag then
+                            local deviceImage = nametag:FindFirstChild("deviceImage")
+                            if deviceImage then
+                                deviceImage.Visible = false
+                                print("✅ Device icon hidden on respawn")
+                            end
+                        end
+                    end
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Hide",
+                Content = "Device icon will be hidden automatically!",
+                Image = "rbxassetid://7734059095",
+                Time = 3
+            })
+            
+        else
+            -- Show device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = true
+                        end
+                    end
+                end
+            end
+            
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+        end
+    end
+})
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    -- This will handle the toggle state if autoHideDeviceIcon is true
+    if autoHideDeviceIcon then
+        task.wait(0.01)
+        local head = character:FindFirstChild("Head")
+        if head then
+            local nametag = head:FindFirstChild("Nametag")
+            if nametag then
+                local deviceImage = nametag:FindFirstChild("deviceImage")
+                if deviceImage then
+                    deviceImage.Visible = false
+                end
             end
         end
     end
@@ -6670,6 +6773,7 @@ do
         ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
         ["Camera"] = ReplicatedStorage.GeneralHit,
         ["Grillmaster"] = ReplicatedStorage.GeneralHit,
+        ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
@@ -6681,8 +6785,9 @@ do
         ["Default but Bad"] = ReplicatedStorage.dbb,
         ["Ketchup Default"] = ReplicatedStorage.b,
         ["Stick"] = ReplicatedStorage.GeneralHit,
-        ["potato"] = ReplicatedStorage.potatohit,
         ["Error"] = ReplicatedStorage.Errorhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Pebble"] = ReplicatedStorage.PebbleHit,
         ["killerfish"] = ReplicatedStorage.GeneralHit,
         ["Titan"] = ReplicatedStorage.GeneralHit,
         ["Acrobat"] = ReplicatedStorage.AcHit,
