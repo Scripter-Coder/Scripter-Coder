@@ -37,7 +37,7 @@ Fluent:Notify({
 do
 local Tab = Window:AddTab({
     Title = "Welcome",
-    Icon = ""
+    Icon = "rbxassetid://7734059095"
 })
 
 Window:SelectTab(1)
@@ -74,101 +74,133 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Info",
-    Icon = ""
+    Icon = "rbxassetid://7734053426"
 })
 
 Tab:AddParagraph({
     Title = "Giang Hub",
     Content = "Total Scripts: 6"
 })
+
 Tab:AddParagraph({
     Title = "AstroSX",
     Content = "Total Scripts: 15"
 })
+
 Tab:AddParagraph({
     Title = "BaconScripter",
     Content = "Total Scripts: 19"
 })
+
 Tab:AddParagraph({
     Title = "Celerity",
     Content = "Total Scripts: 14"
 })
+
 Tab:AddParagraph({
     Title = "Cheatsmith Zyron",
     Content = "Total Scripts: 3"
 })
+
 Tab:AddParagraph({
     Title = "DonjoSx",
     Content = "Total Scripts: 39"
 })
+
 Tab:AddParagraph({
     Title = "Dizzyhvh",
     Content = "Total Scripts: 1"
 })
+
 Tab:AddParagraph({
     Title = "Ekanite",
     Content = "Total Scripts: 12"
 })
+
 Tab:AddParagraph({
     Title = "Guy that exists",
     Content = "Total Scripts: 1"
 })
+
 Tab:AddParagraph({
     Title = "Herkle",
     Content = "Total Scripts: 1"
 })
+
 Tab:AddParagraph({
     Title = "Incognito Scripts",
     Content = "Total Scripts: 49"
 })
+
 Tab:AddParagraph({
     Title = "InterScription",
     Content = "Total Scripts: 2"
 })
+
 Tab:AddParagraph({
     Title = "Kiet Scripter",
     Content = "Total Scripts: 62"
 })
+
 Tab:AddParagraph({
     Title = "Nexer",
-    Content = "Total Scripts: 178"
+    Content = "Total Scripts: 188"
 })
+
 Tab:AddParagraph({
     Title = "PacMan",
     Content = "Total Scripts: 13"
 })
+
 Tab:AddParagraph({
     Title = "Scrept",
     Content = "Total Scripts: 2"
 })
+
 Tab:AddParagraph({
     Title = "Scripter",
     Content = "Total Scripts: 20"
 })
+
 Tab:AddParagraph({
     Title = "St1mlx the Scripter",
-    Content = "Total Scripts: 1"
+    Content = "Total Scripts: 2"
 })
+
 Tab:AddParagraph({
     Title = "SBScripts",
     Content = "Total Scripts: 5"
 })
+
 Tab:AddParagraph({
     Title = "TimerScripts",
     Content = "Total Scripts: 24"
 })
+
 Tab:AddParagraph({
     Title = "(TDKG) = The Darkness Keeps Growing",
     Content = "Total Scripts: 71"
 })
+
 Tab:AddParagraph({
     Title = "Virus_SX",
     Content = "Total Scripts: 32"
 })
 
 Tab:AddParagraph({
+    Title = "x8",
+    Content = "Total Scripts: 3"
+})
+
+Tab:AddParagraph({
+    Title = "zemboxosx",
+    Content = "Total Scripts: 13"
+})
+
+
+Tab:AddParagraph({
     Title = "All Scripters",
-    Content = "Total Scripts: 566"
+    Content = "Total Scripts: 597"
 })
 
 end
@@ -179,7 +211,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Hubs",
-    Icon = ""
+    Icon = "rbxassetid://7733673987"
 })
 
         Tab:AddParagraph({
@@ -273,7 +305,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Giang Hub",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -326,7 +358,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "AstroSX",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -442,7 +474,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "BaconScripter",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -586,7 +618,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Celerity",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -695,7 +727,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Cheatsmith Zyron",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -727,7 +759,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "DonjoSx",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1011,7 +1043,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Dizzyhvh",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1029,7 +1061,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Ekanite",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1124,7 +1156,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Guy that exists",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1142,7 +1174,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Herkle",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1160,7 +1192,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Incognito Scripts",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1514,7 +1546,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "InterScription",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1539,7 +1571,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Kiet Scripter",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -1984,7 +2016,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Nexer",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3234,6 +3266,76 @@ Tab:AddButton({
     end
 })
 
+Tab:AddButton({
+	Title = "El Gato Slap Farm",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/SFs/SFComponents%3DEGRR.luau"))()
+end
+})
+
+Tab:AddButton({
+	Title = "SB-Module",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB-Module.luau"))()
+end
+})
+
+Tab:AddButton({
+	Title = "MH (MasteryHub) test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/MH/Versions/test"))()
+end
+})
+
+Tab:AddButton({
+	Title = "SFG (SlapFarmGui) OldSFGHosted",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/SFG/oldsfghosted.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "SFs (SlapFarms) 2.0 El Gato Required",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/SFs/SFComponents%3D2.0EGRR.luau"))()
+end
+})
+
+Tab:AddButton({
+	Title = "SFs (SlapFarms) El Gato Required",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/SFs/SFComponents%3DEGRR.luau"))()
+end
+})
+
+Tab:AddButton({
+	Title = "UBH (UltimateBadgeHub) 1.2.0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/UBH/Versions/1.2.0"))()
+end
+})
+
+Tab:AddButton({
+	Title = "UBH (UltimateBadgeHub) 1.3.0",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/UBH/Versions/1.3.0"))()
+end
+})
+
+Tab:AddButton({
+	Title = "UBH (UltimateBadgeHub) test",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/UBH/Versions/test"))()
+end
+})
+
+Tab:AddButton({
+	Title = "UBH (UltimateBadgeHub) Latest",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/UBH/Latest.lua"))()
+end
+})
+
 end
 
 -- ============================================================
@@ -3242,7 +3344,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "PacMan",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3344,7 +3446,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Scrept",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3369,7 +3471,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Scripter",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3520,14 +3622,21 @@ end
 do
 local Tab = Window:AddTab({
     Title = "St1mlx the Scripter",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
-    Title = "St1mlx's Hub | Premium Loader",
+    Title = "St1mlx's Hub | Free/Premium Loader",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/st1mlx/St1mlx-Scripts/refs/heads/main/hubtest'))()
     end
+})
+
+Tab:AddButton({
+	Title = "AWE Hub Script (St1mlx Hub)",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/st1mlx/bebebe/refs/heads/main/AWESlapRoyale'))()
+end
 })
 
 end
@@ -3538,7 +3647,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "SBScripts",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3671,7 +3780,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "TimerScripts",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -3850,7 +3959,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "TDKG",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -4358,7 +4467,7 @@ end
 do
 local Tab = Window:AddTab({
     Title = "Virus_SX",
-    Icon = ""
+    Icon = "rbxassetid://7733960981"
 })
 
 Tab:AddButton({
@@ -4622,12 +4731,138 @@ Tab:AddButton({
 
 end
 do
+local Tab = Window:AddTab({
+    Title = "x8",
+    Icon = "rbxassetid://7733960981"
+})
+
+Tab:AddButton({
+	Title = "get all gloves scripts",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/x8lua/scripts/refs/heads/main/gloves.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "extended glove gui script (auto hit)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/x8lua/scripts/refs/heads/main/extended"))()
+end
+})
+
+Tab:AddButton({
+	Title = "camera glove script [FULL AUTO]",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/sxQxdFsM"))()
+end
+})
+
+end
+do
+local Tab = Window:AddTab({
+    Title = "zemboxosx",
+    Icon = "rbxassetid://7733960981"
+})
+
+Tab:AddButton({
+	Title = "Auto slender",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Auto-slender/refs/heads/main/slap_battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Slap battles",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Auto-camera/refs/heads/main/Slap_battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Auto camera",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/nerna-coder/Auto-camera/refs/heads/main/Slap_battles.lua'))()
+end
+})
+
+Tab:AddButton({
+	Title = "Auto water",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Auto-water/refs/heads/main/Slap_battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Script",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Jejejejeej3r/refs/heads/main/Script.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "obfuscated_script-1783171975665.lua.txt",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/H/refs/heads/main/obfuscated_script-1783171975665.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Recall",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Recall/refs/heads/main/slap-battlea.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Camera new gen",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Camera-new-gen/refs/heads/main/slap-battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "raw.githubusercontent.com_Giangplay_Script_main_Orion_Library_PE_V2.lua.txt",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/8283838/refs/heads/main/raw.githubusercontent.com_Giangplay_Script_main_Orion_Library_PE_V2.lua.txt"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Camera-",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Camera-/refs/heads/main/Slap-battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Poltergeist",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Poltergeist/refs/heads/main/Slap%20battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Trap voodo fish",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Trap-voodo-fish/refs/heads/main/Slap%20battles.lua"))()
+end
+})
+
+Tab:AddButton({
+	Title = "Auto block",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nerna-coder/Auto-block/refs/heads/main/Slap%20battles.lua"))()
+end
+})
+
+end
+do
 -- ============================================================
 -- WEBHOOK TAB
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Webhook",
-    Icon = ""
+    Icon = "rbxassetid://7733978098"
 })
 
 Tab:AddSection(
@@ -4659,7 +4894,7 @@ local allBadges = {
     {id = "2124760875", name = "you met snow | No Glove", category = "Regular"},
     {id = "2124760911", name = "[REDACTED] | No Glove", category = "Regular"},
     {id = "2124760917", name = "Divine punishment | No Glove", category = "Regular"},
-    {id = "2124760923", name = "really? | No Glove", category = "Regular"},
+    {id = "2124760923", name = "really? | Pebble Glove", category = "Regular"},
     {id = "2124775097", name = "barzil | No Glove", category = "Regular"},
     {id = "2124807750", name = "The one | No Glove", category = "Regular"},
     {id = "2124807752", name = "Ascend | No Glove", category = "Regular"},
@@ -4673,7 +4908,7 @@ local allBadges = {
     {id = "2124760895", name = "ez | Moon Glove", category = "GloveRewarding"},
     {id = "2124760907", name = "court evidence | Hitman Glove", category = "GloveRewarding"},
     {id = "2124760928", name = "the touch of midas | buddies Glove", category = "GloveRewarding"},
-    {id = "2124807768", name = "WHY | MEGAROCK Glove", category = "GloveRewarding"},
+    {id = "2124807768", name = "WHY | MEGAROCK + Pebble Glove", category = "GloveRewarding"},
     {id = "2124819262", name = "Infected | Plague Glove", category = "GloveRewarding"},
     {id = "2124836318", name = "Jack's will | Hallow Jack Glove", category = "GloveRewarding"},
     {id = "2124847850", name = "Evaded | [REDACTED] Glove", category = "GloveRewarding"},
@@ -4711,7 +4946,7 @@ local allBadges = {
     {id = "2130031244", name = "RNGod | RNG Glove", category = "GloveRewarding"},
     {id = "2130032297", name = "DEEP SLUMBER | fish Glove", category = "GloveRewarding"},
     {id = "2130155314", name = "🗿 | 🗿 Glove", category = "GloveRewarding"},
-    {id = "2130463063", name = "ULTRAROCK | Obby Glove", category = "GloveRewarding"},
+    {id = "2130463063", name = "ULTRAROCK | Obby + Pebble Glove", category = "GloveRewarding"},
     {id = "2132544202", name = "Insanity | Voodoo Glove", category = "GloveRewarding"},
     {id = "2133016756", name = "CHAOS | Goofy Glove", category = "GloveRewarding"},
     {id = "2136607413", name = "Demonic Ritual | Leash Glove", category = "GloveRewarding"},
@@ -4813,6 +5048,7 @@ local allBadges = {
     {id = "2886410353565684", name = "The Door In-between | Doorkeeper Glove", category = "GloveRewarding"},
     {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
     {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
+    {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
@@ -5431,7 +5667,7 @@ do
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Credits",
-    Icon = ""
+    Icon = "rbxassetid://7743875759"
 })
 
 Tab:AddSection(
@@ -5543,7 +5779,7 @@ do
 -- ============================================================
 local Tab = Window:AddTab({
     Title = "Settings",
-    Icon = ""
+    Icon = "rbxassetid://7734053495"
 })
 
 -- Section: Value Changer
@@ -5623,6 +5859,62 @@ Tab:AddButton({
             Fluent:Notify({
                 Title = "Error",
                 Content = "Please enter a valid number first!",
+                Duration = 3
+            })
+        end
+    end
+})
+
+Tab:AddButton({
+    Title = "Set Inf Slaps (1 Quintillion Max) (Visual)",
+    Callback = function()
+        game.Players.LocalPlayer.leaderstats.Slaps.Value = 1000000000000000000
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Slaps set to 1 Quintillion!",
+            Duration = 2
+        })
+    end
+})
+
+Tab:AddButton({
+    Title = "Set Inf Null Shards (Visual)",
+    Callback = function()
+        local LocalPlayer = game.Players.LocalPlayer
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+        local playerData = ReplicatedStorage:FindFirstChild("PlayerData")
+        if playerData then
+            local playerFolder = playerData:FindFirstChild(LocalPlayer.Name)
+            if playerFolder then
+                local nullShards = playerFolder:FindFirstChild("NullShards")
+                if nullShards then
+                    if nullShards:IsA("StringValue") then
+                        nullShards.Value = math.huge
+                        Fluent:Notify({
+                            Title = "Success",
+                            Content = "Null Shards set to Infinity!",
+                            Duration = 2
+                        })
+                    end
+                else
+                    Fluent:Notify({
+                        Title = "Error",
+                        Content = "NullShards not found!",
+                        Duration = 3
+                    })
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "Player folder not found!",
+                    Duration = 3
+                })
+            end
+        else
+            Fluent:Notify({
+                Title = "Error",
+                Content = "PlayerData not found!",
                 Duration = 3
             })
         end
@@ -5882,12 +6174,173 @@ Tab:AddToggle("AutoChangeNametag", {
 
 player.CharacterAdded:Connect(function(character)
     if autoNametag and nametagText ~= "" then
-        wait(2)
+        task.wait(0.01)
         local nametag = character:FindFirstChild("Head") and character.Head:FindFirstChild("Nametag")
         if nametag then
             local topLabel = nametag:FindFirstChild("Labels") and nametag.Labels:FindFirstChild("TopLabel")
             if topLabel then
                 topLabel.Text = nametagText
+            end
+        end
+    end
+end)
+
+Tab:AddButton({
+    Title = "Show/Hide Device Icon",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        
+        if not character then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local head = character:FindFirstChild("Head")
+        if not head then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Head not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local nametag = head:FindFirstChild("Nametag")
+        if not nametag then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "Nametag not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        local deviceImage = nametag:FindFirstChild("deviceImage")
+        if not deviceImage then
+            Fluent:Notify({
+                Title = "Error",
+                Content = "deviceImage not found!",
+                Duration = 3
+            })
+            return
+        end
+        
+        -- Toggle visibility
+        deviceImage.Visible = not deviceImage.Visible
+        
+        Fluent:Notify({
+            Title = "Device Icon",
+            Content = deviceImage.Visible and "Icon Shown" or "Icon Hidden",
+            Duration = 2
+        })
+    end
+})
+
+local autoHideDeviceIcon = false
+local autoHideDeviceConnection = nil
+local characterAddedConnection = nil
+
+Tab:AddToggle("AutoHideDeviceIcon", {
+    Title = "Auto Hide Device Icon",
+    Default = false,
+    Callback = function(Value)
+        autoHideDeviceIcon = Value
+        
+        if Value then
+            -- Hide current device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = false
+                        end
+                    end
+                end
+            end
+            
+            -- Connection to hide device icon when character respawns
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+            characterAddedConnection = game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+                task.wait(0.5) -- Wait for character to fully load
+                
+                if autoHideDeviceIcon then
+                    local head = character:FindFirstChild("Head")
+                    if head then
+                        local nametag = head:FindFirstChild("Nametag")
+                        if nametag then
+                            local deviceImage = nametag:FindFirstChild("deviceImage")
+                            if deviceImage then
+                                deviceImage.Visible = false
+                                print("✅ Device icon hidden on respawn")
+                            end
+                        end
+                    end
+                end
+            end)
+            
+            Fluent:Notify({
+                Title = "Auto Hide",
+                Content = "Device icon will be hidden automatically!",
+                Duration = 3
+            })
+            
+        else
+            -- Show device icon
+            local player = game.Players.LocalPlayer
+            local character = player.Character
+            if character then
+                local head = character:FindFirstChild("Head")
+                if head then
+                    local nametag = head:FindFirstChild("Nametag")
+                    if nametag then
+                        local deviceImage = nametag:FindFirstChild("deviceImage")
+                        if deviceImage then
+                            deviceImage.Visible = true
+                        end
+                    end
+                end
+            end
+            
+            if characterAddedConnection then
+                characterAddedConnection:Disconnect()
+                characterAddedConnection = nil
+            end
+            
+            Fluent:Notify({
+                Title = "Auto Hide",
+                Content = "Auto hide disabled!",
+                Duration = 2
+            })
+        end
+    end
+})
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    -- This will handle the toggle state if autoHideDeviceIcon is true
+    if autoHideDeviceIcon then
+        task.wait(0.01)
+        local head = character:FindFirstChild("Head")
+        if head then
+            local nametag = head:FindFirstChild("Nametag")
+            if nametag then
+                local deviceImage = nametag:FindFirstChild("deviceImage")
+                if deviceImage then
+                    deviceImage.Visible = false
+                end
             end
         end
     end
@@ -6132,6 +6585,7 @@ do
     local localPlayer = Players.LocalPlayer
     
     local gloveHits = {
+        -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
         ["Diamond"] = ReplicatedStorage.DiamondHit,
         ["ZZZZZZZ"] = ReplicatedStorage.ZZZZZZZHit,
@@ -6274,6 +6728,8 @@ do
         ["Roaring"] = ReplicatedStorage.GeneralHit,
         ["God's Hand"] = ReplicatedStorage.Godshand,
         ["The Flex"] = ReplicatedStorage.FlexHit,
+
+        -- Badge Gloves
         ["MEGAROCK"] = ReplicatedStorage.DiamondHit,
         ["Plague"] = ReplicatedStorage.PlagueHit,
         ["Hallow Jack"] = ReplicatedStorage.HallowHIT,
@@ -6348,7 +6804,8 @@ do
         ["Joust"] = ReplicatedStorage.GeneralHit,
         ["Firework"] = ReplicatedStorage.GeneralHit,
         ["Run"] = ReplicatedStorage.GeneralHit,
-        ["Glovel"] = ReplicatedStorage.GeneralHit,
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Normal
+        ["Glovel"] = ReplicatedStorage.GeneralHit, --Critical
         ["Divebomb"] = ReplicatedStorage.GeneralHit,
         ["Lamp"] = ReplicatedStorage.GeneralHit,
         ["Knockoff"] = ReplicatedStorage.GeneralHit,
@@ -6411,18 +6868,26 @@ do
         ["Doorkeeper"] = ReplicatedStorage.GeneralHit,
         ["Camera"] = ReplicatedStorage.GeneralHit,
         ["Grillmaster"] = ReplicatedStorage.GeneralHit,
+        ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
+
+        -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
+        
+        -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
         ["Default but Bad"] = ReplicatedStorage.dbb,
         ["Ketchup Default"] = ReplicatedStorage.b,
         ["Stick"] = ReplicatedStorage.GeneralHit,
-        ["potato"] = ReplicatedStorage.potatohit,
         ["Error"] = ReplicatedStorage.Errorhit,
+        ["potato"] = ReplicatedStorage.potatohit,
+        ["Pebble"] = ReplicatedStorage.PebbleHit,
         ["killerfish"] = ReplicatedStorage.GeneralHit,
         ["Titan"] = ReplicatedStorage.GeneralHit,
         ["Acrobat"] = ReplicatedStorage.AcHit,
+
+        -- No Hit Remote Gloves + Ignore Those Gloves
         ["Stilts"] = "",
         ["Glue"] = "",
         ["Spectator"] = "",
