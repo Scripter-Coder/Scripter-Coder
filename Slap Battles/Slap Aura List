@@ -27,6 +27,7 @@
         ["Space"] = ReplicatedStorage.HtSpace,
         ["Boomerang"] = ReplicatedStorage.BoomerangH,
         ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mutation"] = ReplicatedStorage.GeneralHit,
         ["Mail"] = ReplicatedStorage.MailHit,
         ["T H I C K"] = ReplicatedStorage.GeneralHit,
         ["Golden"] = ReplicatedStorage.GoldenHit,
