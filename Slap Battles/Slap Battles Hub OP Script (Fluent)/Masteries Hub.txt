@@ -4035,6 +4035,12 @@ Window:SelectTab(1)
         })
 
         Tab:AddParagraph({
+            Title = "Currently Disabled...",
+            Content = "for now im gonna disable engineer tab from mastery hub (yes bcz devs patched by putting sentry in safespot and not only that its only allowed to place in main area like in the center of the island and cmon who wants farm mastery while everyone can see you)? im gonna disable for some time when devs gonna fix it then ill enable it"
+        })
+
+--[[
+        Tab:AddParagraph({
             Title = "1-2-3 Quest",
             Content = ""
         })
@@ -4217,7 +4223,7 @@ Window:SelectTab(1)
                 end
             end
         })
-
+--]]
 
     end
 
@@ -12933,6 +12939,7 @@ Tab:AddButton({
         ["Space"] = ReplicatedStorage.HtSpace,
         ["Boomerang"] = ReplicatedStorage.BoomerangH,
         ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mutation"] = ReplicatedStorage.GeneralHit,
         ["Mail"] = ReplicatedStorage.MailHit,
         ["T H I C K"] = ReplicatedStorage.GeneralHit,
         ["Golden"] = ReplicatedStorage.GoldenHit,
