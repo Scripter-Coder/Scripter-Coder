@@ -894,6 +894,15 @@ loadstring(game:HttpGet('https://pastefy.app/a1hh5Z2J/raw'))()
 end
 })
 
+Tab:AddButton({
+	Name = "script • No Die/Touchey Buttons",
+	Callback = function()
+local https = "https://raw.githubusercontent";
+
+loadstring(game:HttpGet(https..'.com/dramukin-fermal/Slap-battles/refs/heads/main/proAdmingui.lua'))()
+end
+})
+
 end
 do
 Tab = Window:MakeTab({
@@ -6550,6 +6559,7 @@ do
         ["Space"] = ReplicatedStorage.HtSpace,
         ["Boomerang"] = ReplicatedStorage.BoomerangH,
         ["Speedrun"] = ReplicatedStorage.Speedrunhit,
+        ["Mutation"] = ReplicatedStorage.GeneralHit,
         ["Mail"] = ReplicatedStorage.MailHit,
         ["T H I C K"] = ReplicatedStorage.GeneralHit,
         ["Golden"] = ReplicatedStorage.GoldenHit,
