@@ -1,0 +1,645 @@
+local RunService = game:GetService("RunService")
+local cloneref = (cloneref or clonereference or function(instance)
+	return instance
+end)
+local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
+local HttpService = cloneref(game:GetService("HttpService"))
+
+local WindUI
+
+do
+	local ok, result = pcall(function()
+		return require("./src/Init")
+	end)
+
+	if ok then
+		WindUI = result
+	else
+		if cloneref(game:GetService("RunService")):IsStudio() then
+			WindUI = require(cloneref(ReplicatedStorage:WaitForChild("WindUI"):WaitForChild("Init")))
+		else
+			WindUI =
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+		end
+	end
+end
+
+-- Create Window
+local Window = WindUI:CreateWindow({
+	Title = "Pim Hub",
+	Folder = "pimhub",
+	Icon = "solar:folder-2-bold-duotone",
+	NewElements = true,
+	OpenButton = {
+		Title = "Open Pim Hub",
+		CornerRadius = UDim.new(1, 0),
+		StrokeThickness = 3,
+		Enabled = true,
+		Draggable = true,
+		OnlyMobile = false,
+		Scale = 0.5,
+		Color = ColorSequence.new(
+			Color3.fromHex("#30FF6A"),
+			Color3.fromHex("#e7ff2f")
+		),
+	},
+	Topbar = {
+		Height = 44,
+		ButtonsType = "Mac",
+	},
+})
+
+-- Check current place
+local placeId = game.PlaceId
+
+if placeId == 6403373529 then
+	-- Main Place
+	local MainTab = Window:Tab({
+		Title = "Main",
+		Icon = "solar:home-2-bold",
+		IconColor = Color3.fromHex("#83889E"),
+		IconShape = "Square",
+		Border = true,
+	})
+
+	MainTab:Button({
+		Title = "Teleport to pim place (1)",
+		Icon = "solar:square-transfer-horizontal-bold",
+		Justify = "Center",
+		Callback = function()
+			game:GetService("TeleportService"):Teleport(77963332815593)
+		end,
+	})
+
+	MainTab:Space()
+
+	MainTab:Button({
+		Title = "Teleport to pim place (2)",
+		Icon = "solar:square-transfer-horizontal-bold",
+		Justify = "Center",
+		Callback = function()
+			local Player = game.Players.LocalPlayer
+			local Character = Player.Character or Player.CharacterAdded:Wait()
+			local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			
+			HumanoidRootPart.CFrame = CFrame.new(-1209, 328, 3)
+			task.wait(0.5)
+			HumanoidRootPart.CFrame = CFrame.new(-377, 51, -14)
+			task.wait(0.5)
+			
+			local arena = workspace:FindFirstChild("Arena")
+			if arena then
+				local island5 = arena:FindFirstChild("island5")
+				if island5 then
+					for _, child in ipairs(island5:GetDescendants()) do
+						if child.Name == "Union" and child:FindFirstChild("C") then
+							local clickDetector = child.C:FindFirstChild("ClickDetector")
+							if clickDetector then
+								fireclickdetector(clickDetector)
+								print("✅ Clicked Union")
+							end
+						end
+					end
+				end
+			end
+			
+			print("runned this first")
+			task.wait(10)
+			print("runned second")
+			game:GetService("ReplicatedStorage").Event.Remotes.PortalInspect:FireServer()
+		end,
+	})
+
+elseif placeId == 77963332815593 then
+	-- Pim Place
+	local PimTab = Window:Tab({
+		Title = "Pim Scripts",
+		Icon = "solar:file-text-bold",
+		IconColor = Color3.fromHex("#257AF7"),
+		IconShape = "Square",
+		Border = true,
+	})
+
+	-- Collect All Keys Button
+	PimTab:Button({
+		Title = "Collect All Keys",
+		Icon = "solar:key-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#ECA201"),
+		Callback = function()
+			local Player = game.Players.LocalPlayer
+			local Character = Player.Character or Player.CharacterAdded:Wait()
+			local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			
+			local KEY_TYPES = {
+				"RuneKey", "SilverKey", "SeerKey", "RubyKey", "FieryKey"
+			}
+			
+			local openedChests = {}
+			local totalOpened = 0
+			local requiredChests = 5
+			
+			local function hasTargetKey(chest)
+				for _, keyType in ipairs(KEY_TYPES) do
+					if chest:GetAttribute("ItemId") == keyType then
+						return keyType
+					end
+				end
+				return nil
+			end
+			
+			local function findAllChests()
+				local chests = {}
+				for _, obj in ipairs(workspace:GetDescendants()) do
+					if obj:IsA("Model") and obj.Name == "BasicChest" then
+						table.insert(chests, obj)
+					end
+				end
+				return chests
+			end
+			
+			local function openChest(chest)
+				local keyType = hasTargetKey(chest)
+				if not keyType then return false end
+				if openedChests[keyType] then
+					print("Already opened: " .. keyType)
+					return false
+				end
+				
+				local basePart = chest:FindFirstChild("Base")
+				if not basePart then
+					warn("Chest missing 'Base' part")
+					return false
+				end
+				
+				local prompt = basePart:FindFirstChild("ProximityPrompt")
+				if not prompt then
+					warn("Chest missing ProximityPrompt")
+					return false
+				end
+				
+				HumanoidRootPart.CFrame = basePart.CFrame + Vector3.new(0, 2, 0)
+				task.wait(0.2)
+				fireproximityprompt(prompt)
+				task.wait(0.4)
+				
+				openedChests[keyType] = true
+				totalOpened = totalOpened + 1
+				print("Opened " .. keyType .. " chest! (" .. totalOpened .. "/5)")
+				return true
+			end
+			
+			local allChests = findAllChests()
+			print("Found " .. #allChests .. " BasicChests")
+			
+			for _, chest in ipairs(allChests) do
+				if totalOpened >= requiredChests then break end
+				local keyType = hasTargetKey(chest)
+				if keyType and not openedChests[keyType] then
+					openChest(chest)
+					task.wait(0.5)
+				end
+			end
+			
+			if totalOpened >= requiredChests then
+				WindUI:Notify({
+					Title = "✅ Success!",
+					Content = "Opened all 5 chests!",
+					Icon = "check",
+					Duration = 3,
+				})
+			else
+				WindUI:Notify({
+					Title = "⚠️ Incomplete",
+					Content = "Only opened " .. totalOpened .. "/5 chests",
+					Icon = "alert-triangle",
+					Duration = 3,
+				})
+			end
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Unlock Glove Button
+	PimTab:Button({
+		Title = "Unlock Glove",
+		Icon = "solar:lock-unlocked-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#10C550"),
+		Callback = function()
+			local Player = game.Players.LocalPlayer
+			local Character = Player.Character or Player.CharacterAdded:Wait()
+			local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			local Backpack = Player:WaitForChild("Backpack")
+			local Event = game:GetService("ReplicatedStorage").Remotes.KeyLockAttempt
+			
+			HumanoidRootPart.CFrame = CFrame.new(-147, 4, -128)
+			task.wait(0.1)
+			
+			local LOCK_KEYS = {
+				BlackKeyLock = "FieryKey",
+				BlueKeyLock = "SeerKey",
+				GreenKeyLock = "RuneKey",
+				PurpleKeyLock = "SilverKey",
+				RedKeyLock = "RubyKey"
+			}
+			
+			local function equipKey(keyName)
+				for _, item in ipairs(Character:GetChildren()) do
+					if item:IsA("Tool") then
+						item.Parent = Backpack
+					end
+				end
+				task.wait(0.1)
+				
+				for _, item in ipairs(Backpack:GetChildren()) do
+					if item:IsA("Tool") and item.Name == keyName then
+						item.Parent = Character
+						task.wait(0.2)
+						return true
+					end
+				end
+				return false
+			end
+			
+			local function fireKeyLock(lockName)
+				local lockModel = workspace.FinalRoom:FindFirstChild(lockName)
+				if not lockModel then
+					warn("Lock not found: " .. lockName)
+					return false
+				end
+				Event:FireServer(lockModel)
+				print("✅ Fired KeyLockAttempt for: " .. lockName)
+				return true
+			end
+			
+			local successCount = 0
+			for lockName, keyName in pairs(LOCK_KEYS) do
+				local hasKey = false
+				for _, item in ipairs(Backpack:GetChildren()) do
+					if item:IsA("Tool") and item.Name == keyName then
+						hasKey = true
+						break
+					end
+				end
+				
+				if not hasKey then
+					print("⚠️ Missing key: " .. keyName)
+					continue
+				end
+				
+				equipKey(keyName)
+				fireKeyLock(lockName)
+				successCount = successCount + 1
+				task.wait(0.3)
+			end
+			
+			WindUI:Notify({
+				Title = "✅ Unlock Attempt",
+				Content = "Processed " .. successCount .. "/5 locks",
+				Icon = "check",
+				Duration = 3,
+			})
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Claim Glove Button
+	PimTab:Button({
+		Title = "Claim Glove",
+		Icon = "solar:hand-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#7775F2"),
+		Callback = function()
+			local Player = game.Players.LocalPlayer
+			local Character = Player.Character or Player.CharacterAdded:Wait()
+			local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			
+			local teleportPosition = Vector3.new(-147, 4, -128)
+			HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+			task.wait(0.2)
+			
+			local gloveVisual = workspace:FindFirstChild("GloveVisual")
+			if not gloveVisual then
+				WindUI:Notify({
+					Title = "❌ Error",
+					Content = "GloveVisual not found!",
+					Icon = "alert-circle",
+					Duration = 3,
+				})
+				return
+			end
+			
+			local prompt = gloveVisual:FindFirstChild("ProximityPrompt")
+			if not prompt then
+				WindUI:Notify({
+					Title = "❌ Error",
+					Content = "No ProximityPrompt found!",
+					Icon = "alert-circle",
+					Duration = 3,
+				})
+				return
+			end
+			
+			local attempts = 0
+			local maxAttempts = 100
+			
+			while prompt and prompt.Parent and prompt.Enabled ~= false do
+				attempts = attempts + 1
+				if not prompt or not prompt.Parent or prompt.Enabled == false then
+					break
+				end
+				
+				pcall(function()
+					fireproximityprompt(prompt)
+					print("[" .. attempts .. "] 🔥 Fired ProximityPrompt")
+				end)
+				
+				task.wait(0.3)
+				if attempts >= maxAttempts then
+					print("⚠️ Max attempts reached")
+					break
+				end
+			end
+			
+			if not prompt or not prompt.Parent then
+				WindUI:Notify({
+					Title = "✅ Success!",
+					Content = "Glove claimed successfully!",
+					Icon = "check",
+					Duration = 3,
+				})
+			end
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Get To Pim Boss Fight Button
+	PimTab:Button({
+		Title = "Get To Pim Boss Fight",
+		Icon = "solar:flag-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#FFEF00"),
+		Callback = function()
+			local RS = game.ReplicatedStorage
+			local reveal = RS.Remotes.RevealLightSpawner
+			local startCorridor = workspace:FindFirstChild("StartCorridor")
+			
+			if not startCorridor then
+				WindUI:Notify({
+					Title = "❌ Error",
+					Content = "StartCorridor not found!",
+					Icon = "alert-circle",
+					Duration = 3,
+				})
+				return
+			end
+			
+			for _, part in ipairs(startCorridor:GetDescendants()) do
+				if part:IsA("BasePart") and part:GetAttribute("LightSpawner") then
+					local revealID = part:GetAttribute("RevealID")
+					if revealID then
+						reveal:FireServer(revealID)
+						print("✅ Fired RevealLightSpawner for: " .. part.Name)
+					end
+					task.wait(0.05)
+				end
+			end
+			
+			print("✅ All LightSpawners revealed!")
+			task.wait(0.5)
+			
+			local function slapLightOrbs()
+				local Player = game.Players.LocalPlayer
+				local Character = Player.Character or Player.CharacterAdded:Wait()
+				local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+				local Event = game:GetService("ReplicatedStorage").Remotes.SlapPest
+				
+				local lightOrbs = {}
+				for _, obj in ipairs(workspace:GetDescendants()) do
+					if obj:IsA("BasePart") and string.find(obj.Name, "LightOrb") then
+						table.insert(lightOrbs, obj)
+					end
+				end
+				
+				print("Found " .. #lightOrbs .. " LightOrb(s)")
+				
+				for i, orb in ipairs(lightOrbs) do
+					HumanoidRootPart.CFrame = CFrame.new(orb.Position + Vector3.new(0, 2, 3))
+					task.wait(0.2)
+					Event:FireServer(orb, Vector3.new(-0.5, -0.5, -0.5))
+					print("[" .. i .. "] ✅ Slapped LightOrb")
+					task.wait(0.1)
+				end
+			end
+			
+			slapLightOrbs()
+			task.wait(0.2)
+			
+			local function teleportToTrigger()
+				local Player = game.Players.LocalPlayer
+				local Character = Player.Character or Player.CharacterAdded:Wait()
+				local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+				
+				local finalRing = workspace:FindFirstChild("StartCorridor") and workspace.StartCorridor:FindFirstChild("FinalRing")
+				if not finalRing then
+					finalRing = workspace:WaitForChild("StartCorridor"):WaitForChild("FinalRing")
+				end
+				
+				local trigger = finalRing:FindFirstChild("Trigger")
+				if trigger then
+					HumanoidRootPart.CFrame = trigger.CFrame
+					print("✅ Teleported to Trigger!")
+				else
+					trigger = finalRing:WaitForChild("Trigger")
+					HumanoidRootPart.CFrame = trigger.CFrame
+					print("✅ Teleported to Trigger!")
+				end
+			end
+			
+			teleportToTrigger()
+			
+			WindUI:Notify({
+				Title = "✅ Complete!",
+				Content = "All tasks completed!",
+				Icon = "check",
+				Duration = 3,
+			})
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Run Infinite Yield Button
+	PimTab:Button({
+		Title = "Run Infinite Yield",
+		Icon = "solar:code-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#1c1c1c"),
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Auto Slap Toggle
+	local autoSlapEnabled = false
+	local autoSlapConnection = nil
+	
+	PimTab:Toggle({
+		Title = "Auto Slap (Credits to: Nexer)",
+		Desc = "Auto slaps all enemies",
+		Icon = "power",
+        Type = "Toggle",
+		Value = false,
+		Callback = function(Value)
+			autoSlapEnabled = Value
+			if autoSlapEnabled then
+				print("✅ Auto Slap Enabled")
+				
+				local fallDamage = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):FindFirstChild("ArenaFallDamage")
+				if fallDamage then
+					fallDamage:Destroy()
+				end
+				
+				autoSlapConnection = game:GetService("RunService").Heartbeat:Connect(function()
+					if not autoSlapEnabled then return end
+					
+					local Player = game.Players.LocalPlayer
+					if Player.Character and Player.Character:FindFirstChildWhichIsA("Tool") then
+						Player.Character:FindFirstChildWhichIsA("Tool"):Activate()
+					end
+					
+					if workspace:FindFirstChild("StartCorridor") and workspace.StartCorridor:FindFirstChild("FinalRing") then
+						for _, v in ipairs(workspace.StartCorridor.FinalRing:GetChildren()) do
+							if v and v:FindFirstChild("RotatingBloomingLight") then
+								local rotatingModel = v.RotatingBloomingLight:FindFirstChild("RotatingModel")
+								if rotatingModel then
+									local midPedastal = rotatingModel:FindFirstChild("MidPedastal")
+									if midPedastal then
+										local args = { midPedastal, Vector3.new(-0.5, -0.5, -0.5) }
+										game:GetService("ReplicatedStorage").Remotes.SlapPest:FireServer(unpack(args))
+									end
+								end
+							end
+						end
+					end
+					
+					if workspace:FindFirstChild("LaserEye") and workspace.LaserEye:FindFirstChild("Base") then
+						local args = { workspace.LaserEye.Base, Vector3.new(-0.5, -0.5, -0.5) }
+						game:GetService("ReplicatedStorage").Remotes.SlapPest:FireServer(unpack(args))
+					end
+					
+					if workspace:FindFirstChild("ChomperEye") and workspace.ChomperEye:FindFirstChild("Base") then
+						local args = { workspace.ChomperEye.Base, Vector3.new(-0.5, -0.5, -0.5) }
+						game:GetService("ReplicatedStorage").Remotes.SlapPest:FireServer(unpack(args))
+					end
+					
+					if workspace:FindFirstChild("LightOrb") then
+						local args = { workspace.LightOrb, Vector3.new(-0.5, -0.5, -0.5) }
+						game:GetService("ReplicatedStorage").Remotes.SlapPest:FireServer(unpack(args))
+					end
+					
+					game:GetService("ReplicatedStorage").Remotes.ManaSpend:FireServer(-math.huge)
+				end)
+			else
+				print("❌ Auto Slap Disabled")
+				if autoSlapConnection then
+					autoSlapConnection:Disconnect()
+					autoSlapConnection = nil
+				end
+			end
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Get Fast To Pim Boss Fight Button
+	PimTab:Button({
+		Title = "Get Fast To Pim Boss Fight",
+		Desc = "Required: Getting Manually To Pim Boss Fight First",
+		Icon = "solar:arrow-right-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#FFCE1B"),
+		Callback = function()
+			local skip = workspace:FindFirstChild("Skip")
+			if skip then
+				local normal = skip:FindFirstChild("Normal")
+				if normal then
+					local main = normal:FindFirstChild("Main")
+					if main and main.Transparency == 0 then
+						local Player = game.Players.LocalPlayer
+						local Character = Player.Character or Player.CharacterAdded:Wait()
+						local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+						HumanoidRootPart.CFrame = CFrame.new(-169, 4, -113)
+						task.wait(0.2)
+						fireproximityprompt(normal:FindFirstChild("ProximityPrompt"))
+						print("✅ Fast travel to Normal Mode!")
+						
+						WindUI:Notify({
+							Title = "✅ Fast Travel",
+							Content = "Teleported to Normal Mode!",
+							Icon = "check",
+							Duration = 2,
+						})
+					end
+				end
+			end
+		end,
+	})
+
+	PimTab:Space()
+
+	-- Enable Hard Mode Button
+	PimTab:Button({
+		Title = "Enable Hard Mode",
+		Desc = "Required: Beating Normal Mode First",
+		Icon = "solar:danger-bold",
+		Justify = "Center",
+		Color = Color3.fromHex("#EF4F1D"),
+		Callback = function()
+			local skip = workspace:FindFirstChild("Skip")
+			if skip then
+				local hardmode = skip:FindFirstChild("Hardmode")
+				if hardmode then
+					local main = hardmode:FindFirstChild("Main")
+					if main and main.Transparency == 0 then
+						local Player = game.Players.LocalPlayer
+						local Character = Player.Character or Player.CharacterAdded:Wait()
+						local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+						HumanoidRootPart.CFrame = CFrame.new(-176, 4, -113)
+						task.wait(0.2)
+						fireproximityprompt(hardmode:FindFirstChild("ProximityPrompt"))
+						print("✅ Hard Mode Enabled!")
+						
+						WindUI:Notify({
+							Title = "✅ Hard Mode",
+							Content = "Hard Mode Enabled!",
+							Icon = "check",
+							Duration = 2,
+						})
+					end
+				end
+			end
+		end,
+	})
+
+    	-- Give Inf Energies
+	PimTab:Button({
+		Title = "Give Inf Energies",
+		Desc = "Gives inf energy allowing u to use ability inf times",
+		Icon = "click",
+		Justify = "Center",
+		Color = Color3.fromHex("#00FFFF"),
+		Callback = function()
+game:GetService("ReplicatedStorage").Remotes.ManaSpend:FireServer(-math.huge)
+	end
+    })
+
+end
+
+Window:SetOpen(true)
