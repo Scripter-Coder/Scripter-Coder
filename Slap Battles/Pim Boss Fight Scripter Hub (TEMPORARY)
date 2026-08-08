@@ -501,11 +501,6 @@ elseif placeId == 77963332815593 then
 			if autoSlapEnabled then
 				print("✅ Auto Slap Enabled")
 				
-				local fallDamage = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):FindFirstChild("ArenaFallDamage")
-				if fallDamage then
-					fallDamage:Destroy()
-				end
-				
 				autoSlapConnection = game:GetService("RunService").Heartbeat:Connect(function()
 					if not autoSlapEnabled then return end
 					
@@ -544,7 +539,6 @@ elseif placeId == 77963332815593 then
 						game:GetService("ReplicatedStorage").Remotes.SlapPest:FireServer(unpack(args))
 					end
 					
-					game:GetService("ReplicatedStorage").Remotes.ManaSpend:FireServer(-math.huge)
 				end)
 			else
 				print("❌ Auto Slap Disabled")
