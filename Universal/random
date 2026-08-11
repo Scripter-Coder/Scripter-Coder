@@ -1,0 +1,1357 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+----------------------some IY funcs (just clipboard ig)
+function missing(t, f, fallback)
+	if type(f) == t then return f end
+	return fallback
+end
+
+local everyClipboard = missing("function", setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set))
+
+function toClipboard(txt)
+	if everyClipboard then
+		everyClipboard(tostring(txt))
+		notif("Copied to clipboard", "Clipboard")
+	else
+		notif("Your exploit doesn't have the ability to use the clipboard", "Clipboard")
+	end
+end
+
+local fSignal = missing("function", firesignal)
+
+function fireSig(signal, args:table)
+    if fSignal then
+        fSignal(signal, args)
+    else
+        notif("Your exploit doesn't have the ability to use this function.", "firesignal")
+    end
+end
+
+--------------------------------------------------------
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local UserInputService = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local PlaceId, JobId = game.PlaceId, game.JobId
+
+------------------------------------------------
+if ReplicatedStorage:FindFirstChild("DESTROYNULLGUI") then
+    ReplicatedStorage:FindFirstChild("DESTROYNULLGUI"):Destroy()
+
+    StarterGui:SetCore("SendNotification", {
+        Title = "NULL GUI PRE-EXECUTE",
+        Text = "Null GUI already executed! Destroying old GUI...",
+        Duration = 3
+    })
+    task.wait(1.5)
+end
+------------------------------------------------
+
+local plr = Players.LocalPlayer
+
+local events = ReplicatedStorage.Events
+
+local Camera = workspace.CurrentCamera
+local spawnPart = workspace.Spawn
+local items = workspace.Item_Pools
+local gifts = items.Gift
+local goldengifts = items.GoldenGift
+local passagegifts = items:FindFirstChild("PassageGift")
+local tripmines = items.Tripmine
+local goldentripmines = items:FindFirstChild("GoldTripmines")
+local enemies = workspace.Enemies
+local collectGift: RemoteEvent = events.GiftCollected
+local currentRooms = workspace.CurrentRooms
+local pads = workspace.JumpPads
+local code = ReplicatedStorage.CodeVal
+local music = ReplicatedStorage.MusicVal
+local curses = ReplicatedStorage.CurseFolder.Curses
+local gcurses = ReplicatedStorage.GreaterCurseFolder.Curses
+local enemiesFolder = ReplicatedStorage.EnemyFolder
+local upgrades = ReplicatedStorage.UpgradeFolder.Upgrades
+local beacons = workspace.Beacons
+local destroyFolder = workspace.DestroyFolder
+local bullets = items.Bullet
+local counters = ReplicatedStorage.GiftCounters
+local magnet = events.MovementGiftMagnet
+
+local tripmineprots = Instance.new("Folder")
+tripmineprots.Parent = workspace
+tripmineprots.Name = "Tripmine Protection (NULL GUI)"
+
+local bulletprots = Instance.new("Folder")
+bulletprots.Parent = workspace
+bulletprots.Name = "Guardian Bullets Protection (NULL GUI)"
+
+local beaconprotection = Instance.new("Folder")
+beaconprotection.Parent = workspace
+beaconprotection.Name = "Beacon Protection (NULL GUI)"
+
+local spawnprotection = Instance.new("Folder")
+spawnprotection.Parent = workspace
+spawnprotection.Name = "Spawn Protection (NULL GUI)"
+
+local notifOn = true
+local destroying = false
+local autoDestroyEnemies = false
+local beaconProtectionEnabled = false
+local spawnProtectionEnabled = false
+
+local tweening = false
+local canEzCollectNormal = true
+local canEzCollectGolden = true
+local canEzCollectMedal = true
+local canFullReset = true
+local canBringPad = true
+local canBringTria = true
+local canGliderBoost = false
+local canCancelTween = false
+local av = false
+local noice = false
+local noflesh = false
+local instrumentesp = false
+local pt = false
+local pb = false
+local dvi = false
+local dsm = false
+local dso = false
+local velov = false
+local nrb = false
+local nfb = false
+local gliderBoost = false
+local connections = {}
+
+local clientenemies = {
+    "Kolona",
+    "Voidbreaker",
+    "Skinwalker",
+    "Operator",
+    "Scrapmaw"
+}
+
+local tracers = {}
+local availableNormalGifts = {}
+local availableGoldenGifts = {}
+local availablePassageGifts = {}
+local newInstances = {}
+local cgb
+local mb
+
+-- Load Orion Hub from the specified URL
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Orion%20Hub%20Library'))()
+local Window = OrionLib:MakeWindow({
+    Name = "Nullscape GUI",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "NullscapeGUI"
+})
+
+function notif(text: string, title: string, dur: number)
+    OrionLib:MakeNotification({
+        Name = title or "Notification",
+        Content = text or "Forgot to add text idiot",
+        Image = "rbxassetid://4483345998",
+        Time = dur or 5
+    })
+end
+
+local mainTab = Window:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local enemyTab = Window:MakeTab({
+    Name = "Enemy",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local function safeFind(root, path)
+    local current = root
+
+    for _, name in ipairs(path) do
+        if not current then return nil end
+        current = current:FindFirstChild(name)
+    end
+
+    return current
+end
+
+local function getChar(player)
+    return player.Character or player.CharacterAdded:Wait()
+end
+
+local function getHuman(char)
+    return char:FindFirstChildOfClass("Humanoid")
+end
+
+local function getRoot(char, humanoid)
+    if not char then return nil end
+    if not humanoid then humanoid = getHuman(char) end
+    return char:FindFirstChild("HumanoidRootPart") or (humanoid and humanoid.RootPart), char:FindFirstChild("Hitbox")
+end
+
+local function isDead(target: Player? | Model?)
+    if target:IsA("Player") then
+        local char = target.Character
+        local humanoid: Humanoid = char and getHuman(char)
+        return char and (humanoid and (humanoid:GetState() == Enum.HumanoidStateType.Dead or humanoid.Health <= 0))
+            or char == nil
+    elseif target:IsA("Model") then
+        local humanoid = target and getHuman(target)
+        return humanoid and (humanoid:GetState() == Enum.HumanoidStateType.Dead or humanoid.Health <= 0)
+            or target == nil
+    else
+        return target == nil
+    end
+end
+
+-- Cache invalid position for gifts
+local INVALID_GIFT_POS = Vector3.new(100000.109, 100000.008, 99959.2891)
+local GIFT_TOLERANCE = 0.5
+
+-- Optimized gift validation
+local function isInvalidGift(gift)
+    if not gift then return false end
+    local pos = gift.Position
+    return math.abs(pos.X - INVALID_GIFT_POS.X) < GIFT_TOLERANCE and
+           math.abs(pos.Y - INVALID_GIFT_POS.Y) < GIFT_TOLERANCE and
+           math.abs(pos.Z - INVALID_GIFT_POS.Z) < GIFT_TOLERANCE
+end
+
+local function getClosestGift(giftList)
+    local char = getChar(plr)
+    local root = getRoot(char)
+    if not root then return end
+
+    local rootPos = root.Position
+    local closest, shortest = nil, math.huge
+
+    for _, gift in ipairs(giftList) do
+        if gift and gift.Transparency == 0 and gift:FindFirstChild("Collect", true) then 
+            if isInvalidGift(gift) then
+                continue
+            end
+            
+            local diff = gift.Position - rootPos
+            local dist = diff.Magnitude
+
+            if dist < shortest then
+                shortest = dist
+                closest = gift
+            end
+        end
+    end
+
+    return closest, shortest
+end
+
+local function collectInstant(which)
+    local char = getChar(plr)
+    local root, hitbox = getRoot(char)
+    if not root or not hitbox then return end
+    
+    local giftList
+    if which == "normal" then
+        giftList = gifts:GetChildren()
+    elseif which == "golden" then
+        giftList = goldengifts:GetChildren()
+    elseif which == "passage" and passagegifts then
+        giftList = passagegifts:GetChildren()
+    else
+        return
+    end
+
+    local collectedCount = 0
+    for _, gift in ipairs(giftList) do
+        if gift.Transparency == 0 and gift:FindFirstChild("Collect", true) then
+            if isInvalidGift(gift) then
+                continue
+            end
+            
+            local pos = gift.Position
+            root.Position = pos
+            hitbox.Position = pos
+            task.wait(0.1) -- Reduced from 0.2
+            collectedCount = collectedCount + 1
+        end
+    end
+    
+    if notifOn then
+        notif("Collected " .. collectedCount .. " " .. which .. " gifts!", "Success")
+    end
+end
+
+-- Cache for tripmine protection
+local tripmineProtectionCache = {}
+
+local function protectTripmine(trip)
+    if not trip or trip.Transparency == 1 then return end
+    
+    if not trip:GetAttribute("uuid") then
+        trip:SetAttribute("uuid", HttpService:GenerateGUID(false))
+    end
+
+    local id = trip:GetAttribute("uuid")
+
+    if tripmineProtectionCache[id] then return end
+
+    local startPos = trip.Position
+
+    local p = Instance.new("Part")
+    p.Name = id
+    p.Shape = Enum.PartType.Ball
+    p.Size = Vector3.new(15, 15, 15)
+    p.Position = startPos
+    p.Anchored = true
+    p.CanCollide = true
+    p.Transparency = 0.5
+    p.BrickColor = BrickColor.new("Bright red")
+    p.Material = Enum.Material.Neon
+    p.Parent = tripmineprots
+    
+    tripmineProtectionCache[id] = p
+
+    trip:GetPropertyChangedSignal("Transparency"):Once(function()
+        tripmineProtectionCache[id] = nil
+        p:Destroy()
+    end)
+end
+
+local function getActiveTripmines()
+    local active = {}
+    
+    if tripmines then
+        for _, mine in ipairs(tripmines:GetChildren()) do
+            if mine and mine:IsA("BasePart") and mine.Transparency ~= 1 then
+                table.insert(active, mine)
+            end
+        end
+    end
+    
+    if goldentripmines then
+        for _, mine in ipairs(goldentripmines:GetChildren()) do
+            if mine and mine:IsA("BasePart") and mine.Transparency ~= 1 then
+                table.insert(active, mine)
+            end
+        end
+    end
+    
+    return active
+end
+
+-- Optimized function to get enemies once per frame
+local function getEnemiesList()
+    local enemyList = {}
+    for _, enemy in ipairs(enemies:GetChildren()) do
+        table.insert(enemyList, enemy)
+    end
+    return enemyList
+end
+
+-- Simplified disableEnemy with less overhead
+local function disableEnemy(enemyName, willDestroy, willBreakAI, failNotif)
+    if failNotif == nil then failNotif = true end
+    if willBreakAI == nil then willBreakAI = false end
+
+    local function destroyEnemy(name)
+        local count = 0
+        for _, enemy in ipairs(enemies:GetChildren()) do
+            if enemy.Name == name then
+                enemy:Destroy()
+                count = count + 1
+            end
+        end
+        if notifOn then
+            notif(name.." disabled. (destroyed)", "Enemy")
+        end
+        return count > 0
+    end
+
+    -- Special case for Skinwalker
+    if enemyName == "Skinwalker" then
+        local skinwalkers = workspace.Skinwalkers
+        local count = 0
+        for _, sw in ipairs(skinwalkers:GetChildren()) do
+            sw:Destroy()
+            count = count + 1
+        end
+        if count > 0 then
+            notif("Destroyed " .. count .. " Husk(s)", "Enemy")
+            return true
+        end
+        return false
+    end
+
+    if willDestroy then
+        return destroyEnemy(enemyName)
+    end
+
+    local count = 0
+    local total = 0
+    
+    for _, enemy in ipairs(enemies:GetChildren()) do
+        if enemy.Name == enemyName then
+            total = total + 1
+            local disabled = false
+            
+            -- Try to find and destroy touch interests
+            for _, part in ipairs(enemy:GetDescendants()) do
+                if part.Name == "TouchInterest" or part.Name == "Kill" then
+                    part:Destroy()
+                    disabled = true
+                end
+            end
+            
+            if disabled then
+                enemy:SetAttribute("Disabled", true)
+                count = count + 1
+            end
+        end
+    end
+
+    if total > 0 and count >= total then
+        if notifOn then
+            notif(tostring(count).." "..enemyName.."(s) disabled.", "Enemy")
+        end
+        return true
+    else
+        if failNotif and notifOn then
+            notif(enemyName.." cannot be fully disabled yet.", "Enemy")
+        end
+        return false
+    end
+end
+
+-- Optimized destroy all enemies
+local function destroyAllEnemies()
+    local count = 0
+    for _, enemy in ipairs(enemies:GetChildren()) do
+        enemy:Destroy()
+        count = count + 1
+    end
+    if notifOn then
+        notif("Destroyed " .. count .. " enemies!", "Success")
+    end
+end
+
+-- Optimized auto destroy enemies loop
+task.spawn(function()
+    while true do
+        if autoDestroyEnemies then
+            local count = 0
+            for _, enemy in ipairs(enemies:GetChildren()) do
+                enemy:Destroy()
+                count = count + 1
+            end
+            if count > 0 and notifOn then
+                notif("Destroyed " .. count .. " enemies!", "Auto Destroy")
+            end
+        end
+        task.wait(1) -- Reduced frequency from 0.5 to 1
+    end
+end)
+
+-- Optimized spawn protection
+local function protectSpawn()
+    if not spawnProtectionEnabled or not spawnPart then return end
+    
+    -- Check if spawn is at default position
+    local defaultPos = Vector3.new(0, 48.5, 0)
+    local currentPos = spawnPart.Position
+    local tolerance = 1.0
+    
+    local isDefaultPosition = math.abs(currentPos.X - defaultPos.X) < tolerance and
+                              math.abs(currentPos.Y - defaultPos.Y) < tolerance and
+                              math.abs(currentPos.Z - defaultPos.Z) < tolerance
+    
+    if isDefaultPosition then
+        spawnprotection:ClearAllChildren()
+        return
+    end
+    
+    -- Only create protection if it doesn't exist
+    if #spawnprotection:GetChildren() == 0 then
+        local spawnPos = spawnPart.Position
+        local protectionSize = Vector3.new(25, 25, 25)
+        
+        local part = Instance.new("Part")
+        part.Size = protectionSize
+        part.Position = spawnPos + Vector3.new(0, 12.5, 0)
+        part.Anchored = true
+        part.CanCollide = true
+        part.CanTouch = false
+        part.Transparency = 0.5
+        part.BrickColor = BrickColor.new("Bright blue")
+        part.Material = Enum.Material.Neon
+        part.Parent = spawnprotection
+        
+        if notifOn then
+            notif("Spawn protected!", "Spawn Protection")
+        end
+    end
+end
+
+-- Optimized beacon protection
+local function protectBeacon()
+    if not beaconProtectionEnabled then return end
+    
+    local beacon = beacons:FindFirstChild("Medal") or beacons:FindFirstChild("Beacon")
+    if not beacon then
+        if notifOn then
+            notif("No beacon found!", "Beacon Protection")
+        end
+        return
+    end
+    
+    -- Only create protection if it doesn't exist
+    if #beaconprotection:GetChildren() == 0 then
+        local beaconPos = beacon.Position
+        local protectionSize = Vector3.new(25, 25, 25)
+        
+        -- Create a single large part instead of many small ones
+        local part = Instance.new("Part")
+        part.Size = protectionSize
+        part.Position = beaconPos + Vector3.new(0, 12.5, 0)
+        part.Anchored = true
+        part.CanCollide = true
+        part.CanTouch = false
+        part.Transparency = 0.3
+        part.BrickColor = BrickColor.new("Bright blue")
+        part.Material = Enum.Material.Neon
+        part.Parent = beaconprotection
+        
+        if notifOn then
+            notif("Beacon protected!", "Beacon Protection")
+        end
+    end
+end
+
+-- Add this to your mainTab
+mainTab:AddButton({
+    Name = "Teleport To Random Altar",
+    Callback = function()
+        local altars = {}
+        for _, p in workspace.CurrentRooms:GetDescendants() do
+            if p.Name == "Prompt" and p:IsA("ProximityPrompt") and p.Enabled == true then
+                local altarModel = p.Parent
+                if altarModel:GetAttribute("Name") ~= "Protection" then
+                    table.insert(altars, altarModel)
+                end
+            end
+        end
+        
+        if #altars == 0 then
+            notif("No enabled altars found!", "Altar Teleport")
+            return
+        end
+        
+        local randomAltar = altars[math.random(1, #altars)]
+        local char = getChar(plr)
+        local root = getRoot(char)
+        if root then
+            local pos = randomAltar.CFrame + randomAltar.CFrame.LookVector * -3
+            root.CFrame = pos
+            local _, hitbox = getRoot(char)
+            if hitbox then
+                hitbox.CFrame = pos
+            end
+            notif("Teleported to random altar!", "Altar Teleport")
+        end
+    end
+})
+
+-- Guardian bullet protection (optimized)
+local bulletProtectionCache = {}
+
+local function protectBullet(b)
+    if not b or b.Transparency == 1 then return end
+    
+    if not b:GetAttribute("uuid") then
+        b:SetAttribute("uuid", HttpService:GenerateGUID(false))
+    end
+
+    local id = b:GetAttribute("uuid")
+
+    if bulletProtectionCache[id] then return end
+
+    local sizeoffset = b.Size.X + 5
+
+    local p = Instance.new("Part")
+    p.Name = id
+    p.Shape = Enum.PartType.Ball
+    p.Size = Vector3.new(sizeoffset, sizeoffset, sizeoffset)
+    p.Position = b.Position
+    p.Anchored = true
+    p.CanCollide = false
+    p.CanTouch = false
+    p.CanQuery = false
+    p.Transparency = 0.35
+    p.Parent = bulletprots
+    
+    bulletProtectionCache[id] = p
+
+    b:GetPropertyChangedSignal("Transparency"):Once(function()
+        bulletProtectionCache[id] = nil
+        p:Destroy()
+    end)
+end
+
+local function isdirectionsafetopushfromguardianbullet(pos, direction)
+    local rayParams = RaycastParams.new()
+    rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+    rayParams.FilterDescendantsInstances = {plr.Character}
+
+    local result = workspace:Raycast(pos, direction * 6, rayParams)
+    return result ~= nil and result.Instance and result.Instance.CanCollide == true
+end
+
+-- Optimized render step for protections
+RunService:BindToRenderStep("GuardianProtection", Enum.RenderPriority.Last.Value + 1, function()
+    if isDead(plr) then return end
+
+    local char = getChar(plr)
+    local root = getRoot(char)
+    if not char or not root then return end
+
+    if pb and root then
+        -- Get bullets once
+        local bulletList = bullets:GetChildren()
+        local rootPos = root.Position
+        
+        for _, b in ipairs(bulletList) do
+            if b.Transparency ~= 1 then
+                protectBullet(b)
+
+                local uuid = b:GetAttribute("uuid")
+                if uuid then
+                    local p = bulletProtectionCache[uuid]
+                    if p then
+                        p.Position = b.Position
+                    end
+                end
+            end
+        end
+
+        for _, p in ipairs(bulletProtectionCache) do
+            if p then
+                local offset = rootPos - p.Position
+                local dist = offset.Magnitude
+                local radius = p.Size.X / 2
+                local pushDir = offset.Unit
+
+                if dist < radius and isdirectionsafetopushfromguardianbullet(rootPos, pushDir) then
+                    root.CFrame += pushDir * 3
+                elseif dist < radius then
+                    local altDir = Vector3.new(-pushDir.Z, 0, pushDir.X)
+
+                    if isdirectionsafetopushfromguardianbullet(rootPos, altDir) then
+                        root.CFrame += altDir * 3
+                    else
+                        root.Position = p.Position + Vector3.new(0, 10, 0)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+mainTab:AddButton({
+    Name = "Auto Set Gifts Magnet 100",
+    Callback = function()
+        task.spawn(function()
+            while true do
+                magnet:Fire({Add = 100})
+                task.wait(0.3) -- Reduced frequency from 0.1 to 0.3
+            end
+        end)
+    end
+})
+
+mainTab:AddButton({
+    Name = "Teleport To Spawn",
+    Callback = function()
+        local char = getChar(plr)
+        local root = getRoot(char)
+        if root then
+            root.CFrame = spawnPart.CFrame + Vector3.new(0, 4, 0)
+            local _, hitbox = getRoot(char)
+            if hitbox then
+                hitbox.CFrame = root.CFrame
+            end
+        end
+    end
+})
+
+mainTab:AddButton({
+    Name = "Protect Beacon Now",
+    Callback = function()
+        protectBeacon()
+    end
+})
+
+---------- BUTTONS ----------
+mainTab:AddButton({
+    Name = "Instant Collect All Normal Gifts",
+    Callback = function()
+        collectInstant("normal")
+    end
+})
+
+mainTab:AddButton({
+    Name = "Instant Collect All Golden Gifts",
+    Callback = function()
+        collectInstant("golden")
+    end
+})
+
+if passagegifts then
+    mainTab:AddButton({
+        Name = "Instant Collect All Passage Gifts",
+        Callback = function()
+            collectInstant("passage")
+        end
+    })
+end
+
+-- Auto collect variables
+local autoCollectGifts = false
+local autoCollectRunning = false
+local collectedCount = 0
+local collectionLabel = mainTab:AddLabel("Gifts Collected: 0")
+
+-- Optimized F key press
+local function pressFKey()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.F, false, game)
+    task.wait(0.03)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.F, false, game)
+end
+
+-- Optimized bullet detection
+local function isBulletNear(root, dangerDistance)
+    dangerDistance = dangerDistance or 40
+    local rootPos = root.Position
+    
+    for _, bullet in ipairs(bullets:GetChildren()) do
+        if bullet and bullet:IsA("BasePart") and bullet.Transparency ~= 1 then
+            local dist = (rootPos - bullet.Position).Magnitude
+            if dist < dangerDistance then
+                return true, bullet, dist
+            end
+        end
+    end
+    return false, nil, nil
+end
+
+-- Optimized escape from bullet
+local function escapeFromBullet(root, hitbox, bullet)
+    if not root or not bullet then return end
+    
+    local pushDir = (root.Position - bullet.Position).Unit
+    if pushDir.Magnitude > 0 then
+        local escapePos = root.Position + pushDir * 40 + Vector3.new(0, 12, 0)
+        root.Position = escapePos
+        if hitbox then
+            hitbox.Position = escapePos
+        end
+    end
+end
+
+-- Optimized gift collection
+local function getAllValidGifts()
+    local validGifts = {}
+    
+    -- Check all gift types in one loop
+    local allGiftParents = {gifts, goldengifts}
+    if passagegifts then table.insert(allGiftParents, passagegifts) end
+    
+    for _, parent in ipairs(allGiftParents) do
+        for _, gift in ipairs(parent:GetChildren()) do
+            if gift and gift:IsA("BasePart") and gift.Transparency == 0 and gift:FindFirstChild("Collect", true) then
+                if not isInvalidGift(gift) then
+                    table.insert(validGifts, gift)
+                end
+            end
+        end
+    end
+    
+    return validGifts
+end
+
+local function updateCollectionLabel()
+    collectionLabel:Set("Gifts Collected: " .. collectedCount)
+end
+
+local lobbySlots = {
+    Vector3.new(1, 54, -10),
+    Vector3.new(7, 54, -8)
+}
+local currentSlotIndex = 1
+
+mainTab:AddToggle({
+    Name = "Auto Collect All Gifts (Teleport)",
+    Default = false,
+    Callback = function(Value)
+        autoCollectGifts = Value
+        if Value then
+            collectedCount = 0
+            currentSlotIndex = 1
+            updateCollectionLabel()
+            
+            task.spawn(function()
+                autoCollectRunning = true
+                local wasInRound = false
+                local noGiftTimer = 0
+                local isEscaping = false
+                local escapeTimer = 0
+                
+                while autoCollectGifts and autoCollectRunning do
+                    local inRound = ReplicatedStorage:FindFirstChild("InRound")
+                    local isInRound = inRound and inRound.Value == true
+                    
+                    if not isInRound then
+                        if not wasInRound then
+                            wasInRound = false
+                            currentSlotIndex = 1
+                        end
+                        
+                        local char = getChar(plr)
+                        if char then
+                            local root, hitbox = getRoot(char)
+                            if root then
+                                local targetPos = lobbySlots[currentSlotIndex]
+                                root.Position = targetPos
+                                if hitbox then
+                                    hitbox.Position = targetPos
+                                end
+                                pressFKey()
+                                currentSlotIndex = currentSlotIndex % #lobbySlots + 1
+                            end
+                        end
+                        task.wait(0.2)
+                        continue
+                    end
+                    
+                    wasInRound = true
+                    
+                    local char = getChar(plr)
+                    if not char then
+                        task.wait(0.1)
+                        continue
+                    end
+                    
+                    local root, hitbox = getRoot(char)
+                    if not root then
+                        task.wait(0.1)
+                        continue
+                    end
+                    
+                    -- Check for nearby bullets
+                    local bulletNear, nearBullet = isBulletNear(root, 30)
+                    
+                    if bulletNear and not isEscaping then
+                        isEscaping = true
+                        escapeTimer = 0
+                    end
+                    
+                    if isEscaping then
+                        escapeFromBullet(root, hitbox, nearBullet)
+                        escapeTimer = escapeTimer + 0.1
+                        
+                        if escapeTimer >= 1.5 then
+                            local stillNear, _ = isBulletNear(root, 30)
+                            if not stillNear then
+                                isEscaping = false
+                            else
+                                escapeTimer = 0
+                            end
+                        end
+                        task.wait(0.1)
+                        continue
+                    end
+                    
+                    -- Get all valid gifts
+                    local validGifts = getAllValidGifts()
+                    
+                    -- 🔥 FILTER OUT gifts near spawn area (beacon area)
+                    local filteredGifts = {}
+                    local spawnPos = spawnPart and spawnPart.Position or Vector3.new(0, 48.5, 0)
+                    local SAFE_DISTANCE = 3 -- Minimum distance from spawn to consider a gift valid
+                    
+                    for _, gift in ipairs(validGifts) do
+                        -- Check distance from spawn
+                        local distToSpawn = (gift.Position - spawnPos).Magnitude
+                        -- Also check if it's near the beacon (Beacons folder)
+                        local isNearBeacon = false
+                        if beacons then
+                            for _, beacon in ipairs(beacons:GetChildren()) do
+                                if beacon:IsA("BasePart") then
+                                    local distToBeacon = (gift.Position - beacon.Position).Magnitude
+                                    if distToBeacon < 30 then
+                                        isNearBeacon = true
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                        
+                        -- Only include gifts that are far from spawn AND not near beacon
+                        if distToSpawn > SAFE_DISTANCE and not isNearBeacon then
+                            table.insert(filteredGifts, gift)
+                        end
+                    end
+                    
+                    -- If no filtered gifts, use all gifts as fallback (but still check spawn distance)
+                    if #filteredGifts == 0 then
+                        -- Fallback: just exclude gifts that are REALLY close to spawn
+                        for _, gift in ipairs(validGifts) do
+                            local distToSpawn = (gift.Position - spawnPos).Magnitude
+                            if distToSpawn > 3 then -- Minimum safety distance
+                                table.insert(filteredGifts, gift)
+                            end
+                        end
+                    end
+                    
+                    -- If STILL no gifts, use all but warn
+                    if #filteredGifts == 0 then
+                        filteredGifts = validGifts
+                        if notifOn then
+                            notif("⚠️ No safe gifts found! Using all gifts (may teleport to spawn)", "Warning")
+                        end
+                    end
+                    
+                    if #filteredGifts > 0 then
+                        noGiftTimer = 0
+                        local randomGift = filteredGifts[math.random(1, #filteredGifts)]
+                        
+                        -- Teleport to gift position with height offset
+                        local heightOffset = math.random(5, 10) -- Slight height to avoid getting stuck
+                        local pos = randomGift.Position + Vector3.new(0, heightOffset, 0)
+                        root.Position = pos
+                        if hitbox then
+                            hitbox.Position = pos
+                        end
+                        
+                        collectedCount = collectedCount + 1
+                        updateCollectionLabel()
+                        task.wait(0.1)
+                    else
+                        noGiftTimer = noGiftTimer + 0.1
+                        if noGiftTimer >= 1.0 and spawnPart then
+                            -- Only teleport to spawn if we really have to
+                            root.Position = spawnPart.Position + Vector3.new(0, 5, 0)
+                            if hitbox then
+                                hitbox.Position = root.Position
+                            end
+                            noGiftTimer = 0
+                            task.wait(1)
+                        end
+                        task.wait(0.1)
+                    end
+                end
+            end)
+        else
+            autoCollectRunning = false
+        end
+    end
+})
+
+local antiVoidEnabled = false
+local antiVoidMethod = 1
+local launchPower = 500
+
+mainTab:AddToggle({
+    Name = "Anti Void",
+    CurrentValue = false,
+    Callback = function(Value)
+        antiVoidEnabled = Value
+    end
+})
+
+mainTab:AddDropdown({
+    Name = "Anti Void Method",
+    Options = {
+        "1. Teleport to Spawn",
+        "2. Launch Up",
+        "3. Closest Gift"
+    },
+    Default = "1. Teleport to Spawn",
+    Callback = function(Value)
+        antiVoidMethod = tonumber(string.split(Value, ".")[1])
+    end
+})
+
+mainTab:AddSlider({
+    Name = "Launch Power",
+    Min = 10,
+    Max = 1000,
+    Increment = 10,
+    Default = 500,
+    Callback = function(Value)
+        launchPower = Value
+    end
+})
+
+-- Optimized anti-void loop
+task.spawn(function()
+    while true do
+        if antiVoidEnabled then
+            local char = getChar(plr)
+            local root, hitbox = getRoot(char)
+            
+            if root and hitbox then
+                local killVoid = workspace:FindFirstChild("KillVoid")
+                if killVoid and root.Position.Y <= killVoid.Position.Y + 75 then
+                    if antiVoidMethod == 1 and spawnPart then
+                        root.Position = spawnPart.Position + Vector3.new(0, 4, 0)
+                        hitbox.Position = root.Position
+                    elseif antiVoidMethod == 2 then
+                        root.AssemblyLinearVelocity = Vector3.new(root.AssemblyLinearVelocity.X, launchPower, root.AssemblyLinearVelocity.Z)
+                    elseif antiVoidMethod == 3 then
+                        local allGifts = getAllValidGifts()
+                        if #allGifts > 0 then
+                            local closest, shortest = nil, math.huge
+                            for _, gift in ipairs(allGifts) do
+                                local dist = (root.Position - gift.Position).Magnitude
+                                if dist < shortest then
+                                    shortest = dist
+                                    closest = gift
+                                end
+                            end
+                            if closest then
+                                root.Position = closest.Position + Vector3.new(0, 6, 0)
+                                hitbox.Position = root.Position
+                            end
+                        elseif spawnPart then
+                            root.Position = spawnPart.Position + Vector3.new(0, 4, 0)
+                            hitbox.Position = root.Position
+                        end
+                    end
+                end
+            end
+        end
+        task.wait(0.3) -- Reduced frequency from 0.1 to 0.3
+    end
+end)
+
+local antiGuardian = false
+
+mainTab:AddToggle({
+    Name = "Anti Guardian / Voidbound Guardian",
+    Default = false,
+    Callback = function(Value)
+        antiGuardian = Value
+    end
+})
+
+-- Optimized anti-guardian loop
+task.spawn(function()
+    while true do
+        if antiGuardian then
+            local char = getChar(plr)
+            local root = getRoot(char)
+            if char and root then
+                local enemyList = enemies:GetChildren()
+                local rootPos = root.Position
+                
+                for _, enemy in ipairs(enemyList) do
+                    if enemy.Name == "Guardian" or enemy.Name == "Voidbound Guardian" then
+                        local enemyRoot = enemy:FindFirstChild("HumanoidRootPart")
+                        if enemyRoot then
+                            local dist = (rootPos - enemyRoot.Position).Magnitude
+                            if dist < 20 then
+                                local pushDir = (rootPos - enemyRoot.Position).Unit
+                                if pushDir.Magnitude > 0 then
+                                    root.Position = rootPos + pushDir * 3
+                                    local _, hitbox = getRoot(char)
+                                    if hitbox then
+                                        hitbox.Position = root.Position
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                
+                -- Check guardian bullets
+                for _, bullet in ipairs(bullets:GetChildren()) do
+                    if bullet and bullet:IsA("BasePart") and bullet.Transparency ~= 1 and 
+                       (bullet.Name == "Guardian" or string.find(bullet.Name, "Guardian")) then
+                        local dist = (rootPos - bullet.Position).Magnitude
+                        if dist < 10 then
+                            local pushDir = (rootPos - bullet.Position).Unit
+                            if pushDir.Magnitude > 0 then
+                                root.Position = rootPos + pushDir * 40
+                                local _, hitbox = getRoot(char)
+                                if hitbox then
+                                    hitbox.Position = root.Position
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        task.wait(0.2) -- Reduced frequency
+    end
+end)
+
+local autoDestroyFakeBeacons = false
+
+mainTab:AddToggle({
+    Name = "Auto Destroy Fake Beacons",
+    CurrentValue = false,
+    Callback = function(Value)
+        autoDestroyFakeBeacons = Value
+    end
+})
+
+-- Optimized fake beacon destroyer
+task.spawn(function()
+    while true do
+        if autoDestroyFakeBeacons and beacons then
+            local count = 0
+            for _, b in ipairs(beacons:GetChildren()) do
+                if b.Name == "BeaconMirage" then
+                    b:Destroy()
+                    count = count + 1
+                end
+            end
+            if count > 0 and notifOn then
+                notif("Destroyed " .. count .. " fake beacon(s)!", "Beacons")
+            end
+        end
+        task.wait(0.5)
+    end
+end)
+
+local antiRazorbloom = false
+
+mainTab:AddToggle({
+    Name = "Anti Razorbloom",
+    CurrentValue = false,
+    Callback = function(Value)
+        antiRazorbloom = Value
+    end
+})
+
+-- Optimized razorbloom destroyer
+task.spawn(function()
+    while true do
+        if antiRazorbloom then
+            local char = getChar(plr)
+            if char then
+                local rb = char:FindFirstChild("Razorbloom")
+                if rb then
+                    rb:Destroy()
+                end
+            end
+        end
+        task.wait(0.2) -- Reduced from 0.1
+    end
+end)
+
+-- Tripmine toggle
+mainTab:AddToggle({
+    Name = "Anti Tripmines",
+    Default = false,
+    Callback = function(Value)
+        pt = Value
+        if not Value then
+            tripmineprots:ClearAllChildren()
+            tripmineProtectionCache = {}
+        end
+    end
+})
+
+-- Optimized tripmine protection loop
+task.spawn(function()
+    while true do
+        if pt then
+            local activeTripmines = getActiveTripmines()
+            local currentIds = {}
+            
+            for _, trip in ipairs(activeTripmines) do
+                if trip and trip.Transparency ~= 1 then
+                    protectTripmine(trip)
+                    
+                    local uuid = trip:GetAttribute("uuid")
+                    if uuid then
+                        currentIds[uuid] = true
+                        local p = tripmineProtectionCache[uuid]
+                        if p then
+                            p.Position = trip.Position
+                        end
+                    end
+                end
+            end
+            
+            -- Cleanup old protections
+            for id, p in pairs(tripmineProtectionCache) do
+                if not currentIds[id] then
+                    tripmineProtectionCache[id] = nil
+                    p:Destroy()
+                end
+            end
+        end
+        task.wait(0.2) -- Reduced from 0.1
+    end
+end)
+
+-- Optimized render step for tripmine pushing
+RunService:BindToRenderStep("Hazard", Enum.RenderPriority.Last.Value + 2, function()
+    if not pt or isDead(plr) then return end
+
+    local char = getChar(plr)
+    local root = getRoot(char)
+    if not char or not root then return end
+
+    local rootPos = root.Position
+    
+    for id, p in pairs(tripmineProtectionCache) do
+        if p then
+            local dist = (rootPos - p.Position).Magnitude
+            if dist < 8 then
+                local pushDir = (rootPos - p.Position).Unit
+                root.Position = rootPos + pushDir * 5
+                local _, hitbox = getRoot(char)
+                if hitbox then
+                    hitbox.Position = root.Position
+                end
+                rootPos = root.Position -- Update position for next checks
+            end
+        end
+    end
+end)
+
+mainTab:AddToggle({
+    Name = "Anti Seamines",
+    Default = false,
+    Callback = function(Value)
+        dsm = Value
+    end
+})
+
+mainTab:AddToggle({
+    Name = "Beacon Protection",
+    Default = false,
+    Callback = function(Value)
+        beaconProtectionEnabled = Value
+        if Value then
+            protectBeacon()
+            task.spawn(function()
+                while true do
+                    if not beaconProtectionEnabled then break end
+                    task.wait(5) -- Reduced from 3 to 5
+                    if beaconProtectionEnabled then
+                        protectBeacon()
+                    end
+                end
+            end)
+        else
+            beaconprotection:ClearAllChildren()
+        end
+    end
+})
+
+mainTab:AddToggle({
+    Name = "Spawn Protection",
+    Default = false,
+    Callback = function(Value)
+        spawnProtectionEnabled = Value
+        if Value then
+            protectSpawn()
+            task.spawn(function()
+                while true do
+                    if not spawnProtectionEnabled then break end
+                    task.wait(5) -- Reduced from 3 to 5
+                    if spawnProtectionEnabled then
+                        protectSpawn()
+                    end
+                end
+            end)
+        else
+            spawnprotection:ClearAllChildren()
+        end
+    end
+})
+
+enemyTab:AddToggle({
+    Name = "Auto Destroy All Enemies",
+    Default = false,
+    Callback = function(Value)
+        autoDestroyEnemies = Value
+    end
+})
+
+---------- LOOP FOR SEAMINES ----------
+task.spawn(function()
+    while true do
+        if dsm then
+            for _, descendant in ipairs(pads:GetDescendants()) do
+                if descendant:IsA("BasePart") and string.find(string.lower(descendant.Name), "seamine") and descendant.CanTouch then
+                    descendant.CanTouch = false
+                end
+            end
+        end
+        task.wait(0.5) -- Reduced from 0.1 to 0.5
+    end
+end)
+
+---------- DESTROY GUI ----------
+function destroyGui()
+    if destroying then return end
+
+    destroying = true
+    notif("Destroying...", "Nullscape GUI:")
+
+    RunService:UnbindFromRenderStep("Hazard")
+    RunService:UnbindFromRenderStep("GuardianProtection")
+
+    tripmineprots:Destroy()
+    bulletprots:Destroy()
+    beaconprotection:Destroy()
+    spawnprotection:Destroy()
+    tripmineProtectionCache = {}
+    bulletProtectionCache = {}
+
+    for _, c in connections do
+        c:Disconnect()
+    end
+    connections = nil
+
+    for _, i in newInstances do
+        i:Destroy()
+    end
+    newInstances = nil
+
+    autoDestroyEnemies = false
+    beaconProtectionEnabled = false
+    spawnProtectionEnabled = false
+    pt = false
+    pb = false
+    gliderBoost = false
+    autoDestroyFakeBeacons = false
+    antiRazorbloom = false
+    antiVoidEnabled = false
+    antiGuardian = false
+    dsm = false
+
+    OrionLib:Destroy()
+end
+
+---------- INIT ----------
+local thepartthatdestroystheguiifthepartisdestroyed = Instance.new("Part")
+thepartthatdestroystheguiifthepartisdestroyed.Name = "DESTROYNULLGUI"
+thepartthatdestroystheguiifthepartisdestroyed.Parent = ReplicatedStorage
+
+thepartthatdestroystheguiifthepartisdestroyed.Destroying:Once(destroyGui)
+
+notif("Null GUI Executed", "Null GUI")
