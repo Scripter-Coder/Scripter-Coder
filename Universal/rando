@@ -790,10 +790,10 @@ mainTab:AddToggle({
                 local isEscaping = false
                 local escapeTimer = 0
                 local lastTeleportTime = 0
-                local TELEPORT_COOLDOWN = 0.05 -- 🔥 0.05 second cooldown between teleports
+                local TELEPORT_COOLDOWN = 0.05
                 
                 while autoCollectGifts and autoCollectRunning do
-                    task.wait(0.01) -- Small delay to prevent freezing
+                    task.wait(0.01)
                     
                     local inRound = ReplicatedStorage:FindFirstChild("InRound")
                     local isInRound = inRound and inRound.Value == true
@@ -835,7 +835,6 @@ mainTab:AddToggle({
                         continue
                     end
                     
-                    -- 🔥 COOLDOWN CHECK - Wait 0.05 seconds between teleports
                     local currentTime = tick()
                     if currentTime - lastTeleportTime < TELEPORT_COOLDOWN then
                         task.wait(0.01)
@@ -866,24 +865,19 @@ mainTab:AddToggle({
                         continue
                     end
                     
-                    -- 🔥 GET GIFTS WITH 0.5 SECOND TIMER
+                    -- Get gifts with 0.5 second timer
                     local startTime = tick()
                     local validGifts = {}
-                    local giftFetchAttempts = 0
                     
-                    -- Keep trying to get gifts for up to 0.5 seconds
                     while tick() - startTime < 0.5 do
                         validGifts = getAllValidGifts()
                         if #validGifts > 0 then
-                            break -- Found gifts, exit the loop
+                            break
                         end
-                        giftFetchAttempts = giftFetchAttempts + 1
-                        task.wait(0.05) -- Small wait between attempts
+                        task.wait(0.05)
                     end
                     
-                    -- 🔥 If still no gifts after 0.5 seconds, try fallback
                     if #validGifts == 0 then
-                        -- Last resort: try to get any gift without filtering
                         validGifts = getAllValidGifts()
                     end
                     
@@ -913,7 +907,6 @@ mainTab:AddToggle({
                         end
                     end
                     
-                    -- Fallback if no filtered gifts
                     if #filteredGifts == 0 then
                         for _, gift in ipairs(validGifts) do
                             local distToSpawn = (gift.Position - spawnPos).Magnitude
@@ -923,7 +916,6 @@ mainTab:AddToggle({
                         end
                     end
                     
-                    -- If STILL no gifts, use all but warn
                     if #filteredGifts == 0 then
                         filteredGifts = validGifts
                         if notifOn then
@@ -935,30 +927,26 @@ mainTab:AddToggle({
                         noGiftTimer = 0
                         local randomGift = filteredGifts[math.random(1, #filteredGifts)]
                         
-                        -- Teleport to gift position with height offset
-                        local heightOffset = math.random(5, 10)
-                        local pos = randomGift.Position + Vector3.new(0, heightOffset, 0)
+                        -- 🔥 TELEPORT DIRECTLY TO GIFT (no height offset)
+                        local pos = randomGift.Position
                         
-                        -- Perform teleport
                         root.Position = pos
                         if hitbox then
                             hitbox.Position = pos
                         end
                         
-                        -- 🔥 UPDATE LAST TELEPORT TIME (start cooldown)
                         lastTeleportTime = currentTime
-                        
                         collectedCount = collectedCount + 1
                         updateCollectionLabel()
                         
-                        -- 🔥 WAIT THE FULL 0.05 SECONDS
                         task.wait(TELEPORT_COOLDOWN)
                     else
                         noGiftTimer = noGiftTimer + 0.1
                         if noGiftTimer >= 1.0 and spawnPart then
-                            root.Position = spawnPart.Position + Vector3.new(0, 5, 0)
+                            -- 🔥 TELEPORT DIRECTLY TO SPAWN (no height offset)
+                            root.Position = spawnPart.Position
                             if hitbox then
-                                hitbox.Position = root.Position
+                                hitbox.Position = spawnPart.Position
                             end
                             noGiftTimer = 0
                             task.wait(0.5)
