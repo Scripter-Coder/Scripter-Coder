@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-----------------------some IY funcs (just clipboard ig)
+-----------------------some IY funcs (just clipboard ig)
 function missing(t, f, fallback)
 	if type(f) == t then return f end
 	return fallback
