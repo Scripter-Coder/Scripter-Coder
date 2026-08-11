@@ -730,7 +730,7 @@ local collectionLabel = mainTab:AddLabel("Gifts Collected: 0")
 -- Optimized F key press
 local function pressFKey()
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.F, false, game)
-    task.wait(0.03)
+    task.wait(0.05)
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.F, false, game)
 end
 
@@ -773,10 +773,12 @@ local function getAllValidGifts()
     if passagegifts then table.insert(allGiftParents, passagegifts) end
     
     for _, parent in ipairs(allGiftParents) do
-        for _, gift in ipairs(parent:GetChildren()) do
-            if gift and gift:IsA("BasePart") and gift.Transparency == 0 and gift:FindFirstChild("Collect", true) then
-                if not isInvalidGift(gift) then
-                    table.insert(validGifts, gift)
+        if parent then
+            for _, gift in ipairs(parent:GetChildren()) do
+                if gift and gift:IsA("BasePart") and gift.Transparency == 0 and gift:FindFirstChild("Collect", true) then
+                    if not isInvalidGift(gift) then
+                        table.insert(validGifts, gift)
+                    end
                 end
             end
         end
@@ -811,8 +813,13 @@ mainTab:AddToggle({
                 local noGiftTimer = 0
                 local isEscaping = false
                 local escapeTimer = 0
+                local lastTeleportTime = 0
+                local teleportCooldown = 0.15 -- Minimum time between teleports
                 
                 while autoCollectGifts and autoCollectRunning do
+                    -- 🔥 ADD DELAY AT START OF LOOP to prevent freezing
+                    task.wait(0.05)
+                    
                     local inRound = ReplicatedStorage:FindFirstChild("InRound")
                     local isInRound = inRound and inRound.Value == true
                     
@@ -835,7 +842,7 @@ mainTab:AddToggle({
                                 currentSlotIndex = currentSlotIndex % #lobbySlots + 1
                             end
                         end
-                        task.wait(0.4)
+                        task.wait(0.3) -- Wait in lobby
                         continue
                     end
                     
@@ -843,13 +850,20 @@ mainTab:AddToggle({
                     
                     local char = getChar(plr)
                     if not char then
-                        task.wait(0.1)
+                        task.wait(0.2)
                         continue
                     end
                     
                     local root, hitbox = getRoot(char)
                     if not root then
-                        task.wait(0.1)
+                        task.wait(0.2)
+                        continue
+                    end
+                    
+                    -- 🔥 ADD COOLDOWN CHECK to prevent too fast teleporting
+                    local currentTime = tick()
+                    if currentTime - lastTeleportTime < teleportCooldown then
+                        task.wait(0.05)
                         continue
                     end
                     
@@ -873,23 +887,22 @@ mainTab:AddToggle({
                                 escapeTimer = 0
                             end
                         end
-                        task.wait(0.1)
+                        task.wait(0.15)
                         continue
                     end
                     
                     -- Get all valid gifts
                     local validGifts = getAllValidGifts()
                     
-                    -- 🔥 FILTER OUT gifts near spawn area (beacon area)
+                    -- Filter out gifts near spawn area
                     local filteredGifts = {}
                     local spawnPos = spawnPart and spawnPart.Position or Vector3.new(0, 48.5, 0)
-                    local SAFE_DISTANCE = 3 -- Minimum distance from spawn to consider a gift valid
+                    local SAFE_DISTANCE = 60 -- Increased from 3 to 60
                     
                     for _, gift in ipairs(validGifts) do
-                        -- Check distance from spawn
                         local distToSpawn = (gift.Position - spawnPos).Magnitude
-                        -- Also check if it's near the beacon (Beacons folder)
                         local isNearBeacon = false
+                        
                         if beacons then
                             for _, beacon in ipairs(beacons:GetChildren()) do
                                 if beacon:IsA("BasePart") then
@@ -902,18 +915,16 @@ mainTab:AddToggle({
                             end
                         end
                         
-                        -- Only include gifts that are far from spawn AND not near beacon
                         if distToSpawn > SAFE_DISTANCE and not isNearBeacon then
                             table.insert(filteredGifts, gift)
                         end
                     end
                     
-                    -- If no filtered gifts, use all gifts as fallback (but still check spawn distance)
+                    -- Fallback if no filtered gifts
                     if #filteredGifts == 0 then
-                        -- Fallback: just exclude gifts that are REALLY close to spawn
                         for _, gift in ipairs(validGifts) do
                             local distToSpawn = (gift.Position - spawnPos).Magnitude
-                            if distToSpawn > 3 then -- Minimum safety distance
+                            if distToSpawn > 30 then
                                 table.insert(filteredGifts, gift)
                             end
                         end
@@ -923,7 +934,7 @@ mainTab:AddToggle({
                     if #filteredGifts == 0 then
                         filteredGifts = validGifts
                         if notifOn then
-                            notif("⚠️ No safe gifts found! Using all gifts (may teleport to spawn)", "Warning")
+                            notif("⚠️ No safe gifts found! Using all gifts", "Warning")
                         end
                     end
                     
@@ -932,26 +943,32 @@ mainTab:AddToggle({
                         local randomGift = filteredGifts[math.random(1, #filteredGifts)]
                         
                         -- Teleport to gift position with height offset
-                        local heightOffset = math.random(5, 10) -- Slight height to avoid getting stuck
+                        local heightOffset = math.random(5, 10)
                         local pos = randomGift.Position + Vector3.new(0, heightOffset, 0)
+                        
+                        -- 🔥 PERFORM TELEPORT
                         root.Position = pos
                         if hitbox then
                             hitbox.Position = pos
                         end
                         
+                        -- 🔥 UPDATE LAST TELEPORT TIME
+                        lastTeleportTime = currentTime
+                        
                         collectedCount = collectedCount + 1
                         updateCollectionLabel()
-                        task.wait(0.1)
+                        
+                        -- 🔥 SHORT DELAY AFTER TELEPORT
+                        task.wait(0.12)
                     else
                         noGiftTimer = noGiftTimer + 0.1
                         if noGiftTimer >= 1.0 and spawnPart then
-                            -- Only teleport to spawn if we really have to
                             root.Position = spawnPart.Position + Vector3.new(0, 5, 0)
                             if hitbox then
                                 hitbox.Position = root.Position
                             end
                             noGiftTimer = 0
-                            task.wait(1)
+                            task.wait(0.5)
                         end
                         task.wait(0.1)
                     end
