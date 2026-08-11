@@ -814,10 +814,9 @@ mainTab:AddToggle({
                 local isEscaping = false
                 local escapeTimer = 0
                 local lastTeleportTime = 0
-                local teleportCooldown = 0.15 -- Minimum time between teleports
+                local TELEPORT_COOLDOWN = 0.4 -- 🔥 0.4 second cooldown between teleports
                 
                 while autoCollectGifts and autoCollectRunning do
-                    -- 🔥 ADD DELAY AT START OF LOOP to prevent freezing
                     task.wait(0.05)
                     
                     local inRound = ReplicatedStorage:FindFirstChild("InRound")
@@ -842,7 +841,7 @@ mainTab:AddToggle({
                                 currentSlotIndex = currentSlotIndex % #lobbySlots + 1
                             end
                         end
-                        task.wait(0.3) -- Wait in lobby
+                        task.wait(0.3)
                         continue
                     end
                     
@@ -860,9 +859,9 @@ mainTab:AddToggle({
                         continue
                     end
                     
-                    -- 🔥 ADD COOLDOWN CHECK to prevent too fast teleporting
+                    -- 🔥 COOLDOWN CHECK - Wait 0.4 seconds between teleports
                     local currentTime = tick()
-                    if currentTime - lastTeleportTime < teleportCooldown then
+                    if currentTime - lastTeleportTime < TELEPORT_COOLDOWN then
                         task.wait(0.05)
                         continue
                     end
@@ -897,7 +896,7 @@ mainTab:AddToggle({
                     -- Filter out gifts near spawn area
                     local filteredGifts = {}
                     local spawnPos = spawnPart and spawnPart.Position or Vector3.new(0, 48.5, 0)
-                    local SAFE_DISTANCE = 60 -- Increased from 3 to 60
+                    local SAFE_DISTANCE = 60
                     
                     for _, gift in ipairs(validGifts) do
                         local distToSpawn = (gift.Position - spawnPos).Magnitude
@@ -946,20 +945,20 @@ mainTab:AddToggle({
                         local heightOffset = math.random(5, 10)
                         local pos = randomGift.Position + Vector3.new(0, heightOffset, 0)
                         
-                        -- 🔥 PERFORM TELEPORT
+                        -- Perform teleport
                         root.Position = pos
                         if hitbox then
                             hitbox.Position = pos
                         end
                         
-                        -- 🔥 UPDATE LAST TELEPORT TIME
+                        -- 🔥 UPDATE LAST TELEPORT TIME (start cooldown)
                         lastTeleportTime = currentTime
                         
                         collectedCount = collectedCount + 1
                         updateCollectionLabel()
                         
-                        -- 🔥 SHORT DELAY AFTER TELEPORT
-                        task.wait(0.12)
+                        -- 🔥 WAIT THE FULL 0.4 SECONDS
+                        task.wait(TELEPORT_COOLDOWN)
                     else
                         noGiftTimer = noGiftTimer + 0.1
                         if noGiftTimer >= 1.0 and spawnPart then
@@ -968,7 +967,7 @@ mainTab:AddToggle({
                                 hitbox.Position = root.Position
                             end
                             noGiftTimer = 0
-                            task.wait(0.5)
+                            task.wait(0.3)
                         end
                         task.wait(0.1)
                     end
