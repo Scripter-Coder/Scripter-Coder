@@ -790,7 +790,7 @@ mainTab:AddToggle({
                 local isEscaping = false
                 local escapeTimer = 0
                 local lastTeleportTime = 0
-                local TELEPORT_COOLDOWN = 0.05
+                local TELEPORT_COOLDOWN = 0.01
                 
                 while autoCollectGifts and autoCollectRunning do
                     task.wait(0.01)
@@ -894,7 +894,7 @@ mainTab:AddToggle({
                             for _, beacon in ipairs(beacons:GetChildren()) do
                                 if beacon:IsA("BasePart") then
                                     local distToBeacon = (gift.Position - beacon.Position).Magnitude
-                                    if distToBeacon < 30 then
+                                    if distToBeacon < 3 then
                                         isNearBeacon = true
                                         break
                                     end
@@ -910,7 +910,7 @@ mainTab:AddToggle({
                     if #filteredGifts == 0 then
                         for _, gift in ipairs(validGifts) do
                             local distToSpawn = (gift.Position - spawnPos).Magnitude
-                            if distToSpawn > 30 then
+                            if distToSpawn > 3 then
                                 table.insert(filteredGifts, gift)
                             end
                         end
