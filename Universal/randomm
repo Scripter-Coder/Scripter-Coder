@@ -763,6 +763,24 @@ local function getAllValidGifts()
     return validGifts
 end
 
+-- Get closest gift to player
+local function getClosestGift(giftList, rootPos)
+    if not giftList or #giftList == 0 then return nil end
+    
+    local closest = nil
+    local shortestDist = math.huge
+    
+    for _, gift in ipairs(giftList) do
+        local dist = (gift.Position - rootPos).Magnitude
+        if dist < shortestDist then
+            shortestDist = dist
+            closest = gift
+        end
+    end
+    
+    return closest, shortestDist
+end
+
 local function updateCollectionLabel()
     collectionLabel:Set("Gifts Collected: " .. collectedCount)
 end
@@ -790,7 +808,7 @@ mainTab:AddToggle({
                 local isEscaping = false
                 local escapeTimer = 0
                 local lastTeleportTime = 0
-                local TELEPORT_COOLDOWN = 0.01
+                local TELEPORT_COOLDOWN = 0.3 -- 🔥 Changed from 0.05 to 0.3
                 
                 while autoCollectGifts and autoCollectRunning do
                     task.wait(0.01)
@@ -881,10 +899,10 @@ mainTab:AddToggle({
                         validGifts = getAllValidGifts()
                     end
                     
-                    -- Filter out gifts near spawn area
+                    -- Filter out gifts near spawn area (3 studs)
                     local filteredGifts = {}
                     local spawnPos = spawnPart and spawnPart.Position or Vector3.new(0, 48.5, 0)
-                    local SAFE_DISTANCE = 60
+                    local SAFE_DISTANCE = 3
                     
                     for _, gift in ipairs(validGifts) do
                         local distToSpawn = (gift.Position - spawnPos).Magnitude
@@ -894,7 +912,7 @@ mainTab:AddToggle({
                             for _, beacon in ipairs(beacons:GetChildren()) do
                                 if beacon:IsA("BasePart") then
                                     local distToBeacon = (gift.Position - beacon.Position).Magnitude
-                                    if distToBeacon < 3 then
+                                    if distToBeacon < 30 then
                                         isNearBeacon = true
                                         break
                                     end
@@ -908,15 +926,6 @@ mainTab:AddToggle({
                     end
                     
                     if #filteredGifts == 0 then
-                        for _, gift in ipairs(validGifts) do
-                            local distToSpawn = (gift.Position - spawnPos).Magnitude
-                            if distToSpawn > 3 then
-                                table.insert(filteredGifts, gift)
-                            end
-                        end
-                    end
-                    
-                    if #filteredGifts == 0 then
                         filteredGifts = validGifts
                         if notifOn then
                             notif("⚠️ No safe gifts found! Using all gifts", "Warning")
@@ -925,25 +934,42 @@ mainTab:AddToggle({
                     
                     if #filteredGifts > 0 then
                         noGiftTimer = 0
-                        local randomGift = filteredGifts[math.random(1, #filteredGifts)]
                         
-                        -- 🔥 TELEPORT DIRECTLY TO GIFT (no height offset)
-                        local pos = randomGift.Position
+                        -- Get closest gift
+                        local closestGift, closestDist = getClosestGift(filteredGifts, root.Position)
                         
-                        root.Position = pos
-                        if hitbox then
-                            hitbox.Position = pos
+                        if closestGift then
+                            -- Teleport directly to closest gift
+                            local pos = closestGift.Position
+                            
+                            root.Position = pos
+                            if hitbox then
+                                hitbox.Position = pos
+                            end
+                            
+                            lastTeleportTime = currentTime
+                            collectedCount = collectedCount + 1
+                            updateCollectionLabel()
+                            
+                            -- 🔥 WAIT FULL 0.3 SECONDS
+                            task.wait(TELEPORT_COOLDOWN)
+                        else
+                            -- Fallback: use first gift if closest fails
+                            local fallbackGift = filteredGifts[1]
+                            if fallbackGift then
+                                root.Position = fallbackGift.Position
+                                if hitbox then
+                                    hitbox.Position = fallbackGift.Position
+                                end
+                                lastTeleportTime = currentTime
+                                collectedCount = collectedCount + 1
+                                updateCollectionLabel()
+                                task.wait(TELEPORT_COOLDOWN)
+                            end
                         end
-                        
-                        lastTeleportTime = currentTime
-                        collectedCount = collectedCount + 1
-                        updateCollectionLabel()
-                        
-                        task.wait(TELEPORT_COOLDOWN)
                     else
                         noGiftTimer = noGiftTimer + 0.1
                         if noGiftTimer >= 1.0 and spawnPart then
-                            -- 🔥 TELEPORT DIRECTLY TO SPAWN (no height offset)
                             root.Position = spawnPart.Position
                             if hitbox then
                                 hitbox.Position = spawnPart.Position
