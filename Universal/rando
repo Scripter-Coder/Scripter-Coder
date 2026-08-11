@@ -835,7 +835,7 @@ mainTab:AddToggle({
                                 currentSlotIndex = currentSlotIndex % #lobbySlots + 1
                             end
                         end
-                        task.wait(0.2)
+                        task.wait(0.4)
                         continue
                     end
                     
