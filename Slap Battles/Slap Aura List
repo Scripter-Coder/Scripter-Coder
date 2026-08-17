@@ -73,6 +73,7 @@
         ["Clover"] = ReplicatedStorage.GeneralHit,
         ["5 More"] = ReplicatedStorage.GeneralHit,
         ["Booster"] = ReplicatedStorage.GeneralHit,
+        ["Impostor"] = ReplicatedStorage.Events.ImpostorHit,
         ["Chainsaw"] = ReplicatedStorage.GeneralHit,
         ["Ping Pong"] = ReplicatedStorage.GeneralHit,
         ["Thumbtack"] = ReplicatedStorage.GeneralHit,
@@ -219,8 +220,7 @@
         ["Joust"] = ReplicatedStorage.GeneralHit,
         ["Firework"] = ReplicatedStorage.GeneralHit,
         ["Run"] = ReplicatedStorage.GeneralHit,
-        ["Glovel"] = ReplicatedStorage.GeneralHit, --Normal
-        ["Glovel"] = ReplicatedStorage.GeneralHit, --Critical
+        ["Glovel"] = ReplicatedStorage.GeneralHit,
         ["Divebomb"] = ReplicatedStorage.GeneralHit,
         ["Lamp"] = ReplicatedStorage.GeneralHit,
         ["Knockoff"] = ReplicatedStorage.GeneralHit,
@@ -284,12 +284,14 @@
         ["Camera"] = ReplicatedStorage.GeneralHit,
         ["Grillmaster"] = ReplicatedStorage.GeneralHit,
         ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
+        ["Marewarder"] = ReplicatedStorage.GeneralHit,
+        ["Static"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
-        
+
         -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
         ["Default but Bad"] = ReplicatedStorage.dbb,
