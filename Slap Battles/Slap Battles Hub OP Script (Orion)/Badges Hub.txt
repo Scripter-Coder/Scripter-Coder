@@ -246,6 +246,8 @@ local allBadges = {
     {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
     {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
     {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
+    {id = "4138993615060923", name = "Unmasked | Marewarder Glove", category = "GloveRewarding"},
+    {id = "1553597577215698", name = "Banish the Night | Static Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
@@ -26067,6 +26069,106 @@ game:GetService("ReplicatedStorage"):WaitForChild("Erase"):FireServer()
 
 end
 do
+Tab = Window:MakeTab({
+	Name = "Marewarder",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Teleport To PIM BOSSFIGHT Place (1)",
+    Callback = function()
+game:GetService("TeleportService"):Teleport(77963332815593)
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To PIM BOSSFIGHT Place (2)",
+    Callback = function()
+	local Player = game.Players.LocalPlayer
+	local Character = Player.Character or Player.CharacterAdded:Wait()
+	local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			
+	HumanoidRootPart.CFrame = CFrame.new(-1209, 328, 3)
+	task.wait(0.5)
+	HumanoidRootPart.CFrame = CFrame.new(-377, 51, -14)
+	task.wait(0.5)
+			
+	local arena = workspace:FindFirstChild("Arena")
+		if arena then
+			local island5 = arena:FindFirstChild("island5")
+				if island5 then
+					for _, child in ipairs(island5:GetDescendants()) do
+						if child.Name == "Union" and child:FindFirstChild("C") then
+							local clickDetector = child.C:FindFirstChild("ClickDetector")
+								if clickDetector then
+									fireclickdetector(clickDetector)
+									print("✅ Clicked Union")
+								end
+							end
+						end
+					end
+				end
+			
+				print("runned this first")
+			task.wait(10)
+		print("runned second")
+	game:GetService("ReplicatedStorage").Event.Remotes.PortalInspect:FireServer()
+    end
+})
+
+end
+do
+Tab = Window:MakeTab({
+	Name = "Static",
+	Icon = "rbxassetid://7733673987",
+	PremiumOnly = false
+	})
+
+Tab:AddButton({
+    Name = "Teleport To PIM BOSSFIGHT Place (1)",
+    Callback = function()
+	local Player = game.Players.LocalPlayer
+	local Character = Player.Character or Player.CharacterAdded:Wait()
+	local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+			
+	HumanoidRootPart.CFrame = CFrame.new(-1209, 328, 3)
+	task.wait(0.5)
+	HumanoidRootPart.CFrame = CFrame.new(-377, 51, -14)
+	task.wait(0.5)
+			
+	local arena = workspace:FindFirstChild("Arena")
+		if arena then
+			local island5 = arena:FindFirstChild("island5")
+				if island5 then
+					for _, child in ipairs(island5:GetDescendants()) do
+						if child.Name == "Union" and child:FindFirstChild("C") then
+							local clickDetector = child.C:FindFirstChild("ClickDetector")
+								if clickDetector then
+									fireclickdetector(clickDetector)
+									print("✅ Clicked Union")
+								end
+							end
+						end
+					end
+				end
+			
+				print("runned this first")
+			task.wait(10)
+		print("runned second")
+	game:GetService("ReplicatedStorage").Event.Remotes.PortalInspect:FireServer()
+    end
+})
+
+Tab:AddButton({
+    Name = "Teleport To PIM BOSSFIGHT Place (2)",
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("Erase"):FireServer()
+    end
+})
+
+end
+do
 local Tab = Window:MakeTab({
     Name = "Webhook",
     Icon = "rbxassetid://7733978098",
@@ -26257,6 +26359,8 @@ local allBadges = {
     {id = "3607811029078582", name = "Fatal Frame | Camera Glove", category = "GloveRewarding"},
     {id = "3169767311342466", name = "Order Up! | Grillmaster Glove", category = "GloveRewarding"},
     {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
+    {id = "4138993615060923", name = "Unmasked | Marewarder Glove", category = "GloveRewarding"},
+    {id = "1553597577215698", name = "Banish the Night | Static Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
@@ -26968,6 +27072,7 @@ BaconScripter - (Youtube, Discord)
 Scripter - (Youtube, Discord)
 Kiet Scripter - (Youtube, Discord, Roblox Group)
 St1mlx The Scripter - (Youtube, Discord)
+Giangplay - (Youtube, Discord)
 ]])
 
 -- Helpers
@@ -26980,7 +27085,6 @@ R̸o̴b̵S̸c̴r̷i̸p̷t̷e̸r̶ - rob_bloxy || Old Slap Aura Remotes
 Shadow - cool_12344321 || Pinata Badge Glove Script
 St1mlx - st1mlx || Mastery Info + Camera Badge Glove Script
 Alya (I want friends to call) - sync_nah || New Slap Aura Remotes
-ekanite - ekanite-a || (Obby, Run, Plank and Car Keys) Masteries To Add
 ]])
 
 -- Links
@@ -26998,7 +27102,7 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Nexer (Discord)",
     Callback = function()
-        setclipboard("https://discord.gg/z5b2vhJRnF")
+        setclipboard("https://discord.gg/ZwdcCNqpGW")
     end
 })
 
@@ -27033,7 +27137,7 @@ Tab:AddButton({
 Tab:AddButton({
     Name = "Kiet Scripter (Youtube)",
     Callback = function()
-        setclipboard("https://www.youtube.com/@TheSPRG")
+        setclipboard("https://www.youtube.com/@KietScripter")
     end
 })
 
@@ -27055,6 +27159,20 @@ Tab:AddButton({
     Name = "St1mlx The Scripter (Discord)",
     Callback = function()
         setclipboard("https://discord.gg/na2udBbTrc")
+    end
+})
+
+Tab:AddButton({
+    Name = "Giangplay (Youtube)",
+    Callback = function()
+        setclipboard("https://www.youtube.com/@ArticlesHub")
+    end
+})
+
+Tab:AddButton({
+    Name = "Giangplay (Discord)",
+    Callback = function()
+        setclipboard("https://discord.gg/dE89Vf84zb")
     end
 })
 
@@ -27920,22 +28038,81 @@ Tab:AddToggle({
 })
 
 Section = Tab:AddSection({
+    Name = "Private Server Panel"
+})
+
+Tab:AddButton({
+    Name = "Spawn Dummy",
+    Callback = function()
+local Event = game:GetService("ReplicatedStorage").VIPRemote
+Event:InvokeServer(
+    {
+        ServerIndex = "SpawnDummy",
+        Name = "Spawn Dummy",
+        Parameters = {}
+    },
+    {}
+)
+    end
+})
+
+Tab:AddButton({
+    Name = "Despawn Dummy",
+    Callback = function()
+local Event = game:GetService("ReplicatedStorage").VIPRemote
+Event:InvokeServer(
+    {
+        ServerIndex = "DespawnDummy",
+        Name = "Despawn Dummy",
+        Parameters = {}
+    },
+    {}
+)
+    end
+})
+
+Tab:AddButton({
+    Name = "Toggle Anchor",
+    Callback = function()
+local Event = game:GetService("ReplicatedStorage").VIPRemote
+Event:InvokeServer(
+    {
+        ServerIndex = "ToggleAnchored",
+        Name = "Toggle Anchor",
+        Parameters = {}
+    },
+    {}
+)
+    end
+})
+
+Section = Tab:AddSection({
     Name = "Slap Aura"
 })
 
--- Optimized Slap Aura with built-in glove list
+-- Optimized Slap Aura - Default: Slap All Players & Clones
 do
     local RunService = game:GetService("RunService")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local Players = game:GetService("Players")
+    local Workspace = game:GetService("Workspace")
     
-    local slapAuraConnection
+    local slapAuraConnection = nil
     local lastHitTime = 0
     local currentCooldown = 0.5
     local isSlapAuraEnabled = false
     local localPlayer = Players.LocalPlayer
+    local username = localPlayer.Name
     
-    -- Built-in glove hits table (no external loading)
+    -- Build usernames for clone detection
+    local AUsername = "Å" .. username
+    local BallerUsername = "ÅBaller" .. username
+    local CherryUsername = "Cherry_" .. username
+    local BlinkUsername = "Blink_" .. username
+    local AvatarUsername = username .. "'s Avatar"
+    local PillowUsername = "Å" .. username
+    
+    -- Built-in glove hits table (FULL LIST)
     local gloveHits = {
         -- Standard Gloves
         ["Default"] = ReplicatedStorage.b,
@@ -28011,6 +28188,7 @@ do
         ["Clover"] = ReplicatedStorage.GeneralHit,
         ["5 More"] = ReplicatedStorage.GeneralHit,
         ["Booster"] = ReplicatedStorage.GeneralHit,
+        ["Impostor"] = ReplicatedStorage.Events.ImpostorHit,
         ["Chainsaw"] = ReplicatedStorage.GeneralHit,
         ["Ping Pong"] = ReplicatedStorage.GeneralHit,
         ["Thumbtack"] = ReplicatedStorage.GeneralHit,
@@ -28157,8 +28335,7 @@ do
         ["Joust"] = ReplicatedStorage.GeneralHit,
         ["Firework"] = ReplicatedStorage.GeneralHit,
         ["Run"] = ReplicatedStorage.GeneralHit,
-        ["Glovel"] = ReplicatedStorage.GeneralHit, --Normal
-        ["Glovel"] = ReplicatedStorage.GeneralHit, --Critical
+        ["Glovel"] = ReplicatedStorage.GeneralHit,
         ["Divebomb"] = ReplicatedStorage.GeneralHit,
         ["Lamp"] = ReplicatedStorage.GeneralHit,
         ["Knockoff"] = ReplicatedStorage.GeneralHit,
@@ -28222,12 +28399,14 @@ do
         ["Camera"] = ReplicatedStorage.GeneralHit,
         ["Grillmaster"] = ReplicatedStorage.GeneralHit,
         ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
+        ["Marewarder"] = ReplicatedStorage.GeneralHit,
+        ["Static"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
         ["CUSTOM"] = ReplicatedStorage.CustomHit,
         ["Ultra Instinct"] = ReplicatedStorage.GeneralHit,
-        
+
         -- Other Gloves
         ["spin"] = ReplicatedStorage.spinhit,
         ["Default but Bad"] = ReplicatedStorage.dbb,
@@ -28249,7 +28428,6 @@ do
     -- Add metatable for dynamic glove lookups
     setmetatable(gloveHits, {
         __index = function(t, key)
-            -- Try to find any remote that matches the glove name
             for _, child in pairs(ReplicatedStorage:GetChildren()) do
                 if child:IsA("RemoteEvent") then
                     local childName = child.Name:lower()
@@ -28259,16 +28437,15 @@ do
                        childName == gloveName .. "hit" or
                        childName == "ht" .. gloveName or
                        childName:find(gloveName, 1, true) then
-                        rawset(t, key, child) -- Cache for next time
+                        rawset(t, key, child)
                         return child
                     end
                 end
             end
             
-            -- Ultimate fallback - first available remote
             for _, child in pairs(ReplicatedStorage:GetChildren()) do
                 if child:IsA("RemoteEvent") then
-                    rawset(t, key, child) -- Cache for next time
+                    rawset(t, key, child)
                     return child
                 end
             end
@@ -28297,18 +28474,99 @@ do
     
     -- Function to get the remote for a glove
     local function getGloveRemote(gloveName)
-        -- Try direct lookup from gloveHits
         local remote = gloveHits[gloveName]
         
         if remote and typeof(remote) == "Instance" and remote:IsA("RemoteEvent") then
             return remote
         end
         
-        -- If we get here, the metatable will handle it
         return gloveHits[gloveName]
     end
     
-    -- Create slider
+    -- Function to get all target parts (players + clones)
+    local function getAllTargets()
+        local targets = {}
+        
+        -- Get all players with Torso/UpperTorso
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= localPlayer and player.Character then
+                local torso = player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("UpperTorso")
+                if torso and torso:IsA("BasePart") then
+                    table.insert(targets, torso)
+                end
+            end
+        end
+        
+        -- Get Replica clones (workspace["ÅUsername"])
+        local replicaModel = Workspace:FindFirstChild(AUsername)
+        if replicaModel and replicaModel:IsA("Model") then
+            local torso = replicaModel:FindFirstChild("Torso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        -- Get Baller clones (workspace["ÅBallerUsername"])
+        local ballerModel = Workspace:FindFirstChild(BallerUsername)
+        if ballerModel and ballerModel:IsA("Model") then
+            local torso = ballerModel:FindFirstChild("Torso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        -- Get Cherry clones (workspace.cherry_storage.Cherry_Username)
+        local cherryStorage = Workspace:FindFirstChild("cherry_storage")
+        if cherryStorage then
+            local cherryModel = cherryStorage:FindFirstChild(CherryUsername)
+            if cherryModel and cherryModel:IsA("Model") then
+                local torso = cherryModel:FindFirstChild("Torso")
+                if torso and torso:IsA("BasePart") then
+                    table.insert(targets, torso)
+                end
+            end
+        end
+        
+        -- Get Blink clones (workspace.Blink_Username)
+        local blinkModel = Workspace:FindFirstChild(BlinkUsername)
+        if blinkModel and blinkModel:IsA("Model") then
+            local torso = blinkModel:FindFirstChild("Torso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        -- Get Avatar clones (workspace["Username's Avatar"])
+        local avatarModel = Workspace:FindFirstChild(AvatarUsername)
+        if avatarModel and avatarModel:IsA("Model") then
+            local torso = avatarModel:FindFirstChild("Torso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        -- Get Pillow clones (workspace["ÅUsername"])
+        local pillowModel = Workspace:FindFirstChild(PillowUsername)
+        if pillowModel and pillowModel:IsA("Model") then
+            local torso = pillowModel:FindFirstChild("Torso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        -- Get Dummies (workspace.Mannie)
+        local mannie = Workspace:FindFirstChild("Mannie")
+        if mannie and mannie:IsA("Model") then
+            local torso = mannie:FindFirstChild("Torso") or mannie:FindFirstChild("UpperTorso")
+            if torso and torso:IsA("BasePart") then
+                table.insert(targets, torso)
+            end
+        end
+        
+        return targets
+    end
+    
+    -- Create slider (0.1 to 2.0 with 0.1 increments)
     local slapAuraSpeed = Tab:AddSlider({
         Name = "Slap Aura Speed",
         Min = 0.1,
@@ -28322,16 +28580,11 @@ do
         end
     })
     
-    -- Create toggle
+    -- Create toggle (FIXED: proper cooldown handling)
     Tab:AddToggle({
         Name = "Slap Aura",
         Default = false,
         Callback = function(enabled)
-            -- Prevent random "Slap Aura Disabled" popups
-            if isSlapAuraEnabled == enabled then
-                return
-            end
-            
             isSlapAuraEnabled = enabled
             
             if enabled then
@@ -28341,13 +28594,11 @@ do
                     slapAuraConnection = nil
                 end
                 
-                -- Get current glove
+                -- Get current glove and remote
                 local currentGlove = getCurrentGlove()
-                
-                -- Get the remote for this glove
                 local remote = getGloveRemote(currentGlove)
                 
-                if not remote then
+                if not remote or remote == "" then
                     OrionLib:MakeNotification({
                         Name = "Slap Aura Error",
                         Content = "No remote found for glove: " .. currentGlove,
@@ -28360,57 +28611,43 @@ do
                 
                 print("Slap Aura: Enabled with glove '" .. currentGlove .. "' using remote '" .. remote.Name .. "'")
                 
-                -- Start slap aura
+                -- Reset last hit time
+                lastHitTime = 0
+                
+                -- Create connection with proper cooldown
                 slapAuraConnection = RunService.Heartbeat:Connect(function()
-                    local currentTime = tick()
+                    if not isSlapAuraEnabled then
+                        return
+                    end
                     
-                    -- Check cooldown
+                    local currentTime = tick()
                     if currentTime - lastHitTime < currentCooldown then
                         return
                     end
                     
-                    -- Check if still enabled and has character
-                    if not isSlapAuraEnabled or not localPlayer.Character then
+                    local character = localPlayer.Character
+                    if not character then
                         return
                     end
                     
-                    -- Get local character position
-                    local localChar = localPlayer.Character
-                    local localRoot = localChar:FindFirstChild("HumanoidRootPart")
-                    if not localRoot then
-                        return
-                    end
+                    -- Get all targets
+                    local targets = getAllTargets()
                     
-                    -- Find players to slap
-                    for _, player in ipairs(Players:GetPlayers()) do
-                        if player ~= localPlayer and player.Character then
-                            local char = player.Character
-                            local humanoid = char:FindFirstChildOfClass("Humanoid")
-                            local torso = char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
-                            
-                            -- Check if valid target
-                            if torso and humanoid and humanoid.Health > 0 then
-                                -- Optional distance check (40 studs max)
-                                local playerRoot = char:FindFirstChild("HumanoidRootPart")
-                                if playerRoot then
-                                    local distance = (playerRoot.Position - localRoot.Position).Magnitude
-                                    if distance > 40 then
-                                        continue
-                                    end
-                                end
-                                
-                                -- Fire the remote
-                                local success, errorMsg = pcall(function()
-                                    remote:FireServer(torso)
-                                end)
-                                
-                                if success then
-                                    lastHitTime = currentTime
-                                    break -- Hit one player per cycle
-                                end
+                    -- Hit each target (only ONE hit per cooldown cycle)
+                    for _, target in ipairs(targets) do
+                        if target and target.Parent and target:IsA("BasePart") then
+                            local success = pcall(function()
+                                remote:FireServer(target)
+                            end)
+                            if success then
+                                -- Update last hit time after hitting ALL targets
+                                -- This prevents multiple hits per cooldown cycle
                             end
                         end
                     end
+                    
+                    -- Update last hit time after processing all targets
+                    lastHitTime = currentTime
                 end)
                 
                 OrionLib:MakeNotification({
@@ -28421,19 +28658,11 @@ do
                 })
                 
             else
-                -- Disable
                 if slapAuraConnection then
                     slapAuraConnection:Disconnect()
                     slapAuraConnection = nil
                 end
                 
-                -- Only show notification if it was previously enabled
-                OrionLib:MakeNotification({
-                    Name = "Slap Aura Disabled",
-                    Content = "",
-                    Image = "rbxassetid://7733919105",
-                    Time = 2
-                })
             end
         end
     })
