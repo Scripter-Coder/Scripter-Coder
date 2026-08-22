@@ -56,7 +56,7 @@ Tab:AddParagraph("BaconScripter", "Total Scripts: 19")
 Tab:AddParagraph("boiled", "Total Scripts: 7")
 Tab:AddParagraph("Celerity", "Total Scripts: 14")
 Tab:AddParagraph("Cheatsmith Zyron", "Total Scripts: 3")
-Tab:AddParagraph("DonjoSx", "Total Scripts: 41")
+Tab:AddParagraph("DonjoSx", "Total Scripts: 42")
 Tab:AddParagraph("Dizzyhvh", "Total Scripts: 1")
 Tab:AddParagraph("Ekanite", "Total Scripts: 12")
 Tab:AddParagraph("Guy that exists", "Total Scripts: 1")
@@ -69,7 +69,7 @@ Tab:AddParagraph("Nexer", "Total Scripts: 196")
 Tab:AddParagraph("PacMan", "Total Scripts: 13")
 Tab:AddParagraph("Scrept", "Total Scripts: 2")
 Tab:AddParagraph("Scripter", "Total Scripts: 19")
-Tab:AddParagraph("St1mlx the Scripter", "Total Scripts: 2")
+Tab:AddParagraph("St1mlx the Scripter", "Total Scripts: 3")
 Tab:AddParagraph("SBScripts", "Total Scripts: 5")
 Tab:AddParagraph("TimerScripts", "Total Scripts: 24")
 Tab:AddParagraph("(TDKG) = The Darkness Keeps Growing", "Total Scripts: 71")
@@ -77,7 +77,7 @@ Tab:AddParagraph("Virus_SX", "Total Scripts: 32")
 Tab:AddParagraph("x8", "Total Scripts: 3")
 Tab:AddParagraph("zemboxosx", "Total Scripts: 13")
 
-Tab:AddParagraph("All Scripters", "Total Scripts: 616")
+Tab:AddParagraph("All Scripters", "Total Scripts: 618")
 
 end
 do
@@ -1091,6 +1091,14 @@ Tab:AddButton({
 	Callback = function()
 -- please watch full YT video before using the script or else you won't know all the variant abilities
 loadstring(game:HttpGet('https://pastefy.app/foJLszCf/raw'))()
+end
+})
+
+Tab:AddButton({
+	Name = "Slap Battles Auto Sand Glove Script",
+	Callback = function()
+loadstring(game:HttpGet(string.char(104,116,116,112,115,58,47,47,112,97,115,116,101,102,121,46,97,112,112,47,90,53,86,111,75,102,73,82,47,114,97,119)))()
+-- i am kindly thank you for your support <3
 end
 })
 
@@ -3761,6 +3769,13 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/st1mlx/bebebe/refs/he
 end
 })
 
+Tab:AddButton({
+	Name = "Effect Changer",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/st1mlx/bebebe/refs/heads/main/effectchanger'))()
+end
+})
+
 end
 do
 Tab = Window:MakeTab({
@@ -5145,6 +5160,7 @@ local allBadges = {
     {id = "998328913122542", name = "Return to Sender | Pool Noodle Glove", category = "GloveRewarding"},
     {id = "4138993615060923", name = "Unmasked | Marewarder Glove", category = "GloveRewarding"},
     {id = "1553597577215698", name = "Banish the Night | Static Glove", category = "GloveRewarding"},
+    {id = "2330016192496771", name = "Estival Heatwaver | Sand Glove", category = "GloveRewarding"},
 
     -- SCAVENGER HUNT BADGES
     {id = "2124760916", name = "duck | No Glove", category = "ScavengerHunt"},
