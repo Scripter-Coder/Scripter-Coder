@@ -154,7 +154,7 @@ Tab:AddParagraph({
 
 Tab:AddParagraph({
     Title = "Nexer",
-    Content = "Total Scripts: 196"
+    Content = "Total Scripts: 199"
 })
 
 Tab:AddParagraph({
@@ -210,7 +210,7 @@ Tab:AddParagraph({
 
 Tab:AddParagraph({
     Title = "All Scripters",
-    Content = "Total Scripts: 618"
+    Content = "Total Scripts: 621"
 })
 
 end
@@ -3681,6 +3681,30 @@ Tab:AddButton({
     Description = "PIM test script with Auto Slap Lamps, Eyes, Orbs, Infinite Mana, and No Fall Damage",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/PIM_test.luau"))()
+    end
+})
+
+Tab:AddButton({
+    Title = "Auto get bob ( without god's hand ) 100% success rate",
+    Description = "Loads the auto get bob script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/Autobob.luau"))()
+    end
+})
+
+Tab:AddButton({
+    Title = "Shutdown Server FE (Without any gloves/slaps)",
+    Description = "Loads the shutdown script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/CeaseToExist.Server"))()
+    end
+})
+
+Tab:AddButton({
+    Title = "Crash everyone ( Without any slaps/gloves )",
+    Description = "Loads the crash script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/Crash.luau"))()
     end
 })
 
