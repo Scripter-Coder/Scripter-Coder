@@ -373,9 +373,9 @@ Section = Tab:AddSection({
 local masteryNames = {
     "All (Can Lag)",
     "spin", "Stick", "Brick", "Flash", "Spring", "Pinwheel", "Dice", "Thanos", "Fort", "Space", "Hive", "Mace", "Killstreak",
-    "Gummy", "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Roguelike", "Soul", "[REDACTED]", "bus",
-    "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", "🗿", "Obby", "Voodoo", "rob", "Tinkerer", "Glovel",
-    "Firework", "Run", "Frostbite", "Plank", "Hexa", "Eggler", "Car Keys", "Ultra Instinct", "Acrobat"
+    "Gummy", "Engineer", "Phantom", "Wormhole", "Stalker", "Cherry", "Booster", "BONK", "Cloud", "Roguelike", "Barrel", "Soul",
+    "[REDACTED]", "bus", "Phase", "Bomb", "Bubble", "Shard", "Moon", "Rage", "Chain", "Tycoon", "🗿", "Obby", "Voodoo", "rob",
+    "Tinkerer", "Glovel", "Firework", "Run", "Frostbite", "Plank", "Hexa", "Eggler", "Car Keys", "Ultra Instinct", "Acrobat"
 }
 
 -- Variable to store selected masteries
@@ -4063,9 +4063,7 @@ local Tab = Window:MakeTab({
     PremiumOnly = false
 })
 
-Section = Tab:AddSection({
-    Name = "for now im gonna disable engineer tab from mastery hub (yes bcz devs patched by putting sentry in safespot and not only that its only allowed to place in main area like in the center of the island and cmon who wants farm mastery while everyone can see you)? im gonna disable for some time when devs gonna fix it then ill enable it"
-})
+Tab:AddParagraph("Currently Disabled...", "for now im gonna disable engineer tab from mastery hub (yes bcz devs patched by putting sentry in safespot and not only that its only allowed to place in main area like in the center of the island and cmon who wants farm mastery while everyone can see you)? im gonna disable for some time when devs gonna fix it then ill enable it")
 
 --[[
 Section = Tab:AddSection({
@@ -4079,27 +4077,55 @@ Section = Tab:AddSection({
 -- Auto Teleport To Safespot + Auto Use Ability (Receiver)
 local autoReceiverSentry = false
 local receiverSentryLoop = nil
+local selectedPlayer = nil
+
+-- Get all players for dropdown
+local function getPlayerList()
+    local players = {"None"}
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= game.Players.LocalPlayer then
+            table.insert(players, player.DisplayName .. " (" .. player.Name .. ")")
+        end
+    end
+    return players
+end
+
+-- Player dropdown for selecting Turret owner
+Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "None",
+    Options = getPlayerList(),
+    Callback = function(Value)
+        if Value ~= "None" then
+            local username = Value:match("%((.+)%)")
+            selectedPlayer = username
+            print("Selected player: " .. selectedPlayer)
+        else
+            selectedPlayer = nil
+        end
+    end
+})
+
+-- Refresh player list button
+Tab:AddButton({
+    Name = "Refresh Player List",
+    Callback = function()
+        local players = getPlayerList()
+        -- Update dropdown
+        local dropdown = Tab:GetDropdown("Select Player")
+        if dropdown then
+            dropdown:Refresh(players, true)
+        end
+    end
+})
 
 Tab:AddToggle({
-    Name = "Auto Teleport To Safespot + Auto Use Ability",
+    Name = "Auto Teleport To Bounty Safespot Room + Auto Use Ability",
     Default = false,
     Callback = function(Value)
         autoReceiverSentry = Value
         
         if Value then
-            -- Check if Safespot exists
-            local safespot = workspace:FindFirstChild("Safespot")
-            if not safespot then
-                OrionLib:MakeNotification({
-                    Name = "Error",
-                    Content = "Safespot not found! Create Safespot first.",
-                    Image = "rbxassetid://4483345998",
-                    Time = 3
-                })
-                autoReceiverSentry = false
-                return
-            end
-            
             if receiverSentryLoop then
                 task.cancel(receiverSentryLoop)
                 receiverSentryLoop = nil
@@ -4114,29 +4140,49 @@ Tab:AddToggle({
                         if char then
                             local hrp = char:FindFirstChild("HumanoidRootPart")
                             if hrp then
-                                -- Teleport to Safespot
-                                local safespot = workspace:FindFirstChild("Safespot")
-                                if safespot then
-                                    local base = safespot:FindFirstChild("Base")
-                                    if base then
-                                        hrp.CFrame = base.CFrame + Vector3.new(0, 10, 0)
-                                    end
-                                end
+                                -- Teleport to position for ability
+                                hrp.CFrame = CFrame.new(100, -5, -11)
                             end
                         end
                         
-                        -- Sentry ability (every 6 seconds)
-                        abilityTimer = abilityTimer + 0.5
-                        if abilityTimer >= 6 then
-                            abilityTimer = 0
-                            local sentry = game:GetService("ReplicatedStorage"):FindFirstChild("Sentry")
-                            if sentry then
-                                sentry:FireServer()
-                                print("🔫 Sentry ability used!")
+                        task.wait(0.5)
+                        
+                        -- Sentry ability with CFrame
+                        local sentry = game:GetService("ReplicatedStorage"):FindFirstChild("Sentry")
+                        if sentry then
+                            local sentryCFrame = CFrame.new(100, -5.1728792190552, -21, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+                            sentry:FireServer(sentryCFrame)
+                            print("🔫 Sentry ability used!")
+                        end
+                        
+                        task.wait(1)
+                        
+                        -- Teleport to Turret position
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                hrp.CFrame = CFrame.new(17944, -130, -3477)
                             end
                         end
+                        
+                        task.wait(1)
+                        
+                        -- Update all turret parts CFrame
+                        local turretFolder = workspace:FindFirstChild("Turret")
+                        if turretFolder then
+                            local newCFrame = CFrame.new(17943.1348, -130.158447, -3486.12549, 0.995593727, 9.57700053e-09, 0.0937718153, -7.39256434e-09, 1, -2.36426061e-08, -0.0937718153, 2.28452155e-08, 0.995593727)
+                            
+                            for _, part in ipairs(turretFolder:GetDescendants()) do
+                                if part:IsA("BasePart") then
+                                    part.CFrame = newCFrame
+                                end
+                            end
+                            print("✅ Updated all turret parts CFrame")
+                        else
+                            warn("❌ Turret folder not found in workspace!")
+                        end
                     end)
-                    task.wait(0.5)
+                    task.wait(33) -- Repeat every 33 seconds
                 end
             end)
             
@@ -4152,7 +4198,6 @@ Tab:AddToggle({
                 task.cancel(receiverSentryLoop)
                 receiverSentryLoop = nil
             end
-            
         end
     end
 })
@@ -4181,10 +4226,61 @@ Tab:AddToggle({
                 autoHelperSentry = false
                 return
             end
+            
+            if not selectedPlayer then
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Please select a Turret Owner from the dropdown!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoHelperSentry = false
+                return
+            end
+            
+            -- Check if the selected player owns the turret
+            local turret = workspace:FindFirstChild("Turret")
+            if turret then
+                local ownerId = turret:GetAttribute("OwnerId")
+                local player = game:GetService("Players"):FindFirstChild(selectedPlayer)
+                if not player then
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Selected player not found!",
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                    autoHelperSentry = false
+                    return
+                end
+                
+                if tostring(ownerId) ~= tostring(player.UserId) then
+                    OrionLib:MakeNotification({
+                        Name = "Error",
+                        Content = "Selected player does not own this Turret!",
+                        Image = "rbxassetid://4483345998",
+                        Time = 3
+                    })
+                    autoHelperSentry = false
+                    return
+                end
+                print("✅ Player matches Turret OwnerId!")
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Turret not found in workspace!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 3
+                })
+                autoHelperSentry = false
+                return
+            end
+            
             if helperSentryLoop then
                 task.cancel(helperSentryLoop)
                 helperSentryLoop = nil
             end
+            
             helperSentryLoop = task.spawn(function()
                 while autoHelperSentry do
                     pcall(function()
@@ -4224,16 +4320,23 @@ Tab:AddToggle({
                             end
                         end
                         task.wait(1)
+                        
+                        -- Teleport to Turret Glove (only if player matches OwnerId)
                         local turret = workspace:FindFirstChild("Turret")
                         if turret then
-                            local hingePart = turret:FindFirstChild("HingePart")
-                            if hingePart then
-                                local glove = hingePart:FindFirstChild("Glove")
-                                if glove and (hrp.Position - glove.Position).Magnitude > 5 then
-                                    hrp.CFrame = glove.CFrame + Vector3.new(0, 3, 0)
+                            local ownerId = turret:GetAttribute("OwnerId")
+                            local playerObj = game:GetService("Players"):FindFirstChild(selectedPlayer)
+                            if playerObj and tostring(ownerId) == tostring(playerObj.UserId) then
+                                local hingePart = turret:FindFirstChild("HingePart")
+                                if hingePart then
+                                    local glove = hingePart:FindFirstChild("Glove")
+                                    if glove and (hrp.Position - glove.Position).Magnitude > 5 then
+                                        hrp.CFrame = glove.CFrame + Vector3.new(0, 3, 0)
+                                    end
                                 end
                             end
                         end
+                        
                         task.wait(1)
                         local ragdolled = char:FindFirstChild("Ragdolled")
                         if ragdolled and ragdolled.Value == true then
@@ -4241,8 +4344,9 @@ Tab:AddToggle({
                         end
                     end)
                     task.wait(2)
-                end -- closes while loop
-            end) -- closes spawn function
+                end
+            end)
+            
             OrionLib:MakeNotification({
                 Name = "Auto Helper",
                 Content = "Auto Teleport + Auto Die On Ragdoll Enabled!",
@@ -4257,7 +4361,7 @@ Tab:AddToggle({
         end
     end
 })
---]]
+]]
 
 end
 do
@@ -6231,6 +6335,197 @@ Tab:AddToggle({
                 helperLoopThread = nil
             end
 
+        end
+    end
+})
+
+end
+do
+local Tab = Window:MakeTab({
+    Name = "Barrel",
+    Icon = "rbxassetid://7734068321",
+    PremiumOnly = false
+})
+
+Section = Tab:AddSection({
+    Name = "1-2-3-4 Quest"
+})
+
+Section = Tab:AddSection({
+    Name = "Receiver"
+})
+
+-- Auto Teleport To Bounty Safespot Room + Auto Use Ability + Slap Aura
+local autoReceiverBounty = false
+local receiverBountyLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Bounty Safespot Room + Auto Use Ability + Slap Aura",
+    Default = false,
+    Callback = function(Value)
+        autoReceiverBounty = Value
+        
+        if Value then
+            if receiverBountyLoop then
+                task.cancel(receiverBountyLoop)
+                receiverBountyLoop = nil
+            end
+            
+            receiverBountyLoop = task.spawn(function()
+                while autoReceiverBounty do
+                    pcall(function()
+                        local char = game.Players.LocalPlayer.Character
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                -- Teleport to Ability position
+                                hrp.CFrame = CFrame.new(17896, -24, -3527)
+                            end
+                        end
+                        
+                        task.wait(0.3)
+                        
+                        -- GeneralAbility
+                        local generalAbility = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralAbility")
+                        if generalAbility then
+                            generalAbility:FireServer()
+                        end
+                        
+                        task.wait(0.3)
+                        
+                        -- Teleport to Slap Aura position
+                        if char then
+                            local hrp = char:FindFirstChild("HumanoidRootPart")
+                            if hrp then
+                                hrp.CFrame = CFrame.new(17896, -24, -3576)
+                            end
+                        end
+                        
+                        task.wait(0.3)
+                        
+                        -- GeneralHit Slap Aura
+                        local generalHit = game:GetService("ReplicatedStorage"):FindFirstChild("GeneralHit")
+                        if generalHit then
+                            local localPlayer = game.Players.LocalPlayer
+                            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                                if player ~= localPlayer and player.Character then
+                                    local targetPart = player.Character:FindFirstChild("Left Arm") or 
+                                                      player.Character:FindFirstChild("Right Arm") or
+                                                      player.Character:FindFirstChild("Head") or 
+                                                      player.Character:FindFirstChild("Torso") or 
+                                                      player.Character:FindFirstChild("HumanoidRootPart")
+                                    if targetPart then
+                                        generalHit:FireServer(targetPart)
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(1)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Receiver Bounty",
+                Content = "Auto Teleport + Ability + Slap Aura Enabled!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            
+        else
+            if receiverBountyLoop then
+                task.cancel(receiverBountyLoop)
+                receiverBountyLoop = nil
+            end
+        end
+    end
+})
+
+Section = Tab:AddSection({
+    Name = "Helper"
+})
+
+-- Auto Teleport To Barrel Safespot Room + Auto Enter Arena + Auto Die On Ragdoll
+local autoHelperBarrel = false
+local helperBarrelLoop = nil
+
+Tab:AddToggle({
+    Name = "Auto Teleport To Barrel Safespot Room + Auto Enter Arena + Auto Die On Ragdoll",
+    Default = false,
+    Callback = function(Value)
+        autoHelperBarrel = Value
+        
+        if Value then
+            if helperBarrelLoop then
+                task.cancel(helperBarrelLoop)
+                helperBarrelLoop = nil
+            end
+            
+            helperBarrelLoop = task.spawn(function()
+                while autoHelperBarrel do
+                    pcall(function()
+                        local player = game.Players.LocalPlayer
+                        local char = player.Character
+                        
+                        if not char or not char.Parent then
+                            char = player.CharacterAdded:Wait()
+                            task.wait(2)
+                            if not char then
+                                return
+                            end
+                        end
+                        
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        local humanoid = char:FindFirstChildOfClass("Humanoid")
+                        
+                        if not hrp or not humanoid then
+                            task.wait(1)
+                            return
+                        end
+                        
+                        -- Check if entered attribute exists
+                        local hasEntered = char:FindFirstChild("entered")
+                        
+                        if not hasEntered then
+                            -- Teleport to arena enter position (Soul portal)
+                            hrp.CFrame = CFrame.new(-1209, 328, 3)
+                            task.wait(2)
+                            
+                            -- Check again for entered attribute
+                            hasEntered = char:FindFirstChild("entered")
+                            
+                            if not hasEntered then
+                                task.wait(1)
+                                return
+                            end
+                        end
+                        
+                        -- Teleport to Barrel Safespot Room
+                        hrp.CFrame = CFrame.new(17896, -24, -3521)
+                        task.wait(1)
+                        
+                        -- Check for Ragdolled and die
+                        local ragdolled = char:FindFirstChild("Ragdolled")
+                        if ragdolled and ragdolled.Value == true then
+                            humanoid.Health = 0
+                        end
+                    end)
+                    task.wait(2)
+                end
+            end)
+            
+            OrionLib:MakeNotification({
+                Name = "Auto Helper Barrel",
+                Content = "Auto Teleport + Auto Enter Arena + Auto Die On Ragdoll Enabled!",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+            
+        else
+            if helperBarrelLoop then
+                task.cancel(helperBarrelLoop)
+                helperBarrelLoop = nil
+            end
         end
     end
 })
