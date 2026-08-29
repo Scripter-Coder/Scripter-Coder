@@ -65,7 +65,7 @@ Tab:AddParagraph("Herkle", "Total Scripts: 1")
 Tab:AddParagraph("Incognito Scripts", "Total Scripts: 49")
 Tab:AddParagraph("InterScription", "Total Scripts: 2")
 Tab:AddParagraph("Kiet Scripter", "Total Scripts: 62")
-Tab:AddParagraph("Nexer", "Total Scripts: 196")
+Tab:AddParagraph("Nexer", "Total Scripts: 199")
 Tab:AddParagraph("PacMan", "Total Scripts: 13")
 Tab:AddParagraph("Scrept", "Total Scripts: 2")
 Tab:AddParagraph("Scripter", "Total Scripts: 19")
@@ -77,7 +77,7 @@ Tab:AddParagraph("Virus_SX", "Total Scripts: 32")
 Tab:AddParagraph("x8", "Total Scripts: 3")
 Tab:AddParagraph("zemboxosx", "Total Scripts: 13")
 
-Tab:AddParagraph("All Scripters", "Total Scripts: 618")
+Tab:AddParagraph("All Scripters", "Total Scripts: 621")
 
 end
 do
@@ -3482,6 +3482,27 @@ Tab:AddButton({
 	Name = "PIM test (Auto Slap Lamps, Eyes, Orbs | Inf Mana | No Fall Damage)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/PIM_test.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Auto get bob ( without god's hand ) 100% success rate",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/Autobob.luau"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Shutdown Server FE (Without any gloves/slaps)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/CeaseToExist.Server"))()
+end
+})
+
+Tab:AddButton({
+	Name = "Crash everyone ( Without any slaps/gloves )",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NewNexer/NexerHub/refs/heads/main/SB/P/Crash.luau"))()
 end
 })
 
