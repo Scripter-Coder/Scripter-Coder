@@ -1,1 +1,1022 @@
-loadstring(game:HttpGet("https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub9576162939"))()
+--Webhook
+pcall(function()
+    local WebhookScripterHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Universal/Webhook"))()
+end)
+
+--Start Of Script
+--Detect Place Name
+local MarketplaceService = game:GetService("MarketplaceService")
+local placeInfo
+pcall(function() placeInfo = MarketplaceService:GetProductInfo(game.PlaceId) end)
+local gameName = placeInfo and placeInfo.Name or "Trollge Universal Incident"
+
+local WindUI
+local ok, err = pcall(function()
+    WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+end)
+if not ok or not WindUI then
+    WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+end
+
+--Startup Script Notification
+WindUI:Notify({Title = "From Scripter", Content = "Script Loads (Can Take 1-5 Seconds)", Duration = 1})
+
+--If Trollge Universal Incident Then
+--Creating Window
+if game.PlaceId == 10523498173 then
+local Window = WindUI:CreateWindow({
+    Title = gameName .. " Hub Script (Scripter Hub)",
+    Author = "by Scripter",
+    Icon = "rbxassetid://7743866529",
+    Folder = "ScripterHub/TrollgeUniversalIncident",
+    Theme = "Dark",
+    ToggleKey = Enum.KeyCode.RightControl,
+    Size = UDim2.fromOffset(580, 520)
+})
+Window:Tag({
+    Title = "Version: V. 2.0.5",
+    Icon = "star",
+    Color = Color3.fromRGB(128,0,128),
+})
+Window:SetToTheCenter()
+
+WindUI:Notify({Title = "From Scripter", Content = "GoodLuck!", Duration = 3})
+
+local Tab = Window:Tab({Title = "Welcome",
+ Icon = "rbxassetid://7734059095",
+ PremiumOnly = false
+ })
+
+local player = game.Players.LocalPlayer
+Tab:Paragraph({Title = "Hello " .. player.Name .. "!"})
+
+Tab = Window:Tab({Title = "Info",
+ Icon = "rbxassetid://7734053426",
+ PremiumOnly = false
+ })
+
+Section = Tab:Section({Title = "Disabled For Now"
+})
+
+local Tab = Window:Tab({Title = "Main",
+ Icon = "rbxassetid://7733799901",
+ PremiumOnly = false
+ })
+
+-- =====================================================================
+-- DEBUG FLAG
+-- =====================================================================
+local DEBUG = true
+
+local function log(...)
+    if DEBUG then print("[ChestFarm]", ...) end
+end
+
+local function warn_(...)
+    if DEBUG then warn("[ChestFarm]", ...) end
+end
+
+-- =====================================================================
+-- Variables
+-- =====================================================================
+local ChestFarmEnabled = false
+local FlyDelay = 1
+local FlySpeed = 80
+local SpamDelay = 0.01
+local SpamAmount = 50
+
+local ChestPriority = {
+    "Dark Chest_p",
+    "Light Chest_p",
+    "Skin Chest_p",
+}
+
+local RegularChestNames = {
+    "Chest_p",
+}
+
+local ToggleChestFarm
+local ActiveTween = nil
+
+-- =====================================================================
+-- Helpers
+-- =====================================================================
+
+local function SpamChestPrompt(chest)
+    log("SpamChestPrompt: start on", chest and chest:GetFullName() or "nil")
+
+    local proximityPrompt = chest:FindFirstChildOfClass("ProximityPrompt")
+    if not proximityPrompt then
+        warn_("SpamChestPrompt: NO ProximityPrompt on", chest:GetFullName())
+        return false
+    end
+
+    proximityPrompt.HoldDuration = 0
+
+    local fired = 0
+    for i = 1, SpamAmount do
+        if not ChestFarmEnabled then
+            log("SpamChestPrompt: toggled off mid-spam, fired", fired, "times")
+            return false
+        end
+        local ok, err = pcall(function()
+            fireproximityprompt(proximityPrompt)
+        end)
+        if ok then
+            fired = fired + 1
+        else
+            warn_("SpamChestPrompt: fireproximityprompt error:", err)
+        end
+        task.wait(SpamDelay)
+    end
+
+    log("SpamChestPrompt: done, fired", fired, "/", SpamAmount, "times")
+    return true
+end
+
+local function GetChestsByType(chestType)
+    local chestsFolder = workspace:FindFirstChild("chests")
+    if not chestsFolder then
+        warn_("GetChestsByType: workspace.chests NOT FOUND")
+        return {}
+    end
+
+    local chests = {}
+    for _, chest in pairs(chestsFolder:GetDescendants()) do
+        if chest:IsA("MeshPart") and chest.Name == chestType then
+            local prompt = chest:FindFirstChildOfClass("ProximityPrompt")
+            if prompt then
+                prompt.HoldDuration = 0
+                table.insert(chests, chest)
+            else
+                warn_("GetChestsByType:", chest:GetFullName(), "has no ProximityPrompt, skipped")
+            end
+        end
+    end
+
+    log("GetChestsByType:", chestType, "-> found", #chests)
+    return chests
+end
+
+local function GetClosestChest(chestList)
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then
+        warn_("GetClosestChest: no character")
+        return nil
+    end
+
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then
+        warn_("GetClosestChest: no HumanoidRootPart")
+        return nil
+    end
+
+    local closest, closestDist = nil, math.huge
+    for _, chest in ipairs(chestList) do
+        local dist = (chest.Position - hrp.Position).Magnitude
+        if dist < closestDist then
+            closest, closestDist = chest, dist
+        end
+    end
+
+    if closest then
+        log("GetClosestChest: closest =", closest:GetFullName(), "dist =", math.floor(closestDist))
+    else
+        warn_("GetClosestChest: empty list")
+    end
+    return closest
+end
+
+local function GetBestAvailableChest()
+    log("GetBestAvailableChest: scanning priority chests...")
+
+    for _, chestType in ipairs(ChestPriority) do
+        local chests = GetChestsByType(chestType)
+        if #chests > 0 then
+            local pick = chests[math.random(1, #chests)]
+            log("GetBestAvailableChest: picked PRIORITY", chestType, "->", pick:GetFullName())
+            return pick, chestType
+        end
+    end
+
+    log("GetBestAvailableChest: no priority chests, falling back to regular...")
+
+    local regularChests = {}
+    for _, name in ipairs(RegularChestNames) do
+        for _, c in ipairs(GetChestsByType(name)) do
+            table.insert(regularChests, c)
+        end
+    end
+
+    if #regularChests > 0 then
+        local closest = GetClosestChest(regularChests)
+        log("GetBestAvailableChest: picked CLOSEST regular ->", closest and closest:GetFullName() or "nil")
+        return closest, "Chest_p"
+    end
+
+    warn_("GetBestAvailableChest: NO CHESTS AT ALL")
+    return nil, nil
+end
+
+-- =====================================================================
+-- Tween fly-to
+-- =====================================================================
+
+local function CancelActiveTween()
+    if ActiveTween then
+        log("CancelActiveTween: cancelling current tween")
+        pcall(function() ActiveTween:Cancel() end)
+        ActiveTween = nil
+    end
+end
+
+local function FlyToChest(chest)
+    log("FlyToChest: target =", chest and chest:GetFullName() or "nil")
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then
+        warn_("FlyToChest: no character")
+        return false
+    end
+
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then
+        warn_("FlyToChest: no HumanoidRootPart")
+        return false
+    end
+
+    local startPos = hrp.Position
+    local targetPos = chest.Position + Vector3.new(0, 5, 0)
+    local targetCFrame = CFrame.new(targetPos) * (hrp.CFrame - hrp.CFrame.Position)
+
+    local distance = (targetPos - startPos).Magnitude
+    local duration = math.max(distance / FlySpeed, 0.05)
+
+    log("FlyToChest: distance =", math.floor(distance), "duration =", string.format("%.2f", duration), "s")
+
+    CancelActiveTween()
+
+    local tweenInfo = TweenInfo.new(
+        duration,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.Out
+    )
+
+    local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, { CFrame = targetCFrame })
+    ActiveTween = tween
+    tween:Play()
+
+    local startTime = tick()
+    while ActiveTween == tween and tween.PlaybackState == Enum.PlaybackState.Playing do
+        if not ChestFarmEnabled then
+            log("FlyToChest: toggled off mid-flight")
+            CancelActiveTween()
+            return false
+        end
+        if tick() - startTime > duration + 2 then
+            warn_("FlyToChest: timeout exceeded, cancelling")
+            CancelActiveTween()
+            break
+        end
+        task.wait(0.03)
+    end
+
+    ActiveTween = nil
+    log("FlyToChest: arrived at", chest:GetFullName())
+    return true
+end
+
+-- =====================================================================
+-- Main loop
+-- =====================================================================
+
+local function StartChestsFarmLoop()
+    log("StartFarmLoop: loop started")
+
+    while ChestFarmEnabled do
+        log("---- new iteration ----")
+
+        local targetChest, chestType = GetBestAvailableChest()
+
+        if not targetChest then
+            warn_("StartFarmLoop: no chest found, waiting", FlyDelay, "s")
+            WindUI:Notify({
+                Title = "Warning",
+                Content = "No chests found!",
+                Image = "rbxassetid://4483345998",
+                Duration = 1
+            })
+            task.wait(FlyDelay)
+        else
+            local arrived = FlyToChest(targetChest)
+
+            if arrived and ChestFarmEnabled then
+                log("StartFarmLoop: arrived, waiting 0.05s before spam")
+                task.wait(0.05)
+                SpamChestPrompt(targetChest)
+            else
+                log("StartFarmLoop: did not arrive (cancelled/off)")
+            end
+
+            if ChestFarmEnabled then
+                log("StartFarmLoop: waiting", FlyDelay, "s before next chest")
+                task.wait(FlyDelay)
+            end
+        end
+    end
+
+    log("StartFarmLoop: loop ended (toggled off)")
+end
+
+-- =====================================================================
+-- Toggle
+-- =====================================================================
+
+ToggleChestFarm = function(Value)
+    log("ToggleChestFarm called with:", Value)
+    ChestFarmEnabled = Value
+
+    if Value then
+        log("Pre-loading chests...")
+        for _, chestType in ipairs(ChestPriority) do
+            GetChestsByType(chestType)
+        end
+        for _, chestType in ipairs(RegularChestNames) do
+            GetChestsByType(chestType)
+        end
+
+        log("Spawning farm loop...")
+        task.spawn(StartFarmLoop)
+
+        WindUI:Notify({
+            Title = "Enabled!",
+            Content = "Chest farm ON | Priority → Closest Regular",
+            Image = "rbxassetid://4483345998",
+            Duration = 3
+        })
+    else
+        log("Cancelling active tween...")
+        CancelActiveTween()
+        WindUI:Notify({
+            Title = "Disabled!",
+            Content = "Chest farm OFF",
+            Image = "rbxassetid://4483345998",
+            Duration = 2
+        })
+    end
+end
+
+-- =====================================================================
+-- Toggle UI — matching your example format
+-- =====================================================================
+
+local AutoChestFarmToggle = Tab:Toggle({
+    Title = "Auto Chests Farm",
+    Desc = "Flies to priority chests; falls back to closest regular chest.",
+    Icon = "package",              -- lucide icon name or "rbxassetid://..."
+    Value = false,
+    Type = "Toggle",               -- "Toggle" or "Checkbox"
+    Locked = false,
+    Flag = "auto_chest_farm",      -- for config saving
+    Callback = function(state)
+        log("Toggle callback fired with:", state)
+        ToggleChestFarm(state)
+    end
+})
+
+-- Variables
+local EggFarmEnabled = false
+local TeleportDelay = 0.5        -- Teleport to a new egg every 0.5 seconds
+local SpamDelay = 0.01           -- Spam the prompt every 0.01 seconds
+local SpamAmount = 50            -- How many times to spam per egg
+
+-- Function to spam a specific egg's prompt and set HoldDuration to 0
+local function SpamEggPrompt(egg)
+    local proximityPrompt = egg:FindFirstChildOfClass("ProximityPrompt")
+    
+    if proximityPrompt then
+        -- Set hold duration to 0 for instant activation
+        proximityPrompt.HoldDuration = 0
+        
+        -- Spam the prompt rapidly (every 0.01 seconds)
+        for i = 1, SpamAmount do
+            fireproximityprompt(proximityPrompt)
+            task.wait(SpamDelay)  -- 0.01 second between spams
+        end
+        
+        return true
+    end
+    return false
+end
+
+-- Function to find all Magic Egg_p eggs and set their HoldDuration to 0
+local function GetAllEggs()
+    local otherFolder = workspace:FindFirstChild("other")
+    if not otherFolder then 
+        return {}
+    end
+    
+    local eggs = {}
+    for _, egg in pairs(otherFolder:GetDescendants()) do
+        if egg:IsA("MeshPart") and egg.Name == "Magic Egg_p" then
+            -- Set HoldDuration to 0 for this egg's ProximityPrompt
+            local prompt = egg:FindFirstChildOfClass("ProximityPrompt")
+            if prompt then
+                prompt.HoldDuration = 0
+            end
+            table.insert(eggs, egg)
+        end
+    end
+    return eggs
+end
+
+-- Function to teleport to an egg
+local function TeleportToEgg(egg)
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then return false end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return false end
+    
+    -- Teleport above the egg
+    humanoidRootPart.CFrame = egg.CFrame + Vector3.new(0, 5, 0)
+    return true
+end
+
+-- Main farm loop
+local function StartEggsFarmLoop()
+    while EggFarmEnabled do
+        -- Get all available eggs and set their HoldDuration to 0
+        local eggs = GetAllEggs()
+        
+        if #eggs == 0 then
+            WindUI:Notify({
+                Title = "Warning",
+                Content = "No Magic Egg_p found in workspace.other!",
+                Image = "rbxassetid://4483345998",
+                Duration = 1
+            })
+            task.wait(TeleportDelay)
+        else
+            -- Pick a random egg
+            local targetEgg = eggs[math.random(1, #eggs)]
+            
+            -- Teleport to the egg
+            TeleportToEgg(targetEgg)
+            
+            -- Wait a tiny moment for server to register position
+            task.wait(0.05)
+            
+            -- SPAM THE PROMPT RAPIDLY (every 0.01 seconds)
+            SpamEggPrompt(targetEgg)
+            
+            -- Wait before teleporting to next egg
+            task.wait(TeleportDelay)
+        end
+    end
+end
+
+-- Main toggle function
+local function ToggleEggFarm(Value)
+    EggFarmEnabled = Value
+    
+    if Value then
+        -- First, find all eggs and set their HoldDuration to 0
+        local eggs = GetAllEggs()
+        for _, egg in pairs(eggs) do
+            local prompt = egg:FindFirstChildOfClass("ProximityPrompt")
+            if prompt then
+                prompt.HoldDuration = 0
+            end
+        end
+        
+        -- Start the farm loop
+        task.spawn(function()
+            StartFarmLoop()
+        end)
+        
+        WindUI:Notify({
+            Title = "Enabled!",
+            Content = "Egg farm ON | Teleport: " .. TeleportDelay .. "s | Spam: 0.01s",
+            Image = "rbxassetid://4483345998",
+            Duration = 3
+        })
+    else
+        WindUI:Notify({
+            Title = "Disabled!",
+            Content = "Egg farm OFF",
+            Image = "rbxassetid://4483345998",
+            Duration = 2
+        })
+    end
+end
+
+-- Main Toggle
+Tab:Toggle({
+    Title = "Auto Eggs Farm",
+    Value = false,
+    Callback = function(Value)
+        ToggleEggFarm(Value)
+    end    
+})
+
+-- Variables
+local AutoUseEnabled = false
+local AutoUseConnection = nil
+local UseDelay = 0.01  -- Delay between using items (seconds)
+
+-- Item names to look for
+local TargetItems = {
+    "Chest",
+    "Magic Egg"
+}
+
+-- Function to find items in backpack/hotbar
+local function FindTargetItems()
+    local player = game.Players.LocalPlayer
+    local backpack = player:FindFirstChild("Backpack")
+    local character = player.Character
+    local items = {}
+    
+    -- Check Backpack
+    if backpack then
+        for _, item in pairs(backpack:GetChildren()) do
+            for _, targetName in pairs(TargetItems) do
+                if item.Name == targetName or item.Name:find(targetName) then
+                    table.insert(items, item)
+                    break
+                end
+            end
+        end
+    end
+    
+    -- Check Character (already equipped tools)
+    if character then
+        for _, item in pairs(character:GetChildren()) do
+            if item:IsA("Tool") then
+                for _, targetName in pairs(TargetItems) do
+                    if item.Name == targetName or item.Name:find(targetName) then
+                        table.insert(items, item)
+                        break
+                    end
+                end
+            end
+        end
+    end
+    
+    return items
+end
+
+-- Function to equip a tool
+local function EquipTool(tool)
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then return false end
+    
+    -- If tool is in backpack, equip it
+    if tool.Parent == player:FindFirstChild("Backpack") then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid:EquipTool(tool)
+            task.wait(0.01)  -- Wait for equip animation
+            return true
+        end
+    end
+    
+    -- If tool is already in character, it's equipped
+    if tool.Parent == character then
+        return true
+    end
+    
+    return false
+end
+
+-- Function to use/activate an item
+local function UseItem(item)
+    -- Method 1: Fire Tool's activated event
+    if item:IsA("Tool") then
+        -- Try to activate the tool
+        local activatedEvent = item:FindFirstChild("Activated")
+        if activatedEvent then
+            activatedEvent:FireServer()
+        end
+        
+        -- Try clicking the tool
+        local clickDetector = item:FindFirstChildOfClass("ClickDetector")
+        if clickDetector then
+            clickDetector:Click()
+        end
+        
+        -- Try firing remote events commonly used for opening
+        local remote = item:FindFirstChild("RemoteEvent") or item:FindFirstChild("OpenEvent")
+        if remote then
+            remote:FireServer()
+        end
+        
+        -- Try using tool's function
+        if item.Activate then
+            item:Activate()
+        end
+    end
+    
+    -- Method 2: Look for ProximityPrompt
+    local proximityPrompt = item:FindFirstChildOfClass("ProximityPrompt")
+    if proximityPrompt then
+        proximityPrompt.HoldDuration = 0
+        fireproximityprompt(proximityPrompt)
+    end
+    
+    -- Method 3: Try clicking the item itself
+    local clickDetector = item:FindFirstChildOfClass("ClickDetector")
+    if clickDetector then
+        clickDetector:Click()
+    end
+    
+    -- Method 4: Fire all remote events as a last resort
+    for _, child in pairs(item:GetChildren()) do
+        if child:IsA("RemoteEvent") or child:IsA("BindableEvent") then
+            child:FireServer()
+        end
+    end
+    
+    return true
+end
+
+-- Function to parent item to character (force equip)
+local function ForceEquipItem(item)
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then return false end
+    
+    -- If item is a tool, equip it properly
+    if item:IsA("Tool") then
+        -- Unequip current tool first
+        local currentTool = character:FindFirstChildOfClass("Tool")
+        if currentTool then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:UnequipTool(currentTool)
+                task.wait(0.01)
+            end
+        end
+        
+        -- Equip new tool
+        if item.Parent ~= character then
+            item.Parent = character
+            task.wait(0.01)
+        end
+        
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid:EquipTool(item)
+        end
+        return true
+    end
+    
+    return false
+end
+
+-- Main auto-use loop
+local function StartAutoUseLoop()
+    while AutoUseEnabled do
+        local items = FindTargetItems()
+        
+        if #items == 0 then
+            -- No items found, wait and check again
+            task.wait(UseDelay)
+        else
+            for _, item in pairs(items) do
+                if not AutoUseEnabled then break end
+                
+                -- Equip the item
+                local equipped = EquipTool(item)
+                if not equipped then
+                    ForceEquipItem(item)
+                end
+                
+                -- Wait a moment after equipping
+                task.wait(0.01)
+                
+                -- Use/activate the item
+                UseItem(item)
+                
+                -- Show notification for which item was used
+                WindUI:Notify({
+                    Title = "Used Item",
+                    Content = "Used: " .. item.Name,
+                    Image = "rbxassetid://4483345998",
+                    Duration = 1
+                })
+                
+                -- Wait before using next item
+                task.wait(UseDelay)
+            end
+        end
+    end
+end
+
+-- Main toggle function
+local function ToggleAutoUse(Value)
+    AutoUseEnabled = Value
+    
+    if Value then
+        -- Start the auto-use loop
+        task.spawn(function()
+            StartAutoUseLoop()
+        end)
+        
+        WindUI:Notify({
+            Title = "Auto Use Enabled!",
+            Content = "Auto opening Chests & Magic Eggs from inventory",
+            Image = "rbxassetid://4483345998",
+            Duration = 3
+        })
+    else
+        WindUI:Notify({
+            Title = "Auto Use Disabled",
+            Content = "Stopped using items",
+            Image = "rbxassetid://4483345998",
+            Duration = 2
+        })
+    end
+end
+
+-- Add the toggle to your tab
+Tab:Toggle({
+    Title = "Auto Use Chests & Magic Eggs",
+    Value = false,
+    Callback = function(Value)
+        ToggleAutoUse(Value)
+    end    
+})
+
+Tab:Paragraph({Title = "Note:", Desc = [[
+I just have no idea what stuff to add here tell me on discord and i will add here
+]]})
+
+--CHANGELOGS
+local Tab = Window:Tab({Title = "Changelogs",
+ Icon = "rbxassetid://8997387937",
+ PremiumOnly = false
+ })
+
+local Section = Tab:Section({Title = "Changelogs Info"
+})
+
+Tab:Paragraph({
+        Title = "V. 2.0.5:",
+        Desc = [[
+[/] Rewritted Orion UI Into Wind UI
+[x] Fixed Auto Chests Farm Toggle (Changed Teleport Delay To 2 Seconds Instead 0.5 Seconds)
+
+Settings:
+[+] = Added
+[x] = Fixed/Changed/Improved/Moved
+[&] = Revived
+[-] = Removed
+[/] = Everything/Anything
+[?] = Missing
+        ]]
+    })
+
+
+Tab:Paragraph({Title = "V. 1.0.4", Desc = [[
+[x] Fixed Auto Chests Farm Toggle (Was Auto Banning Cuz Too Fast Collecting)
+[+] Added More Chests Types To Auto Chest Farm Toggle (Normal, Dark, Light and Skin)
+[+] Added Auto Eggs Farm Toggle
+[+] Added Auto Use Chests & Magic Eggs Toggle
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]]})
+
+Tab:Paragraph({Title = "V. 1.0.0", Desc = [[
+[+] SCRIPT RELEASED
+
+
+Settings:
+
+[+] = Added
+[x] = Fixed/Changed
+[-] = Removed
+]]})
+
+--CREDITS
+local Tab = Window:Tab({Title = "Credits",
+ Icon = "rbxassetid://7743875759",
+ PremiumOnly = false
+ })
+
+local Section = Tab:Section({Title = "Credits Users"
+})
+
+Tab:Paragraph({Title = "Scripter - (Youtube, Discord)"})
+
+local Section = Tab:Section({Title = "Helpers"
+})
+
+Tab:Paragraph({Title = "None"})
+
+local Section = Tab:Section({Title = "Links"
+})
+
+Tab:Button({
+ Title = "Scripter (Youtube)",
+ Callback = function()
+setclipboard("https://www.youtube.com/@Scripter-Coder")
+end
+})
+
+Tab:Button({
+ Title = "Scripter (Discord)",
+ Callback = function()
+setclipboard("https://discord.gg/k8vJHZM6")
+end
+})
+
+--SETTINGS
+local Tab = Window:Tab({Title = "Settings",
+ Icon = "rbxassetid://7734053495",
+ PremiumOnly = false
+ })
+
+local Section = Tab:Section({Title = "Server Settings"
+})
+
+Tab:Button({
+    Title = "Rejoin",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jelly-plays/Rejoin-script/main/obf_L744By559M18BbuseSG6en8r1zL31daK9060LV7WyvmS4bQp92aONWfwRE36FdcZ.lua.txt"))();
+    end
+})
+
+Tab:Button({
+    Title = "ServerHop (Regular Server)",
+    Callback = function()
+local PlaceID = game.PlaceId
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+function TPReturner()
+    local Site;
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    local num = 0;
+    for i,v in pairs(Site.data) do
+        local Possible = true
+        ID = tostring(v.id)
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+            for _,Existing in pairs(AllIDs) do
+                if num ~= 0 then
+                    if ID == tostring(Existing) then
+                        Possible = false
+                    end
+                else
+                    if tonumber(actualHour) ~= tonumber(Existing) then
+                        local delFile = pcall(function()
+                            delfile("NotSameServers.json")
+                            AllIDs = {}
+                            table.insert(AllIDs, actualHour)
+                        end)
+                    end
+                end
+                num = num + 1
+            end
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                task.wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    task.wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                task.wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while true do
+        task.wait()
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+-- If you'd like to use a script before server hopping Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+Teleport()
+    end
+})
+
+Tab:Button({
+    Title = "ServerHop (Small Server)",
+    Callback = function()
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game:GetService('Players').LocalPlayer)
+    end
+})
+
+Tab:Button({
+ Title = "Reset Player",
+ Callback = function()
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+  end
+})
+
+local Section = Tab:Section({Title = "Destroy Script"
+})
+
+Tab:Button({
+ Title = "Destroy Gui",
+ Callback = function()
+Window:Destroy()
+  end
+})
+
+local OtherSettingsTab = Window:Tab({
+    Title = "Other Settings",
+    Icon = "sliders-horizontal"
+})
+
+local ThemesSection = OtherSettingsTab:Section({
+    Title = "Themes"
+})
+
+local Themes = WindUI:GetThemes()
+local ThemeNames = {}
+for _, theme in pairs(Themes) do
+    if type(theme) == "table" and theme.Name then
+        table.insert(ThemeNames, theme.Name)
+    elseif type(theme) == "string" then
+        table.insert(ThemeNames, theme)
+    end
+end
+
+OtherSettingsTab:Dropdown({
+    Title = "UI Theme",
+    Desc = "Switches the visual style of the whole interface",
+    Icon = "palette",
+    Values = ThemeNames,
+    Value = "Dark",
+    Flag = "UITheme",
+    Callback = function(selected)
+        WindUI:SetTheme(selected)
+    end
+})
+
+local OtherDestroySection = OtherSettingsTab:Section({
+    Title = "Destroy Script"
+})
+
+OtherSettingsTab:Button({
+    Title = "Destroy Gui",
+    Desc = "Unloads the script and removes the interface",
+    Icon = "trash-2",
+    Callback = function()
+        Window:Destroy()
+    end
+})
+
+end
