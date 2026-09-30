@@ -9,3 +9,9 @@ StarterGui:SetCore("SendNotification", {
 	Text = "Script is outdated and it has been rewritten entirely to get new script join discord server, link copied to ur clipboard",
 	Duration = 10 -- How long the notification stays on screen (in seconds)
 })
+
+StarterGui:SetCore("SendNotification", {
+	Title = "NOTE",
+	Text = "This old loadstring will be removed in 24 hours",
+	Duration = 10 -- How long the notification stays on screen (in seconds)
+})
