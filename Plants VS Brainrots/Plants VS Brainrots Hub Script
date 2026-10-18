@@ -1,7 +1,7 @@
 -- ScripterHub loader
-local u="https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub8112070810"
+local u="https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub0683959942"
 local d="sh_static"
-local p=d.."/init-".."ScripterHub8112070810"..".lua"
+local p=d.."/init-".."ScripterHub0683959942"..".lua"
 pcall(makefolder,d)
 local a
 pcall(function() a=readfile(p) end)
@@ -14,4 +14,4 @@ if type(a)~="string" or #a<2000 then
 end
 local f,e=loadstring(a)
 if not f then error("[ScripterHub] could not load the script: "..tostring(e),0) end
-return f("ScripterHub8112070810")
+return f("ScripterHub0683959942")
