@@ -1,17 +1,1 @@
--- ScripterHub loader
-local u="https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub2647093698"
-local d="sh_static"
-local p=d.."/init-".."ScripterHub2647093698"..".lua"
-pcall(makefolder,d)
-local a
-pcall(function() a=readfile(p) end)
-if type(a)~="string" or #a<2000 then
-  local r
-  if request then local ok,res=pcall(request,{Url=u,Method="GET",Headers={["User-Agent"]="Roblox/570 Delta Executor"}}) if ok and type(res)=="table" then r=res.Body end end
-  if type(r)~="string" or #r<2 then pcall(function() r=game:HttpGet(u) end) end
-  if type(r)=="string" and #r>2000 then pcall(function() writefile(p,r) end) end
-  a=r
-end
-local f,e=loadstring(a)
-if not f then error("[ScripterHub] could not load the script: "..tostring(e),0) end
-return f("ScripterHub2647093698")
+loadstring(game:HttpGet("https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub5644903536"))()
