@@ -1,1 +1,202 @@
+task.wait() -- set more time if your device can't take fast loading
 
+local slappleFarm = false -- set "false" if you dont need slapples
+local candyCornFarm = true -- set "true" if you want candy corn
+
+local player = game.Players.LocalPlayer
+
+-- ============================================================
+-- QUEUE ON TELEPORT — paste your whole script source here
+-- so it auto re-executes on the next server
+-- ============================================================
+local SCRIPT_SOURCE = [==[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripter-Coder/Scripter-Coder/refs/heads/main/Slap%20Battles/Candy%20Cones%20Farm"))()
+]==]
+
+if type(queue_on_teleport) == "function" and #SCRIPT_SOURCE > 50 then
+    pcall(queue_on_teleport, SCRIPT_SOURCE)
+end
+
+-- ============================================================
+-- HELPERS
+-- ============================================================
+local function getCandyCorns()
+    return workspace:FindFirstChild("CandyCorns")
+end
+
+-- Returns true if CandyCorns exists and has at least one BasePart inside
+local function candyCornsHasParts()
+    local candy = getCandyCorns()
+    if not candy then return false end
+    for _, v in pairs(candy:GetDescendants()) do
+        if v:IsA("BasePart") then
+            return true
+        end
+    end
+    return false
+end
+
+-- Pull every BasePart in CandyCorns to the player's HRP
+local function pullCandy()
+    local character = player.Character
+    local hrp = character and character:FindFirstChild("HumanoidRootPart")
+    local candy = getCandyCorns()
+    if not hrp or not candy then return end
+    for _, v in pairs(candy:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.CFrame = hrp.CFrame
+        end
+        for _, d in pairs(v:GetDescendants()) do
+            if d:IsA("BasePart") then
+                d.CFrame = hrp.CFrame
+            end
+        end
+    end
+end
+
+-- ============================================================
+-- SERVER HOP
+-- ============================================================
+local hopping = false
+
+local function serverHop()
+    if hopping then return end
+    hopping = true
+
+    local PlaceID = game.PlaceId
+    local AllIDs = {}
+    local foundAnything = ""
+    local actualHour = os.date("!*t").hour
+
+    local File = pcall(function()
+        AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+    end)
+
+    if not File then
+        table.insert(AllIDs, actualHour)
+        writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+    end
+
+    local function TPReturner()
+        local Site
+        if foundAnything == "" then
+            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+        else
+            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+        end
+
+        if Site.nextPageCursor and Site.nextPageCursor ~= "null" then
+            foundAnything = Site.nextPageCursor
+        end
+
+        for _, v in pairs(Site.data) do
+            local ID = tostring(v.id)
+            local Possible = true
+
+            if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                for _, Existing in pairs(AllIDs) do
+                    if ID == tostring(Existing) then
+                        Possible = false
+                        break
+                    end
+                end
+
+                if Possible then
+                    table.insert(AllIDs, ID)
+                    pcall(function()
+                        writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                        game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, player)
+                    end)
+                    task.wait()
+                end
+            end
+        end
+    end
+
+    pcall(TPReturner)
+
+    -- fallback if no server found
+    task.wait()
+    pcall(function()
+        game:GetService("TeleportService"):Teleport(PlaceID, player)
+    end)
+end
+
+-- ============================================================
+-- MAIN FARM FUNCTION
+-- ============================================================
+local function teleport()
+    -- initial teleport into the arena
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        if game.PlaceId == 124596094333302 then
+            local tp = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("Teleport1")
+            if tp then character.HumanoidRootPart.CFrame = tp.CFrame end
+        else
+            local tp = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("Teleport2")
+            if tp then character.HumanoidRootPart.CFrame = tp.CFrame end
+        end
+    end
+
+    task.wait()
+
+    -- initial 20-iteration farm burst (same as original)
+    for i = 1, 20 do
+        if slappleFarm then
+            local char = player.Character
+            if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("entered") then
+                local slapples = workspace.Arena and workspace.Arena.island5 and workspace.Arena.island5:FindFirstChild("Slapples")
+                if slapples then
+                    for _, v in pairs(slapples:GetChildren()) do
+                        if (v.Name:lower() == "slapple" or v.Name:lower() == "goldenslapple") then
+                            local glove = v:FindFirstChild("Glove")
+                            if glove and glove:FindFirstChildWhichIsA("TouchTransmitter") then
+                                glove.CFrame = char.HumanoidRootPart.CFrame
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if candyCornFarm then
+            pullCandy()
+        end
+
+        task.wait()
+    end
+
+    task.wait()
+
+    -- ============================================================
+    -- KEEP FARMING UNTIL CandyCorns IS EMPTY, THEN HOP
+    -- ============================================================
+    if candyCornFarm then
+        while candyCornsHasParts() do
+            pullCandy()
+            task.wait()
+        end
+
+        -- grace period to make sure it's not a transient reload
+        task.wait()
+        if not candyCornsHasParts() then
+            serverHop()
+            return
+        end
+    end
+
+    -- fallback: if candy farm is off, just hop
+    serverHop()
+end
+
+-- ============================================================
+-- START
+-- ============================================================
+if player.Character then
+    teleport()
+else
+    player.CharacterAdded:Connect(function()
+        task.wait()
+        teleport()
+    end)
+end
