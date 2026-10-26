@@ -2,36 +2,52 @@
 --ok idc its easy as fuck 😭
 
 -- ============================================================
--- FARM SETTINGS (override via getgenv before loadstring)
+-- ROBLOX CORE NOTIFICATION HELPER
+-- ============================================================
+local StarterGui = game:GetService("StarterGui")
+
+local function notify(title, text)
+    pcall(function()
+        StarterGui:SetCore("SendNotification", {
+            Title = tostring(title),
+            Text = tostring(text),
+            Duration = 3
+        })
+    end)
+end
+
+-- ============================================================
+-- FARM SETTINGS
 -- ============================================================
 getgenv().CandyCornFarmSettings = getgenv().CandyCornFarmSettings or {
-    [PhaseOrb] = true,
-    [JetOrb] = true,
-    [GlitchOrb] = true,
-    [SiphonOrb] = true,
-    [MATERIALIZEOrb] = true,
-    [Slapple] = true,
-    [GoldenSlapple] = true,
-    [Toolbox] = true,
-    [CandyCorns] = true,
-    [Gravestone] = true,
+    ["PhaseOrb"] = true,
+    ["JetOrb"] = true,
+    ["GlitchOrb"] = true,
+    ["SiphonOrb"] = true,
+    ["MATERIALIZEOrb"] = true,
+    ["Slapple"] = true,
+    ["GoldenSlapple"] = true,
+    ["Toolbox"] = true,
+    ["CandyCorns"] = true,
+    ["Gravestone"] = true,
 }
 
 -- ============================================================
 -- SHARED
 -- ============================================================
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
 local LocalPlayer = Players.LocalPlayer
-
+local PlaceId = game.PlaceId
 local FARMSettings = getgenv().CandyCornFarmSettings
 
+local STAGING_CFRAME = CFrame.new(-1308, 328, 4)
+
 -- ============================================================
--- STATS FILE (persistent across hops)
+-- STATS FILE
 -- ============================================================
 local STATS_FILE = "SB Farm V2"
-
 local STAT_KEYS = {
     "PhaseOrb", "JetOrb", "GlitchOrb", "SiphonOrb",
     "MATERIALIZEOrb", "Slapple", "GoldenSlapple",
@@ -39,47 +55,39 @@ local STAT_KEYS = {
 }
 
 local stats = {}
-for _, k in ipairs(STAT_KEYS) do
-    stats[k] = 0
-end
+for _, k in ipairs(STAT_KEYS) do stats[k] = 0 end
 
--- Load existing stats if file exists
 pcall(function()
     if isfile(STATS_FILE) then
         local raw = readfile(STATS_FILE)
         if raw and raw ~= "" then
             for line in raw:gmatch("[^\r\n]+") do
                 local key, value = line:match("^(.-):%s*(%d+)$")
-                if key and value then
-                    if stats[key] ~= nil then
-                        stats[key] = tonumber(value) or 0
-                    end
+                if key and value and stats[key] ~= nil then
+                    stats[key] = tonumber(value) or 0
                 end
             end
         end
     end
 end)
 
--- Write stats back to file
 local function saveStats()
     local lines = {}
     for _, k in ipairs(STAT_KEYS) do
         table.insert(lines, k .. ": " .. tostring(stats[k]))
     end
-    local text = table.concat(lines, "\n")
-    pcall(function()
-        writefile(STATS_FILE, text)
-    end)
+    pcall(writefile, STATS_FILE, table.concat(lines, "\n"))
 end
 
--- Increment a stat and save
 local function incStat(key)
     if stats[key] == nil then return end
     stats[key] = stats[key] + 1
     saveStats()
+    
+    -- Send CoreGui Notification
+    notify("Farm Found", key .. " (Total: " .. stats[key] .. ")")
 end
 
--- Write initial file so it exists from the start
 saveStats()
 
 -- ============================================================
@@ -91,133 +99,233 @@ local function getRoot()
     return char:FindFirstChild("HumanoidRootPart")
 end
 
-local function moveTo(cf)
+local function tpTo(cf)
     local hrp = getRoot()
     if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.AssemblyAngularVelocity = Vector3.zero
         hrp.CFrame = cf
     end
 end
 
-local function isPart(obj)
-    return obj and obj:IsA("BasePart")
-end
-
-local function findWorkspacePart(name)
-    local obj = workspace:FindFirstChild(name)
-    if not obj then return nil end
-    if isPart(obj) then return obj end
-    if obj:IsA("Model") then
-        local named = obj:FindFirstChild(name)
-        if isPart(named) then return named end
-        local primary = obj.PrimaryPart
-        if isPart(primary) then return primary end
-        local firstPart = obj:FindFirstChildWhichIsA("BasePart", true)
-        if isPart(firstPart) then return firstPart end
+local function getAllOrbs(name)
+    local results = {}
+    for _, obj in pairs(workspace:GetChildren()) do
+        if obj.Name == name and obj:IsA("BasePart") then
+            table.insert(results, obj)
+        end
     end
-    return nil
+    return results
 end
 
-local function findSlappleGlove(name)
+local function getAllSlapples(name)
+    local results = {}
     local arena = workspace:FindFirstChild("Arena")
-    if not arena then return nil end
+    if not arena then return results end
     local island5 = arena:FindFirstChild("island5")
-    if not island5 then return nil end
+    if not island5 then return results end
     local slapples = island5:FindFirstChild("Slapples")
-    if not slapples then return nil end
-    local slapple = slapples:FindFirstChild(name)
-    if not slapple then return nil end
-    local glove = slapple:FindFirstChild("Glove")
-    if not isPart(glove) then return nil end
-    if glove.Transparency >= 1 then return nil end
-    return glove
-end
-
-local function findToolboxClickDetector()
-    local toolbox = workspace:FindFirstChild("Toolbox")
-    if not toolbox then return nil end
-    if toolbox:IsA("ClickDetector") then return toolbox end
-    return toolbox:FindFirstChildWhichIsA("ClickDetector", true)
-end
-
-local function collectCandyCorns()
-    local candy = workspace:FindFirstChild("CandyCorns")
-    if not candy then return false end
-    local hrp = getRoot()
-    if not hrp then return false end
-
-    local collected = 0
-    for _, obj in pairs(candy:GetDescendants()) do
-        if isPart(obj) then
-            local ti = obj:FindFirstChild("TouchInterest")
-            if not ti then
-                ti = obj:FindFirstChildWhichIsA("TouchInterest", true)
-            end
-            if ti then
-                pcall(function()
-                    firetouchinterest(hrp, obj, 0)
-                    firetouchinterest(hrp, obj, 1)
-                end)
-                collected = collected + 1
+    if not slapples then return results end
+    
+    for _, slapple in pairs(slapples:GetChildren()) do
+        if slapple.Name == name then
+            local glove = slapple:FindFirstChild("Glove")
+            if glove and glove:IsA("BasePart") and glove.Transparency < 1 then
+                table.insert(results, glove)
             end
         end
     end
-    return collected > 0
+    return results
 end
 
-local function hasGravestone()
-    return workspace:FindFirstChild("Gravestone") ~= nil
+local function getAllToolboxes()
+    local results = {}
+    for _, t in pairs(workspace:GetChildren()) do
+        if t.Name == "Toolbox" then
+            local cd = t:FindFirstChildWhichIsA("ClickDetector", true)
+            if cd then
+                table.insert(results, cd)
+            end
+        end
+    end
+    return results
+end
+
+local function getAllGravestones()
+    local results = {}
+    for _, obj in pairs(workspace:GetChildren()) do
+        if obj.Name == "Gravestone" then
+            table.insert(results, obj)
+        end
+    end
+    return results
 end
 
 -- ============================================================
--- ORDERED TARGET LIST
+-- SERVER HOP
 -- ============================================================
-local TARGET_ORDER = {
-    { key = "PhaseOrb",       handler = function() return findWorkspacePart("PhaseOrb") end },
-    { key = "JetOrb",         handler = function() return findWorkspacePart("JetOrb") end },
-    { key = "GlitchOrb",      handler = function() return findWorkspacePart("GlitchOrb") end },
-    { key = "SiphonOrb",      handler = function() return findWorkspacePart("SiphonOrb") end },
-    { key = "MATERIALIZEOrb", handler = function() return findWorkspacePart("MATERIALIZEOrb") end },
-    { key = "Slapple",        handler = function() return findSlappleGlove("Slapple") end },
-    { key = "GoldenSlapple",  handler = function() return findSlappleGlove("GoldenSlapple") end },
-    { key = "Toolbox",        handler = function() return findToolboxClickDetector() end },
-}
+local function serverHop()
+    notify("Farm", "Server hopping...")
+    
+    local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+    local ok, body = pcall(function() return game:HttpGet(url) end)
+    if ok and type(body) == "string" then
+        local ok2, data = pcall(function() return HttpService:JSONDecode(body) end)
+        if ok2 and data and data.data then
+            for _, srv in ipairs(data.data) do
+                local sid = tostring(srv.id)
+                local curP = tonumber(srv.playing) or 0
+                local maxP = tonumber(srv.maxPlayers) or 0
+                if sid ~= game.JobId and maxP > curP then
+                    pcall(function()
+                        TeleportService:TeleportToPlaceInstance(PlaceId, sid, LocalPlayer)
+                    end)
+                    return
+                end
+            end
+        end
+    end
+    pcall(function()
+        TeleportService:Teleport(PlaceId, LocalPlayer)
+    end)
+end
 
 -- ============================================================
 -- FARM LOOP
 -- ============================================================
 local farming = false
+local emptyCount = 0
+local lastEnteredState = false
 
-local function doFarmTick()
+local function doTick()
+    local char = LocalPlayer.Character
     local hrp = getRoot()
-    if not hrp then return end
+    if not hrp or not char then return end
 
-    for _, target in ipairs(TARGET_ORDER) do
-        if FARMSettings[target.key] then
-            local found = target.handler()
-            if found then
-                if target.key == "Toolbox" then
-                    pcall(fireclickdetector, found)
-                    incStat("Toolbox")
-                else
-                    moveTo(found.CFrame)
-                    incStat(target.key)
+    -- 1. Check if in arena
+    local hasEntered = char:FindFirstChild("entered")
+    
+    if not hasEntered then
+        if lastEnteredState then
+            lastEnteredState = false
+            notify("Farm", "Lost 'entered' tag, going to staging position...")
+        end
+        tpTo(STAGING_CFRAME)
+        task.wait(0.1)
+        return
+    end
+    
+    if not lastEnteredState then
+        lastEnteredState = true
+        notify("Farm", "Entered Arena! Starting collection.")
+    end
+
+    local foundAny = false
+
+    -- Helper to process lists of targets
+    local function processList(list, category)
+        for _, target in ipairs(list) do
+            if target and target.Parent then
+                if target:IsA("BasePart") then
+                    tpTo(target.CFrame)
                 end
-                task.wait(0.3)
-                return
+                task.wait(0.1)
+                
+                if category == "Toolbox" and type(fireclickdetector) == "function" then
+                    pcall(fireclickdetector, target)
+                end
+                
+                incStat(category)
+                foundAny = true
             end
         end
     end
 
-    if FARMSettings.CandyCorns then
-        if collectCandyCorns() then
-            incStat("CandyCorns")
+    if FARMSettings["PhaseOrb"] then
+        processList(getAllOrbs("PhaseOrb"), "PhaseOrb")
+        if foundAny then return end
+    end
+
+    if FARMSettings["JetOrb"] then
+        processList(getAllOrbs("JetOrb"), "JetOrb")
+        if foundAny then return end
+    end
+
+    if FARMSettings["GlitchOrb"] then
+        processList(getAllOrbs("GlitchOrb"), "GlitchOrb")
+        if foundAny then return end
+    end
+
+    if FARMSettings["SiphonOrb"] then
+        processList(getAllOrbs("SiphonOrb"), "SiphonOrb")
+        if foundAny then return end
+    end
+
+    if FARMSettings["MATERIALIZEOrb"] then
+        processList(getAllOrbs("MATERIALIZEOrb"), "MATERIALIZEOrb")
+        if foundAny then return end
+    end
+
+    if FARMSettings["Slapple"] then
+        processList(getAllSlapples("Slapple"), "Slapple")
+        if foundAny then return end
+    end
+
+    if FARMSettings["GoldenSlapple"] then
+        processList(getAllSlapples("GoldenSlapple"), "GoldenSlapple")
+        if foundAny then return end
+    end
+
+    if FARMSettings["Toolbox"] then
+        processList(getAllToolboxes(), "Toolbox")
+        if foundAny then return end
+    end
+
+    if FARMSettings["Gravestone"] then
+        local stones = getAllGravestones()
+        if #stones > 0 then
+            for _ in ipairs(stones) do incStat("Gravestone") end
+            foundAny = true
+            return
         end
     end
 
-    if FARMSettings.Gravestone then
-        if hasGravestone() then
-            incStat("Gravestone")
+    if FARMSettings["CandyCorns"] then
+        local candy = workspace:FindFirstChild("CandyCorns")
+        if candy then
+            local hasParts = false
+            -- Physically move the baseparts to the player
+            for _, part in pairs(candy:GetChildren()) do
+                if part:IsA("BasePart") then
+                    hasParts = true
+                    part.CFrame = hrp.CFrame
+                end
+                -- Also check if they are inside models
+                for _, d in pairs(part:GetDescendants()) do
+                    if d:IsA("BasePart") then
+                        hasParts = true
+                        d.CFrame = hrp.CFrame
+                    end
+                end
+            end
+            
+            if hasParts then
+                incStat("CandyCorns")
+                foundAny = true
+            end
         end
+    end
+
+    -- 3. If nothing is found at all, server hop
+    if not foundAny then
+        emptyCount = emptyCount + 1
+        if emptyCount >= 3 then
+            emptyCount = 0
+            serverHop()
+            task.wait(1)
+        end
+    else
+        emptyCount = 0
     end
 end
 
@@ -225,16 +333,14 @@ local function startFarm()
     if farming then return end
     farming = true
     task.spawn(function()
+        task.wait(1)
         while farming do
-            pcall(doFarmTick)
-            task.wait(2)
+            pcall(doTick)
+            task.wait(0.1)
         end
     end)
 end
 
--- ============================================================
--- AUTO-START ON LOAD
--- ============================================================
 startFarm()
 
 getgenv().CandyCornFarm = {
