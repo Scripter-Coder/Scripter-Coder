@@ -1,0 +1,185 @@
+--hello, buddy are you here to skid?
+--ok idc its easy as fuck 😭
+
+-- ============================================================
+-- FARM SETTINGS (override via getgenv before loadstring)
+-- ============================================================
+getgenv().CandyCornFarmSettings = getgenv().CandyCornFarmSettings or {
+    [PhaseOrb] = true,
+    [JetOrb] = true,
+    [GlitchOrb] = true,
+    [SiphonOrb] = true,
+    [MATERIALIZEOrb] = true,
+    [Slapple] = true,
+    [GoldenSlapple] = true,
+    [Toolbox] = true,
+    [CandyCorns] = true,
+    [Gravestone] = true,
+}
+
+-- ============================================================
+-- SHARED
+-- ============================================================
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+local FARMSettings = getgenv().CandyCornFarmSettings
+
+-- ============================================================
+-- HELPERS
+-- ============================================================
+local function getRoot()
+    local char = LocalPlayer.Character
+    if not char then return nil end
+    return char:FindFirstChild("HumanoidRootPart")
+end
+
+local function moveTo(cf)
+    local hrp = getRoot()
+    if hrp then
+        hrp.CFrame = cf
+    end
+end
+
+local function isPart(obj)
+    return obj and obj:IsA("BasePart")
+end
+
+local function findWorkspacePart(name)
+    local obj = workspace:FindFirstChild(name)
+    if not obj then return nil end
+    if isPart(obj) then return obj end
+    if obj:IsA("Model") then
+        local named = obj:FindFirstChild(name)
+        if isPart(named) then return named end
+        local primary = obj.PrimaryPart
+        if isPart(primary) then return primary end
+        local firstPart = obj:FindFirstChildWhichIsA("BasePart", true)
+        if isPart(firstPart) then return firstPart end
+    end
+    return nil
+end
+
+local function findSlappleGlove(name)
+    local arena = workspace:FindFirstChild("Arena")
+    if not arena then return nil end
+    local island5 = arena:FindFirstChild("island5")
+    if not island5 then return nil end
+    local slapples = island5:FindFirstChild("Slapples")
+    if not slapples then return nil end
+    local slapple = slapples:FindFirstChild(name)
+    if not slapple then return nil end
+    local glove = slapple:FindFirstChild("Glove")
+    if not isPart(glove) then return nil end
+    if glove.Transparency >= 1 then return nil end
+    return glove
+end
+
+local function findToolboxClickDetector()
+    local toolbox = workspace:FindFirstChild("Toolbox")
+    if not toolbox then return nil end
+    if toolbox:IsA("ClickDetector") then return toolbox end
+    return toolbox:FindFirstChildWhichIsA("ClickDetector", true)
+end
+
+local function collectCandyCorns()
+    local candy = workspace:FindFirstChild("CandyCorns")
+    if not candy then return false end
+    local hrp = getRoot()
+    if not hrp then return false end
+
+    local collected = 0
+    for _, obj in pairs(candy:GetDescendants()) do
+        if isPart(obj) then
+            local ti = obj:FindFirstChild("TouchInterest")
+            if not ti then
+                ti = obj:FindFirstChildWhichIsA("TouchInterest", true)
+            end
+            if ti then
+                pcall(function()
+                    firetouchinterest(hrp, obj, 0)
+                    firetouchinterest(hrp, obj, 1)
+                end)
+                collected = collected + 1
+            end
+        end
+    end
+    return collected > 0
+end
+
+local function hasGravestone()
+    return workspace:FindFirstChild("Gravestone") ~= nil
+end
+
+-- ============================================================
+-- ORDERED TARGET LIST
+-- ============================================================
+local TARGET_ORDER = {
+    { key = "PhaseOrb",       handler = function() return findWorkspacePart("PhaseOrb") end },
+    { key = "JetOrb",         handler = function() return findWorkspacePart("JetOrb") end },
+    { key = "GlitchOrb",      handler = function() return findWorkspacePart("GlitchOrb") end },
+    { key = "SiphonOrb",      handler = function() return findWorkspacePart("SiphonOrb") end },
+    { key = "MATERIALIZEOrb", handler = function() return findWorkspacePart("MATERIALIZEOrb") end },
+    { key = "Slapple",        handler = function() return findSlappleGlove("Slapple") end },
+    { key = "GoldenSlapple",  handler = function() return findSlappleGlove("GoldenSlapple") end },
+    { key = "Toolbox",        handler = function() return findToolboxClickDetector() end },
+}
+
+-- ============================================================
+-- FARM LOOP
+-- ============================================================
+local farming = false
+
+local function doFarmTick()
+    local hrp = getRoot()
+    if not hrp then return end
+
+    for _, target in ipairs(TARGET_ORDER) do
+        if FARMSettings[target.key] then
+            local found = target.handler()
+            if target.key == "Toolbox" then
+                if found then
+                    pcall(fireclickdetector, found)
+                    task.wait(0.3)
+                    return
+                end
+            else
+                if found then
+                    moveTo(found.CFrame)
+                    task.wait(0.3)
+                    return
+                end
+            end
+        end
+    end
+
+    if FARMSettings.CandyCorns then
+        collectCandyCorns()
+    end
+
+    if FARMSettings.Gravestone then
+        hasGravestone()
+    end
+end
+
+local function startFarm()
+    if farming then return end
+    farming = true
+    task.spawn(function()
+        while farming do
+            pcall(doFarmTick)
+            task.wait(2)
+        end
+    end)
+end
+
+-- ============================================================
+-- AUTO-START ON LOAD
+-- ============================================================
+startFarm()
+
+-- expose only Start (no Stop)
+getgenv().CandyCornFarm = {
+    Start = startFarm,
+}
