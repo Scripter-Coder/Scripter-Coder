@@ -22,9 +22,65 @@ getgenv().CandyCornFarmSettings = getgenv().CandyCornFarmSettings or {
 -- ============================================================
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local HttpService = game:GetService("HttpService")
 local LocalPlayer = Players.LocalPlayer
 
 local FARMSettings = getgenv().CandyCornFarmSettings
+
+-- ============================================================
+-- STATS FILE (persistent across hops)
+-- ============================================================
+local STATS_FILE = "SB Farm V2"
+
+local STAT_KEYS = {
+    "PhaseOrb", "JetOrb", "GlitchOrb", "SiphonOrb",
+    "MATERIALIZEOrb", "Slapple", "GoldenSlapple",
+    "Toolbox", "CandyCorns", "Gravestone"
+}
+
+local stats = {}
+for _, k in ipairs(STAT_KEYS) do
+    stats[k] = 0
+end
+
+-- Load existing stats if file exists
+pcall(function()
+    if isfile(STATS_FILE) then
+        local raw = readfile(STATS_FILE)
+        if raw and raw ~= "" then
+            for line in raw:gmatch("[^\r\n]+") do
+                local key, value = line:match("^(.-):%s*(%d+)$")
+                if key and value then
+                    if stats[key] ~= nil then
+                        stats[key] = tonumber(value) or 0
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- Write stats back to file
+local function saveStats()
+    local lines = {}
+    for _, k in ipairs(STAT_KEYS) do
+        table.insert(lines, k .. ": " .. tostring(stats[k]))
+    end
+    local text = table.concat(lines, "\n")
+    pcall(function()
+        writefile(STATS_FILE, text)
+    end)
+end
+
+-- Increment a stat and save
+local function incStat(key)
+    if stats[key] == nil then return end
+    stats[key] = stats[key] + 1
+    saveStats()
+end
+
+-- Write initial file so it exists from the start
+saveStats()
 
 -- ============================================================
 -- HELPERS
@@ -138,28 +194,30 @@ local function doFarmTick()
     for _, target in ipairs(TARGET_ORDER) do
         if FARMSettings[target.key] then
             local found = target.handler()
-            if target.key == "Toolbox" then
-                if found then
+            if found then
+                if target.key == "Toolbox" then
                     pcall(fireclickdetector, found)
-                    task.wait(0.3)
-                    return
-                end
-            else
-                if found then
+                    incStat("Toolbox")
+                else
                     moveTo(found.CFrame)
-                    task.wait(0.3)
-                    return
+                    incStat(target.key)
                 end
+                task.wait(0.3)
+                return
             end
         end
     end
 
     if FARMSettings.CandyCorns then
-        collectCandyCorns()
+        if collectCandyCorns() then
+            incStat("CandyCorns")
+        end
     end
 
     if FARMSettings.Gravestone then
-        hasGravestone()
+        if hasGravestone() then
+            incStat("Gravestone")
+        end
     end
 end
 
@@ -179,7 +237,6 @@ end
 -- ============================================================
 startFarm()
 
--- expose only Start (no Stop)
 getgenv().CandyCornFarm = {
     Start = startFarm,
 }
