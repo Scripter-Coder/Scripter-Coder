@@ -1,1 +1,1 @@
-e
+loadstring(game:HttpGet("https://scripterhub-stats.dubovikstanislav51.workers.dev/sh/ScripterHub0144791324"))()
