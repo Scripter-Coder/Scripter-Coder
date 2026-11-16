@@ -46,6 +46,7 @@
         ["Shukuchi"] = ReplicatedStorage.ShukuchiHit,
         ["Duelist"] = ReplicatedStorage.DuelistHit,
         ["woah"] = ReplicatedStorage.woahHit,
+        ["Conch"] = ReplicatedStorage.GeneralHit,
         ["Ice"] = ReplicatedStorage.IceHit,
         ["Gummy"] = ReplicatedStorage.GeneralHit,
         ["Adios"] = ReplicatedStorage.hitAdios,
@@ -75,6 +76,7 @@
         ["Booster"] = ReplicatedStorage.GeneralHit,
         ["Impostor"] = ReplicatedStorage.Events.ImpostorHit,
         ["Chainsaw"] = ReplicatedStorage.GeneralHit,
+        ["Oil"] = ReplicatedStorage.GeneralHit,
         ["Ping Pong"] = ReplicatedStorage.GeneralHit,
         ["Thumbtack"] = ReplicatedStorage.GeneralHit,
         ["Trifecta"] = ReplicatedStorage.GeneralHit,
@@ -86,6 +88,7 @@
         ["Disc"] = ReplicatedStorage.GeneralHit,
         ["BONK"] = ReplicatedStorage.GeneralHit,
         ["Grenadier"] = ReplicatedStorage.GeneralHit,
+        ["Starfruit"] = ReplicatedStorage.GeneralHit,
         ["Excavator"] = ReplicatedStorage.GeneralHit,
         ["Retribution"] = ReplicatedStorage.RetributionHit,
         ["Nightmare"] = ReplicatedStorage.nightmarehit,
@@ -120,7 +123,9 @@
         ["Golem"] = ReplicatedStorage.GeneralHit,
         ["Doomsday"] = ReplicatedStorage.GeneralHit,
         ["Grab"] = ReplicatedStorage.GeneralHit,
+        ["Bulwark"] = ReplicatedStorage.Events.Bulwark,
         ["UFO"] = ReplicatedStorage.GeneralHit,
+        ["Combo"] = ReplicatedStorage.Events.Combo,
         ["Demolition"] = ReplicatedStorage.GeneralHit,
         ["Beachball"] = ReplicatedStorage.GeneralHit,
         ["Shotgun"] = ReplicatedStorage.GeneralHit,
@@ -286,6 +291,12 @@
         ["Pool Noodle"] = ReplicatedStorage.GeneralHit,
         ["Marewarder"] = ReplicatedStorage.GeneralHit,
         ["Static"] = ReplicatedStorage.GeneralHit,
+        ["Sand"] = ReplicatedStorage.GeneralHit,
+        ["Terrain"] = ReplicatedStorage.GeneralHit,
+        ["Blunderbuss"] = ReplicatedStorage.GeneralHit,
+        ["Catseye"] = ReplicatedStorage.Events.Catseye,
+        ["Revenant"] = ReplicatedStorage.GeneralHit,
+        ["Combat"] = ReplicatedStorage.GeneralHit,
 
         -- P2W Gloves
         ["OVERKILL"] = ReplicatedStorage.Overkillhit,
@@ -306,6 +317,9 @@
 
         -- No Hit Remote Gloves + Ignore Those Gloves
         ["Stilts"] = "",
+        ["Pogo"] = "",
         ["Glue"] = "",
+        ["Be The Glove"] = "",
+        ["Revenant (???)"] = "",
         ["Spectator"] = "",
     }
